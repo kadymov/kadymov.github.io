@@ -235,7 +235,7 @@
 
 
       camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 1000);
-      camera.position.z = 3;
+      camera.position.z = 5;
       camera.position.y = 1;
 
       // controls
@@ -244,12 +244,15 @@
       controls.listenToKeyEvents( window ); // optional
       controls.addEventListener('change', render);
       controls.maxPolarAngle = Math.PI / 2;
+      controls.target = new THREE.Vector3(0, 0.5, 0);
 
       // scene
 
       scene = new THREE.Scene();
 
       scene.add(camera);
+
+      controls.update();
 
 
       // Objects
