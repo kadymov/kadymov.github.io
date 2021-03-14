@@ -1,4 +1,4 @@
-THREE.MathUtils = {
+const MathUtils = {
 
 	DEG2RAD: Math.PI / 180,
 	RAD2DEG: 180 / Math.PI,
@@ -217,3 +217,5 @@ THREE.MathUtils = {
 	}
 
 };
+
+THREE.MathUtils = MathUtils;
