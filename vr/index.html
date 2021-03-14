@@ -71,7 +71,7 @@
         effect = new THREE.StereoEffect(renderer);
 
         // Our initial control fallback with mouse/touch events in case DeviceOrientation is not enabled
-        controls = new DeviceOrientationControls( camera );
+        controls = new THREE.DeviceOrientationControls( camera );
 
 
         // Lighting
