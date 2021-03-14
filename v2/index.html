@@ -13,11 +13,12 @@
 
 		<script src="./three.js"></script>
 		<script src="./DeviceOrientationControls.js"></script>
+		<script src="./StereoEffect.js"></script>
 
 		<script>
 
 
-			let camera, scene, renderer, controls;
+			let camera, scene, renderer, controls, effect;
 
 			const startButton = document.getElementById( 'startButton' );
 			startButton.addEventListener( 'click', function () {
@@ -59,6 +60,9 @@
 				renderer.setSize( window.innerWidth, window.innerHeight );
 				document.body.appendChild( renderer.domElement );
 
+				effect = new THREE.StereoEffect( renderer );
+				effect.setSize( window.innerWidth, window.innerHeight );
+
 				//
 
 				window.addEventListener( 'resize', onWindowResize );
@@ -71,7 +75,7 @@
 				window.requestAnimationFrame( animate );
 
 				controls.update();
-				renderer.render( scene, camera );
+				effect.render( scene, camera );
 
 			}
 
@@ -80,7 +84,7 @@
 				camera.aspect = window.innerWidth / window.innerHeight;
 				camera.updateProjectionMatrix();
 
-				renderer.setSize( window.innerWidth, window.innerHeight );
+				effect.setSize( window.innerWidth, window.innerHeight );
 
 			}
 
