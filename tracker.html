@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calorie Tracker</title>
+  <style>
+    body {
+      background-color: #121212;
+      color: #e0e0e0;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+    header {
+      width: 100%;
+      background-color: #1e1e1e;
+      padding: 15px;
+      text-align: center;
+    }
+    h1 {
+      margin: 0;
+      font-size: 24px;
+    }
+    .container {
+      width: 90%;
+      max-width: 500px;
+      margin-top: 20px;
+    }
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    button {
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button.prev-btn, button.next-btn {
+      background-color: #333;
+      color: #e0e0e0;
+    }
+    button.add-food-btn {
+      background-color: #4caf50;
+      color: white;
+    }
+    button:hover {
+      opacity: 0.9;
+    }
+    .date-display {
+      font-size: 18px;
+      font-weight: bold;
+    }
+    .food-list {
+      background-color: #1e1e1e;
+      border-radius: 5px;
+      padding: 15px;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+    .food-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid #333;
+    }
+    .food-item:last-child {
+      border-bottom: none;
+    }
+    .food-actions button {
+      margin-left: 10px;
+      background-color: #ff5722;
+      color: white;
+    }
+    .food-actions button.edit-btn {
+      background-color: #2196f3;
+    }
+    .total-calories {
+      margin-top: 15px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+    .add-food-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      justify-content: center;
+      align-items: center;
+    }
+    .modal-content {
+      background-color: #222;
+      padding: 20px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 400px;
+    }
+    .modal-content input, .modal-content button, .modal-content select {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+    .modal-content input, .modal-content select {
+      background-color: #333;
+      color: #e0e0e0;
+    }
+    .modal-content button {
+      background-color: #4caf50;
+      color: white;
+    }
+    .modal-content button:hover {
+      background-color: #45a049;
+    }
+    .close-modal {
+      text-align: right;
+      cursor: pointer;
+      font-size: 20px;
+      color: #e0e0e0;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Calorie Tracker</h1>
+  </header>
+  <div class="container">
+    <div class="controls">
+      <button class="prev-btn" id="prev-date-btn">< Prev</button>
+      <div class="date-display" id="date-display">Date: Loading...</div>
+      <button class="next-btn" id="next-date-btn">Next ></button>
+    </div>
+    <button class="add-food-btn" id="add-food-btn">Add Food</button>
+    <div class="food-list" id="food-list">
+      <!-- Food items will be dynamically added here -->
+    </div>
+    <div class="total-calories" id="total-calories">Total Calories: 0</div>
+  </div>
+
+  <div class="add-food-modal" id="add-food-modal">
+    <div class="modal-content">
+      <div class="close-modal" id="close-modal">&times;</div>
+      <h2>Add/Edit Food</h2>
+      <select id="food-select">
+        <option value="">Select a saved food...</option>
+      </select>
+      <input type="text" id="food-name" placeholder="Food Name">
+      <input type="number" id="calories" placeholder="Calories">
+      <button id="save-food-btn">Save</button>
+    </div>
+  </div>
+
+  <script>
+    const foodListElement = document.getElementById('food-list');
+    const totalCaloriesElement = document.getElementById('total-calories');
+    const addFoodBtn = document.getElementById('add-food-btn');
+    const addFoodModal = document.getElementById('add-food-modal');
+    const closeModalBtn = document.getElementById('close-modal');
+    const saveFoodBtn = document.getElementById('save-food-btn');
+    const foodNameInput = document.getElementById('food-name');
+    const caloriesInput = document.getElementById('calories');
+    const foodSelect = document.getElementById('food-select');
+    const dateDisplay = document.getElementById('date-display');
+    const prevDateBtn = document.getElementById('prev-date-btn');
+    const nextDateBtn = document.getElementById('next-date-btn');
+
+    let foodData = JSON.parse(localStorage.getItem('calorieTracker')) || {};
+    let savedFoods = JSON.parse(localStorage.getItem('savedFoods')) || [];
+    let currentDate = new Date();
+    let editingIndex = null;
+
+    function formatDate(date) {
+      const options = { year: 'numeric', month: 'long', day: 'numeric' };
+      return date.toLocaleDateString(undefined, options);
+    }
+
+    function saveToLocalStorage() {
+      localStorage.setItem('calorieTracker', JSON.stringify(foodData));
+      localStorage.setItem('savedFoods', JSON.stringify(savedFoods));
+    }
+
+    function updateFoodList() {
+      const dateString = currentDate.toISOString().split('T')[0];
+      foodListElement.innerHTML = '';
+      const foods = foodData[dateString] || [];
+      foods.forEach((food, index) => {
+        const foodItem = document.createElement('div');
+        foodItem.className = 'food-item';
+        foodItem.innerHTML = `
+          <span>${food.name}</span><span>${food.calories} cal</span>
+          <div class="food-actions">
+            <button class="edit-btn" data-index="${index}">Edit</button>
+            <button class="delete-btn" data-index="${index}">Delete</button>
+          </div>
+        `;
+        foodListElement.appendChild(foodItem);
+
+        // Add event listeners for edit and delete buttons
+        foodItem.querySelector('.edit-btn').addEventListener('click', () => editFood(dateString, index));
+        foodItem.querySelector('.delete-btn').addEventListener('click', () => deleteFood(dateString, index));
+      });
+      updateTotalCalories(foods);
+    }
+
+    function updateTotalCalories(foods) {
+      const totalCalories = foods.reduce((sum, food) => sum + food.calories, 0);
+      totalCaloriesElement.textContent = `Total Calories: ${totalCalories}`;
+    }
+
+    function deleteFood(date, index) {
+      foodData[date].splice(index, 1);
+      saveToLocalStorage();
+      updateFoodList();
+    }
+
+    function editFood(date, index) {
+      const food = foodData[date][index];
+      foodNameInput.value = food.name;
+      caloriesInput.value = food.calories;
+      editingIndex = index;
+      addFoodModal.style.display = 'flex';
+    }
+
+    function populateSavedFoods() {
+      foodSelect.innerHTML = '<option value="">Select a saved food...</option>';
+      savedFoods.forEach((food, index) => {
+        const option = document.createElement('option');
+        option.value = index;
+        option.textContent = `${food.name} (${food.calories} cal)`;
+        foodSelect.appendChild(option);
+      });
+    }
+
+    foodSelect.addEventListener('change', (event) => {
+      const selectedIndex = event.target.value;
+      if (selectedIndex !== '') {
+        const selectedFood = savedFoods[selectedIndex];
+        foodNameInput.value = selectedFood.name;
+        caloriesInput.value = selectedFood.calories;
+      } else {
+        foodNameInput.value = '';
+        caloriesInput.value = '';
+      }
+    });
+
+    function updateDateDisplay() {
+      dateDisplay.textContent = formatDate(currentDate);
+      updateFoodList();
+    }
+
+    prevDateBtn.addEventListener('click', () => {
+      currentDate.setDate(currentDate.getDate() - 1);
+      updateDateDisplay();
+    });
+
+    nextDateBtn.addEventListener('click', () => {
+      currentDate.setDate(currentDate.getDate() + 1);
+      updateDateDisplay();
+    });
+
+    addFoodBtn.addEventListener('click', () => {
+      editingIndex = null; // Reset editing index when adding new food
+      foodNameInput.value = '';
+      caloriesInput.value = '';
+      populateSavedFoods();
+      addFoodModal.style.display = 'flex';
+    });
+
+    closeModalBtn.addEventListener('click', () => {
+      addFoodModal.style.display = 'none';
+      foodNameInput.value = '';
+      caloriesInput.value = '';
+      editingIndex = null;
+    });
+
+    saveFoodBtn.addEventListener('click', () => {
+      const foodName = foodNameInput.value.trim();
+      const calories = parseInt(caloriesInput.value, 10);
+      if (foodName && !isNaN(calories)) {
+        const dateString = currentDate.toISOString().split('T')[0];
+
+        // Save the food to the saved foods list if it's not already there
+        const existingFoodIndex = savedFoods.findIndex(food => food.name === foodName && food.calories === calories);
+        if (existingFoodIndex === -1) {
+          savedFoods.push({ name: foodName, calories });
+        }
+
+        if (!foodData[dateString]) {
+          foodData[dateString] = [];
+        }
+
+        if (editingIndex !== null) {
+          // Edit existing food item
+          foodData[dateString][editingIndex] = { name: foodName, calories };
+        } else {
+          // Add new food item
+          foodData[dateString].push({ name: foodName, calories });
+        }
+
+        saveToLocalStorage();
+        updateFoodList();
+        addFoodModal.style.display = 'none';
+        foodNameInput.value = '';
+        caloriesInput.value = '';
+        editingIndex = null;
+      } else {
+        alert('Please enter valid food name and calories.');
+      }
+    });
+
+    // Initialize with current date and populate saved foods
+    updateDateDisplay();
+    populateSavedFoods();
+  </script>
+</body>
+</html>
