@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Поле Чудес</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 0;
+  }
+  h1 {
+    color: #333;
+  }
+  #game-container {
+    margin-top: 20px;
+  }
+  #wheel-container {
+    position: relative;
+    width: 60px;
+    height: 60px;
+    margin: 20px auto;
+  }
+  #wheel {
+    width: 100%;
+    height: 100%;
+    background: conic-gradient(
+      red 0% 12.5%,
+      orange 12.5% 25%,
+      yellow 25% 37.5%,
+      green 37.5% 50%,
+      blue 50% 62.5%,
+      indigo 62.5% 75%,
+      violet 75% 87.5%,
+      brown 87.5% 100%
+    );
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    transition: transform 3s ease-out;
+  }
+  #wheel::before {
+    content: '';
+    position: absolute;
+    width: 2px;
+    height: 30px;
+    background-color: black;
+    top: -15px;
+    left: calc(50% - 1px);
+    transform: rotate(45deg);
+  }
+  #spin-button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 18px;
+    background-color: #0275d8;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  #spin-button:hover {
+    background-color: #025aa5;
+  }
+  #word-display {
+    font-size: 24px;
+    letter-spacing: 10px;
+    margin-bottom: 20px;
+  }
+  #message {
+    font-size: 18px;
+    color: #d9534f;
+    margin-bottom: 20px;
+  }
+  #keyboard {
+    display: grid;
+    grid-template-columns: repeat(11, 1fr);
+    gap: 10px;
+    justify-content: center;
+    margin: 20px auto;
+    width: 80%;
+  }
+  .key {
+    padding: 15px;
+    font-size: 18px;
+    background-color: #0275d8;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  .key:hover {
+    background-color: #025aa5;
+  }
+  .key.disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  #reset-button {
+    padding: 10px 20px;
+    font-size: 18px;
+    background-color: #5cb85c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  #reset-button:hover {
+    background-color: #4cae4c;
+  }
+</style>
+</head>
+<body>
+
+<h1>Поле Чудес</h1>
+<div id="game-container">
+  <div id="wheel-container">
+    <div id="wheel"></div>
+  </div>
+  <button id="spin-button">Крутить барабан</button>
+  <div id="word-display"></div>
+  <div id="message"></div>
+  <div id="keyboard"></div>
+  <button id="reset-button">Начать заново</button>
+</div>
+
+<script>
+const words = [
+  { word: "КОМПЬЮТЕР", hint: "Устройство для обработки информации" },
+  { word: "ИНТЕРНЕТ", hint: "Глобальная сеть" },
+  { word: "ПРОГРАММИСТ", hint: "Человек, который пишет код" },
+  { word: "АЛГОРИТМ", hint: "Последовательность действий для решения задачи" },
+  { word: "ЭКЗОТИКА", hint: "Что-то необычное, редкое" },
+  { word: "ФЕНОМЕН", hint: "Явление, вызывающее удивление" },
+  { word: "ГАЛЬВАНИКА", hint: "Процесс покрытия металла слоем другого металла" },
+  { word: "КАРДИОЛОГ", hint: "Врач, специализирующийся на болезнях сердца" },
+  { word: "ОРТОДОНТ", hint: "Врач, исправляющий неправильный прикус" },
+  { word: "ПАЛЕОНТОЛОГ", hint: "Ученый, изучающий ископаемые останки" },
+  { word: "ЭКСТРАВЕРТ", hint: "Человек, открытый к общению" },
+  { word: "ИНТРОВЕРТ", hint: "Человек, предпочитающий уединение" },
+  { word: "КВАРКИ", hint: "Элементарные частицы в физике" },
+  { word: "ГРАВИТАЦИЯ", hint: "Сила притяжения между объектами" },
+  { word: "МАЯТНИК", hint: "Предмет, колеблющийся под действием силы тяжести" },
+  { word: "РЕЛИКВИЯ", hint: "Ценный исторический предмет" },
+  { word: "АРХЕОЛОГ", hint: "Ученый, изучающий древние цивилизации" },
+  { word: "ГЕОГРАФИЯ", hint: "Наука о Земле и ее природе" },
+  { word: "ЭКСПЕРИМЕНТ", hint: "Проверка гипотезы на практике" },
+  { word: "ОБЪЕКТИВ", hint: "Часть фотоаппарата, через которую проходит свет" },
+];
+
+let selectedWord = "";
+let guessedLetters = [];
+let keyboardButtons = [];
+let wheelSpinning = false;
+let currentScore = [0, 0, 0]; // Очки игроков
+let currentPlayer = 0; // Текущий игрок (0 - человек, 1 и 2 - боты)
+
+function startGame() {
+  guessedLetters = [];
+  currentScore = [0, 0, 0];
+  currentPlayer = 0;
+  const randomIndex = Math.floor(Math.random() * words.length);
+  selectedWord = words[randomIndex].word;
+  document.getElementById("word-display").textContent = generateWordDisplay();
+  document.getElementById("message").textContent = `Подсказка: ${words[randomIndex].hint}`;
+  enableKeyboard();
+}
+
+function generateWordDisplay() {
+  return selectedWord
+    .split("")
+    .map(letter => (guessedLetters.includes(letter) ? letter : "_"))
+    .join(" ");
+}
+
+function checkWin() {
+  if (!generateWordDisplay().includes("_")) {
+    document.getElementById("message").textContent = `Игрок ${currentPlayer + 1} выиграл! Итоговый счет: ${currentScore[currentPlayer]}`;
+    disableKeyboard();
+    return true;
+  }
+  return false;
+}
+
+function handleKeyClick(letter) {
+  if (guessedLetters.includes(letter)) return;
+
+  guessedLetters.push(letter);
+  const button = document.querySelector(`.key[data-letter="${letter}"]`);
+  if (button) button.classList.add("disabled");
+
+  if (!selectedWord.includes(letter)) {
+    showMessage(getRandomComment("wrong"));
+    nextTurn();
+  } else {
+    document.getElementById("word-display").textContent = generateWordDisplay();
+    if (checkWin()) return;
+    showMessage(getRandomComment("correct") + ` Вы заработали ${currentWheelValue} очков.`);
+    currentScore[currentPlayer] += currentWheelValue;
+    spinWheel(); // Даем шанс снова крутить барабан
+  }
+}
+
+function createKeyboard() {
+  const keyboardContainer = document.getElementById("keyboard");
+  const letters = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ".split("");
+  letters.forEach(letter => {
+    const button = document.createElement("button");
+    button.textContent = letter;
+    button.classList.add("key");
+    button.setAttribute("data-letter", letter);
+    button.addEventListener("click", () => handleKeyClick(letter));
+    keyboardContainer.appendChild(button);
+    keyboardButtons.push(button);
+  });
+}
+
+function disableKeyboard() {
+  keyboardButtons.forEach(button => button.classList.add("disabled"));
+}
+
+function enableKeyboard() {
+  keyboardButtons.forEach(button => button.classList.remove("disabled"));
+}
+
+document.getElementById("reset-button").addEventListener("click", startGame);
+
+createKeyboard();
+startGame();
+
+// Барабан
+const wheelValues = [500, 1000, 1500, 2000, 2500, 3000, "BANKRUPT", "PRIZE"];
+let currentWheelValue = 0;
+
+document.getElementById("spin-button").addEventListener("click", () => {
+  if (wheelSpinning) return;
+  spinWheel();
+});
+
+function spinWheel() {
+  wheelSpinning = true;
+
+  const spins = Math.floor(Math.random() * 5) + 3; // Минимум 3 полных оборота
+  const degrees = spins * 360 + Math.floor(Math.random() * 360);
+
+  document.getElementById("wheel").style.transform = `rotate(${degrees}deg)`;
+
+  setTimeout(() => {
+    const segment = Math.floor(((degrees % 360) / 45) % wheelValues.length);
+    currentWheelValue = wheelValues[segment];
+
+    if (currentWheelValue === "BANKRUPT") {
+      currentScore[currentPlayer] = 0;
+      showMessage(getRandomComment("bankrupt"));
+      nextTurn();
+    } else if (currentWheelValue === "PRIZE") {
+      const prizes = ["Кружка с котиками", "Носки в горошек", "Плюшевый единорог", "Календарь на 1999 год"];
+      const prize = prizes[Math.floor(Math.random() * prizes.length)];
+      showMessage(getRandomComment("prize") + ` Приз: ${prize}!`);
+      nextTurn();
+    } else {
+      showMessage(getRandomComment("spin") + ` Выпало ${currentWheelValue} очков. Ваш ход.`);
+      if (currentPlayer > 0) {
+        botGuessLetter();
+      }
+    }
+
+    wheelSpinning = false;
+  }, 3000);
+}
+
+function nextTurn() {
+  currentPlayer = (currentPlayer + 1) % 3;
+  if (currentPlayer > 0) {
+    setTimeout(botTurn, 1000);
+  } else {
+    showMessage("Ваш ход! Крутите барабан.");
+  }
+}
+
+function botTurn() {
+  showMessage(`Ход игрока ${currentPlayer + 1}...`);
+  setTimeout(() => {
+    spinWheel();
+  }, 2000);
+}
+
+function botGuessLetter() {
+  const availableLetters = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ".split("").filter(letter => !guessedLetters.includes(letter));
+  if (availableLetters.length === 0) {
+    showMessage(`Игрок ${currentPlayer + 1}: Нет доступных букв!`);
+    nextTurn();
+    return;
+  }
+
+  const randomLetter = availableLetters[Math.floor(Math.random() * availableLetters.length)];
+  guessedLetters.push(randomLetter);
+
+  const button = document.querySelector(`.key[data-letter="${randomLetter}"]`);
+  if (button) button.classList.add("disabled");
+
+  if (!selectedWord.includes(randomLetter)) {
+    showMessage(getRandomComment("wrong"));
+    nextTurn();
+  } else {
+    document.getElementById("word-display").textContent = generateWordDisplay();
+    if (checkWin()) return;
+    showMessage(getRandomComment("correct") + ` Заработано ${currentWheelValue} очков.`);
+    currentScore[currentPlayer] += currentWheelValue;
+    spinWheel(); // Даем шанс снова крутить барабан
+  }
+}
+
+function showMessage(message) {
+  const messageElement = document.getElementById("message");
+  messageElement.textContent = message;
+  setTimeout(() => {
+    messageElement.textContent = ""; // Очищаем сообщение после 5 секунд
+  }, 5000);
+}
+
+function getRandomComment(type) {
+  const comments = {
+    spin: [
+      "Барабан крутится, судьба решается!",
+      "Крутим-вертим, что же выпадет?",
+      "Вращение судьбы начинается!",
+      "Барабан делает свое дело!"
+    ],
+    correct: [
+      "Отличный выбор! Буква есть!",
+      "Вы попали в точку! Продолжайте!",
+      "Какой мастерский ход! Есть буква!",
+      "Удача на вашей стороне!"
+    ],
+    wrong: [
+      "Увы, буквы нет. Попробуйте еще!",
+      "Не повезло, но не сдавайтесь!",
+      "Ой-ой, буквы нет в слове!",
+      "Ничего страшного, в следующий раз повезет!"
+    ],
+    bankrupt: [
+      "О нет! Банкрот! Все очки потеряны!",
+      "Барабан решил пошутить — банкрот!",
+      "Ой-ой, барабан не на вашей стороне!",
+      "Банкрот! Но игра продолжается!"
+    ],
+    prize: [
+      "Вау! Какой неожиданный подарок!",
+      "Приз достается вам! Поздравляем!",
+      "Сюрприз от барабана — приз ваш!",
+      "Удача улыбнулась вам!"
+    ]
+  };
+  const randomIndex = Math.floor(Math.random() * comments[type].length);
+  return comments[type][randomIndex];
+}
+</script>
+
+</body>
+</html>
