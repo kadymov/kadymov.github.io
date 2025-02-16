@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Кто хочет стать миллионером</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: #34495e;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        .question {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+        .options button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            font-size: 1em;
+            background-color: #ecf0f1;
+            color: #2c3e50;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .options button:hover {
+            background-color: #bdc3c7;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+        .money {
+            margin-top: 20px;
+            font-size: 1.5em;
+            color: #f1c40f;
+        }
+        .hints {
+            margin-top: 20px;
+        }
+        .hint-button {
+            padding: 10px;
+            background-color: #1abc9c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .hint-button:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Кто хочет стать миллионером</h1>
+    <div class="question" id="question"></div>
+    <div class="options" id="options"></div>
+    <div class="result" id="result"></div>
+    <div class="money" id="money">Счёт: $0</div>
+    <div class="hints">
+        <button class="hint-button" id="hintButton" onclick="useHint()">Подсказка: 50/50 (осталось: <span id="hintCount">3</span>)</button>
+    </div>
+</div>
+
+<script>
+    const questions = [
+        {
+            question: "Какой древний город был разрушен извержением Везувия в 79 году н.э.?",
+            options: ["Помпеи", "Рим", "Афины", "Карфаген"],
+            answer: "Помпеи"
+        },
+        {
+            question: "Какое государство первым приняло христианство как государственную религию?",
+            options: ["Римская империя", "Византия", "Армения", "Франция"],
+            answer: "Армения"
+        },
+        {
+            question: "Какой полководец известен своими завоеваниями в Азии и Европе в IV веке до н.э.?",
+            options: ["Юлий Цезарь", "Александр Македонский", "Ганнибал", "Наполеон"],
+            answer: "Александр Македонский"
+        },
+        {
+            question: "Какая страна является родиной танго?",
+            options: ["Испания", "Аргентина", "Мексика", "Чили"],
+            answer: "Аргентина"
+        },
+        {
+            question: "Как называется архитектурный стиль, характерный для соборов XIII-XVI веков?",
+            options: ["Барокко", "Готика", "Ренессанс", "Классицизм"],
+            answer: "Готика"
+        },
+        {
+            question: "Какой договор положил конец Первой мировой войне?",
+            options: ["Версальский договор", "Брестский мир", "Тильзитский мир", "Парижский договор"],
+            answer: "Версальский договор"
+        },
+        {
+            question: "Какой остров считается местом ссылки Наполеона Бонапарта?",
+            options: ["Корсика", "Сардиния", "Сицилия", "Святая Елена"],
+            answer: "Святая Елена"
+        },
+        {
+            question: "Как называется система управления, при которой власть передается по наследству?",
+            options: ["Демократия", "Монархия", "Олигархия", "Теократия"],
+            answer: "Монархия"
+        },
+        {
+            question: "Какой город был столицей Золотой Орды?",
+            options: ["Киев", "Сараево", "Сарай", "Казань"],
+            answer: "Сарай"
+        },
+        {
+            question: "Какое произведение искусства было создано Микеланджело для Сикстинской капеллы?",
+            options: ["Давид", "Пьетà", "Страшный суд", "Венера"],
+            answer: "Страшный суд"
+        },
+        {
+            question: "Какой язык является официальным в Бразилии?",
+            options: ["Испанский", "Португальский", "Французский", "Английский"],
+            answer: "Португальский"
+        },
+        {
+            question: "Какой документ провозгласил права человека и гражданина во время Французской революции?",
+            options: ["Декларация независимости", "Большая хартия вольностей", "Декларация прав человека", "Устав ООН"],
+            answer: "Декларация прав человека"
+        },
+        {
+            question: "Какой народ создал письменность клинописью?",
+            options: ["Египтяне", "Шумеры", "Китайцы", "Индейцы майя"],
+            answer: "Шумеры"
+        },
+        {
+            question: "Какой город был столицей Византийской империи?",
+            options: ["Афины", "Константинополь", "Рим", "Венеция"],
+            answer: "Константинополь"
+        },
+        {
+            question: "Какой философ написал труд 'Государство', описывающий идеальное общество?",
+            options: ["Аристотель", "Платон", "Сократ", "Эпикур"],
+            answer: "Платон"
+        },
+        {
+            question: "Какой регион мира известен как колыбель кофе?",
+            options: ["Южная Америка", "Африка", "Аравийский полуостров", "Индия"],
+            answer: "Африка"
+        },
+        {
+            question: "Какой исторический период называют 'темными веками'?",
+            options: ["Средневековье", "Раннее Возрождение", "Поздняя античность", "Промышленная революция"],
+            answer: "Средневековье"
+        },
+        {
+            question: "Как называется театральная маска, символизирующая трагедию?",
+            options: ["Комедия", "Мольер", "Трагедия", "Сатира"],
+            answer: "Трагедия"
+        },
+        {
+            question: "Какой город считается колыбелью Ренессанса?",
+            options: ["Рим", "Флоренция", "Венеция", "Неаполь"],
+            answer: "Флоренция"
+        },
+        {
+            question: "Какой политический режим существовал в СССР?",
+            options: ["Капитализм", "Социализм", "Феодализм", "Античный строй"],
+            answer: "Социализм"
+        },
+        {
+            question: "Какой архитектурный стиль характеризуется использованием куполов и минаретов?",
+            options: ["Готика", "Барокко", "Исламский стиль", "Классицизм"],
+            answer: "Исламский стиль"
+        },
+        {
+            question: "Какой народ создал первую известную цивилизацию в Месопотамии?",
+            options: ["Персы", "Шумеры", "Ассирийцы", "Вавилоняне"],
+            answer: "Шумеры"
+        },
+        {
+            question: "Какой художник написал картину 'Звездная ночь'?",
+            options: ["Клод Моне", "Пабло Пикассо", "Винсент Ван Гог", "Сальвадор Дали"],
+            answer: "Винсент Ван Гог"
+        },
+        {
+            question: "Как называется процесс объединения Италии в XIX веке?",
+            options: ["Рисорджименто", "Революция", "Реставрация", "Реформация"],
+            answer: "Рисорджименто"
+        },
+        {
+            question: "Какой город является столицей Австралии?",
+            options: ["Сидней", "Мельбурн", "Канберра", "Брисбен"],
+            answer: "Канберра"
+        },
+        {
+            question: "Какой исторический документ ограничил власть английского короля в 1215 году?",
+            options: ["Декларация независимости", "Большая хартия вольностей", "Магна Карта", "Устав ООН"],
+            answer: "Магна Карта"
+        },
+        {
+            question: "Как называется явление, когда свет отклоняется в атмосфере, создавая радугу?",
+            options: ["Рефракция", "Дифракция", "Отражение", "Дисперсия"],
+            answer: "Дисперсия"
+        },
+        {
+            question: "Какой музыкальный стиль возник в США в начале XX века?",
+            options: ["Классика", "Джаз", "Рок", "Поп"],
+            answer: "Джаз"
+        },
+        {
+            question: "Какой народ создал знаменитые наскальные рисунки в пустыне Наска?",
+            options: ["Майя", "Ацтеки", "Инки", "Наска"],
+            answer: "Наска"
+        },
+        {
+            question: "Какой философ впервые предложил гелиоцентрическую систему мира?",
+            options: ["Аристотель", "Птолемей", "Николай Коперник", "Галилео Галилей"],
+            answer: "Николай Коперник"
+        }
+    ];
+
+    let currentQuestionIndex = 0;
+    let money = 0;
+    let hintCount = 3;
+
+    const shuffledQuestions = [...questions].sort(() => Math.random() - 0.5);
+
+    const questionElement = document.getElementById('question');
+    const optionsElement = document.getElementById('options');
+    const resultElement = document.getElementById('result');
+    const moneyElement = document.getElementById('money');
+    const hintButton = document.getElementById('hintButton');
+    const hintCountElement = document.getElementById('hintCount');
+
+    function loadQuestion() {
+        if (currentQuestionIndex >= shuffledQuestions.length) {
+            endGame();
+            return;
+        }
+
+        const currentQuestion = shuffledQuestions[currentQuestionIndex];
+        questionElement.textContent = currentQuestion.question;
+        optionsElement.innerHTML = '';
+
+        currentQuestion.options.forEach(option => {
+            const button = document.createElement('button');
+            button.textContent = option;
+            button.addEventListener('click', () => checkAnswer(option));
+            optionsElement.appendChild(button);
+        });
+    }
+
+    function checkAnswer(selectedOption) {
+        const currentQuestion = shuffledQuestions[currentQuestionIndex];
+
+        if (selectedOption === currentQuestion.answer) {
+            resultElement.textContent = "Правильно!";
+            money += 1000;
+            moneyElement.textContent = `Счёт: $${money}`;
+        } else {
+            resultElement.textContent = `Неправильно! Правильный ответ: ${currentQuestion.answer}`;
+            endGame();
+            return;
+        }
+
+        currentQuestionIndex++;
+        setTimeout(loadQuestion, 1000);
+    }
+
+    function useHint() {
+        if (hintCount <= 0) return;
+
+        const currentQuestion = shuffledQuestions[currentQuestionIndex];
+        const options = Array.from(optionsElement.children);
+        const incorrectOptions = options.filter(button => button.textContent !== currentQuestion.answer);
+
+        // Remove two incorrect answers
+        for (let i = 0; i < 2 && incorrectOptions.length > 0; i++) {
+            const randomIndex = Math.floor(Math.random() * incorrectOptions.length);
+            incorrectOptions[randomIndex].style.display = 'none';
+            incorrectOptions.splice(randomIndex, 1);
+        }
+
+        hintCount--;
+        hintCountElement.textContent = hintCount;
+        if (hintCount === 0) {
+            hintButton.disabled = true;
+        }
+    }
+
+    function endGame() {
+        questionElement.textContent = "Игра окончена!";
+        optionsElement.innerHTML = '';
+        resultElement.textContent = `Вы заработали: $${money}`;
+        hintButton.style.display = 'none';
+    }
+
+    loadQuestion();
+</script>
+</body>
+</html>
