@@ -929,7 +929,7 @@
         optionsElement.innerHTML = '';
         factElement.textContent = '';
 
-        currentQuestion.options.forEach(option => {
+        [...currentQuestion.options].sort(() => Math.random() - 0.5).forEach(option => {
             const button = document.createElement('button');
             button.textContent = option;
             button.addEventListener('click', () => checkAnswer(option, currentQuestion.fact));
