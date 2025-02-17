@@ -71,6 +71,10 @@
             font-size: 1em;
             color: #ecf0f1;
         }
+
+        .debug {
+            font-size: 0.9em;
+        }
     </style>
 </head>
 <body>
@@ -85,7 +89,7 @@
         <button class="hint-button" id="hintButton" onclick="useHint()">Подсказка: 50/50 (осталось: <span id="hintCount">3</span>)</button>
     </div>
 
-    <div class="debug"></div>
+    <div class="debug" id="debug"></div>
 </div>
 
 <script>
