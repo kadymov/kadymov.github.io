@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Фиксация панели ввода</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden; /* Предотвращает прокрутку страницы */
+        }
+        #panel {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            height: 50px;
+            background-color: #f0f0f0;
+            display: flex;
+            align-items: center;
+            padding: 0 10px;
+            box-sizing: border-box;
+            transition: bottom 0.3s ease; /* Плавное перемещение панели */
+        }
+        #messageInput {
+            flex: 1;
+            height: 30px;
+            margin-right: 10px;
+        }
+        #sendButton {
+            height: 30px;
+            padding: 0 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="panel">
+        <input id="messageInput" type="text" placeholder="Введите сообщение">
+        <button id="sendButton">Отправить</button>
+    </div>
+
+    <script>
+        const panel = document.getElementById('panel');
+        const input = document.getElementById('messageInput');
+        let initialHeight = window.innerHeight;
+
+        // Функция для обновления положения панели
+        function updatePanelPosition(keyboardHeight) {
+            panel.style.bottom = keyboardHeight + 'px';
+        }
+
+        // Проверка поддержки API VirtualKeyboard
+        if ('virtualKeyboard' in navigator) {
+            navigator.virtualKeyboard.addEventListener('geometrychange', function(event) {
+                const keyboardHeight = event.target.boundingRect.height;
+                updatePanelPosition(keyboardHeight);
+            });
+        } else {
+            // Фолбэк-метод для браузеров, не поддерживающих API VirtualKeyboard
+            input.addEventListener('focus', function() {
+                // Задержка для ожидания появления клавиатуры
+                setTimeout(function() {
+                    const currentHeight = window.innerHeight;
+                    if (currentHeight < initialHeight) {
+                        const keyboardHeight = initialHeight - currentHeight;
+                        updatePanelPosition(keyboardHeight);
+                    }
+                }, 100);
+            });
+
+            input.addEventListener('blur', function() {
+                updatePanelPosition(0);
+                initialHeight = window.innerHeight;
+            });
+
+            // Обновление initialHeight при изменении размера окна (например, при повороте)
+            window.addEventListener('resize', function() {
+                if (document.activeElement !== input) {
+                    initialHeight = window.innerHeight;
+                }
+            });
+        }
+    </script>
+</body>
+</html>
