@@ -5,6 +5,10 @@
 </head>
 <body>
     <canvas id="simulationCanvas"></canvas>
+    <div>
+        <button onclick="setBrush('WOOD')">Дерево</button>
+        <button onclick="setBrush('FIRE_PARTICLE')">Горящие частицы</button>
+    </div>
     <script>
         const canvas = document.getElementById('simulationCanvas');
         const ctx = canvas.getContext('2d');
@@ -17,18 +21,22 @@
 
         const types = {
             EMPTY: 0,
-            SAND: 1,
-            FIRE: 2,
-            ASH: 3
+            WOOD: 1,
+            FIRE_PARTICLE: 2,
+            ASH: 3,
+            FIRE: 4
         };
 
         let grid = createGrid();
+        let currentBrush = 'WOOD';
+        let isMouseDown = false;
 
         function createGrid() {
             return Array.from({ length: cols }, () => 
                 Array.from({ length: rows }, () => ({
                     type: types.EMPTY,
-                    life: 0
+                    life: 0,
+                    isStatic: false
                 }))
             );
         }
@@ -50,9 +58,10 @@
 
         function getCellColor(cell) {
             switch(cell.type) {
-                case types.SAND: return '#FFD700';
-                case types.FIRE: return `hsl(20, 100%, ${50 + Math.random() * 30}%)`;
+                case types.WOOD: return '#8B4513';
+                case types.FIRE_PARTICLE: return '#FF4500';
                 case types.ASH: return '#444';
+                case types.FIRE: return `hsl(20, 100%, ${50 + Math.random() * 30}%)`;
                 default: return '#000';
             }
         }
@@ -72,14 +81,22 @@
                         }
                     }
                     
-                    if (cell.type === types.SAND) {
+                    if (cell.type === types.FIRE_PARTICLE || cell.type === types.ASH) {
+                        // Общая логика для горящих частиц и пепла
                         if (y < rows - 1 && grid[x][y+1].type === types.EMPTY) {
                             swapCells(x, y, x, y+1);
-                        } else if (cell.life > 0) {
-                            cell.life--;
-                            if (Math.random() < 0.005) {
-                                ignite(x, y);
+                        } else {
+                            // Попытка горизонтального движения при столкновении
+                            const direction = Math.random() < 0.5 ? -1 : 1;
+                            if (x + direction >= 0 && x + direction < cols && 
+                                grid[x + direction][y+1]?.type === types.EMPTY) {
+                                swapCells(x, y, x + direction, y+1);
                             }
+                        }
+                        
+                        // Самовозгорание только для горящих частиц
+                        if (cell.type === types.FIRE_PARTICLE && Math.random() < 0.002) {
+                            ignite(x, y);
                         }
                     }
                 }
@@ -102,27 +119,74 @@
             directions.forEach(([nx, ny]) => {
                 if (nx < 0 || nx >= cols || ny < 0 || ny >= rows) return;
                 const neighbor = grid[nx][ny];
-                if (neighbor.type === types.SAND && Math.random() < 0.2) {
+                
+                if (!neighbor) return; // Дополнительная проверка
+                
+                if ((neighbor.type === types.WOOD || neighbor.type === types.FIRE_PARTICLE) 
+                    && Math.random() < (neighbor.type === types.WOOD ? 0.3 : 0.1)) {
                     ignite(nx, ny);
                 }
             });
         }
 
         function ignite(x, y) {
-            grid[x][y].type = types.FIRE;
-            grid[x][y].life = 60 + Math.random() * 30;
+            if (grid[x][y].type === types.WOOD) {
+                grid[x][y].type = types.FIRE;
+                grid[x][y].life = 120 + Math.random() * 60;
+            } else {
+                grid[x][y].type = types.FIRE;
+                grid[x][y].life = 30 + Math.random() * 20;
+            }
         }
 
+        function placeParticles(x, y) {
+            if (currentBrush === 'WOOD') {
+                // Рисуем блок 4x4 для дерева
+                for (let dx = 0; dx < 4; dx++) {
+                    for (let dy = 0; dy < 4; dy++) {
+                        const nx = x + dx;
+                        const ny = y + dy;
+                        if (nx >= 0 && nx < cols && ny >= 0 && ny < rows) {
+                            grid[nx][ny].type = types.WOOD;
+                            grid[nx][ny].isStatic = true;
+                        }
+                    }
+                }
+            } else if (currentBrush === 'FIRE_PARTICLE') {
+                // Рисуем одну горящую частицу
+                if (x >= 0 && x < cols && y >= 0 && y < rows) {
+                    grid[x][y].type = types.FIRE_PARTICLE;
+                    grid[x][y].isStatic = false;
+                    grid[x][y].life = 100;
+                }
+            }
+        }
+
+        canvas.addEventListener('mousedown', (e) => {
+            isMouseDown = true;
+            placeParticlesOnCanvas(e);
+        });
+
+        canvas.addEventListener('mouseup', () => {
+            isMouseDown = false;
+        });
+
         canvas.addEventListener('mousemove', (e) => {
+            if (isMouseDown) {
+                placeParticlesOnCanvas(e);
+            }
+        });
+
+        function placeParticlesOnCanvas(e) {
             const rect = canvas.getBoundingClientRect();
             const x = Math.floor((e.clientX - rect.left) / cellSize);
             const y = Math.floor((e.clientY - rect.top) / cellSize);
-            
-            if (x >= 0 && x < cols && y >= 0 && y < rows) {
-                grid[x][y].type = types.SAND;
-                grid[x][y].life = 100;
-            }
-        });
+            placeParticles(x, y);
+        }
+
+        function setBrush(type) {
+            currentBrush = type;
+        }
 
         function gameLoop() {
             update();
