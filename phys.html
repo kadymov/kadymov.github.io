@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Пиксельная физика с горением</title>
+</head>
+<body>
+    <canvas id="simulationCanvas"></canvas>
+    <script>
+        const canvas = document.getElementById('simulationCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        canvas.width = 600;
+        canvas.height = 400;
+        const cellSize = 4;
+        const cols = canvas.width / cellSize;
+        const rows = canvas.height / cellSize;
+
+        const types = {
+            EMPTY: 0,
+            SAND: 1,
+            FIRE: 2,
+            ASH: 3
+        };
+
+        let grid = createGrid();
+
+        function createGrid() {
+            return Array.from({ length: cols }, () => 
+                Array.from({ length: rows }, () => ({
+                    type: types.EMPTY,
+                    life: 0
+                }))
+            );
+        }
+
+        function draw() {
+            ctx.fillStyle = '#222';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            for (let x = 0; x < cols; x++) {
+                for (let y = 0; y < rows; y++) {
+                    const cell = grid[x][y];
+                    if (cell.type === types.EMPTY) continue;
+                    
+                    ctx.fillStyle = getCellColor(cell);
+                    ctx.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
+                }
+            }
+        }
+
+        function getCellColor(cell) {
+            switch(cell.type) {
+                case types.SAND: return '#FFD700';
+                case types.FIRE: return `hsl(20, 100%, ${50 + Math.random() * 30}%)`;
+                case types.ASH: return '#444';
+                default: return '#000';
+            }
+        }
+
+        function update() {
+            for (let x = 0; x < cols; x++) {
+                for (let y = rows - 1; y >= 0; y--) {
+                    const cell = grid[x][y];
+                    
+                    if (cell.type === types.FIRE) {
+                        cell.life--;
+                        if (cell.life <= 0) {
+                            cell.type = types.ASH;
+                            cell.life = 0;
+                        } else {
+                            spreadFire(x, y);
+                        }
+                    }
+                    
+                    if (cell.type === types.SAND) {
+                        if (y < rows - 1 && grid[x][y+1].type === types.EMPTY) {
+                            swapCells(x, y, x, y+1);
+                        } else if (cell.life > 0) {
+                            cell.life--;
+                            if (Math.random() < 0.005) {
+                                ignite(x, y);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        function swapCells(x1, y1, x2, y2) {
+            const temp = grid[x1][y1];
+            grid[x1][y1] = grid[x2][y2];
+            grid[x2][y2] = temp;
+        }
+
+        function spreadFire(x, y) {
+            const directions = [
+                [x-1, y], [x+1, y],
+                [x, y-1], [x, y+1],
+                [x-1, y-1], [x+1, y-1]
+            ];
+            
+            directions.forEach(([nx, ny]) => {
+                if (nx < 0 || nx >= cols || ny < 0 || ny >= rows) return;
+                const neighbor = grid[nx][ny];
+                if (neighbor.type === types.SAND && Math.random() < 0.2) {
+                    ignite(nx, ny);
+                }
+            });
+        }
+
+        function ignite(x, y) {
+            grid[x][y].type = types.FIRE;
+            grid[x][y].life = 60 + Math.random() * 30;
+        }
+
+        canvas.addEventListener('mousemove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const x = Math.floor((e.clientX - rect.left) / cellSize);
+            const y = Math.floor((e.clientY - rect.top) / cellSize);
+            
+            if (x >= 0 && x < cols && y >= 0 && y < rows) {
+                grid[x][y].type = types.SAND;
+                grid[x][y].life = 100;
+            }
+        });
+
+        function gameLoop() {
+            update();
+            draw();
+            requestAnimationFrame(gameLoop);
+        }
+
+        gameLoop();
+    </script>
+</body>
+</html>
