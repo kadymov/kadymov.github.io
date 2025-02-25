@@ -32,6 +32,12 @@
         button:hover {
             background-color: #555;
         }
+        select {
+            padding: 5px;
+            font-size: 16px;
+            margin: 5px;
+            border-radius: 5px;
+        }
     </style>
 </head>
 <body>
@@ -39,6 +45,12 @@
     <div class="controls">
         <button onclick="setBrush('WOOD')">Дерево</button>
         <button onclick="setBrush('FIRE_PARTICLE')">Горящие частицы</button>
+        <button onclick="setBrush('TNT')">TNT</button>
+        <select id="brushSizeSelector" onchange="updateBrushSize()">
+            <option value="1">Размер кисти: 1x1</option>
+            <option value="3">Размер кисти: 3x3</option>
+            <option value="5">Размер кисти: 5x5</option>
+        </select>
     </div>
     <script>
         const canvas = document.getElementById('simulationCanvas');
@@ -56,12 +68,14 @@
             WOOD: 1,
             FIRE_PARTICLE: 2,
             ASH: 3,
-            FIRE: 4
+            FIRE: 4,
+            TNT: 5
         };
 
         let grid = createGrid();
         let currentBrush = 'WOOD';
         let isDrawing = false;
+        let brushSize = 1; // Размер кисти по умолчанию
 
         function createGrid() {
             return Array.from({ length: cols }, () => 
@@ -94,6 +108,7 @@
                 case types.FIRE_PARTICLE: return '#FF4500';
                 case types.ASH: return '#444';
                 case types.FIRE: return `hsl(20, 100%, ${50 + Math.random() * 30}%)`;
+                case types.TNT: return '#FF00FF'; // Фиолетовый цвет для TNT
                 default: return '#000';
             }
         }
@@ -111,6 +126,10 @@
                         } else {
                             spreadFire(x, y);
                         }
+                    }
+
+                    if (cell.type === types.TNT && isNeighborOnFire(x, y)) {
+                        explode(x, y);
                     }
                     
                     if (cell.type === types.FIRE_PARTICLE || cell.type === types.ASH) {
@@ -151,7 +170,7 @@
                 
                 if (!neighbor) return;
                 
-                if ((neighbor.type === types.WOOD || neighbor.type === types.FIRE_PARTICLE) 
+                if ((neighbor.type === types.WOOD || neighbor.type === types.FIRE_PARTICLE || neighbor.type === types.TNT) 
                     && Math.random() < (neighbor.type === types.WOOD ? 0.3 : 0.1)) {
                     ignite(nx, ny);
                 }
@@ -168,23 +187,64 @@
             }
         }
 
-        function placeParticles(x, y) {
-            if (currentBrush === 'WOOD') {
-                for (let dx = 0; dx < 4; dx++) {
-                    for (let dy = 0; dy < 4; dy++) {
-                        const nx = x + dx;
-                        const ny = y + dy;
-                        if (nx >= 0 && nx < cols && ny >= 0 && ny < rows) {
-                            grid[nx][ny].type = types.WOOD;
-                            grid[nx][ny].isStatic = true;
+        function isNeighborOnFire(x, y) {
+            const directions = [
+                [x-1, y], [x+1, y],
+                [x, y-1], [x, y+1],
+                [x-1, y-1], [x+1, y-1]
+            ];
+
+            for (const [nx, ny] of directions) {
+                if (nx >= 0 && nx < cols && ny >= 0 && ny < rows) {
+                    if (grid[nx][ny].type === types.FIRE) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        function explode(x, y) {
+            const radius = 5; // Радиус взрыва
+            for (let dx = -radius; dx <= radius; dx++) {
+                for (let dy = -radius; dy <= radius; dy++) {
+                    const nx = x + dx;
+                    const ny = y + dy;
+                    if (nx >= 0 && nx < cols && ny >= 0 && ny < rows) {
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+                        if (distance <= radius) {
+                            if (Math.random() < 0.5) { // 50% шанс создать горящую частицу
+                                grid[nx][ny].type = types.FIRE_PARTICLE;
+                                grid[nx][ny].isStatic = false;
+                                grid[nx][ny].life = 100;
+                            } else {
+                                grid[nx][ny].type = types.EMPTY; // Остальное уничтожаем
+                            }
                         }
                     }
                 }
-            } else if (currentBrush === 'FIRE_PARTICLE') {
-                if (x >= 0 && x < cols && y >= 0 && y < rows) {
-                    grid[x][y].type = types.FIRE_PARTICLE;
-                    grid[x][y].isStatic = false;
-                    grid[x][y].life = 100;
+            }
+        }
+
+        function placeParticles(x, y) {
+            const halfSize = Math.floor(brushSize / 2);
+            for (let dx = -halfSize; dx <= halfSize; dx++) {
+                for (let dy = -halfSize; dy <= halfSize; dy++) {
+                    const nx = x + dx;
+                    const ny = y + dy;
+                    if (nx >= 0 && nx < cols && ny >= 0 && ny < rows) {
+                        if (currentBrush === 'WOOD') {
+                            grid[nx][ny].type = types.WOOD;
+                            grid[nx][ny].isStatic = true;
+                        } else if (currentBrush === 'FIRE_PARTICLE') {
+                            grid[nx][ny].type = types.FIRE_PARTICLE;
+                            grid[nx][ny].isStatic = false;
+                            grid[nx][ny].life = 100;
+                        } else if (currentBrush === 'TNT') {
+                            grid[nx][ny].type = types.TNT;
+                            grid[nx][ny].isStatic = true;
+                        }
+                    }
                 }
             }
         }
@@ -235,6 +295,11 @@
 
         function setBrush(type) {
             currentBrush = type;
+        }
+
+        function updateBrushSize() {
+            const selector = document.getElementById('brushSizeSelector');
+            brushSize = parseInt(selector.value);
         }
 
         function gameLoop() {
