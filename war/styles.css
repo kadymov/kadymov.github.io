@@ -53,7 +53,7 @@ p {
 /* убираем двойной интервал между соседними абзацами */
 p+p{margin-top:0;}
 
-p:first-of-type::first-letter{
+p.with-first-letter::first-letter{
     float:left;
     font-size:3.5rem;
     line-height:1;
