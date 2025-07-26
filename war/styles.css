@@ -53,6 +53,15 @@ p {
 /* убираем двойной интервал между соседними абзацами */
 p+p{margin-top:0;}
 
+p:first-of-type::first-letter{
+    float:left;
+    font-size:3.5rem;
+    line-height:1;
+    font-weight:700;
+    font-family:'Libre Franklin',Arial,sans-serif;
+    margin:0 .1rem 0 0;
+    color:#000;
+}
 
 /* =====================================================================
    ССЫЛКИ / НАБОР
