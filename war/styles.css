@@ -164,3 +164,55 @@ hr {
    font-size: 0.8em;
    text-shadow: 1px 1px 0px black;
 }
+
+
+.audio-player {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.control-btn {
+  box-sizing: border-box;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 2px solid #333;
+  background-color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.rewind-icon {
+  width: 40px;
+  height: 40px;
+}
+
+.control-btn:hover {
+  background-color: #e0e0e0;
+}
+.control-btn:active {
+  transform: scale(0.95);
+}
+.play-icon,
+.rewind-icon {
+  font-size: 22px;
+  color: #333;
+}
+.play-icon::before {
+  margin-bottom: -3px;
+  margin-left: 5px;
+  content: "▶";
+}
+.pause-icon::before {
+  content: "⏸";
+  margin-left: 1px;
+  margin-bottom: -5px;
+  font-size: 30px;
+}
+.rewind-icon::before {
+  margin-bottom: -3px;
+  content: "⏮";
+}
