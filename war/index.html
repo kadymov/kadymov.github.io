@@ -13,6 +13,45 @@
 
     <img src="img1.svg" />
 
+    <div class="audio-player">
+        <div id="playPauseBtn" class="control-btn play-icon"></div>
+        <div id="rewindBtn" class="control-btn rewind-icon"></div>
+    </div>
+    
+    <audio id="audio" src="audio.mp3"></audio>
+    
+    <script>
+        const audio = document.getElementById('audio');
+        const playPauseBtn = document.getElementById('playPauseBtn');
+        const rewindBtn = document.getElementById('rewindBtn');
+    
+        playPauseBtn.addEventListener('click', () => {
+          if (audio.paused) {
+            audio.play();
+            playPauseBtn.classList.remove('play-icon');
+            playPauseBtn.classList.add('pause-icon');
+          } else {
+            audio.pause();
+            playPauseBtn.classList.remove('pause-icon');
+            playPauseBtn.classList.add('play-icon');
+          }
+        });
+    
+        rewindBtn.addEventListener('click', () => {
+          audio.currentTime = 0;
+          if (!audio.paused) {
+            audio.play();
+            playPauseBtn.classList.remove('play-icon');
+            playPauseBtn.classList.add('pause-icon');
+          }
+        });
+    
+        audio.addEventListener('ended', () => {
+          playPauseBtn.classList.remove('pause-icon');
+          playPauseBtn.classList.add('play-icon');
+        });
+    </script>
+
     <h2 id='i-разломы-после-2022-го'>I. Разломы после 2022-го</h2>
     
     <p class="with-first-letter">Главным водоразделом последних лет стала война в Украине, встряхнувшая практически все механизмы международной безопасности. Европейские столицы ускоренно перевооружаются: по данным SIPRI, оборонные заказы стран ЕС выросли в 2023 г. на 47 % к допандемийному уровню, а Германия за пять лет намерена перелить в Бундесвер исторические €100 млрд. Но нет и следа прежней иллюзии, что «континентальные войны» ушли в прошлое: Украина стала реальным полигоном для дронов-камикадзе, ПВО «сетевого поколения» и цифровой разведки, до этого существовавших в PowerPoint-брифингах.</p>
