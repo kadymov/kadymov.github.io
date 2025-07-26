@@ -149,16 +149,15 @@ hr {
 
 .popup {
    max-width: 350px;
-   height: 300px;
    background: #fff;
    position: fixed;
    left: 30%;
    bottom: 50px;
    backdrop-filter: blur(6px);
    box-shadow: 0 0 20px rgba(0,0,0,0.3);
-   border: 1px solid #b7ad96;
+   border: 1px solid #c4c2bf;
    border-radius: 8px;
-   background: rgba(38, 35, 21, 0.5);
+   background: rgba(51, 50, 44, 0.5);
    padding: 12px;
    color: #fff;
    outline: 1px solid #594826;
