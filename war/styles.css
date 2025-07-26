@@ -170,6 +170,8 @@ hr {
   display: flex;
   gap: 10px;
   align-items: center;
+  justify-content: center;
+  margin: 2em;
 }
 .control-btn {
   box-sizing: border-box;
@@ -202,8 +204,8 @@ hr {
   color: #333;
 }
 .play-icon::before {
-  margin-bottom: -3px;
-  margin-left: 5px;
+  margin-bottom: -5px;
+  margin-left: 6px;
   content: "▶";
 }
 .pause-icon::before {
