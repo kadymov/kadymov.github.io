@@ -187,9 +187,11 @@ hr {
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.rewind-icon {
-  width: 40px;
-  height: 40px;
+.play-icon { margin-left: 4px; }
+
+#rewindBtn {
+  width: 45px;
+  height: 45px;
 }
 
 .control-btn:hover {
@@ -198,25 +200,14 @@ hr {
 .control-btn:active {
   transform: scale(0.95);
 }
-.play-icon,
-.rewind-icon {
-  font-size: 22px;
-  color: #333;
+
+.control-btn svg {
+  width: 26px;
 }
-.play-icon::before {
-  margin-bottom: -5px;
-  margin-left: 6px;
-  content: "▶";
-}
-.pause-icon::before {
-  content: "⏸";
-  margin-left: 1px;
-  margin-bottom: -5px;
-  font-size: 30px;
-}
-.rewind-icon::before {
-  margin-bottom: -3px;
-  content: "⏮";
+
+#rewindBtn svg {
+  width: 20px;
+  height: 20px;
 }
 
 /* =====================================================================

@@ -14,8 +14,13 @@
     <img src="img1.svg" />
 
     <div class="audio-player">
-        <div id="playPauseBtn" class="control-btn play-icon"></div>
-        <div id="rewindBtn" class="control-btn rewind-icon"></div>
+        <div id="playPauseBtn" class="control-btn">
+            <svg class="play-icon" xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 20 20"><path fill="currentColor" d="M15.544 9.59a1 1 0 0 1-.053 1.728L6.476 16.2A1 1 0 0 1 5 15.321V4.804a1 1 0 0 1 1.53-.848l9.014 5.634Z"/></svg>
+            <svg class="pause-icon" style="display: none;" xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 20 20"><path fill="currentColor" fill-rule="evenodd" d="M6.75 3a2 2 0 0 0-2 2v10a2 2 0 1 0 4 0V5a2 2 0 0 0-2-2Zm6.5 0a2 2 0 0 0-2 2v10a2 2 0 1 0 4 0V5a2 2 0 0 0-2-2Z" clip-rule="evenodd"/></svg>
+        </div>
+        <div id="rewindBtn" class="control-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 20 20"><path fill="currentColor" d="M8.445 14.832A1 1 0 0 0 10 14v-2.798l5.445 3.63A1 1 0 0 0 17 14V6a1 1 0 0 0-1.555-.832L10 8.798V6a1 1 0 0 0-1.555-.832l-6 4a1 1 0 0 0 0 1.664l6 4Z"/></svg>
+        </div>
     </div>
     
     <audio id="audio" src="audio.mp3"></audio>
@@ -26,29 +31,37 @@
         const rewindBtn = document.getElementById('rewindBtn');
     
         playPauseBtn.addEventListener('click', () => {
+          const playIcon = playPauseBtn.querySelector('.play-icon');
+          const pauseIcon = playPauseBtn.querySelector('.pause-icon');
+          
           if (audio.paused) {
             audio.play();
-            playPauseBtn.classList.remove('play-icon');
-            playPauseBtn.classList.add('pause-icon');
+            playIcon.style.display = 'none';
+            pauseIcon.style.display = 'block';
           } else {
             audio.pause();
-            playPauseBtn.classList.remove('pause-icon');
-            playPauseBtn.classList.add('play-icon');
+            playIcon.style.display = 'block';
+            pauseIcon.style.display = 'none';
           }
         });
     
         rewindBtn.addEventListener('click', () => {
           audio.currentTime = 0;
+          const playIcon = playPauseBtn.querySelector('.play-icon');
+          const pauseIcon = playPauseBtn.querySelector('.pause-icon');
+          
           if (!audio.paused) {
             audio.play();
-            playPauseBtn.classList.remove('play-icon');
-            playPauseBtn.classList.add('pause-icon');
+            playIcon.style.display = 'none';
+            pauseIcon.style.display = 'block';
           }
         });
     
         audio.addEventListener('ended', () => {
-          playPauseBtn.classList.remove('pause-icon');
-          playPauseBtn.classList.add('play-icon');
+          const playIcon = playPauseBtn.querySelector('.play-icon');
+          const pauseIcon = playPauseBtn.querySelector('.pause-icon');
+          playIcon.style.display = 'block';
+          pauseIcon.style.display = 'none';
         });
     </script>
 
