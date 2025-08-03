@@ -6,4 +6,4 @@
 - [**minaz2.html**](minaz2.html) - Генератор G-кода для карманов со спиральной траекторией
 - [**visualizer.html**](visualizer.html) - 3D/2D визуализатор G-кода
 
-[**calc.md**](calc.md) - Формулы и таблицы
+[**info.md**](info) - Формулы и таблицы
