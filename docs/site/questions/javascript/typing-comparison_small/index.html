@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../../img/favicon.ico" />
+    <title>JS vs Java Typing + TypeScript - Senior Cheat Sheet (small) - My Docs</title>
+    <link rel="stylesheet" href="../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "JS vs Java Typing + TypeScript - Senior Cheat Sheet (small)";
+        var mkdocs_page_input_path = "questions/javascript/typing-comparison_small.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../../.." class="icon icon-home"> My Docs
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../..">📚 Подготовка к собеседованию: JavaScript, React и архитектура</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Questions</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" >Architecture</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/ddd/">Domain-Driven Design (DDD) во Frontend</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/ddd_small/">Domain-Driven Design (DDD) во Frontend (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/microfrontends/">Микрофронтенды (Microfrontends)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/microfrontends_small/">Microfrontends - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/offline-first/">Offline-first архитектура</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/offline-first_small/">Offline-First Архитектура (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/resilient-frontend/">Устойчивая frontend архитектура</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/resilient-frontend_small/">Устойчивая Frontend Архитектура (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/state-management/">Архитектура управления состоянием</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/state-management_small/">State Management Architecture - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/websockets-realtime/">WebSockets и real-time коммуникация</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/websockets-realtime_small/">WebSockets и Real-time коммуникация (small)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" >Javascript</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../async-programming/">Promises, Async/Await и Generators</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../async-programming_small/">Async Programming - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../currying/">Currying в JavaScript</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../currying_small/">Currying - Шпаргалка (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../event-loop/">Event Loop, Microtasks и Macrotasks</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../event-loop_small/">Event Loop - Шпаргалка (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../execution-model/">Модель выполнения JavaScript</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../execution-model_small/">JavaScript Execution Model - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../garbage-collection/">Garbage Collection и оптимизация памяти</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../garbage-collection_small/">Garbage Collection - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../scope-hoisting/">Let, Const, Var: Scope и Hoisting</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../scope-hoisting_small/">Let, Const, Var - Шпаргалка (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../typing-comparison/">Сравнение типизации JS и Java</a>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" href="#">JS vs Java Typing + TypeScript - Senior Cheat Sheet (small)</a>
+    <ul class="current">
+    <li class="toctree-l3"><a class="reference internal" href="#_1">Сравнение систем типов</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#javascript-">JavaScript - динамические проблемы</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#typescript-react-">TypeScript для React - основы</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#_2">Компоненты</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#_3">Хуки</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#_4">События</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_5">Продвинутые типы</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#utility-types">Utility Types</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#generics">Generics</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#context">Context типизация</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#typescript">TypeScript конфигурация</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#_6">Строгий режим</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_7">Миграция стратегия</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#senior-patterns">Senior Patterns</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#conditional-types">Conditional Types</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#template-literals">Template Literals</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#mapped-types">Mapped Types</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#anti-patterns">Anti-patterns</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#senior-rules">Senior Rules</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#react-typescript-benefits">React + TypeScript Benefits</a>
+    </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Performance</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../performance/optimization/">Оптимизация производительности frontend-приложений</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../performance/optimization_small/">Оптимизация производительности Frontend (small)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >React</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/concurrent-rendering/">Конкурентный рендеринг React 18</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/concurrent-rendering_small/">React 18 Concurrent Rendering - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/context-api/">Context API vs Redux</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/context-api_small/">Context API vs Redux - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/hoc/">Higher-Order Components (HOC)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/hoc_small/">Higher-Order Components - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/reconciliation/">Reconciliation и Virtual DOM</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/reconciliation_small/">Reconciliation &amp; Virtual DOM - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/rerender-optimization/">Оптимизация ререндеров в React</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/rerender-optimization_small/">React Rerender Optimization - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/ssr-rsc/">SSR/SSG и React Server Components</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/ssr-rsc_small/">SSR/SSG &amp; React Server Components - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/use-effect/">useEffect и Side Effects</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/use-effect_small/">useEffect &amp; Side Effects - Senior Cheat Sheet</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Security</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../security/frontend-security/">Безопасность Frontend Приложений</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../security/frontend-security_small/">Frontend Security (small)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Testing</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../testing/strategies/">Стратегии тестирования frontend-приложений</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../testing/strategies_small/">Стратегии тестирования Frontend (small)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Typescript</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../typescript/advanced-types/">Продвинутые типы TypeScript</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../typescript/advanced-types_small/">Продвинутые типы TypeScript (small)</a>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../..">My Docs</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Questions</li>
+          <li class="breadcrumb-item">Javascript</li>
+      <li class="breadcrumb-item active">JS vs Java Typing + TypeScript - Senior Cheat Sheet (small)</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="js-vs-java-typing-typescript-senior-cheat-sheet-small">JS vs Java Typing + TypeScript - Senior Cheat Sheet (small)</h1>
+<h2 id="_1">Сравнение систем типов</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>JavaScript</th>
+<th>Java</th>
+<th>TypeScript</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Типизация</td>
+<td>Динамическая</td>
+<td>Статическая</td>
+<td>Статическая (опциональная)</td>
+</tr>
+<tr>
+<td>Проверка</td>
+<td>Runtime</td>
+<td>Compile-time</td>
+<td>Compile-time</td>
+</tr>
+<tr>
+<td>Type Safety</td>
+<td>Слабая</td>
+<td>Сильная</td>
+<td>Сильная</td>
+</tr>
+<tr>
+<td>Скорость разработки</td>
+<td>Быстрый старт</td>
+<td>Медленный старт</td>
+<td>Средний</td>
+</tr>
+</tbody>
+</table>
+<h2 id="javascript-">JavaScript - динамические проблемы</h2>
+<pre><code class="language-javascript">// Type coercion ловушки
+&quot;5&quot; + 3;     // &quot;53&quot; 
+&quot;5&quot; - 3;     // 2
+true + 1;    // 2
+null == undefined; // true
+
+// Runtime ошибки
+user.name.toUpperCase(); // TypeError если name = null
+
+// Нет автодополнения
+function process(data) {
+  return data. // IDE не знает что доступно
+}
+</code></pre>
+<h2 id="typescript-react-">TypeScript для React - основы</h2>
+<h3 id="_2">Компоненты</h3>
+<pre><code class="language-typescript">interface ButtonProps {
+  children: React.ReactNode;
+  variant?: 'primary' | 'secondary';
+  onClick?: (e: React.MouseEvent&lt;HTMLButtonElement&gt;) =&gt; void;
+}
+
+const Button: React.FC&lt;ButtonProps&gt; = ({ children, variant = 'primary', onClick }) =&gt; (
+  &lt;button className={`btn-${variant}`} onClick={onClick}&gt;
+    {children}
+  &lt;/button&gt;
+);
+</code></pre>
+<h3 id="_3">Хуки</h3>
+<pre><code class="language-typescript">// useState с типами
+const [user, setUser] = useState&lt;User | null&gt;(null);
+const [errors, setErrors] = useState&lt;string[]&gt;([]);
+
+// useReducer
+type Action = 
+  | { type: 'increment' }
+  | { type: 'setError'; payload: string };
+
+// Custom hook
+function useApi&lt;T&gt;(url: string) {
+  const [data, setData] = useState&lt;T | null&gt;(null);
+  const [loading, setLoading] = useState(false);
+
+  // ... implementation
+
+  return { data, loading, refetch };
+}
+</code></pre>
+<h3 id="_4">События</h3>
+<pre><code class="language-typescript">const handleSubmit = (e: React.FormEvent&lt;HTMLFormElement&gt;) =&gt; {
+  e.preventDefault();
+};
+
+const handleChange = (e: React.ChangeEvent&lt;HTMLInputElement&gt;) =&gt; {
+  setValue(e.target.value);
+};
+
+const handleClick = (e: React.MouseEvent&lt;HTMLButtonElement&gt;) =&gt; {
+  console.log('clicked');
+};
+</code></pre>
+<h2 id="_5">Продвинутые типы</h2>
+<h3 id="utility-types">Utility Types</h3>
+<pre><code class="language-typescript">interface User {
+  id: number;
+  name: string;
+  email: string;
+  password: string;
+}
+
+type PublicUser = Omit&lt;User, 'password'&gt;;
+type UserUpdate = Partial&lt;Pick&lt;User, 'name' | 'email'&gt;&gt;;
+type UserKeys = keyof User;
+</code></pre>
+<h3 id="generics">Generics</h3>
+<pre><code class="language-typescript">interface ApiResponse&lt;T&gt; {
+  data: T;
+  status: number;
+}
+
+function fetchData&lt;T&gt;(url: string): Promise&lt;ApiResponse&lt;T&gt;&gt; {
+  return fetch(url).then(r =&gt; r.json());
+}
+
+// Generic component
+interface ListProps&lt;T&gt; {
+  items: T[];
+  renderItem: (item: T) =&gt; React.ReactNode;
+  keyExtractor: (item: T) =&gt; string | number;
+}
+
+function List&lt;T&gt;({ items, renderItem, keyExtractor }: ListProps&lt;T&gt;) {
+  return (
+    &lt;ul&gt;
+      {items.map((item, index) =&gt; (
+        &lt;li key={keyExtractor(item)}&gt;
+          {renderItem(item)}
+        &lt;/li&gt;
+      ))}
+    &lt;/ul&gt;
+  );
+}
+</code></pre>
+<h3 id="context">Context типизация</h3>
+<pre><code class="language-typescript">interface AuthContextType {
+  user: User | null;
+  login: (email: string, password: string) =&gt; Promise&lt;void&gt;;
+  logout: () =&gt; void;
+}
+
+const AuthContext = createContext&lt;AuthContextType | undefined&gt;(undefined);
+
+export const useAuth = (): AuthContextType =&gt; {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuth must be used within AuthProvider');
+  }
+  return context;
+};
+</code></pre>
+<h2 id="typescript">TypeScript конфигурация</h2>
+<h3 id="_6">Строгий режим</h3>
+<pre><code class="language-json">// tsconfig.json
+{
+  &quot;compilerOptions&quot;: {
+    &quot;strict&quot;: true,
+    &quot;noImplicitAny&quot;: true,
+    &quot;strictNullChecks&quot;: true,
+    &quot;noImplicitReturns&quot;: true,
+    &quot;noUncheckedIndexedAccess&quot;: true
+  }
+}
+</code></pre>
+<h2 id="_7">Миграция стратегия</h2>
+<pre><code class="language-typescript">// 1. Начни с .ts файлов (без типов)
+// 2. Добавь базовые типы
+let id: number;
+let name: string;
+
+// 3. Создай интерфейсы для данных
+interface User {
+  id: number;
+  name: string;
+}
+
+// 4. Типизируй функции
+function getUser(id: number): Promise&lt;User&gt; {
+  return fetch(`/users/${id}`).then(r =&gt; r.json());
+}
+
+// 5. Включи strict режим
+</code></pre>
+<h2 id="senior-patterns">Senior Patterns</h2>
+<h3 id="conditional-types">Conditional Types</h3>
+<pre><code class="language-typescript">type NonNullable&lt;T&gt; = T extends null | undefined ? never : T;
+
+type ApiResult&lt;T&gt; = T extends string 
+  ? { message: T } 
+  : { data: T };
+</code></pre>
+<h3 id="template-literals">Template Literals</h3>
+<pre><code class="language-typescript">type EventName&lt;T extends string&gt; = `on${Capitalize&lt;T&gt;}`;
+type ClickHandler = EventName&lt;'click'&gt;; // 'onClick'
+</code></pre>
+<h3 id="mapped-types">Mapped Types</h3>
+<pre><code class="language-typescript">type Optional&lt;T&gt; = {
+  [K in keyof T]?: T[K];
+};
+
+type ReadOnly&lt;T&gt; = {
+  readonly [K in keyof T]: T[K];
+};
+</code></pre>
+<h2 id="anti-patterns">Anti-patterns</h2>
+<pre><code class="language-typescript">// ❌ Избегай any
+const data: any = response;
+
+// ✅ Используй unknown или конкретный тип
+const data: unknown = response;
+const user = data as User; // С type assertion
+
+// ❌ Не игнорируй ошибки
+// @ts-ignore
+const value = obj.undefinedProp;
+
+// ✅ Исправь типы или используй optional chaining
+const value = obj.undefinedProp;
+
+// ❌ Сложные типы без документации
+type ComplexType&lt;T, U, V&gt; = ...
+
+// ✅ С комментариями
+/**
+ * Utility type that extracts only the methods from T
+ */
+type Methods&lt;T&gt; = ...
+</code></pre>
+<h2 id="senior-rules">Senior Rules</h2>
+<ol>
+<li><strong>Strict mode always</strong> - включай все строгие проверки</li>
+<li><strong>No any</strong> - используй unknown для неизвестных типов  </li>
+<li><strong>Interface &gt; Type</strong> для объектов, type для unions</li>
+<li><strong>Generic constraints</strong> - ограничивай generic параметры</li>
+<li><strong>Utility types</strong> вместо дублирования типов</li>
+<li><strong>Event types</strong> - всегда типизируй React события</li>
+<li><strong>API types</strong> - генерируй из OpenAPI схем</li>
+<li><strong>Incremental adoption</strong> - мигрируй файл за файлом</li>
+</ol>
+<h2 id="react-typescript-benefits">React + TypeScript Benefits</h2>
+<ul>
+<li><strong>Compile-time errors</strong> вместо runtime</li>
+<li><strong>IntelliSense</strong> и автодополнение</li>
+<li><strong>Safe refactoring</strong> с уверенностью</li>
+<li><strong>Self-documenting code</strong> через типы</li>
+<li><strong>Better team collaboration</strong> с контрактами</li>
+<li><strong>Fewer bugs</strong> в production</li>
+</ul>
+<p><strong>Главное</strong>: TypeScript = JavaScript + типы. Начинай с него в новых проектах!</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../typing-comparison/" class="btn btn-neutral float-left" title="Сравнение типизации JS и Java"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../../performance/optimization/" class="btn btn-neutral float-right" title="Оптимизация производительности frontend-приложений">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../typing-comparison/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../../performance/optimization/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../..";</script>
+    <script src="../../../js/theme_extra.js"></script>
+    <script src="../../../js/theme.js"></script>
+      <script src="../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../../img/favicon.ico" />
+    <title>Конкурентный рендеринг React 18 - My Docs</title>
+    <link rel="stylesheet" href="../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "\u041a\u043e\u043d\u043a\u0443\u0440\u0435\u043d\u0442\u043d\u044b\u0439 \u0440\u0435\u043d\u0434\u0435\u0440\u0438\u043d\u0433 React 18";
+        var mkdocs_page_input_path = "questions/react/concurrent-rendering.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../../.." class="icon icon-home"> My Docs
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../..">📚 Подготовка к собеседованию: JavaScript, React и архитектура</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Questions</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" >Architecture</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/ddd/">Domain-Driven Design (DDD) во Frontend</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/ddd_small/">Domain-Driven Design (DDD) во Frontend (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/microfrontends/">Микрофронтенды (Microfrontends)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/microfrontends_small/">Microfrontends - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/offline-first/">Offline-first архитектура</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/offline-first_small/">Offline-First Архитектура (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/resilient-frontend/">Устойчивая frontend архитектура</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/resilient-frontend_small/">Устойчивая Frontend Архитектура (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/state-management/">Архитектура управления состоянием</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/state-management_small/">State Management Architecture - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/websockets-realtime/">WebSockets и real-time коммуникация</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/websockets-realtime_small/">WebSockets и Real-time коммуникация (small)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Javascript</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/async-programming/">Promises, Async/Await и Generators</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/async-programming_small/">Async Programming - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/currying/">Currying в JavaScript</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/currying_small/">Currying - Шпаргалка (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/event-loop/">Event Loop, Microtasks и Macrotasks</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/event-loop_small/">Event Loop - Шпаргалка (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/execution-model/">Модель выполнения JavaScript</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/execution-model_small/">JavaScript Execution Model - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/garbage-collection/">Garbage Collection и оптимизация памяти</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/garbage-collection_small/">Garbage Collection - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/scope-hoisting/">Let, Const, Var: Scope и Hoisting</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/scope-hoisting_small/">Let, Const, Var - Шпаргалка (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/typing-comparison/">Сравнение типизации JS и Java</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/typing-comparison_small/">JS vs Java Typing + TypeScript - Senior Cheat Sheet (small)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Performance</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../performance/optimization/">Оптимизация производительности frontend-приложений</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../performance/optimization_small/">Оптимизация производительности Frontend (small)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" >React</a>
+    <ul class="current">
+                <li class="toctree-l2 current"><a class="reference internal current" href="#">Конкурентный рендеринг React 18</a>
+    <ul class="current">
+    <li class="toctree-l3"><a class="reference internal" href="#_1">📋 Вопрос</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_2">💡 Ответ</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#_3">Основы конкурентного рендеринга</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#usetransition-hook">useTransition Hook</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#usedeferredvalue-hook">useDeferredValue Hook</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#_9">Автоматическое батчинг</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#strictmode">StrictMode в разработке</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#race-conditions">Race Conditions и их предотвращение</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#suspense">Suspense для данных</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#react-18_1">Миграция на React 18</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#_14">Лучшие практики</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#debugging">Debugging конкурентных возможностей</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#senior-">Senior-советы</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_15">🔗 Связанные темы</a>
+    </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../concurrent-rendering_small/">React 18 Concurrent Rendering - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../context-api/">Context API vs Redux</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../context-api_small/">Context API vs Redux - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../hoc/">Higher-Order Components (HOC)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../hoc_small/">Higher-Order Components - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../reconciliation/">Reconciliation и Virtual DOM</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../reconciliation_small/">Reconciliation &amp; Virtual DOM - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../rerender-optimization/">Оптимизация ререндеров в React</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../rerender-optimization_small/">React Rerender Optimization - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../ssr-rsc/">SSR/SSG и React Server Components</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../ssr-rsc_small/">SSR/SSG &amp; React Server Components - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../use-effect/">useEffect и Side Effects</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../use-effect_small/">useEffect &amp; Side Effects - Senior Cheat Sheet</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Security</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../security/frontend-security/">Безопасность Frontend Приложений</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../security/frontend-security_small/">Frontend Security (small)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Testing</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../testing/strategies/">Стратегии тестирования frontend-приложений</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../testing/strategies_small/">Стратегии тестирования Frontend (small)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Typescript</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../typescript/advanced-types/">Продвинутые типы TypeScript</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../typescript/advanced-types_small/">Продвинутые типы TypeScript (small)</a>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../..">My Docs</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Questions</li>
+          <li class="breadcrumb-item">React</li>
+      <li class="breadcrumb-item active">Конкурентный рендеринг React 18</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="react-18">Конкурентный рендеринг React 18</h1>
+<h2 id="_1">📋 Вопрос</h2>
+<p>Как в React 18 работает конкурентный рендеринг? Зачем нужны useTransition и useDeferredValue, чем они отличаются? Что такое автоматическое батчинг-объединение, какие побочные эффекты в StrictMode в dev, и как избегать race conditions при загрузке данных (AbortController, отмена устаревших запросов)?</p>
+<h2 id="_2">💡 Ответ</h2>
+<p>React 18 представил конкурентный рендеринг (Concurrent Rendering) — фундаментальное изменение в том, как React обрабатывает обновления. Это позволяет React прерывать, приостанавливать и возобновлять рендеринг для поддержания отзывчивости пользовательского интерфейса.</p>
+<h3 id="_3">Основы конкурентного рендеринга</h3>
+<h4 id="_4">Что изменилось</h4>
+<pre><code class="language-javascript">// React 17 и ранее - блокирующий рендеринг
+function App() {
+  const [count, setCount] = useState(0);
+  const [list, setList] = useState([]);
+
+  // Эти обновления блокировали main thread
+  const handleClick = () =&gt; {
+    setCount(count + 1);
+    setList(Array.from({length: 10000}, (_, i) =&gt; i)); // Тяжелая операция
+  };
+
+  return (
+    &lt;div&gt;
+      &lt;button onClick={handleClick}&gt;Count: {count}&lt;/button&gt;
+      {list.map(item =&gt; &lt;div key={item}&gt;{item}&lt;/div&gt;)}
+    &lt;/div&gt;
+  );
+}
+
+// React 18 - конкурентный рендеринг
+import { createRoot } from 'react-dom/client';
+
+// Включение конкурентных возможностей
+const root = createRoot(document.getElementById('root'));
+root.render(&lt;App /&gt;);
+</code></pre>
+<h4 id="_5">Приоритеты обновлений</h4>
+<pre><code class="language-javascript">// React 18 различает приоритеты обновлений:
+
+// Высокий приоритет (синхронные)
+// - Пользовательские взаимодействия (click, input)
+// - Обновления фокуса
+// - Анимации
+
+// Обычный приоритет
+// - Загрузка данных
+// - Обновления списков
+
+// Низкий приоритет (могут быть прерваны)
+// - Аналитика
+// - Логирование
+// - Фоновые обновления
+
+function PriorityExample() {
+  const [inputValue, setInputValue] = useState('');
+  const [list, setList] = useState([]);
+
+  const handleInputChange = (e) =&gt; {
+    // Высокий приоритет - выполняется немедленно
+    setInputValue(e.target.value);
+
+    // Это может быть прервано для обработки input
+    setList(generateLargeList(e.target.value));
+  };
+
+  return (
+    &lt;div&gt;
+      &lt;input value={inputValue} onChange={handleInputChange} /&gt;
+      &lt;List items={list} /&gt;
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+<h3 id="usetransition-hook">useTransition Hook</h3>
+<p>useTransition позволяет пометить обновления состояния как переходы (transitions), которые могут быть прерваны более приоритетными обновлениями.</p>
+<h4 id="_6">Основное использование</h4>
+<pre><code class="language-javascript">import { useState, useTransition } from 'react';
+
+function SearchPage() {
+  const [query, setQuery] = useState('');
+  const [results, setResults] = useState([]);
+  const [isPending, startTransition] = useTransition();
+
+  const handleSearch = (value) =&gt; {
+    // Синхронное обновление - высокий приоритет
+    setQuery(value);
+
+    // Асинхронное обновление - может быть прервано
+    startTransition(() =&gt; {
+      setResults(searchFunction(value));
+    });
+  };
+
+  return (
+    &lt;div&gt;
+      &lt;input 
+        value={query}
+        onChange={(e) =&gt; handleSearch(e.target.value)}
+        placeholder=&quot;Search...&quot;
+      /&gt;
+
+      {isPending &amp;&amp; &lt;div&gt;Searching...&lt;/div&gt;}
+
+      &lt;div&gt;
+        {results.map(result =&gt; (
+          &lt;div key={result.id} className={isPending ? 'opacity-50' : ''}&gt;
+            {result.title}
+          &lt;/div&gt;
+        ))}
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+<h4 id="_7">Сложный пример с фильтрацией</h4>
+<pre><code class="language-javascript">function ProductFilter() {
+  const [filter, setFilter] = useState('');
+  const [category, setCategory] = useState('all');
+  const [products, setProducts] = useState(INITIAL_PRODUCTS);
+  const [isPending, startTransition] = useTransition();
+
+  const applyFilters = (newFilter, newCategory) =&gt; {
+    // Обновления UI происходят немедленно
+    setFilter(newFilter);
+    setCategory(newCategory);
+
+    // Тяжелая фильтрация происходит в transition
+    startTransition(() =&gt; {
+      const filtered = INITIAL_PRODUCTS.filter(product =&gt; {
+        const matchesFilter = product.name.toLowerCase()
+          .includes(newFilter.toLowerCase());
+        const matchesCategory = newCategory === 'all' || 
+          product.category === newCategory;
+
+        return matchesFilter &amp;&amp; matchesCategory;
+      });
+
+      setProducts(filtered);
+    });
+  };
+
+  return (
+    &lt;div&gt;
+      &lt;div className=&quot;filters&quot;&gt;
+        &lt;input
+          value={filter}
+          onChange={(e) =&gt; applyFilters(e.target.value, category)}
+          placeholder=&quot;Filter products...&quot;
+        /&gt;
+
+        &lt;select 
+          value={category}
+          onChange={(e) =&gt; applyFilters(filter, e.target.value)}
+        &gt;
+          &lt;option value=&quot;all&quot;&gt;All Categories&lt;/option&gt;
+          &lt;option value=&quot;electronics&quot;&gt;Electronics&lt;/option&gt;
+          &lt;option value=&quot;clothing&quot;&gt;Clothing&lt;/option&gt;
+        &lt;/select&gt;
+      &lt;/div&gt;
+
+      &lt;div className={`product-list ${isPending ? 'updating' : ''}`}&gt;
+        {products.map(product =&gt; (
+          &lt;ProductCard key={product.id} product={product} /&gt;
+        ))}
+
+        {isPending &amp;&amp; (
+          &lt;div className=&quot;overlay&quot;&gt;
+            &lt;div&gt;Updating results...&lt;/div&gt;
+          &lt;/div&gt;
+        )}
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+<h3 id="usedeferredvalue-hook">useDeferredValue Hook</h3>
+<p>useDeferredValue позволяет отложить обновление значения до тех пор, пока не завершятся более приоритетные обновления.</p>
+<h4 id="_8">Основное использование</h4>
+<pre><code class="language-javascript">import { useState, useDeferredValue, useMemo } from 'react';
+
+function App() {
+  const [query, setQuery] = useState('');
+
+  // Отложенное значение обновляется с задержкой
+  const deferredQuery = useDeferredValue(query);
+
+  // Тяжелые вычисления используют отложенное значение
+  const searchResults = useMemo(() =&gt; {
+    if (!deferredQuery) return [];
+
+    // Симуляция тяжелых вычислений
+    return performExpensiveSearch(deferredQuery);
+  }, [deferredQuery]);
+
+  return (
+    &lt;div&gt;
+      &lt;input
+        value={query}
+        onChange={(e) =&gt; setQuery(e.target.value)}
+        placeholder=&quot;Search...&quot;
+      /&gt;
+
+      &lt;div&gt;
+        {/* UI остается отзывчивым при вводе */}
+        &lt;SearchResults 
+          query={deferredQuery} 
+          results={searchResults}
+          isStale={query !== deferredQuery} 
+        /&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+}
+
+function SearchResults({ query, results, isStale }) {
+  return (
+    &lt;div className={isStale ? 'opacity-60' : 'opacity-100'}&gt;
+      &lt;h3&gt;Results for: {query}&lt;/h3&gt;
+      {results.map(result =&gt; (
+        &lt;div key={result.id}&gt;{result.title}&lt;/div&gt;
+      ))}
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+<h4 id="usetransition-usedeferredvalue">Сравнение useTransition и useDeferredValue</h4>
+<pre><code class="language-javascript">// useTransition - для обновлений состояния
+function WithTransition() {
+  const [input, setInput] = useState('');
+  const [list, setList] = useState([]);
+  const [isPending, startTransition] = useTransition();
+
+  const handleChange = (value) =&gt; {
+    setInput(value); // Немедленно
+
+    startTransition(() =&gt; {
+      setList(generateList(value)); // Может быть прервано
+    });
+  };
+
+  return (
+    &lt;div&gt;
+      &lt;input onChange={(e) =&gt; handleChange(e.target.value)} /&gt;
+      {isPending &amp;&amp; &lt;Spinner /&gt;}
+      &lt;List items={list} /&gt;
+    &lt;/div&gt;
+  );
+}
+
+// useDeferredValue - для значений
+function WithDeferredValue() {
+  const [input, setInput] = useState('');
+  const deferredInput = useDeferredValue(input);
+
+  const list = useMemo(() =&gt; {
+    return generateList(deferredInput);
+  }, [deferredInput]);
+
+  const isStale = input !== deferredInput;
+
+  return (
+    &lt;div&gt;
+      &lt;input onChange={(e) =&gt; setInput(e.target.value)} /&gt;
+      {isStale &amp;&amp; &lt;Spinner /&gt;}
+      &lt;List items={list} /&gt;
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+<h3 id="_9">Автоматическое батчинг</h3>
+<p>React 18 автоматически группирует обновления состояния в одно обновление для улучшения производительности.</p>
+<h4 id="_10">Новое поведение</h4>
+<pre><code class="language-javascript">// React 17 - батчинг только в event handlers
+function React17Behavior() {
+  const [count, setCount] = useState(0);
+  const [flag, setFlag] = useState(false);
+
+  const handleClick = () =&gt; {
+    setCount(c =&gt; c + 1); // Батчится
+    setFlag(f =&gt; !f);     // Батчится
+    // Один ре-рендер
+  };
+
+  const handleAsyncClick = () =&gt; {
+    setTimeout(() =&gt; {
+      setCount(c =&gt; c + 1); // НЕ батчится в React 17
+      setFlag(f =&gt; !f);     // НЕ батчится в React 17
+      // Два ре-рендера
+    });
+  };
+
+  return (
+    &lt;div&gt;
+      &lt;button onClick={handleClick}&gt;Sync Update&lt;/button&gt;
+      &lt;button onClick={handleAsyncClick}&gt;Async Update&lt;/button&gt;
+    &lt;/div&gt;
+  );
+}
+
+// React 18 - автоматический батчинг везде
+function React18Behavior() {
+  const [count, setCount] = useState(0);
+  const [flag, setFlag] = useState(false);
+
+  const handleAsyncClick = () =&gt; {
+    setTimeout(() =&gt; {
+      setCount(c =&gt; c + 1); // Батчится автоматически
+      setFlag(f =&gt; !f);     // Батчится автоматически
+      // Один ре-рендер
+    });
+  };
+
+  const handlePromiseClick = () =&gt; {
+    fetch('/api/data').then(() =&gt; {
+      setCount(c =&gt; c + 1); // Батчится автоматически
+      setFlag(f =&gt; !f);     // Батчится автоматически
+      // Один ре-рендер
+    });
+  };
+
+  return (
+    &lt;div&gt;
+      &lt;button onClick={handleAsyncClick}&gt;Async Update&lt;/button&gt;
+      &lt;button onClick={handlePromiseClick}&gt;Promise Update&lt;/button&gt;
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+<h4 id="_11">Отключение батчинга</h4>
+<pre><code class="language-javascript">import { flushSync } from 'react-dom';
+
+function DisableBatching() {
+  const [count, setCount] = useState(0);
+  const [flag, setFlag] = useState(false);
+
+  const handleClick = () =&gt; {
+    flushSync(() =&gt; {
+      setCount(c =&gt; c + 1); // Принудительный рендер
+    });
+
+    flushSync(() =&gt; {
+      setFlag(f =&gt; !f); // Еще один принудительный рендер
+    });
+
+    // Итого: два рендера вместо одного
+  };
+
+  return &lt;button onClick={handleClick}&gt;Force Sync&lt;/button&gt;;
+}
+</code></pre>
+<h3 id="strictmode">StrictMode в разработке</h3>
+<p>React 18 усилил StrictMode для выявления побочных эффектов в конкурентном режиме.</p>
+<h4 id="_12">Двойной рендеринг</h4>
+<pre><code class="language-javascript">function StrictModeExample() {
+  const [count, setCount] = useState(0);
+
+  // В dev mode с StrictMode этот эффект выполнится дважды
+  useEffect(() =&gt; {
+    console.log('Effect running'); // Будет напечатано дважды
+
+    // Проблема: побочный эффект без cleanup
+    window.globalCounter = (window.globalCounter || 0) + 1;
+
+    return () =&gt; {
+      console.log('Effect cleanup'); // Cleanup тоже выполнится
+    };
+  }, []);
+
+  // Render функция должна быть чистой
+  console.log('Rendering'); // Будет напечатано дважды
+
+  return (
+    &lt;div&gt;
+      &lt;p&gt;Count: {count}&lt;/p&gt;
+      &lt;button onClick={() =&gt; setCount(c =&gt; c + 1)}&gt;
+        Increment
+      &lt;/button&gt;
+    &lt;/div&gt;
+  );
+}
+
+// Правильная обработка в StrictMode
+function StrictModeFixed() {
+  const [count, setCount] = useState(0);
+
+  useEffect(() =&gt; {
+    let cancelled = false;
+
+    const fetchData = async () =&gt; {
+      const data = await api.getData();
+
+      // Проверяем, не был ли эффект отменен
+      if (!cancelled) {
+        setData(data);
+      }
+    };
+
+    fetchData();
+
+    return () =&gt; {
+      cancelled = true; // Cleanup предотвращает состояние гонки
+    };
+  }, []);
+
+  return &lt;div&gt;Count: {count}&lt;/div&gt;;
+}
+</code></pre>
+<h3 id="race-conditions">Race Conditions и их предотвращение</h3>
+<h4 id="race-conditions_1">Проблема Race Conditions</h4>
+<pre><code class="language-javascript">// ❌ Проблематичный код без защиты от race conditions
+function UserProfile({ userId }) {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() =&gt; {
+    setLoading(true);
+
+    // Проблема: если userId быстро меняется,
+    // ответы могут прийти в неправильном порядке
+    fetchUser(userId).then(userData =&gt; {
+      setUser(userData); // Может установить устаревшие данные
+      setLoading(false);
+    });
+  }, [userId]);
+
+  return loading ? &lt;div&gt;Loading...&lt;/div&gt; : &lt;div&gt;{user?.name}&lt;/div&gt;;
+}
+</code></pre>
+<h4 id="1">Решение 1: Флаг отмены</h4>
+<pre><code class="language-javascript">function UserProfileFixed({ userId }) {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() =&gt; {
+    let cancelled = false;
+
+    setLoading(true);
+
+    fetchUser(userId).then(userData =&gt; {
+      if (!cancelled) {
+        setUser(userData);
+        setLoading(false);
+      }
+    }).catch(error =&gt; {
+      if (!cancelled) {
+        console.error('Failed to fetch user:', error);
+        setLoading(false);
+      }
+    });
+
+    return () =&gt; {
+      cancelled = true;
+    };
+  }, [userId]);
+
+  return loading ? &lt;div&gt;Loading...&lt;/div&gt; : &lt;div&gt;{user?.name}&lt;/div&gt;;
+}
+</code></pre>
+<h4 id="2-abortcontroller">Решение 2: AbortController</h4>
+<pre><code class="language-javascript">function UserProfileWithAbort({ userId }) {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  useEffect(() =&gt; {
+    const abortController = new AbortController();
+
+    const loadUser = async () =&gt; {
+      try {
+        setLoading(true);
+        setError(null);
+
+        const response = await fetch(`/api/users/${userId}`, {
+          signal: abortController.signal
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch user');
+        }
+
+        const userData = await response.json();
+        setUser(userData);
+      } catch (err) {
+        if (err.name !== 'AbortError') {
+          setError(err.message);
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (userId) {
+      loadUser();
+    }
+
+    return () =&gt; {
+      abortController.abort();
+    };
+  }, [userId]);
+
+  if (loading) return &lt;div&gt;Loading...&lt;/div&gt;;
+  if (error) return &lt;div&gt;Error: {error}&lt;/div&gt;;
+  return &lt;div&gt;{user?.name}&lt;/div&gt;;
+}
+</code></pre>
+<h4 id="3-custom-hook-api">Решение 3: Custom Hook для API вызовов</h4>
+<pre><code class="language-javascript">function useAsyncData(asyncFunction, dependencies) {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  useEffect(() =&gt; {
+    let cancelled = false;
+    const abortController = new AbortController();
+
+    const loadData = async () =&gt; {
+      try {
+        setLoading(true);
+        setError(null);
+
+        const result = await asyncFunction(abortController.signal);
+
+        if (!cancelled) {
+          setData(result);
+        }
+      } catch (err) {
+        if (!cancelled &amp;&amp; err.name !== 'AbortError') {
+          setError(err);
+        }
+      } finally {
+        if (!cancelled) {
+          setLoading(false);
+        }
+      }
+    };
+
+    loadData();
+
+    return () =&gt; {
+      cancelled = true;
+      abortController.abort();
+    };
+  }, dependencies);
+
+  return { data, loading, error };
+}
+
+// Использование
+function UserProfile({ userId }) {
+  const { data: user, loading, error } = useAsyncData(
+    (signal) =&gt; fetch(`/api/users/${userId}`, { signal }).then(r =&gt; r.json()),
+    [userId]
+  );
+
+  if (loading) return &lt;div&gt;Loading...&lt;/div&gt;;
+  if (error) return &lt;div&gt;Error: {error.message}&lt;/div&gt;;
+  return &lt;div&gt;{user?.name}&lt;/div&gt;;
+}
+</code></pre>
+<h3 id="suspense">Suspense для данных</h3>
+<pre><code class="language-javascript">// Интеграция с конкурентными возможностями
+function App() {
+  const [selectedUser, setSelectedUser] = useState('1');
+
+  return (
+    &lt;div&gt;
+      &lt;UserSelector onSelect={setSelectedUser} /&gt;
+
+      &lt;Suspense fallback={&lt;UserProfileSkeleton /&gt;}&gt;
+        &lt;UserProfile userId={selectedUser} /&gt;
+      &lt;/Suspense&gt;
+    &lt;/div&gt;
+  );
+}
+
+function UserProfile({ userId }) {
+  // Используем библиотеку для данных с Suspense
+  const user = useSuspenseQuery(['user', userId], () =&gt; 
+    fetchUser(userId)
+  );
+
+  return (
+    &lt;div&gt;
+      &lt;h1&gt;{user.name}&lt;/h1&gt;
+      &lt;p&gt;{user.email}&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+<h3 id="react-18_1">Миграция на React 18</h3>
+<h4 id="_13">Обновление рендеринга</h4>
+<pre><code class="language-javascript">// React 17
+import ReactDOM from 'react-dom';
+ReactDOM.render(&lt;App /&gt;, document.getElementById('root'));
+
+// React 18
+import { createRoot } from 'react-dom/client';
+const root = createRoot(document.getElementById('root'));
+root.render(&lt;App /&gt;);
+</code></pre>
+<h4 id="strictmode_1">Обработка изменений в StrictMode</h4>
+<pre><code class="language-javascript">// Проблемный код в React 18 StrictMode
+function ProblemComponent() {
+  useEffect(() =&gt; {
+    // Это будет вызвано дважды в dev mode
+    analytics.track('component-mounted');
+
+    // Проблема: побочный эффект выполняется дважды
+  }, []);
+}
+
+// Исправленный код
+function FixedComponent() {
+  const hasMounted = useRef(false);
+
+  useEffect(() =&gt; {
+    if (!hasMounted.current) {
+      analytics.track('component-mounted');
+      hasMounted.current = true;
+    }
+  }, []);
+
+  // Или лучше: переместить в event handler
+  const handleUserAction = () =&gt; {
+    analytics.track('user-action');
+  };
+}
+</code></pre>
+<h3 id="_14">Лучшие практики</h3>
+<h4 id="1-usetransition">1. Правильное использование useTransition</h4>
+<pre><code class="language-javascript">// ✅ Хорошо: для неблокирующих обновлений UI
+function GoodTransitionUse() {
+  const [isPending, startTransition] = useTransition();
+
+  const handleFilter = (newFilter) =&gt; {
+    startTransition(() =&gt; {
+      // Тяжелые вычисления или большие обновления списков
+      setFilteredData(applyExpensiveFilter(data, newFilter));
+    });
+  };
+}
+
+// ❌ Плохо: для критических обновлений
+function BadTransitionUse() {
+  const [isPending, startTransition] = useTransition();
+
+  const handleSubmit = () =&gt; {
+    startTransition(() =&gt; {
+      // Не используйте для критических операций
+      submitForm(); // Это должно быть немедленным
+    });
+  };
+}
+</code></pre>
+<h4 id="2-usedeferredvalue">2. Оптимальное использование useDeferredValue</h4>
+<pre><code class="language-javascript">// ✅ Хорошо: для производных значений
+function GoodDeferredUse({ searchQuery }) {
+  const deferredQuery = useDeferredValue(searchQuery);
+
+  const results = useMemo(() =&gt; {
+    return expensiveSearch(deferredQuery);
+  }, [deferredQuery]);
+
+  return &lt;SearchResults results={results} /&gt;;
+}
+
+// ❌ Плохо: для простых значений
+function BadDeferredUse({ userName }) {
+  const deferredName = useDeferredValue(userName); // Излишне
+
+  return &lt;div&gt;Hello, {deferredName}&lt;/div&gt;; // Простое отображение
+}
+</code></pre>
+<h3 id="debugging">Debugging конкурентных возможностей</h3>
+<pre><code class="language-javascript">// Профилирование с React DevTools
+function ProfiledComponent() {
+  const [isPending, startTransition] = useTransition();
+
+  const handleUpdate = () =&gt; {
+    startTransition(() =&gt; {
+      // Измеряем производительность
+      performance.mark('transition-start');
+
+      updateLargeDataSet();
+
+      performance.mark('transition-end');
+      performance.measure(
+        'transition-duration',
+        'transition-start',
+        'transition-end'
+      );
+    });
+  };
+
+  return (
+    &lt;div&gt;
+      &lt;button onClick={handleUpdate}&gt;
+        Update {isPending &amp;&amp; '(updating...)'}
+      &lt;/button&gt;
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+<h3 id="senior-">Senior-советы</h3>
+<ol>
+<li><strong>Включайте конкурентные возможности постепенно</strong> - начните с createRoot</li>
+<li><strong>Используйте useTransition для тяжелых обновлений UI</strong> - фильтры, списки</li>
+<li><strong>useDeferredValue для производных значений</strong> - поиск, вычисления</li>
+<li><strong>Всегда обрабатывайте race conditions</strong> - используйте AbortController</li>
+<li><strong>Тестируйте в StrictMode</strong> - это поможет найти проблемы заранее</li>
+<li><strong>Не оборачивайте все в transitions</strong> - только тяжелые операции</li>
+<li><strong>Профилируйте с React DevTools</strong> - измеряйте реальную производительность</li>
+</ol>
+<h2 id="_15">🔗 Связанные темы</h2>
+<ul>
+<li><a href="../use-effect/">useEffect и Side Effects</a></li>
+<li><a href="../reconciliation/">Reconciliation и Virtual DOM</a></li>
+<li><a href="../rerender-optimization/">Оптимизация ререндеров</a></li>
+<li><a href="../../javascript/event-loop/">Event Loop, Microtasks и Macrotasks</a></li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../../performance/optimization_small/" class="btn btn-neutral float-left" title="Оптимизация производительности Frontend (small)"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../concurrent-rendering_small/" class="btn btn-neutral float-right" title="React 18 Concurrent Rendering - Senior Cheat Sheet (small)">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../../performance/optimization_small/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../concurrent-rendering_small/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../..";</script>
+    <script src="../../../js/theme_extra.js"></script>
+    <script src="../../../js/theme.js"></script>
+      <script src="../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

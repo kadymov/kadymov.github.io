@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../../img/favicon.ico" />
+    <title>Garbage Collection и оптимизация памяти - My Docs</title>
+    <link rel="stylesheet" href="../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Garbage Collection \u0438 \u043e\u043f\u0442\u0438\u043c\u0438\u0437\u0430\u0446\u0438\u044f \u043f\u0430\u043c\u044f\u0442\u0438";
+        var mkdocs_page_input_path = "questions/javascript/garbage-collection.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../../.." class="icon icon-home"> My Docs
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../..">📚 Подготовка к собеседованию: JavaScript, React и архитектура</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Questions</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" >Architecture</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/ddd/">Domain-Driven Design (DDD) во Frontend</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/ddd_small/">Domain-Driven Design (DDD) во Frontend (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/microfrontends/">Микрофронтенды (Microfrontends)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/microfrontends_small/">Microfrontends - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/offline-first/">Offline-first архитектура</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/offline-first_small/">Offline-First Архитектура (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/resilient-frontend/">Устойчивая frontend архитектура</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/resilient-frontend_small/">Устойчивая Frontend Архитектура (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/state-management/">Архитектура управления состоянием</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/state-management_small/">State Management Architecture - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/websockets-realtime/">WebSockets и real-time коммуникация</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/websockets-realtime_small/">WebSockets и Real-time коммуникация (small)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" >Javascript</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../async-programming/">Promises, Async/Await и Generators</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../async-programming_small/">Async Programming - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../currying/">Currying в JavaScript</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../currying_small/">Currying - Шпаргалка (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../event-loop/">Event Loop, Microtasks и Macrotasks</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../event-loop_small/">Event Loop - Шпаргалка (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../execution-model/">Модель выполнения JavaScript</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../execution-model_small/">JavaScript Execution Model - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" href="#">Garbage Collection и оптимизация памяти</a>
+    <ul class="current">
+    <li class="toctree-l3"><a class="reference internal" href="#_1">📋 Вопрос</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_2">💡 Ответ</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#garbage-collection_1">Как работает Garbage Collection</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#memory-leaks-javascript">Memory Leaks в JavaScript</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#react">Оптимизация памяти в React</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#_3">Инструменты для мониторинга памяти</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#_4">Стратегии оптимизации для больших приложений</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#senior-">Senior-советы</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#_5">Лучшие практики</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_6">🔗 Связанные темы</a>
+    </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../garbage-collection_small/">Garbage Collection - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../scope-hoisting/">Let, Const, Var: Scope и Hoisting</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../scope-hoisting_small/">Let, Const, Var - Шпаргалка (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../typing-comparison/">Сравнение типизации JS и Java</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../typing-comparison_small/">JS vs Java Typing + TypeScript - Senior Cheat Sheet (small)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Performance</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../performance/optimization/">Оптимизация производительности frontend-приложений</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../performance/optimization_small/">Оптимизация производительности Frontend (small)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >React</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/concurrent-rendering/">Конкурентный рендеринг React 18</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/concurrent-rendering_small/">React 18 Concurrent Rendering - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/context-api/">Context API vs Redux</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/context-api_small/">Context API vs Redux - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/hoc/">Higher-Order Components (HOC)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/hoc_small/">Higher-Order Components - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/reconciliation/">Reconciliation и Virtual DOM</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/reconciliation_small/">Reconciliation &amp; Virtual DOM - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/rerender-optimization/">Оптимизация ререндеров в React</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/rerender-optimization_small/">React Rerender Optimization - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/ssr-rsc/">SSR/SSG и React Server Components</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/ssr-rsc_small/">SSR/SSG &amp; React Server Components - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/use-effect/">useEffect и Side Effects</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/use-effect_small/">useEffect &amp; Side Effects - Senior Cheat Sheet</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Security</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../security/frontend-security/">Безопасность Frontend Приложений</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../security/frontend-security_small/">Frontend Security (small)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Testing</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../testing/strategies/">Стратегии тестирования frontend-приложений</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../testing/strategies_small/">Стратегии тестирования Frontend (small)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Typescript</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../typescript/advanced-types/">Продвинутые типы TypeScript</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../typescript/advanced-types_small/">Продвинутые типы TypeScript (small)</a>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../..">My Docs</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Questions</li>
+          <li class="breadcrumb-item">Javascript</li>
+      <li class="breadcrumb-item active">Garbage Collection и оптимизация памяти</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="garbage-collection">Garbage Collection и оптимизация памяти</h1>
+<h2 id="_1">📋 Вопрос</h2>
+<p>Как работает garbage collection в JavaScript, и какие стратегии можно использовать для оптимизации памяти в больших React-приложениях?</p>
+<h2 id="_2">💡 Ответ</h2>
+<p>Garbage Collection (GC) в JavaScript — это автоматический процесс освобождения памяти от неиспользуемых объектов. Современные JavaScript движки (V8, SpiderMonkey) используют сложные алгоритмы для эффективного управления памятью.</p>
+<h3 id="garbage-collection_1">Как работает Garbage Collection</h3>
+<h4 id="mark-and-sweep">Основной алгоритм: Mark-and-Sweep</h4>
+<pre><code class="language-javascript">// Пример работы Mark-and-Sweep
+function demonstrateGC() {
+  let obj1 = { name: 'Object 1' }; // Объект создан
+  let obj2 = { name: 'Object 2', ref: obj1 }; // obj2 ссылается на obj1
+
+  obj1 = null; // obj1 больше не доступен напрямую
+  // Но объект не будет удален, так как obj2.ref ссылается на него
+
+  obj2 = null; // Теперь оба объекта недостижимы и будут удалены GC
+}
+</code></pre>
+<h4 id="phases-gc">Phases GC процесса</h4>
+<ol>
+<li><strong>Mark Phase</strong>: Рекурсивно помечает все достижимые объекты от roots (global object, call stack)</li>
+<li><strong>Sweep Phase</strong>: Удаляет все непомеченные объекты</li>
+<li><strong>Compaction Phase</strong>: (Опционально) Перемещает объекты для дефрагментации памяти</li>
+</ol>
+<h4 id="generational-garbage-collection">Generational Garbage Collection</h4>
+<pre><code class="language-javascript">// V8 использует два поколения объектов
+
+// Young Generation (Minor GC) - быстрый, частый
+function createShortLivedObjects() {
+  for (let i = 0; i &lt; 1000; i++) {
+    let temp = { id: i, data: new Array(100) }; // Быстро станет мусором
+    // Эти объекты обрабатываются Minor GC
+  }
+}
+
+// Old Generation (Major GC) - медленный, редкий
+const longLivedCache = new Map(); // Живет долго, попадает в Old Gen
+
+function addToCache(key, value) {
+  longLivedCache.set(key, value); // Major GC обрабатывает такие объекты
+}
+</code></pre>
+<h3 id="memory-leaks-javascript">Memory Leaks в JavaScript</h3>
+<h4 id="1">1. Глобальные переменные</h4>
+<pre><code class="language-javascript">// ❌ Плохо: создает глобальную переменную
+function createLeak() {
+  leakedGlobal = 'This creates a global variable'; // Без var/let/const
+}
+
+// ✅ Хорошо: правильное объявление
+function noLeak() {
+  const localVariable = 'This stays local';
+}
+</code></pre>
+<h4 id="2">2. Забытые обработчики событий</h4>
+<pre><code class="language-javascript">// ❌ Плохо: не удаляем listener
+function addListenerBad() {
+  const button = document.getElementById('button');
+  button.addEventListener('click', function() {
+    console.log('Clicked');
+  });
+  // Listener остается даже после удаления button из DOM
+}
+
+// ✅ Хорошо: удаляем listener
+function addListenerGood() {
+  const button = document.getElementById('button');
+  const handleClick = () =&gt; console.log('Clicked');
+
+  button.addEventListener('click', handleClick);
+
+  // Cleanup
+  return () =&gt; {
+    button.removeEventListener('click', handleClick);
+  };
+}
+</code></pre>
+<h4 id="3">3. Замыкания с большими объектами</h4>
+<pre><code class="language-javascript">// ❌ Плохо: замыкание держит большой объект
+function createClosure() {
+  const hugeArray = new Array(1000000).fill('data');
+  const smallData = 'small';
+
+  return function() {
+    return smallData; // Но замыкание держит весь hugeArray
+  };
+}
+
+// ✅ Хорошо: освобождаем ссылку
+function createClosureOptimized() {
+  const hugeArray = new Array(1000000).fill('data');
+  const smallData = 'small';
+
+  // Используем данные
+  processHugeArray(hugeArray);
+
+  return function() {
+    return smallData; // Теперь hugeArray может быть удален
+  };
+}
+</code></pre>
+<h4 id="4">4. Циклические ссылки</h4>
+<pre><code class="language-javascript">// ❌ Плохо: циклические ссылки
+function createCircularReference() {
+  const obj1 = {};
+  const obj2 = {};
+
+  obj1.ref = obj2;
+  obj2.ref = obj1; // Циклическая ссылка
+
+  return obj1;
+}
+
+// ✅ Хорошо: используем WeakMap/WeakSet
+const relationships = new WeakMap();
+
+function createWeakReference(obj1, obj2) {
+  relationships.set(obj1, obj2); // Слабая ссылка
+  return obj1;
+}
+</code></pre>
+<h3 id="react">Оптимизация памяти в React</h3>
+<h4 id="1-useeffect">1. Правильное использование useEffect</h4>
+<pre><code class="language-javascript">import React, { useState, useEffect } from 'react';
+
+// ❌ Плохо: memory leak
+function BadComponent() {
+  const [data, setData] = useState(null);
+
+  useEffect(() =&gt; {
+    const interval = setInterval(() =&gt; {
+      fetchData().then(setData);
+    }, 1000);
+
+    // Забыли очистить interval
+  }, []);
+
+  return &lt;div&gt;{data}&lt;/div&gt;;
+}
+
+// ✅ Хорошо: правильная очистка
+function GoodComponent() {
+  const [data, setData] = useState(null);
+
+  useEffect(() =&gt; {
+    let isCancelled = false;
+
+    const interval = setInterval(async () =&gt; {
+      try {
+        const result = await fetchData();
+        if (!isCancelled) {
+          setData(result);
+        }
+      } catch (error) {
+        if (!isCancelled) {
+          console.error(error);
+        }
+      }
+    }, 1000);
+
+    return () =&gt; {
+      isCancelled = true;
+      clearInterval(interval);
+    };
+  }, []);
+
+  return &lt;div&gt;{data}&lt;/div&gt;;
+}
+</code></pre>
+<h4 id="2_1">2. Мемоизация с осторожностью</h4>
+<pre><code class="language-javascript">import React, { useMemo, useCallback } from 'react';
+
+// ❌ Плохо: чрезмерная мемоизация
+function OverMemoizedComponent({ users, filters }) {
+  // Мемоизация примитивных значений бессмысленна
+  const count = useMemo(() =&gt; users.length, [users]);
+
+  // Слишком много зависимостей
+  const expensiveValue = useMemo(() =&gt; {
+    return users.filter(/* complex logic */);
+  }, [users, filters, /* many other deps */]);
+
+  return &lt;div&gt;{expensiveValue.length}&lt;/div&gt;;
+}
+
+// ✅ Хорошо: разумная мемоизация
+function OptimizedComponent({ users, filters }) {
+  // Мемоизируем только тяжелые вычисления
+  const filteredUsers = useMemo(() =&gt; {
+    return users.filter(user =&gt; {
+      // Сложная логика фильтрации
+      return filters.every(filter =&gt; filter.test(user));
+    });
+  }, [users, filters]);
+
+  const handleUserClick = useCallback((userId) =&gt; {
+    // Обработка клика
+  }, []); // Стабильная ссылка
+
+  return (
+    &lt;div&gt;
+      {filteredUsers.map(user =&gt; (
+        &lt;UserCard 
+          key={user.id} 
+          user={user} 
+          onClick={handleUserClick}
+        /&gt;
+      ))}
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+<h4 id="3_1">3. Виртуализация больших списков</h4>
+<pre><code class="language-javascript">import { FixedSizeList as List } from 'react-window';
+
+// ❌ Плохо: рендерим весь список
+function HugeListBad({ items }) {
+  return (
+    &lt;div&gt;
+      {items.map((item, index) =&gt; (
+        &lt;div key={index} style={{ height: 50 }}&gt;
+          {item.name}
+        &lt;/div&gt;
+      ))}
+    &lt;/div&gt;
+  );
+}
+
+// ✅ Хорошо: виртуализированный список
+function HugeListGood({ items }) {
+  const Row = ({ index, style }) =&gt; (
+    &lt;div style={style}&gt;
+      {items[index].name}
+    &lt;/div&gt;
+  );
+
+  return (
+    &lt;List
+      height={600}
+      itemCount={items.length}
+      itemSize={50}
+      width=&quot;100%&quot;
+    &gt;
+      {Row}
+    &lt;/List&gt;
+  );
+}
+</code></pre>
+<h4 id="4_1">4. Оптимизация изображений и медиа</h4>
+<pre><code class="language-javascript">import React, { useState, useRef, useEffect } from 'react';
+
+// Lazy loading изображений
+function LazyImage({ src, alt, ...props }) {
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [isInView, setIsInView] = useState(false);
+  const imgRef = useRef();
+
+  useEffect(() =&gt; {
+    const observer = new IntersectionObserver(
+      ([entry]) =&gt; {
+        if (entry.isIntersecting) {
+          setIsInView(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (imgRef.current) {
+      observer.observe(imgRef.current);
+    }
+
+    return () =&gt; observer.disconnect();
+  }, []);
+
+  return (
+    &lt;div ref={imgRef} {...props}&gt;
+      {isInView &amp;&amp; (
+        &lt;img
+          src={src}
+          alt={alt}
+          onLoad={() =&gt; setIsLoaded(true)}
+          style={{ 
+            opacity: isLoaded ? 1 : 0,
+            transition: 'opacity 0.3s'
+          }}
+        /&gt;
+      )}
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+<h3 id="_3">Инструменты для мониторинга памяти</h3>
+<h4 id="1-chrome-devtools">1. Chrome DevTools</h4>
+<pre><code class="language-javascript">// Маркировка для профилирования
+function markPerformance(name, fn) {
+  performance.mark(`${name}-start`);
+  const result = fn();
+  performance.mark(`${name}-end`);
+  performance.measure(name, `${name}-start`, `${name}-end`);
+  return result;
+}
+
+// Использование
+const result = markPerformance('heavy-computation', () =&gt; {
+  return heavyComputation(data);
+});
+</code></pre>
+<h4 id="2-memory-api">2. Memory API</h4>
+<pre><code class="language-javascript">// Мониторинг использования памяти
+function monitorMemory() {
+  if ('memory' in performance) {
+    const memory = performance.memory;
+    console.log({
+      usedJSHeapSize: memory.usedJSHeapSize,
+      totalJSHeapSize: memory.totalJSHeapSize,
+      jsHeapSizeLimit: memory.jsHeapSizeLimit
+    });
+  }
+}
+
+// Проверка каждые 5 секунд
+setInterval(monitorMemory, 5000);
+</code></pre>
+<h3 id="_4">Стратегии оптимизации для больших приложений</h3>
+<h4 id="1-code-splitting-lazy-loading">1. Code Splitting и Lazy Loading</h4>
+<pre><code class="language-javascript">import React, { Suspense, lazy } from 'react';
+
+// Динамический импорт компонентов
+const HeavyComponent = lazy(() =&gt; import('./HeavyComponent'));
+const AnotherComponent = lazy(() =&gt; 
+  import('./AnotherComponent').then(module =&gt; ({
+    default: module.AnotherComponent
+  }))
+);
+
+function App() {
+  return (
+    &lt;div&gt;
+      &lt;Suspense fallback={&lt;div&gt;Loading...&lt;/div&gt;}&gt;
+        &lt;HeavyComponent /&gt;
+      &lt;/Suspense&gt;
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+<h4 id="2_2">2. Объектные пулы</h4>
+<pre><code class="language-javascript">// Pool для переиспользования объектов
+class ObjectPool {
+  constructor(createFn, resetFn, initialSize = 10) {
+    this.createFn = createFn;
+    this.resetFn = resetFn;
+    this.pool = [];
+
+    // Предварительно создаем объекты
+    for (let i = 0; i &lt; initialSize; i++) {
+      this.pool.push(this.createFn());
+    }
+  }
+
+  acquire() {
+    return this.pool.pop() || this.createFn();
+  }
+
+  release(obj) {
+    this.resetFn(obj);
+    this.pool.push(obj);
+  }
+}
+
+// Использование
+const vectorPool = new ObjectPool(
+  () =&gt; ({ x: 0, y: 0 }),
+  (obj) =&gt; { obj.x = 0; obj.y = 0; }
+);
+
+function useVector() {
+  const vector = vectorPool.acquire();
+  // Используем vector
+  vectorPool.release(vector);
+}
+</code></pre>
+<h4 id="3-weakmap-weakset">3. WeakMap и WeakSet для кэширования</h4>
+<pre><code class="language-javascript">// Weak кэширование DOM элементов
+const elementCache = new WeakMap();
+
+function cacheElementData(element, data) {
+  elementCache.set(element, data);
+}
+
+function getElementData(element) {
+  return elementCache.get(element);
+}
+
+// Когда element удаляется из DOM, данные автоматически очищаются из кэша
+</code></pre>
+<h4 id="4-debounce-throttle">4. Debounce и Throttle</h4>
+<pre><code class="language-javascript">// Debounce для предотвращения лишних вычислений
+function useDebounce(value, delay) {
+  const [debouncedValue, setDebouncedValue] = useState(value);
+
+  useEffect(() =&gt; {
+    const handler = setTimeout(() =&gt; {
+      setDebouncedValue(value);
+    }, delay);
+
+    return () =&gt; clearTimeout(handler);
+  }, [value, delay]);
+
+  return debouncedValue;
+}
+
+// Throttle для ограничения частоты вызовов
+function useThrottle(callback, delay) {
+  const lastCall = useRef(0);
+
+  return useCallback((...args) =&gt; {
+    const now = Date.now();
+    if (now - lastCall.current &gt;= delay) {
+      lastCall.current = now;
+      callback(...args);
+    }
+  }, [callback, delay]);
+}
+</code></pre>
+<h3 id="senior-">Senior-советы</h3>
+<ol>
+<li><strong>Профилируйте перед оптимизацией</strong>: Используйте Chrome DevTools для выявления реальных проблем</li>
+<li><strong>Мониторьте memory leaks</strong>: Регулярно проверяйте heap snapshots в production</li>
+<li><strong>Осторожно с мемоизацией</strong>: Не мемоизируйте все подряд - это может увеличить потребление памяти</li>
+<li><strong>Используйте weak references</strong>: WeakMap и WeakSet для временных связей</li>
+<li><strong>Clean up subscriptions</strong>: Всегда отписывайтесь от event listeners, intervals, subscriptions</li>
+<li><strong>Оптимизируйте изображения</strong>: Используйте WebP, lazy loading, responsive images</li>
+<li><strong>Виртуализация</strong>: Для больших списков используйте react-window или react-virtualized</li>
+</ol>
+<h3 id="_5">Лучшие практики</h3>
+<pre><code class="language-javascript">// ✅ Comprehensive cleanup pattern
+function useDataFetching(url) {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  useEffect(() =&gt; {
+    let isCancelled = false;
+    const controller = new AbortController();
+
+    const fetchData = async () =&gt; {
+      try {
+        setLoading(true);
+        setError(null);
+
+        const response = await fetch(url, {
+          signal: controller.signal
+        });
+
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+
+        const result = await response.json();
+
+        if (!isCancelled) {
+          setData(result);
+        }
+      } catch (err) {
+        if (!isCancelled &amp;&amp; err.name !== 'AbortError') {
+          setError(err);
+        }
+      } finally {
+        if (!isCancelled) {
+          setLoading(false);
+        }
+      }
+    };
+
+    fetchData();
+
+    return () =&gt; {
+      isCancelled = true;
+      controller.abort();
+    };
+  }, [url]);
+
+  return { data, loading, error };
+}
+</code></pre>
+<h2 id="_6">🔗 Связанные темы</h2>
+<ul>
+<li><a href="../event-loop/">Event Loop, Microtasks и Macrotasks</a></li>
+<li><a href="../scope-hoisting/">Let, Const, Var: Scope и Hoisting</a></li>
+<li><a href="../../react/rerender-optimization/">Оптимизация ререндеров</a></li>
+<li><a href="../performance/web-performance.md">Веб-производительность и Core Web Vitals</a></li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../execution-model_small/" class="btn btn-neutral float-left" title="JavaScript Execution Model - Senior Cheat Sheet (small)"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../garbage-collection_small/" class="btn btn-neutral float-right" title="Garbage Collection - Senior Cheat Sheet (small)">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../execution-model_small/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../garbage-collection_small/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../..";</script>
+    <script src="../../../js/theme_extra.js"></script>
+    <script src="../../../js/theme.js"></script>
+      <script src="../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

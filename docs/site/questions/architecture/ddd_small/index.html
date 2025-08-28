@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../../img/favicon.ico" />
+    <title>Domain-Driven Design (DDD) во Frontend (small) - My Docs</title>
+    <link rel="stylesheet" href="../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Domain-Driven Design (DDD) \u0432\u043e Frontend (small)";
+        var mkdocs_page_input_path = "questions/architecture/ddd_small.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../../.." class="icon icon-home"> My Docs
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../..">📚 Подготовка к собеседованию: JavaScript, React и архитектура</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Questions</span></p>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current" >Architecture</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../ddd/">Domain-Driven Design (DDD) во Frontend</a>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" href="#">Domain-Driven Design (DDD) во Frontend (small)</a>
+    <ul class="current">
+    <li class="toctree-l3"><a class="reference internal" href="#_1">Архитектурные слои</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_2">Основные паттерны</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#entities">Entities</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#value-objects">Value Objects</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#aggregates">Aggregates</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#domain-services">Domain Services</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#domain-events">Domain Events</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#application-layer">Application Layer</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#repository-pattern">Repository Pattern</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#react-integration">React Integration</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#custom-hook-ddd">Custom Hook с DDD</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#dependency-injection">Dependency Injection</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#bounded-contexts">Bounded Contexts</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#testing-ddd">Testing DDD</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#ddd">Ключевые принципы DDD</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_3">Структура проекта</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#best-practices-senior-level">Best Practices Senior-level</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#senior">Частые Senior вопросы</a>
+    </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../microfrontends/">Микрофронтенды (Microfrontends)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../microfrontends_small/">Microfrontends - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../offline-first/">Offline-first архитектура</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../offline-first_small/">Offline-First Архитектура (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../resilient-frontend/">Устойчивая frontend архитектура</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../resilient-frontend_small/">Устойчивая Frontend Архитектура (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../state-management/">Архитектура управления состоянием</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../state-management_small/">State Management Architecture - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../websockets-realtime/">WebSockets и real-time коммуникация</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../websockets-realtime_small/">WebSockets и Real-time коммуникация (small)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Javascript</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/async-programming/">Promises, Async/Await и Generators</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/async-programming_small/">Async Programming - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/currying/">Currying в JavaScript</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/currying_small/">Currying - Шпаргалка (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/event-loop/">Event Loop, Microtasks и Macrotasks</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/event-loop_small/">Event Loop - Шпаргалка (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/execution-model/">Модель выполнения JavaScript</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/execution-model_small/">JavaScript Execution Model - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/garbage-collection/">Garbage Collection и оптимизация памяти</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/garbage-collection_small/">Garbage Collection - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/scope-hoisting/">Let, Const, Var: Scope и Hoisting</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/scope-hoisting_small/">Let, Const, Var - Шпаргалка (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/typing-comparison/">Сравнение типизации JS и Java</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/typing-comparison_small/">JS vs Java Typing + TypeScript - Senior Cheat Sheet (small)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Performance</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../performance/optimization/">Оптимизация производительности frontend-приложений</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../performance/optimization_small/">Оптимизация производительности Frontend (small)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >React</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/concurrent-rendering/">Конкурентный рендеринг React 18</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/concurrent-rendering_small/">React 18 Concurrent Rendering - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/context-api/">Context API vs Redux</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/context-api_small/">Context API vs Redux - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/hoc/">Higher-Order Components (HOC)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/hoc_small/">Higher-Order Components - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/reconciliation/">Reconciliation и Virtual DOM</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/reconciliation_small/">Reconciliation &amp; Virtual DOM - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/rerender-optimization/">Оптимизация ререндеров в React</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/rerender-optimization_small/">React Rerender Optimization - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/ssr-rsc/">SSR/SSG и React Server Components</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/ssr-rsc_small/">SSR/SSG &amp; React Server Components - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/use-effect/">useEffect и Side Effects</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/use-effect_small/">useEffect &amp; Side Effects - Senior Cheat Sheet</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Security</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../security/frontend-security/">Безопасность Frontend Приложений</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../security/frontend-security_small/">Frontend Security (small)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Testing</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../testing/strategies/">Стратегии тестирования frontend-приложений</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../testing/strategies_small/">Стратегии тестирования Frontend (small)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Typescript</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../typescript/advanced-types/">Продвинутые типы TypeScript</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../typescript/advanced-types_small/">Продвинутые типы TypeScript (small)</a>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../..">My Docs</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Questions</li>
+          <li class="breadcrumb-item">Architecture</li>
+      <li class="breadcrumb-item active">Domain-Driven Design (DDD) во Frontend (small)</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="domain-driven-design-ddd-frontend-small">Domain-Driven Design (DDD) во Frontend (small)</h1>
+<h2 id="_1">Архитектурные слои</h2>
+<pre><code>Presentation Layer (UI/React)
+    ↓
+Application Layer (Use Cases)
+    ↓
+Domain Layer (Business Logic)
+    ↓
+Infrastructure Layer (Data Access)
+</code></pre>
+<h2 id="_2">Основные паттерны</h2>
+<h3 id="entities">Entities</h3>
+<pre><code class="language-javascript">class User {
+  constructor(id, email, profile) {
+    this.id = id;
+    this.email = email;
+    this.profile = profile;
+  }
+
+  updateProfile(newProfile) {
+    if (!newProfile.name?.trim()) {
+      throw new Error('Name is required');
+    }
+    this.profile = { ...this.profile, ...newProfile };
+    DomainEvents.raise(new UserProfileUpdatedEvent(this.id, this.profile));
+  }
+}
+</code></pre>
+<h3 id="value-objects">Value Objects</h3>
+<pre><code class="language-javascript">class Email {
+  constructor(value) {
+    if (!this.isValid(value)) throw new Error('Invalid email');
+    this.value = value;
+  }
+
+  isValid(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  }
+
+  equals(other) {
+    return other instanceof Email &amp;&amp; this.value === other.value;
+  }
+}
+
+class Money {
+  constructor(amount, currency = 'USD') {
+    this.amount = amount;
+    this.currency = currency;
+  }
+
+  add(other) {
+    if (this.currency !== other.currency) {
+      throw new Error('Cannot add different currencies');
+    }
+    return new Money(this.amount + other.amount, this.currency);
+  }
+}
+</code></pre>
+<h3 id="aggregates">Aggregates</h3>
+<pre><code class="language-javascript">class Order {
+  constructor(id, customerId) {
+    this.id = id;
+    this.customerId = customerId;
+    this.items = [];
+    this.status = 'draft';
+  }
+
+  addItem(product, quantity, price) {
+    if (this.status !== 'draft') {
+      throw new Error('Cannot modify confirmed order');
+    }
+
+    const item = new OrderItem(product, quantity, price);
+    this.items.push(item);
+    DomainEvents.raise(new ItemAddedToOrderEvent(this.id, item));
+  }
+
+  confirm() {
+    if (this.items.length === 0) throw new Error('Cannot confirm empty order');
+    this.status = 'confirmed';
+    DomainEvents.raise(new OrderConfirmedEvent(this.id));
+  }
+}
+</code></pre>
+<h2 id="domain-services">Domain Services</h2>
+<pre><code class="language-javascript">class OrderPricingService {
+  constructor(discountRepository, taxService) {
+    this.discountRepository = discountRepository;
+    this.taxService = taxService;
+  }
+
+  async calculateTotal(order, customer) {
+    let total = order.getSubtotal();
+
+    const discounts = await this.discountRepository.findApplicable(customer, order);
+    discounts.forEach(discount =&gt; total = discount.apply(total));
+
+    const tax = await this.taxService.calculate(total, customer.address);
+    return total.add(tax);
+  }
+}
+</code></pre>
+<h2 id="domain-events">Domain Events</h2>
+<pre><code class="language-javascript">class DomainEvents {
+  static handlers = new Map();
+  static events = [];
+
+  static subscribe(eventType, handler) {
+    if (!this.handlers.has(eventType)) {
+      this.handlers.set(eventType, []);
+    }
+    this.handlers.get(eventType).push(handler);
+  }
+
+  static raise(event) {
+    this.events.push(event);
+  }
+
+  static async dispatch() {
+    const events = [...this.events];
+    this.events.length = 0;
+
+    for (const event of events) {
+      const handlers = this.handlers.get(event.constructor) || [];
+      for (const handler of handlers) {
+        await handler(event);
+      }
+    }
+  }
+}
+
+// Использование
+DomainEvents.subscribe(OrderConfirmedEvent, async (event) =&gt; {
+  await notificationService.sendConfirmation(event.orderId);
+});
+</code></pre>
+<h2 id="application-layer">Application Layer</h2>
+<pre><code class="language-javascript">class UserApplicationService {
+  constructor(userRepository, eventDispatcher) {
+    this.userRepository = userRepository;
+    this.eventDispatcher = eventDispatcher;
+  }
+
+  async updateProfile(userId, profileData) {
+    const user = await this.userRepository.findById(userId);
+    if (!user) throw new Error('User not found');
+
+    user.updateProfile(profileData);
+    await this.userRepository.save(user);
+    await DomainEvents.dispatch();
+
+    return user;
+  }
+}
+</code></pre>
+<h2 id="repository-pattern">Repository Pattern</h2>
+<pre><code class="language-javascript">class UserRepository {
+  async findById(id) { throw new Error('Must implement'); }
+  async save(user) { throw new Error('Must implement'); }
+}
+
+class HttpUserRepository extends UserRepository {
+  constructor(httpClient) {
+    super();
+    this.httpClient = httpClient;
+  }
+
+  async findById(id) {
+    const response = await this.httpClient.get(`/api/users/${id}`);
+    return this.mapToEntity(response.data);
+  }
+
+  async save(user) {
+    const dto = this.mapToDto(user);
+    if (user.id) {
+      await this.httpClient.put(`/api/users/${user.id}`, dto);
+    } else {
+      const response = await this.httpClient.post('/api/users', dto);
+      user.id = response.data.id;
+    }
+    return user;
+  }
+
+  mapToEntity(data) {
+    return new User(data.id, new Email(data.email), data.profile);
+  }
+}
+</code></pre>
+<h2 id="react-integration">React Integration</h2>
+<h3 id="custom-hook-ddd">Custom Hook с DDD</h3>
+<pre><code class="language-javascript">const useUser = (userId) =&gt; {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const userService = useService('userService');
+
+  const updateProfile = useCallback(async (profileData) =&gt; {
+    const updatedUser = await userService.updateProfile(userId, profileData);
+    setUser(updatedUser);
+    return updatedUser;
+  }, [userId, userService]);
+
+  useEffect(() =&gt; {
+    if (!userId) return;
+    userService.getUser(userId).then(setUser).finally(() =&gt; setLoading(false));
+  }, [userId, userService]);
+
+  return { user, loading, updateProfile };
+};
+</code></pre>
+<h3 id="dependency-injection">Dependency Injection</h3>
+<pre><code class="language-javascript">class DIContainer {
+  constructor() {
+    this.dependencies = new Map();
+    this.singletons = new Map();
+  }
+
+  register(token, factory, options = {}) {
+    this.dependencies.set(token, { factory, options });
+  }
+
+  resolve(token) {
+    const dep = this.dependencies.get(token);
+    if (!dep) throw new Error(`Dependency ${token} not found`);
+
+    if (dep.options.singleton) {
+      if (!this.singletons.has(token)) {
+        this.singletons.set(token, dep.factory(this));
+      }
+      return this.singletons.get(token);
+    }
+    return dep.factory(this);
+  }
+}
+
+// Setup
+const container = new DIContainer();
+container.register('userRepository', (c) =&gt; new HttpUserRepository(c.resolve('httpClient')));
+container.register('userService', (c) =&gt; new UserApplicationService(c.resolve('userRepository')));
+
+// React Context
+const DIContext = createContext(container);
+const useService = (token) =&gt; {
+  const container = useContext(DIContext);
+  return useMemo(() =&gt; container.resolve(token), [container, token]);
+};
+</code></pre>
+<h2 id="bounded-contexts">Bounded Contexts</h2>
+<pre><code class="language-javascript">// User Context
+const UserContext = {
+  entities: { User },
+  valueObjects: { Email, Password },
+  services: { UserRegistrationService },
+  repositories: { UserRepository }
+};
+
+// Order Context  
+const OrderContext = {
+  entities: { Order, OrderItem },
+  valueObjects: { Money, OrderStatus },
+  services: { OrderPricingService },
+  repositories: { OrderRepository }
+};
+
+// Communication between contexts через Domain Events
+DomainEvents.subscribe(UserRegisteredEvent, async (event) =&gt; {
+  // Order context реагирует на событие из User context
+  await orderService.createWelcomeDiscount(event.userId);
+});
+</code></pre>
+<h2 id="testing-ddd">Testing DDD</h2>
+<pre><code class="language-javascript">describe('User Entity', () =&gt; {
+  it('should update profile with valid data', () =&gt; {
+    const user = new User('123', new Email('test@example.com'), {});
+
+    user.updateProfile({ name: 'John' });
+
+    expect(user.profile.name).toBe('John');
+  });
+
+  it('should throw error for invalid profile', () =&gt; {
+    const user = new User('123', new Email('test@example.com'), {});
+
+    expect(() =&gt; user.updateProfile({ name: '' })).toThrow('Name is required');
+  });
+});
+
+// Application Service Testing
+describe('UserApplicationService', () =&gt; {
+  let userRepository;
+  let userService;
+
+  beforeEach(() =&gt; {
+    userRepository = new InMemoryUserRepository();
+    userService = new UserApplicationService(userRepository);
+  });
+
+  it('should update user profile', async () =&gt; {
+    const user = new User('123', new Email('test@example.com'), {});
+    await userRepository.save(user);
+
+    await userService.updateProfile('123', { name: 'John' });
+
+    const updatedUser = await userRepository.findById('123');
+    expect(updatedUser.profile.name).toBe('John');
+  });
+});
+</code></pre>
+<h2 id="ddd">Ключевые принципы DDD</h2>
+<p><strong>Entity vs Value Object</strong>:
+- Entity: Имеет идентичность, может изменяться
+- Value Object: Неизменяемый, определяется значением</p>
+<p><strong>Aggregate Rules</strong>:
+- Один агрегат = одна транзакция
+- Ссылки между агрегатами только по ID
+- Агрегат - граница консистентности</p>
+<p><strong>Domain Events</strong>:
+- Слабое связывание между агрегатами
+- Асинхронная обработка side effects
+- Audit trail и event sourcing</p>
+<p><strong>Repository Pattern</strong>:
+- Абстракция доступа к данным
+- Коллекция доменных объектов
+- Инкапсуляция логики запросов</p>
+<h2 id="_3">Структура проекта</h2>
+<pre><code>src/
+├── domain/
+│   ├── entities/
+│   ├── value-objects/
+│   ├── services/
+│   └── events/
+├── application/
+│   ├── services/
+│   └── use-cases/
+├── infrastructure/
+│   ├── repositories/
+│   └── external-services/
+└── presentation/
+    ├── components/
+    ├── hooks/
+    └── contexts/
+</code></pre>
+<h2 id="best-practices-senior-level">Best Practices Senior-level</h2>
+<ol>
+<li><strong>Thin UI Layer</strong>: Вся бизнес-логика в Domain слое</li>
+<li><strong>Immutable Value Objects</strong>: Неизменяемость для безопасности</li>
+<li><strong>Single Aggregate Transaction</strong>: Одна транзакция = один агрегат  </li>
+<li><strong>Domain Events</strong>: Связывание агрегатов через события</li>
+<li><strong>Repository Abstraction</strong>: Интерфейсы для тестирования</li>
+<li><strong>Dependency Injection</strong>: Инверсия зависимостей</li>
+<li><strong>Bounded Context Isolation</strong>: Четкие границы контекстов</li>
+</ol>
+<h2 id="senior">Частые Senior вопросы</h2>
+<ul>
+<li><strong>Когда использовать Entity vs Value Object?</strong></li>
+<li><strong>Как обеспечить консистентность между агрегатами?</strong></li>
+<li><strong>Где размещать валидацию в DDD?</strong></li>
+<li><strong>Как тестировать доменную логику изолированно?</strong></li>
+<li><strong>Как организовать коммуникацию между Bounded Contexts?</strong></li>
+<li><strong>Когда DDD оправдан во frontend приложениях?</strong></li>
+<li><strong>Как интегрировать DDD с современными React паттернами?</strong></li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../ddd/" class="btn btn-neutral float-left" title="Domain-Driven Design (DDD) во Frontend"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../microfrontends/" class="btn btn-neutral float-right" title="Микрофронтенды (Microfrontends)">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../ddd/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../microfrontends/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../..";</script>
+    <script src="../../../js/theme_extra.js"></script>
+    <script src="../../../js/theme.js"></script>
+      <script src="../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

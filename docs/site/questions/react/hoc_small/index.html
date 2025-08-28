@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../../img/favicon.ico" />
+    <title>Higher-Order Components - Senior Cheat Sheet (small) - My Docs</title>
+    <link rel="stylesheet" href="../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Higher-Order Components - Senior Cheat Sheet (small)";
+        var mkdocs_page_input_path = "questions/react/hoc_small.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../../.." class="icon icon-home"> My Docs
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../..">📚 Подготовка к собеседованию: JavaScript, React и архитектура</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Questions</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" >Architecture</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/ddd/">Domain-Driven Design (DDD) во Frontend</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/ddd_small/">Domain-Driven Design (DDD) во Frontend (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/microfrontends/">Микрофронтенды (Microfrontends)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/microfrontends_small/">Microfrontends - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/offline-first/">Offline-first архитектура</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/offline-first_small/">Offline-First Архитектура (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/resilient-frontend/">Устойчивая frontend архитектура</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/resilient-frontend_small/">Устойчивая Frontend Архитектура (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/state-management/">Архитектура управления состоянием</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/state-management_small/">State Management Architecture - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/websockets-realtime/">WebSockets и real-time коммуникация</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/websockets-realtime_small/">WebSockets и Real-time коммуникация (small)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Javascript</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/async-programming/">Promises, Async/Await и Generators</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/async-programming_small/">Async Programming - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/currying/">Currying в JavaScript</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/currying_small/">Currying - Шпаргалка (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/event-loop/">Event Loop, Microtasks и Macrotasks</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/event-loop_small/">Event Loop - Шпаргалка (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/execution-model/">Модель выполнения JavaScript</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/execution-model_small/">JavaScript Execution Model - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/garbage-collection/">Garbage Collection и оптимизация памяти</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/garbage-collection_small/">Garbage Collection - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/scope-hoisting/">Let, Const, Var: Scope и Hoisting</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/scope-hoisting_small/">Let, Const, Var - Шпаргалка (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/typing-comparison/">Сравнение типизации JS и Java</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/typing-comparison_small/">JS vs Java Typing + TypeScript - Senior Cheat Sheet (small)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Performance</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../performance/optimization/">Оптимизация производительности frontend-приложений</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../performance/optimization_small/">Оптимизация производительности Frontend (small)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" >React</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../concurrent-rendering/">Конкурентный рендеринг React 18</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../concurrent-rendering_small/">React 18 Concurrent Rendering - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../context-api/">Context API vs Redux</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../context-api_small/">Context API vs Redux - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../hoc/">Higher-Order Components (HOC)</a>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" href="#">Higher-Order Components - Senior Cheat Sheet (small)</a>
+    <ul class="current">
+    <li class="toctree-l3"><a class="reference internal" href="#_1">Основная концепция</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_2">Основные паттерны</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#1-authentication">1. Authentication</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#2-data-fetching">2. Data Fetching</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#3-error-boundary">3. Error Boundary</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#4-hoc">4. Конфигурируемый HOC</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#hoc">Композиция HOC</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#performance">Performance оптимизация</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#_3">Мемоизация</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#forward-refs">Forward Refs</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#typescript">TypeScript типизация</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_4">Современные альтернативы</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#custom-hooks">Custom Hooks (предпочтительно)</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#render-props">Render Props</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_5">Лучшие практики</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#displayname">DisplayName и статические методы</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_6">Тестирование</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_7">Когда использовать</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#hoc_1">✅ Хорошо для HOC</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#hooks">❌ Лучше hooks</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#senior-rules">Senior Rules</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#anti-patterns">Anti-patterns</a>
+    </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../reconciliation/">Reconciliation и Virtual DOM</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../reconciliation_small/">Reconciliation &amp; Virtual DOM - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../rerender-optimization/">Оптимизация ререндеров в React</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../rerender-optimization_small/">React Rerender Optimization - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../ssr-rsc/">SSR/SSG и React Server Components</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../ssr-rsc_small/">SSR/SSG &amp; React Server Components - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../use-effect/">useEffect и Side Effects</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../use-effect_small/">useEffect &amp; Side Effects - Senior Cheat Sheet</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Security</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../security/frontend-security/">Безопасность Frontend Приложений</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../security/frontend-security_small/">Frontend Security (small)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Testing</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../testing/strategies/">Стратегии тестирования frontend-приложений</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../testing/strategies_small/">Стратегии тестирования Frontend (small)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Typescript</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../typescript/advanced-types/">Продвинутые типы TypeScript</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../typescript/advanced-types_small/">Продвинутые типы TypeScript (small)</a>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../..">My Docs</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Questions</li>
+          <li class="breadcrumb-item">React</li>
+      <li class="breadcrumb-item active">Higher-Order Components - Senior Cheat Sheet (small)</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="higher-order-components-senior-cheat-sheet-small">Higher-Order Components - Senior Cheat Sheet (small)</h1>
+<h2 id="_1">Основная концепция</h2>
+<p><strong>HOC</strong> = функция, принимающая компонент и возвращающая новый компонент с дополнительной функциональностью</p>
+<pre><code class="language-jsx">function withEnhancement(WrappedComponent) {
+  return function EnhancedComponent(props) {
+    // Дополнительная логика
+    return &lt;WrappedComponent {...props} additionalProp=&quot;value&quot; /&gt;;
+  };
+}
+</code></pre>
+<h2 id="_2">Основные паттерны</h2>
+<h3 id="1-authentication">1. Authentication</h3>
+<pre><code class="language-jsx">function withAuth(WrappedComponent) {
+  return function AuthComponent(props) {
+    const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
+
+    useEffect(() =&gt; {
+      const checkAuth = async () =&gt; {
+        const token = localStorage.getItem('token');
+        if (!token) {
+          navigate('/login');
+          return;
+        }
+
+        const user = await fetchUser(token);
+        if (!user) navigate('/login');
+        else setUser(user);
+        setLoading(false);
+      };
+
+      checkAuth();
+    }, []);
+
+    if (loading) return &lt;div&gt;Loading...&lt;/div&gt;;
+    if (!user) return null;
+
+    return &lt;WrappedComponent {...props} user={user} /&gt;;
+  };
+}
+
+// Использование
+const ProtectedDashboard = withAuth(Dashboard);
+</code></pre>
+<h3 id="2-data-fetching">2. Data Fetching</h3>
+<pre><code class="language-jsx">function withDataFetching(url) {
+  return function(WrappedComponent) {
+    return function DataComponent(props) {
+      const [data, setData] = useState(null);
+      const [loading, setLoading] = useState(true);
+      const [error, setError] = useState(null);
+
+      useEffect(() =&gt; {
+        let mounted = true;
+
+        fetch(url)
+          .then(r =&gt; r.json())
+          .then(data =&gt; mounted &amp;&amp; setData(data))
+          .catch(err =&gt; mounted &amp;&amp; setError(err))
+          .finally(() =&gt; mounted &amp;&amp; setLoading(false));
+
+        return () =&gt; { mounted = false; };
+      }, []);
+
+      if (loading) return &lt;div&gt;Loading...&lt;/div&gt;;
+      if (error) return &lt;div&gt;Error: {error.message}&lt;/div&gt;;
+
+      return &lt;WrappedComponent {...props} data={data} /&gt;;
+    };
+  };
+}
+
+const UsersWithData = withDataFetching('/api/users')(UserList);
+</code></pre>
+<h3 id="3-error-boundary">3. Error Boundary</h3>
+<pre><code class="language-jsx">function withErrorBoundary(WrappedComponent) {
+  class ErrorBoundary extends Component {
+    constructor(props) {
+      super(props);
+      this.state = { hasError: false, error: null };
+    }
+
+    static getDerivedStateFromError(error) {
+      return { hasError: true, error };
+    }
+
+    componentDidCatch(error, errorInfo) {
+      console.error('HOC Error:', error, errorInfo);
+    }
+
+    render() {
+      if (this.state.hasError) {
+        return (
+          &lt;div&gt;
+            &lt;h2&gt;Something went wrong&lt;/h2&gt;
+            &lt;button onClick={() =&gt; window.location.reload()}&gt;
+              Reload
+            &lt;/button&gt;
+          &lt;/div&gt;
+        );
+      }
+
+      return &lt;WrappedComponent {...this.props} /&gt;;
+    }
+  }
+
+  return ErrorBoundary;
+}
+</code></pre>
+<h3 id="4-hoc">4. Конфигурируемый HOC</h3>
+<pre><code class="language-jsx">function withRetry(config = {}) {
+  const { maxRetries = 3, delay = 1000 } = config;
+
+  return function(WrappedComponent) {
+    return function RetryComponent(props) {
+      const [retryCount, setRetryCount] = useState(0);
+      const [error, setError] = useState(null);
+
+      const retry = () =&gt; {
+        if (retryCount &lt; maxRetries) {
+          setTimeout(() =&gt; {
+            setRetryCount(prev =&gt; prev + 1);
+            setError(null);
+          }, delay);
+        }
+      };
+
+      return &lt;WrappedComponent {...props} onError={setError} retry={retry} /&gt;;
+    };
+  };
+}
+
+const ReliableComponent = withRetry({ maxRetries: 5 })(MyComponent);
+</code></pre>
+<h2 id="hoc">Композиция HOC</h2>
+<pre><code class="language-jsx">// Функция композиции
+function compose(...hocs) {
+  return (WrappedComponent) =&gt; 
+    hocs.reduceRight((acc, hoc) =&gt; hoc(acc), WrappedComponent);
+}
+
+// Использование
+const EnhancedComponent = compose(
+  withAuth,
+  withErrorBoundary,
+  withDataFetching('/api/data')
+)(BaseComponent);
+
+// Альтернативно
+const Enhanced = withAuth(withErrorBoundary(withDataFetching(Base, '/api/data')));
+</code></pre>
+<h2 id="performance">Performance оптимизация</h2>
+<h3 id="_3">Мемоизация</h3>
+<pre><code class="language-jsx">function withMemo(WrappedComponent) {
+  const MemoComponent = React.memo(WrappedComponent);
+
+  return function MemoizedHOC(props) {
+    const enhancedProps = useMemo(() =&gt; ({
+      ...props,
+      timestamp: Date.now()
+    }), [props]);
+
+    return &lt;MemoComponent {...enhancedProps} /&gt;;
+  };
+}
+</code></pre>
+<h3 id="forward-refs">Forward Refs</h3>
+<pre><code class="language-jsx">function withForwardRef(WrappedComponent) {
+  const WithRefComponent = forwardRef((props, ref) =&gt; {
+    return &lt;WrappedComponent {...props} forwardedRef={ref} /&gt;;
+  });
+
+  WithRefComponent.displayName = `withForwardRef(${WrappedComponent.name})`;
+  return WithRefComponent;
+}
+</code></pre>
+<h2 id="typescript">TypeScript типизация</h2>
+<pre><code class="language-tsx">interface WithLoadingProps {
+  loading?: boolean;
+}
+
+function withLoading&lt;P extends object&gt;(
+  WrappedComponent: React.ComponentType&lt;P&gt;
+): React.ComponentType&lt;P &amp; WithLoadingProps&gt; {
+  return function WithLoadingComponent(props: P &amp; WithLoadingProps) {
+    const { loading, ...restProps } = props;
+
+    if (loading) return &lt;div&gt;Loading...&lt;/div&gt;;
+
+    return &lt;WrappedComponent {...(restProps as P)} /&gt;;
+  };
+}
+
+// Использование
+interface ButtonProps {
+  text: string;
+  onClick: () =&gt; void;
+}
+
+const Button: React.FC&lt;ButtonProps&gt; = ({ text, onClick }) =&gt; (
+  &lt;button onClick={onClick}&gt;{text}&lt;/button&gt;
+);
+
+const LoadableButton = withLoading(Button);
+</code></pre>
+<h2 id="_4">Современные альтернативы</h2>
+<h3 id="custom-hooks">Custom Hooks (предпочтительно)</h3>
+<pre><code class="language-jsx">// Вместо withAuth HOC
+function useAuth() {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() =&gt; {
+    checkAuth().then(setUser).finally(() =&gt; setLoading(false));
+  }, []);
+
+  return { user, loading, isAuthenticated: !!user };
+}
+
+// В компоненте
+function Dashboard() {
+  const { user, loading, isAuthenticated } = useAuth();
+
+  if (loading) return &lt;div&gt;Loading...&lt;/div&gt;;
+  if (!isAuthenticated) return &lt;Navigate to=&quot;/login&quot; /&gt;;
+
+  return &lt;div&gt;Welcome {user.name}&lt;/div&gt;;
+}
+</code></pre>
+<h3 id="render-props">Render Props</h3>
+<pre><code class="language-jsx">function DataFetcher({ url, children }) {
+  const [data, loading, error] = useFetch(url);
+  return children({ data, loading, error });
+}
+
+// Использование
+&lt;DataFetcher url=&quot;/api/users&quot;&gt;
+  {({ data, loading, error }) =&gt; {
+    if (loading) return &lt;div&gt;Loading...&lt;/div&gt;;
+    if (error) return &lt;div&gt;Error&lt;/div&gt;;
+    return &lt;UserList users={data} /&gt;;
+  }}
+&lt;/DataFetcher&gt;
+</code></pre>
+<h2 id="_5">Лучшие практики</h2>
+<h3 id="displayname">DisplayName и статические методы</h3>
+<pre><code class="language-jsx">function withLogger(WrappedComponent) {
+  function LoggerComponent(props) {
+    // логика
+    return &lt;WrappedComponent {...props} /&gt;;
+  }
+
+  // Для React DevTools
+  LoggerComponent.displayName = 
+    `withLogger(${WrappedComponent.displayName || WrappedComponent.name})`;
+
+  // Копирование статических методов
+  return hoistNonReactStatics(LoggerComponent, WrappedComponent);
+}
+</code></pre>
+<h2 id="_6">Тестирование</h2>
+<pre><code class="language-jsx">describe('withAuth', () =&gt; {
+  it('redirects when not authenticated', () =&gt; {
+    const TestComponent = () =&gt; &lt;div&gt;Protected&lt;/div&gt;;
+    const Protected = withAuth(TestComponent);
+
+    // Mock no token
+    localStorage.getItem = jest.fn(() =&gt; null);
+    const mockNavigate = jest.fn();
+
+    render(&lt;Protected /&gt;);
+    expect(mockNavigate).toHaveBeenCalledWith('/login');
+  });
+});
+</code></pre>
+<h2 id="_7">Когда использовать</h2>
+<h3 id="hoc_1">✅ Хорошо для HOC</h3>
+<ul>
+<li><strong>Legacy class components</strong> интеграция</li>
+<li><strong>Cross-cutting concerns</strong> (логирование, аналитика)</li>
+<li><strong>Библиотеки</strong> с переиспользуемой логикой</li>
+<li><strong>Сложная композиция</strong> нескольких функций</li>
+</ul>
+<h3 id="hooks">❌ Лучше hooks</h3>
+<ul>
+<li><strong>Простая логика</strong> состояния</li>
+<li><strong>Новые проекты</strong> на функциональных компонентах</li>
+<li><strong>Одноразовое использование</strong></li>
+<li><strong>React 16.8+</strong> приложения</li>
+</ul>
+<h2 id="senior-rules">Senior Rules</h2>
+<ol>
+<li><strong>Hooks &gt; HOC</strong> в новых проектах</li>
+<li><strong>displayName always</strong> - для debugging  </li>
+<li><strong>hoistNonReactStatics</strong> для статических методов</li>
+<li><strong>Forward refs</strong> когда нужно</li>
+<li><strong>Compose pattern</strong> для множественных HOC</li>
+<li><strong>Тестируй отдельно</strong> от wrapped компонента</li>
+<li><strong>TypeScript generics</strong> для типизации</li>
+<li><strong>Максимум 2-3 HOC</strong> в композиции</li>
+</ol>
+<h2 id="anti-patterns">Anti-patterns</h2>
+<pre><code class="language-jsx">// ❌ Создание HOC внутри render
+function Parent() {
+  const EnhancedChild = withLoading(Child); // Новый тип каждый рендер!
+  return &lt;EnhancedChild /&gt;;
+}
+
+// ❌ Мутация оригинального компонента
+function badHOC(WrappedComponent) {
+  WrappedComponent.prototype.componentDidMount = function() {}; // Мутация!
+  return WrappedComponent;
+}
+
+// ❌ Не проброс props
+function withoutProps(WrappedComponent) {
+  return (props) =&gt; &lt;WrappedComponent /&gt;; // props потеряны!
+}
+</code></pre>
+<p><strong>Главное</strong>: HOC - legacy pattern. Используй hooks для новой логики, HOC для интеграции и cross-cutting concerns!</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../hoc/" class="btn btn-neutral float-left" title="Higher-Order Components (HOC)"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../reconciliation/" class="btn btn-neutral float-right" title="Reconciliation и Virtual DOM">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../hoc/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../reconciliation/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../..";</script>
+    <script src="../../../js/theme_extra.js"></script>
+    <script src="../../../js/theme.js"></script>
+      <script src="../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

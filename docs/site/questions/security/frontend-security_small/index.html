@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../../img/favicon.ico" />
+    <title>Frontend Security (small) - My Docs</title>
+    <link rel="stylesheet" href="../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Frontend Security (small)";
+        var mkdocs_page_input_path = "questions/security/frontend-security_small.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../../.." class="icon icon-home"> My Docs
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../..">📚 Подготовка к собеседованию: JavaScript, React и архитектура</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Questions</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" >Architecture</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/ddd/">Domain-Driven Design (DDD) во Frontend</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/ddd_small/">Domain-Driven Design (DDD) во Frontend (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/microfrontends/">Микрофронтенды (Microfrontends)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/microfrontends_small/">Microfrontends - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/offline-first/">Offline-first архитектура</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/offline-first_small/">Offline-First Архитектура (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/resilient-frontend/">Устойчивая frontend архитектура</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/resilient-frontend_small/">Устойчивая Frontend Архитектура (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/state-management/">Архитектура управления состоянием</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/state-management_small/">State Management Architecture - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/websockets-realtime/">WebSockets и real-time коммуникация</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/websockets-realtime_small/">WebSockets и Real-time коммуникация (small)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Javascript</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/async-programming/">Promises, Async/Await и Generators</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/async-programming_small/">Async Programming - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/currying/">Currying в JavaScript</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/currying_small/">Currying - Шпаргалка (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/event-loop/">Event Loop, Microtasks и Macrotasks</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/event-loop_small/">Event Loop - Шпаргалка (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/execution-model/">Модель выполнения JavaScript</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/execution-model_small/">JavaScript Execution Model - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/garbage-collection/">Garbage Collection и оптимизация памяти</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/garbage-collection_small/">Garbage Collection - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/scope-hoisting/">Let, Const, Var: Scope и Hoisting</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/scope-hoisting_small/">Let, Const, Var - Шпаргалка (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/typing-comparison/">Сравнение типизации JS и Java</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/typing-comparison_small/">JS vs Java Typing + TypeScript - Senior Cheat Sheet (small)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Performance</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../performance/optimization/">Оптимизация производительности frontend-приложений</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../performance/optimization_small/">Оптимизация производительности Frontend (small)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >React</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/concurrent-rendering/">Конкурентный рендеринг React 18</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/concurrent-rendering_small/">React 18 Concurrent Rendering - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/context-api/">Context API vs Redux</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/context-api_small/">Context API vs Redux - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/hoc/">Higher-Order Components (HOC)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/hoc_small/">Higher-Order Components - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/reconciliation/">Reconciliation и Virtual DOM</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/reconciliation_small/">Reconciliation &amp; Virtual DOM - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/rerender-optimization/">Оптимизация ререндеров в React</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/rerender-optimization_small/">React Rerender Optimization - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/ssr-rsc/">SSR/SSG и React Server Components</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/ssr-rsc_small/">SSR/SSG &amp; React Server Components - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/use-effect/">useEffect и Side Effects</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/use-effect_small/">useEffect &amp; Side Effects - Senior Cheat Sheet</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" >Security</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../frontend-security/">Безопасность Frontend Приложений</a>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" href="#">Frontend Security (small)</a>
+    <ul class="current">
+    <li class="toctree-l3"><a class="reference internal" href="#owasp-top-10-frontend-focus">OWASP Top 10 Frontend Focus</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#xss-protection">XSS Protection</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#_1">Санитизация и валидация</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#content-security-policy-csp">Content Security Policy (CSP)</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#csrf-protection">CSRF Protection</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#jwt-security">JWT Security</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#_2">Безопасное хранение токенов</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#session-management">Session Management</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#security-headers">Security Headers</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#_3">Полный набор заголовков</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#dependency-security">Dependency Security</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#supply-chain-protection">Supply Chain Protection</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#subresource-integrity-sri">Subresource Integrity (SRI)</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#data-protection">Data Protection</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#_4">Шифрование на клиенте</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#transport-security">Transport Security</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#https-enforcement">HTTPS Enforcement</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#security-testing">Security Testing</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#automated-security-testing">Automated Security Testing</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#security-audit-automation">Security Audit Automation</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#security-monitoring">Security Monitoring</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#real-time-security-monitoring">Real-time Security Monitoring</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#security-checklist-senior">Security Checklist для Senior</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#development-phase">Development Phase</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#production-phase">Production Phase</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#code-review-focus">Code Review Focus</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#security-tools-senior">Security Tools для Senior</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#senior">Частые Senior вопросы</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#must-know-security-concepts">Must-know Security Concepts</a>
+    </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Testing</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../testing/strategies/">Стратегии тестирования frontend-приложений</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../testing/strategies_small/">Стратегии тестирования Frontend (small)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Typescript</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../typescript/advanced-types/">Продвинутые типы TypeScript</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../typescript/advanced-types_small/">Продвинутые типы TypeScript (small)</a>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../..">My Docs</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Questions</li>
+          <li class="breadcrumb-item">Security</li>
+      <li class="breadcrumb-item active">Frontend Security (small)</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="frontend-security-small">Frontend Security (small)</h1>
+<h2 id="owasp-top-10-frontend-focus">OWASP Top 10 Frontend Focus</h2>
+<ol>
+<li><strong>XSS</strong> - Injection attacks, DOM manipulation</li>
+<li><strong>CSRF</strong> - Cross-site request forgery</li>
+<li><strong>Sensitive Data Exposure</strong> - Client-side data leaks</li>
+<li><strong>Broken Authentication</strong> - JWT/session mishandling</li>
+<li><strong>Security Misconfiguration</strong> - Missing headers, CSP</li>
+<li><strong>Vulnerable Dependencies</strong> - Supply chain attacks</li>
+<li><strong>Insufficient Access Control</strong> - Client-side authorization</li>
+<li><strong>Insecure Deserialization</strong> - JSON/data parsing</li>
+<li><strong>Logging &amp; Monitoring</strong> - Security event tracking</li>
+<li><strong>Transport Security</strong> - HTTPS, certificate issues</li>
+</ol>
+<h2 id="xss-protection">XSS Protection</h2>
+<h3 id="_1">Санитизация и валидация</h3>
+<pre><code class="language-javascript">import DOMPurify from 'dompurify';
+
+// Санитизация HTML
+const sanitizeHTML = (dirty) =&gt; DOMPurify.sanitize(dirty, {
+  ALLOWED_TAGS: ['b', 'i', 'em', 'strong', 'a'],
+  ALLOWED_ATTR: ['href']
+});
+
+// React безопасность
+function UserComment({ comment }) {
+  // ❌ Опасно
+  // return &lt;div dangerouslySetInnerHTML={{__html: comment.text}} /&gt;;
+
+  // ✅ Безопасно
+  const sanitized = DOMPurify.sanitize(comment.text);
+  return &lt;div dangerouslySetInnerHTML={{__html: sanitized}} /&gt;;
+}
+
+// Экранирование атрибутов
+const escapeAttribute = (str) =&gt; str.replace(/[&amp;&lt;&gt;&quot;']/g, match =&gt; ({
+  '&amp;': '&amp;amp;', '&lt;': '&amp;lt;', '&gt;': '&amp;gt;', '&quot;': '&amp;quot;', &quot;'&quot;: '&amp;#x27;'
+})[match]);
+</code></pre>
+<h3 id="content-security-policy-csp">Content Security Policy (CSP)</h3>
+<pre><code class="language-javascript">// Строгая CSP конфигурация
+const cspConfig = {
+  'default-src': [&quot;'self'&quot;],
+  'script-src': [&quot;'self'&quot;, &quot;'nonce-${nonce}'&quot;, &quot;'strict-dynamic'&quot;],
+  'style-src': [&quot;'self'&quot;, &quot;'unsafe-inline'&quot;, 'https://fonts.googleapis.com'],
+  'font-src': [&quot;'self'&quot;, 'https://fonts.gstatic.com'],
+  'img-src': [&quot;'self'&quot;, 'data:', 'https:'],
+  'connect-src': [&quot;'self'&quot;, 'https://api.yourdomain.com'],
+  'object-src': [&quot;'none'&quot;],
+  'base-uri': [&quot;'self'&quot;]
+};
+
+// Генерация nonce
+const generateNonce = () =&gt; Buffer.from(crypto.randomBytes(16)).toString('base64');
+
+// CSP нарушения мониторинг
+window.addEventListener('securitypolicyviolation', (event) =&gt; {
+  fetch('/api/csp-report', {
+    method: 'POST',
+    body: JSON.stringify({
+      directive: event.violatedDirective,
+      blockedURI: event.blockedURI,
+      sourceFile: event.sourceFile,
+      lineNumber: event.lineNumber
+    })
+  });
+});
+</code></pre>
+<h2 id="csrf-protection">CSRF Protection</h2>
+<pre><code class="language-javascript">// CSRF Token management
+class CSRFProtection {
+  constructor() {
+    this.token = null;
+    this.refreshToken();
+  }
+
+  async refreshToken() {
+    const response = await fetch('/api/csrf-token');
+    const { token } = await response.json();
+    this.token = token;
+  }
+
+  async secureRequest(url, options = {}) {
+    return fetch(url, {
+      ...options,
+      headers: {
+        ...options.headers,
+        'X-CSRF-Token': this.token,
+        'Content-Type': 'application/json'
+      }
+    });
+  }
+}
+
+// SameSite cookies configuration
+const cookieConfig = {
+  sameSite: 'Strict',  // или 'Lax' для cross-site navigation
+  secure: true,        // только HTTPS
+  httpOnly: true       // недоступно из JavaScript
+};
+</code></pre>
+<h2 id="jwt-security">JWT Security</h2>
+<h3 id="_2">Безопасное хранение токенов</h3>
+<pre><code class="language-javascript">class TokenManager {
+  constructor() {
+    this.accessToken = null; // В памяти
+    this.refreshToken = null; // HttpOnly cookie (сервер)
+  }
+
+  async getAccessToken() {
+    if (!this.accessToken || this.isExpired(this.accessToken)) {
+      await this.refreshAccessToken();
+    }
+    return this.accessToken;
+  }
+
+  async refreshAccessToken() {
+    try {
+      const response = await fetch('/api/refresh', {
+        method: 'POST',
+        credentials: 'include' // HttpOnly cookie
+      });
+
+      if (!response.ok) throw new Error('Refresh failed');
+
+      const { accessToken } = await response.json();
+      this.accessToken = accessToken;
+    } catch (error) {
+      this.logout();
+    }
+  }
+
+  isExpired(token) {
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      return payload.exp * 1000 &lt; Date.now();
+    } catch {
+      return true;
+    }
+  }
+
+  logout() {
+    this.accessToken = null;
+    fetch('/api/logout', { method: 'POST', credentials: 'include' });
+    window.location.href = '/login';
+  }
+}
+</code></pre>
+<h3 id="session-management">Session Management</h3>
+<pre><code class="language-javascript">class SessionManager {
+  constructor() {
+    this.sessionTimeout = 30 * 60 * 1000; // 30 min
+    this.warningTime = 5 * 60 * 1000; // 5 min warning
+    this.lastActivity = Date.now();
+    this.setupActivityTracking();
+  }
+
+  setupActivityTracking() {
+    ['mousedown', 'keypress', 'scroll', 'touchstart'].forEach(event =&gt; {
+      document.addEventListener(event, () =&gt; this.updateActivity(), true);
+    });
+
+    setInterval(() =&gt; this.checkSession(), 60000);
+  }
+
+  updateActivity() {
+    this.lastActivity = Date.now();
+  }
+
+  checkSession() {
+    const inactive = Date.now() - this.lastActivity;
+
+    if (inactive &gt; this.sessionTimeout) {
+      this.logout();
+    } else if (inactive &gt; this.sessionTimeout - this.warningTime) {
+      this.showSessionWarning();
+    }
+  }
+}
+</code></pre>
+<h2 id="security-headers">Security Headers</h2>
+<h3 id="_3">Полный набор заголовков</h3>
+<pre><code class="language-javascript">const securityHeaders = {
+  // Content Security Policy
+  'Content-Security-Policy': &quot;default-src 'self'; script-src 'self' 'nonce-xyz'&quot;,
+
+  // Clickjacking protection
+  'X-Frame-Options': 'DENY',
+
+  // MIME type sniffing
+  'X-Content-Type-Options': 'nosniff',
+
+  // Referrer policy
+  'Referrer-Policy': 'strict-origin-when-cross-origin',
+
+  // Transport security
+  'Strict-Transport-Security': 'max-age=31536000; includeSubDomains; preload',
+
+  // Permissions policy
+  'Permissions-Policy': 'geolocation=(), microphone=(), camera=()',
+
+  // XSS protection (legacy)
+  'X-XSS-Protection': '1; mode=block'
+};
+
+// React Helmet для SPA
+import { Helmet } from 'react-helmet';
+
+const SecurityHeaders = () =&gt; (
+  &lt;Helmet&gt;
+    {Object.entries(securityHeaders).map(([name, value]) =&gt; (
+      &lt;meta key={name} httpEquiv={name} content={value} /&gt;
+    ))}
+  &lt;/Helmet&gt;
+);
+</code></pre>
+<h2 id="dependency-security">Dependency Security</h2>
+<h3 id="supply-chain-protection">Supply Chain Protection</h3>
+<pre><code class="language-bash"># Аудит зависимостей
+npm audit --audit-level=moderate
+yarn audit
+
+# Точные версии в package.json
+{
+  &quot;dependencies&quot;: {
+    &quot;react&quot;: &quot;18.2.0&quot;,  # без ^
+    &quot;lodash&quot;: &quot;4.17.21&quot;
+  }
+}
+
+# .npmrc настройки
+audit-level=moderate
+fund=false
+</code></pre>
+<h3 id="subresource-integrity-sri">Subresource Integrity (SRI)</h3>
+<pre><code class="language-html">&lt;!-- SRI для CDN --&gt;
+&lt;script 
+  src=&quot;https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.min.js&quot;
+  integrity=&quot;sha384-HASH_HERE&quot;
+  crossorigin=&quot;anonymous&quot;&gt;
+&lt;/script&gt;
+
+&lt;link 
+  rel=&quot;stylesheet&quot; 
+  href=&quot;https://cdn.example.com/style.css&quot;
+  integrity=&quot;sha384-HASH_HERE&quot;
+  crossorigin=&quot;anonymous&quot;&gt;
+</code></pre>
+<h2 id="data-protection">Data Protection</h2>
+<h3 id="_4">Шифрование на клиенте</h3>
+<pre><code class="language-javascript">// Symmetric encryption для локальных данных
+class DataEncryption {
+  async generateKey() {
+    return crypto.subtle.generateKey(
+      { name: 'AES-GCM', length: 256 },
+      false,
+      ['encrypt', 'decrypt']
+    );
+  }
+
+  async encrypt(data, key) {
+    const iv = crypto.getRandomValues(new Uint8Array(12));
+    const encoded = new TextEncoder().encode(JSON.stringify(data));
+
+    const encrypted = await crypto.subtle.encrypt(
+      { name: 'AES-GCM', iv },
+      key,
+      encoded
+    );
+
+    return { encrypted: Array.from(new Uint8Array(encrypted)), iv: Array.from(iv) };
+  }
+
+  async decrypt(encryptedData, key) {
+    const decrypted = await crypto.subtle.decrypt(
+      { name: 'AES-GCM', iv: new Uint8Array(encryptedData.iv) },
+      key,
+      new Uint8Array(encryptedData.encrypted)
+    );
+
+    return JSON.parse(new TextDecoder().decode(decrypted));
+  }
+}
+
+// Secure data cleanup
+class SecureDataHandler {
+  constructor() {
+    this.sensitiveData = null;
+    window.addEventListener('beforeunload', () =&gt; this.cleanup());
+  }
+
+  setSensitiveData(data) {
+    this.cleanup();
+    this.sensitiveData = data;
+  }
+
+  cleanup() {
+    if (this.sensitiveData &amp;&amp; typeof this.sensitiveData === 'string') {
+      this.sensitiveData = this.sensitiveData.replace(/./g, '0');
+    }
+    this.sensitiveData = null;
+  }
+}
+</code></pre>
+<h2 id="transport-security">Transport Security</h2>
+<h3 id="https-enforcement">HTTPS Enforcement</h3>
+<pre><code class="language-javascript">// Force HTTPS redirect
+if (location.protocol !== 'https:' &amp;&amp; location.hostname !== 'localhost') {
+  location.replace(`https:${location.href.substring(location.protocol.length)}`);
+}
+
+// Certificate validation monitoring
+fetch('/api/test').catch(error =&gt; {
+  if (error.name === 'SecurityError') {
+    console.error('Certificate validation failed');
+    // Alert security team
+  }
+});
+
+// Public key pinning check (conceptual)
+const validateCertificate = async (response) =&gt; {
+  const cert = response.headers.get('x-certificate-fingerprint');
+  const expectedHashes = ['sha256-HASH1', 'sha256-HASH2'];
+
+  if (!expectedHashes.includes(cert)) {
+    throw new Error('Certificate pinning validation failed');
+  }
+};
+</code></pre>
+<h2 id="security-testing">Security Testing</h2>
+<h3 id="automated-security-testing">Automated Security Testing</h3>
+<pre><code class="language-javascript">describe('Security Tests', () =&gt; {
+  test('XSS protection', () =&gt; {
+    const maliciousInput = '&lt;script&gt;alert(&quot;xss&quot;)&lt;/script&gt;';
+    const sanitized = DOMPurify.sanitize(maliciousInput);
+    expect(sanitized).not.toContain('&lt;script&gt;');
+  });
+
+  test('CSP headers present', async () =&gt; {
+    const response = await fetch('/');
+    expect(response.headers.get('content-security-policy')).toContain(&quot;default-src 'self'&quot;);
+  });
+
+  test('HTTPS redirect', () =&gt; {
+    expect(location.protocol).toBe('https:');
+  });
+
+  test('Token expiration', () =&gt; {
+    const expiredToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MDAwMDAwMDB9.signature';
+    expect(tokenManager.isExpired(expiredToken)).toBe(true);
+  });
+});
+</code></pre>
+<h3 id="security-audit-automation">Security Audit Automation</h3>
+<pre><code class="language-javascript">// CI/CD security checks
+const securityAudit = {
+  async checkDependencies() {
+    const { execSync } = require('child_process');
+    const audit = JSON.parse(execSync('npm audit --json', { encoding: 'utf8' }));
+
+    if (audit.metadata.vulnerabilities.high &gt; 0) {
+      throw new Error(`Found ${audit.metadata.vulnerabilities.high} high severity vulnerabilities`);
+    }
+  },
+
+  async checkHeaders() {
+    const response = await fetch(process.env.APP_URL);
+    const requiredHeaders = [
+      'content-security-policy',
+      'x-frame-options',
+      'strict-transport-security'
+    ];
+
+    requiredHeaders.forEach(header =&gt; {
+      if (!response.headers.get(header)) {
+        throw new Error(`Missing security header: ${header}`);
+      }
+    });
+  },
+
+  async checkSSL() {
+    const url = new URL(process.env.APP_URL);
+    if (url.protocol !== 'https:') {
+      throw new Error('Application must run over HTTPS');
+    }
+  }
+};
+</code></pre>
+<h2 id="security-monitoring">Security Monitoring</h2>
+<h3 id="real-time-security-monitoring">Real-time Security Monitoring</h3>
+<pre><code class="language-javascript">class SecurityMonitor {
+  constructor() {
+    this.violations = [];
+    this.setupMonitoring();
+  }
+
+  setupMonitoring() {
+    // CSP violations
+    window.addEventListener('securitypolicyviolation', this.handleCSPViolation.bind(this));
+
+    // Failed authentication attempts
+    this.monitorAuthFailures();
+
+    // Suspicious activity patterns
+    this.monitorSuspiciousActivity();
+  }
+
+  handleCSPViolation(event) {
+    const violation = {
+      type: 'csp_violation',
+      directive: event.violatedDirective,
+      blockedURI: event.blockedURI,
+      timestamp: Date.now()
+    };
+
+    this.reportViolation(violation);
+  }
+
+  monitorAuthFailures() {
+    let failedAttempts = 0;
+    const maxAttempts = 5;
+
+    document.addEventListener('auth_failure', () =&gt; {
+      failedAttempts++;
+      if (failedAttempts &gt;= maxAttempts) {
+        this.reportViolation({
+          type: 'brute_force_attempt',
+          attempts: failedAttempts,
+          timestamp: Date.now()
+        });
+      }
+    });
+  }
+
+  async reportViolation(violation) {
+    try {
+      await fetch('/api/security/violations', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(violation)
+      });
+    } catch (error) {
+      // Fallback logging
+      console.error('Security violation:', violation);
+    }
+  }
+}
+</code></pre>
+<h2 id="security-checklist-senior">Security Checklist для Senior</h2>
+<h3 id="development-phase">Development Phase</h3>
+<ul>
+<li>[ ] Input validation и sanitization</li>
+<li>[ ] Output encoding для всех пользовательских данных</li>
+<li>[ ] CSP настроен и протестирован</li>
+<li>[ ] Authentication токены хранятся безопасно</li>
+<li>[ ] CSRF protection реализован</li>
+<li>[ ] Security headers установлены</li>
+<li>[ ] Dependency audit пройден</li>
+<li>[ ] Sensitive data не логируется</li>
+</ul>
+<h3 id="production-phase">Production Phase</h3>
+<ul>
+<li>[ ] HTTPS enforced</li>
+<li>[ ] Security headers присутствуют</li>
+<li>[ ] CSP violations мониторятся</li>
+<li>[ ] Automated security scanning</li>
+<li>[ ] Incident response plan готов</li>
+<li>[ ] Regular security audits</li>
+<li>[ ] Staff security training</li>
+</ul>
+<h3 id="code-review-focus">Code Review Focus</h3>
+<ul>
+<li>[ ] XSS vectors проверены</li>
+<li>[ ] Authentication flows secure</li>
+<li>[ ] Authorization checks на клиенте и сервере</li>
+<li>[ ] Error messages не раскрывают информацию</li>
+<li>[ ] Crypto operations используют secure APIs</li>
+<li>[ ] Dependencies актуальны</li>
+<li>[ ] Debug code удален</li>
+</ul>
+<h2 id="security-tools-senior">Security Tools для Senior</h2>
+<p><strong>Static Analysis</strong>:
+- ESLint Security Plugin
+- SonarQube Security Rules
+- Semgrep для security patterns</p>
+<p><strong>Dynamic Testing</strong>:
+- OWASP ZAP
+- Burp Suite
+- Browser security extensions</p>
+<p><strong>Dependency Scanning</strong>:
+- npm audit / yarn audit
+- Snyk
+- GitHub Security Advisories</p>
+<p><strong>Monitoring</strong>:
+- CSP violation reporting
+- Authentication failure tracking
+- Abnormal traffic patterns</p>
+<h2 id="senior">Частые Senior вопросы</h2>
+<ul>
+<li><strong>Как защитить JWT токены в браузере?</strong></li>
+<li><strong>Настройка CSP для современных SPA?</strong></li>
+<li><strong>Supply chain security для frontend зависимостей?</strong></li>
+<li><strong>Разница между XSS типами и защита от каждого?</strong></li>
+<li><strong>Security headers приоритизация и конфигурация?</strong></li>
+<li><strong>CSRF protection в SPA vs traditional web apps?</strong></li>
+<li><strong>Security testing интеграция в CI/CD?</strong></li>
+<li><strong>Incident response для frontend security issues?</strong></li>
+</ul>
+<h2 id="must-know-security-concepts">Must-know Security Concepts</h2>
+<ul>
+<li><strong>Same-origin policy</strong> и CORS implications</li>
+<li><strong>Content Security Policy</strong> директивы и nonce usage</li>
+<li><strong>Authentication vs Authorization</strong> на клиенте</li>
+<li><strong>Cryptographic best practices</strong> в браузере</li>
+<li><strong>Supply chain attacks</strong> и mitigation strategies</li>
+<li><strong>Security headers</strong> полный набор и назначение</li>
+<li><strong>XSS types</strong> и specific protection mechanisms</li>
+<li><strong>CSRF tokens</strong> vs SameSite cookies effectiveness</li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../frontend-security/" class="btn btn-neutral float-left" title="Безопасность Frontend Приложений"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../../testing/strategies/" class="btn btn-neutral float-right" title="Стратегии тестирования frontend-приложений">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../frontend-security/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../../testing/strategies/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../..";</script>
+    <script src="../../../js/theme_extra.js"></script>
+    <script src="../../../js/theme.js"></script>
+      <script src="../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

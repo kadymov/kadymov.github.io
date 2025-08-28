@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../../img/favicon.ico" />
+    <title>Микрофронтенды (Microfrontends) - My Docs</title>
+    <link rel="stylesheet" href="../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "\u041c\u0438\u043a\u0440\u043e\u0444\u0440\u043e\u043d\u0442\u0435\u043d\u0434\u044b (Microfrontends)";
+        var mkdocs_page_input_path = "questions/architecture/microfrontends.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../../.." class="icon icon-home"> My Docs
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../..">📚 Подготовка к собеседованию: JavaScript, React и архитектура</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Questions</span></p>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current" >Architecture</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../ddd/">Domain-Driven Design (DDD) во Frontend</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../ddd_small/">Domain-Driven Design (DDD) во Frontend (small)</a>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" href="#">Микрофронтенды (Microfrontends)</a>
+    <ul class="current">
+    <li class="toctree-l3"><a class="reference internal" href="#_1">Описание</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_2">Детальный ответ</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#_3">Что такое микрофронтенды</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#_4">Подходы к реализации</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#_5">Коммуникация между микрофронтендами</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#ui">Стилизация и UI консистентность</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#_6">Маршрутизация в микрофронтендах</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#devops">Развертывание и DevOps</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#testing">Testing стратегии</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#_8">Мониторинг и отладка</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_9">Преимущества и недостатки</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#_10">Преимущества</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#_11">Недостатки</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#best-practices">Best Practices</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_12">Связанные темы</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_13">Рекомендации для собеседования</a>
+    </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../microfrontends_small/">Microfrontends - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../offline-first/">Offline-first архитектура</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../offline-first_small/">Offline-First Архитектура (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../resilient-frontend/">Устойчивая frontend архитектура</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../resilient-frontend_small/">Устойчивая Frontend Архитектура (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../state-management/">Архитектура управления состоянием</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../state-management_small/">State Management Architecture - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../websockets-realtime/">WebSockets и real-time коммуникация</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../websockets-realtime_small/">WebSockets и Real-time коммуникация (small)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Javascript</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/async-programming/">Promises, Async/Await и Generators</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/async-programming_small/">Async Programming - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/currying/">Currying в JavaScript</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/currying_small/">Currying - Шпаргалка (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/event-loop/">Event Loop, Microtasks и Macrotasks</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/event-loop_small/">Event Loop - Шпаргалка (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/execution-model/">Модель выполнения JavaScript</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/execution-model_small/">JavaScript Execution Model - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/garbage-collection/">Garbage Collection и оптимизация памяти</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/garbage-collection_small/">Garbage Collection - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/scope-hoisting/">Let, Const, Var: Scope и Hoisting</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/scope-hoisting_small/">Let, Const, Var - Шпаргалка (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/typing-comparison/">Сравнение типизации JS и Java</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/typing-comparison_small/">JS vs Java Typing + TypeScript - Senior Cheat Sheet (small)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Performance</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../performance/optimization/">Оптимизация производительности frontend-приложений</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../performance/optimization_small/">Оптимизация производительности Frontend (small)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >React</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/concurrent-rendering/">Конкурентный рендеринг React 18</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/concurrent-rendering_small/">React 18 Concurrent Rendering - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/context-api/">Context API vs Redux</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/context-api_small/">Context API vs Redux - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/hoc/">Higher-Order Components (HOC)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/hoc_small/">Higher-Order Components - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/reconciliation/">Reconciliation и Virtual DOM</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/reconciliation_small/">Reconciliation &amp; Virtual DOM - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/rerender-optimization/">Оптимизация ререндеров в React</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/rerender-optimization_small/">React Rerender Optimization - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/ssr-rsc/">SSR/SSG и React Server Components</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/ssr-rsc_small/">SSR/SSG &amp; React Server Components - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/use-effect/">useEffect и Side Effects</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/use-effect_small/">useEffect &amp; Side Effects - Senior Cheat Sheet</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Security</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../security/frontend-security/">Безопасность Frontend Приложений</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../security/frontend-security_small/">Frontend Security (small)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Testing</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../testing/strategies/">Стратегии тестирования frontend-приложений</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../testing/strategies_small/">Стратегии тестирования Frontend (small)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Typescript</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../typescript/advanced-types/">Продвинутые типы TypeScript</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../typescript/advanced-types_small/">Продвинутые типы TypeScript (small)</a>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../..">My Docs</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Questions</li>
+          <li class="breadcrumb-item">Architecture</li>
+      <li class="breadcrumb-item active">Микрофронтенды (Microfrontends)</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="microfrontends">Микрофронтенды (Microfrontends)</h1>
+<h2 id="_1">Описание</h2>
+<p>Вопрос касается архитектурного подхода микрофронтендов - разделения монолитного frontend-приложения на независимые, автономно развиваемые части, каждая из которых принадлежит отдельной команде.</p>
+<h2 id="_2">Детальный ответ</h2>
+<h3 id="_3">Что такое микрофронтенды</h3>
+<p><strong>Определение</strong>: Микрофронтенды - это архитектурный стиль, где независимо развиваемые frontend-приложения составляют единое целое.</p>
+<p><strong>Основные принципы</strong>:
+- Автономность команд
+- Независимое развертывание
+- Технологическая независимость
+- Изоляция кода и состояния</p>
+<h3 id="_4">Подходы к реализации</h3>
+<h4 id="1-build-time-integration">1. Build-time Integration</h4>
+<p>Интеграция на этапе сборки через NPM пакеты.</p>
+<pre><code class="language-javascript">// package.json
+{
+  &quot;dependencies&quot;: {
+    &quot;@company/header-microfrontend&quot;: &quot;^1.2.0&quot;,
+    &quot;@company/sidebar-microfrontend&quot;: &quot;^2.1.0&quot;
+  }
+}
+
+// main-app/src/App.jsx
+import Header from '@company/header-microfrontend';
+import Sidebar from '@company/sidebar-microfrontend';
+
+function App() {
+  return (
+    &lt;div&gt;
+      &lt;Header /&gt;
+      &lt;div style={{ display: 'flex' }}&gt;
+        &lt;Sidebar /&gt;
+        &lt;main&gt;
+          {/* Основное содержимое */}
+        &lt;/main&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+<p><strong>Преимущества</strong>: Простота, оптимизация бандла
+<strong>Недостатки</strong>: Необходимость пересборки всего приложения при изменениях</p>
+<h4 id="2-run-time-integration">2. Run-time Integration</h4>
+<h5 id="iframe">iframe подход</h5>
+<pre><code class="language-html">&lt;!-- Простой но ограниченный подход --&gt;
+&lt;div class=&quot;microfrontend-container&quot;&gt;
+  &lt;iframe 
+    src=&quot;https://team-a.microfrontend.com/header&quot;
+    width=&quot;100%&quot;
+    height=&quot;60&quot;
+    frameborder=&quot;0&quot;&gt;
+  &lt;/iframe&gt;
+&lt;/div&gt;
+</code></pre>
+<p><strong>Преимущества</strong>: Полная изоляция
+<strong>Недостатки</strong>: Сложности с коммуникацией, производительность, UX</p>
+<h5 id="module-federation-webpack-5">Module Federation (Webpack 5)</h5>
+<pre><code class="language-javascript">// webpack.config.js для хост-приложения
+const ModuleFederationPlugin = require('@module-federation/webpack');
+
+module.exports = {
+  plugins: [
+    new ModuleFederationPlugin({
+      name: 'host',
+      remotes: {
+        header: 'header@http://localhost:3001/remoteEntry.js',
+        dashboard: 'dashboard@http://localhost:3002/remoteEntry.js',
+      },
+    }),
+  ],
+};
+
+// Динамическая загрузка микрофронтенда
+const Header = React.lazy(() =&gt; import('header/Header'));
+
+function App() {
+  return (
+    &lt;div&gt;
+      &lt;Suspense fallback={&lt;div&gt;Loading Header...&lt;/div&gt;}&gt;
+        &lt;Header /&gt;
+      &lt;/Suspense&gt;
+      {/* Остальное содержимое */}
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+<pre><code class="language-javascript">// webpack.config.js для микрофронтенда
+module.exports = {
+  plugins: [
+    new ModuleFederationPlugin({
+      name: 'header',
+      filename: 'remoteEntry.js',
+      exposes: {
+        './Header': './src/Header',
+      },
+      shared: {
+        react: { singleton: true },
+        'react-dom': { singleton: true },
+      },
+    }),
+  ],
+};
+</code></pre>
+<h5 id="single-spa-framework">Single-SPA Framework</h5>
+<pre><code class="language-javascript">// Регистрация микрофронтендов
+import { registerApplication, start } from 'single-spa';
+
+registerApplication({
+  name: 'header-app',
+  app: () =&gt; System.import('header-app'),
+  activeWhen: () =&gt; true,
+});
+
+registerApplication({
+  name: 'dashboard-app',
+  app: () =&gt; System.import('dashboard-app'),
+  activeWhen: (location) =&gt; location.pathname.startsWith('/dashboard'),
+});
+
+start();
+
+// Микрофронтенд с Single-SPA
+import React from 'react';
+import ReactDOM from 'react-dom';
+import singleSpaReact from 'single-spa-react';
+import App from './App';
+
+const lifecycles = singleSpaReact({
+  React,
+  ReactDOM,
+  rootComponent: App,
+  errorBoundary: ErrorBoundary,
+});
+
+export const { bootstrap, mount, unmount } = lifecycles;
+</code></pre>
+<h3 id="_5">Коммуникация между микрофронтендами</h3>
+<h4 id="1-customevents">1. CustomEvents</h4>
+<pre><code class="language-javascript">// Отправка события из одного микрофронтенда
+const userUpdatedEvent = new CustomEvent('user-updated', {
+  detail: { userId: 123, name: 'John Doe' }
+});
+window.dispatchEvent(userUpdatedEvent);
+
+// Прослушивание в другом микрофронтенде
+useEffect(() =&gt; {
+  const handleUserUpdate = (event) =&gt; {
+    setUser(event.detail);
+  };
+
+  window.addEventListener('user-updated', handleUserUpdate);
+
+  return () =&gt; {
+    window.removeEventListener('user-updated', handleUserUpdate);
+  };
+}, []);
+</code></pre>
+<h4 id="2-shared-state-eventbus">2. Shared State через EventBus</h4>
+<pre><code class="language-javascript">// Создание глобального eventBus
+class EventBus {
+  constructor() {
+    this.events = {};
+  }
+
+  on(event, callback) {
+    if (!this.events[event]) {
+      this.events[event] = [];
+    }
+    this.events[event].push(callback);
+  }
+
+  emit(event, data) {
+    if (this.events[event]) {
+      this.events[event].forEach(callback =&gt; callback(data));
+    }
+  }
+
+  off(event, callback) {
+    if (this.events[event]) {
+      this.events[event] = this.events[event].filter(cb =&gt; cb !== callback);
+    }
+  }
+}
+
+window.eventBus = new EventBus();
+
+// Использование в микрофронтендах
+// Микрофронтенд A
+const updateUserProfile = (userData) =&gt; {
+  window.eventBus.emit('user-profile-updated', userData);
+};
+
+// Микрофронтенд B
+useEffect(() =&gt; {
+  const handleProfileUpdate = (userData) =&gt; {
+    console.log('User profile updated:', userData);
+  };
+
+  window.eventBus.on('user-profile-updated', handleProfileUpdate);
+
+  return () =&gt; {
+    window.eventBus.off('user-profile-updated', handleProfileUpdate);
+  };
+}, []);
+</code></pre>
+<h4 id="3-shared-dependencies">3. Shared Dependencies</h4>
+<pre><code class="language-javascript">// Общие утилиты и состояние
+window.sharedDependencies = {
+  userService: {
+    getCurrentUser: () =&gt; fetch('/api/user/current'),
+    updateUser: (data) =&gt; fetch('/api/user', { method: 'PUT', body: JSON.stringify(data) })
+  },
+  globalState: {
+    user: null,
+    theme: 'light'
+  }
+};
+</code></pre>
+<h3 id="ui">Стилизация и UI консистентность</h3>
+<h4 id="design-system">Design System подход</h4>
+<pre><code class="language-javascript">// Общий design system пакет
+// @company/design-system
+export const Button = styled.button`
+  background: ${props =&gt; props.theme.primary};
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+`;
+
+export const theme = {
+  primary: '#007bff',
+  secondary: '#6c757d',
+  spacing: {
+    small: '8px',
+    medium: '16px',
+    large: '24px'
+  }
+};
+
+// Использование в микрофронтенде
+import { Button, theme } from '@company/design-system';
+import { ThemeProvider } from 'styled-components';
+
+function MicrofrontendApp() {
+  return (
+    &lt;ThemeProvider theme={theme}&gt;
+      &lt;div&gt;
+        &lt;Button&gt;Кнопка из design system&lt;/Button&gt;
+      &lt;/div&gt;
+    &lt;/ThemeProvider&gt;
+  );
+}
+</code></pre>
+<h4 id="css-in-js">CSS-in-JS с префиксами</h4>
+<pre><code class="language-javascript">// Автоматическое создание уникальных классов
+const useStyles = createUseStyles({
+  container: {
+    padding: '16px',
+    backgroundColor: '#f5f5f5'
+  }
+}, { generateId: (rule, sheet) =&gt; `mf-header-${rule.key}` });
+</code></pre>
+<h3 id="_6">Маршрутизация в микрофронтендах</h3>
+<h4 id="single-spa-router">Single-SPA Router</h4>
+<pre><code class="language-javascript">// Главное приложение
+import { navigateToUrl } from 'single-spa';
+
+function Navigation() {
+  return (
+    &lt;nav&gt;
+      &lt;a href=&quot;/dashboard&quot; onClick={navigateToUrl}&gt;Dashboard&lt;/a&gt;
+      &lt;a href=&quot;/profile&quot; onClick={navigateToUrl}&gt;Profile&lt;/a&gt;
+    &lt;/nav&gt;
+  );
+}
+
+// Микрофронтенд с собственной маршрутизацией
+import { Router, Route, Switch } from 'react-router-dom';
+
+function DashboardMicrofrontend() {
+  return (
+    &lt;Router basename=&quot;/dashboard&quot;&gt;
+      &lt;Switch&gt;
+        &lt;Route path=&quot;/&quot; exact component={DashboardHome} /&gt;
+        &lt;Route path=&quot;/analytics&quot; component={Analytics} /&gt;
+        &lt;Route path=&quot;/settings&quot; component={Settings} /&gt;
+      &lt;/Switch&gt;
+    &lt;/Router&gt;
+  );
+}
+</code></pre>
+<h3 id="devops">Развертывание и DevOps</h3>
+<h4 id="independent-deployment-pipeline">Independent Deployment Pipeline</h4>
+<pre><code class="language-yaml"># .github/workflows/header-microfrontend.yml
+name: Header Microfrontend CI/CD
+
+on:
+  push:
+    paths:
+      - 'packages/header/**'
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Build Header
+        run: |
+          cd packages/header
+          npm install
+          npm run build
+
+      - name: Deploy to CDN
+        run: |
+          aws s3 sync packages/header/dist s3://microfrontends-cdn/header/
+          aws cloudfront create-invalidation --distribution-id ${{ secrets.CLOUDFRONT_ID }}
+</code></pre>
+<h4 id="_7">Версионирование</h4>
+<pre><code class="language-javascript">// Версионированные endpoints
+const MICROFRONTEND_VERSIONS = {
+  header: process.env.HEADER_VERSION || 'latest',
+  dashboard: process.env.DASHBOARD_VERSION || 'latest'
+};
+
+const loadMicrofrontend = (name, version = 'latest') =&gt; {
+  const script = document.createElement('script');
+  script.src = `https://cdn.company.com/${name}/${version}/remoteEntry.js`;
+  document.head.appendChild(script);
+};
+</code></pre>
+<h3 id="testing">Testing стратегии</h3>
+<h4 id="contract-testing">Contract Testing</h4>
+<pre><code class="language-javascript">// Контрактное тестирование между микрофронтендами
+describe('Header Microfrontend Contract', () =&gt; {
+  it('should emit user-logout event with correct structure', () =&gt; {
+    const eventSpy = jest.fn();
+    window.addEventListener('user-logout', eventSpy);
+
+    // Симуляция действия в header
+    fireEvent.click(screen.getByTestId('logout-button'));
+
+    expect(eventSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        detail: {
+          userId: expect.any(String),
+          timestamp: expect.any(Number)
+        }
+      })
+    );
+  });
+});
+</code></pre>
+<h4 id="integration-testing">Integration Testing</h4>
+<pre><code class="language-javascript">// Интеграционные тесты
+describe('Microfrontends Integration', () =&gt; {
+  beforeEach(() =&gt; {
+    // Загрузка всех микрофронтендов
+    loadMicrofrontend('header');
+    loadMicrofrontend('dashboard');
+  });
+
+  it('should update dashboard when user changes in header', async () =&gt; {
+    // Изменение пользователя в header
+    await userEvent.click(screen.getByTestId('user-switcher'));
+    await userEvent.click(screen.getByText('John Doe'));
+
+    // Проверка обновления в dashboard
+    await waitFor(() =&gt; {
+      expect(screen.getByTestId('dashboard-user-name')).toHaveTextContent('John Doe');
+    });
+  });
+});
+</code></pre>
+<h3 id="_8">Мониторинг и отладка</h3>
+<h4 id="error-boundaries">Error Boundaries для каждого микрофронтенда</h4>
+<pre><code class="language-javascript">class MicrofrontendErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    // Отправка ошибки в систему мониторинга
+    window.errorReporting?.captureException(error, {
+      microfrontend: this.props.name,
+      extra: errorInfo
+    });
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return this.props.fallback || &lt;div&gt;Что-то пошло не так в {this.props.name}&lt;/div&gt;;
+    }
+
+    return this.props.children;
+  }
+}
+</code></pre>
+<h4 id="performance-monitoring">Performance Monitoring</h4>
+<pre><code class="language-javascript">// Мониторинг производительности загрузки микрофронтендов
+const measureMicrofrontendLoad = (name) =&gt; {
+  performance.mark(`${name}-start`);
+
+  return {
+    end: () =&gt; {
+      performance.mark(`${name}-end`);
+      performance.measure(`${name}-load`, `${name}-start`, `${name}-end`);
+
+      const measure = performance.getEntriesByName(`${name}-load`)[0];
+      console.log(`${name} loaded in ${measure.duration}ms`);
+    }
+  };
+};
+</code></pre>
+<h2 id="_9">Преимущества и недостатки</h2>
+<h3 id="_10">Преимущества</h3>
+<ul>
+<li><strong>Автономные команды</strong>: Независимая разработка и развертывание</li>
+<li><strong>Технологическое разнообразие</strong>: Каждая команда может выбирать свой стек</li>
+<li><strong>Масштабируемость</strong>: Легче масштабировать команды и кодовую базу</li>
+<li><strong>Отказоустойчивость</strong>: Падение одного микрофронтенда не влияет на остальные</li>
+</ul>
+<h3 id="_11">Недостатки</h3>
+<ul>
+<li><strong>Сложность</strong>: Увеличенная сложность архитектуры и инфраструктуры</li>
+<li><strong>Производительность</strong>: Дублирование зависимостей, больше HTTP запросов</li>
+<li><strong>Консистентность</strong>: Сложности с поддержанием единого UX</li>
+<li><strong>Отладка</strong>: Сложнее отлаживать взаимодействие между частями</li>
+</ul>
+<h2 id="best-practices">Best Practices</h2>
+<ol>
+<li><strong>Начинайте с монолита</strong>: Микрофронтенды - это эволюция, не стартовая точка</li>
+<li><strong>Четкие границы</strong>: Определите четкие границы ответственности</li>
+<li><strong>Shared dependencies</strong>: Управляйте общими зависимостями</li>
+<li><strong>Consistent UX</strong>: Используйте design system</li>
+<li><strong>Monitoring</strong>: Обязательный мониторинг и логирование</li>
+<li><strong>Testing</strong>: Инвестируйте в contract и integration тестирование</li>
+</ol>
+<h2 id="_12">Связанные темы</h2>
+<ul>
+<li><a href="../state-management/">State Management</a> - Управление состоянием в распределенной архитектуре</li>
+<li><a href="../../performance/optimization/">Performance Optimization</a> - Оптимизация производительности</li>
+<li><a href="../../testing/strategies/">Testing Strategies</a> - Стратегии тестирования</li>
+</ul>
+<h2 id="_13">Рекомендации для собеседования</h2>
+<p><strong>Senior-level ожидания</strong>:
+- Понимание различных подходов к реализации микрофронтендов
+- Опыт работы с Module Federation или Single-SPA
+- Знание проблем и способов их решения
+- Понимание DevOps аспектов микрофронтендов
+- Опыт с мониторингом и отладкой распределенных систем</p>
+<p><strong>Частые вопросы</strong>:
+- Когда стоит использовать микрофронтенды?
+- Как обеспечить консистентность UI между микрофронтендами?
+- Как тестировать взаимодействие между микрофронтендами?
+- Как решать проблемы производительности?
+- Как организовать CI/CD для микрофронтендов?</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../ddd_small/" class="btn btn-neutral float-left" title="Domain-Driven Design (DDD) во Frontend (small)"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../microfrontends_small/" class="btn btn-neutral float-right" title="Microfrontends - Senior Cheat Sheet (small)">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../ddd_small/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../microfrontends_small/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../..";</script>
+    <script src="../../../js/theme_extra.js"></script>
+    <script src="../../../js/theme.js"></script>
+      <script src="../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

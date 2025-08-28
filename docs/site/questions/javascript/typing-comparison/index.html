@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../../img/favicon.ico" />
+    <title>Сравнение типизации JS и Java - My Docs</title>
+    <link rel="stylesheet" href="../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "\u0421\u0440\u0430\u0432\u043d\u0435\u043d\u0438\u0435 \u0442\u0438\u043f\u0438\u0437\u0430\u0446\u0438\u0438 JS \u0438 Java";
+        var mkdocs_page_input_path = "questions/javascript/typing-comparison.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../../.." class="icon icon-home"> My Docs
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../..">📚 Подготовка к собеседованию: JavaScript, React и архитектура</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Questions</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" >Architecture</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/ddd/">Domain-Driven Design (DDD) во Frontend</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/ddd_small/">Domain-Driven Design (DDD) во Frontend (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/microfrontends/">Микрофронтенды (Microfrontends)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/microfrontends_small/">Microfrontends - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/offline-first/">Offline-first архитектура</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/offline-first_small/">Offline-First Архитектура (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/resilient-frontend/">Устойчивая frontend архитектура</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/resilient-frontend_small/">Устойчивая Frontend Архитектура (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/state-management/">Архитектура управления состоянием</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/state-management_small/">State Management Architecture - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/websockets-realtime/">WebSockets и real-time коммуникация</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/websockets-realtime_small/">WebSockets и Real-time коммуникация (small)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" >Javascript</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../async-programming/">Promises, Async/Await и Generators</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../async-programming_small/">Async Programming - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../currying/">Currying в JavaScript</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../currying_small/">Currying - Шпаргалка (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../event-loop/">Event Loop, Microtasks и Macrotasks</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../event-loop_small/">Event Loop - Шпаргалка (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../execution-model/">Модель выполнения JavaScript</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../execution-model_small/">JavaScript Execution Model - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../garbage-collection/">Garbage Collection и оптимизация памяти</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../garbage-collection_small/">Garbage Collection - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../scope-hoisting/">Let, Const, Var: Scope и Hoisting</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../scope-hoisting_small/">Let, Const, Var - Шпаргалка (small)</a>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" href="#">Сравнение типизации JS и Java</a>
+    <ul class="current">
+    <li class="toctree-l3"><a class="reference internal" href="#_1">📋 Вопрос</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_2">💡 Ответ</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#_3">Основные различия</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#javascript-">JavaScript - Динамическая типизация</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#java-">Java - Статическая типизация</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#typescript-">TypeScript - Лучшее из двух миров</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#typescript-react">TypeScript в React проектах</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#_14">Сравнение влияния на разработку</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#typescript-react_1">Лучшие практики для TypeScript в React</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#javascript-typescript">Миграция с JavaScript на TypeScript</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#senior-">Senior-советы</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#_16">Заключение</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_17">🔗 Связанные темы</a>
+    </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../typing-comparison_small/">JS vs Java Typing + TypeScript - Senior Cheat Sheet (small)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Performance</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../performance/optimization/">Оптимизация производительности frontend-приложений</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../performance/optimization_small/">Оптимизация производительности Frontend (small)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >React</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/concurrent-rendering/">Конкурентный рендеринг React 18</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/concurrent-rendering_small/">React 18 Concurrent Rendering - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/context-api/">Context API vs Redux</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/context-api_small/">Context API vs Redux - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/hoc/">Higher-Order Components (HOC)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/hoc_small/">Higher-Order Components - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/reconciliation/">Reconciliation и Virtual DOM</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/reconciliation_small/">Reconciliation &amp; Virtual DOM - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/rerender-optimization/">Оптимизация ререндеров в React</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/rerender-optimization_small/">React Rerender Optimization - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/ssr-rsc/">SSR/SSG и React Server Components</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/ssr-rsc_small/">SSR/SSG &amp; React Server Components - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/use-effect/">useEffect и Side Effects</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/use-effect_small/">useEffect &amp; Side Effects - Senior Cheat Sheet</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Security</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../security/frontend-security/">Безопасность Frontend Приложений</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../security/frontend-security_small/">Frontend Security (small)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Testing</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../testing/strategies/">Стратегии тестирования frontend-приложений</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../testing/strategies_small/">Стратегии тестирования Frontend (small)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Typescript</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../typescript/advanced-types/">Продвинутые типы TypeScript</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../typescript/advanced-types_small/">Продвинутые типы TypeScript (small)</a>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../..">My Docs</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Questions</li>
+          <li class="breadcrumb-item">Javascript</li>
+      <li class="breadcrumb-item active">Сравнение типизации JS и Java</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="js-java">Сравнение типизации JS и Java</h1>
+<h2 id="_1">📋 Вопрос</h2>
+<p>Сравните типизацию в JavaScript и Java: как динамическая типизация JS влияет на разработку по сравнению со статической в Java, и как TypeScript может помочь в React-проектах?</p>
+<h2 id="_2">💡 Ответ</h2>
+<p>Типизация — один из ключевых аспектов языков программирования, определяющий подход к разработке, безопасность и производительность. JavaScript и Java представляют два противоположных подхода к типизации.</p>
+<h3 id="_3">Основные различия</h3>
+<table>
+<thead>
+<tr>
+<th>Характеристика</th>
+<th>JavaScript</th>
+<th>Java</th>
+<th>TypeScript</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Тип системы</td>
+<td>Динамическая</td>
+<td>Статическая</td>
+<td>Статическая (опциональная)</td>
+</tr>
+<tr>
+<td>Проверка типов</td>
+<td>Runtime</td>
+<td>Compile-time</td>
+<td>Compile-time</td>
+</tr>
+<tr>
+<td>Объявление типов</td>
+<td>Не требуется</td>
+<td>Обязательно</td>
+<td>Опционально</td>
+</tr>
+<tr>
+<td>Type safety</td>
+<td>Слабая</td>
+<td>Сильная</td>
+<td>Сильная</td>
+</tr>
+<tr>
+<td>Производительность</td>
+<td>Медленнее</td>
+<td>Быстрее</td>
+<td>Как JS + оптимизации</td>
+</tr>
+</tbody>
+</table>
+<h3 id="javascript-">JavaScript - Динамическая типизация</h3>
+<h4 id="_4">Особенности</h4>
+<pre><code class="language-javascript">// Переменная может менять тип во время выполнения
+let value = 42;        // number
+value = &quot;hello&quot;;       // string
+value = true;          // boolean
+value = { id: 1 };     // object
+value = [1, 2, 3];     // array (object)
+
+// Type coercion - автоматическое приведение типов
+console.log(&quot;5&quot; + 3);     // &quot;53&quot; (string)
+console.log(&quot;5&quot; - 3);     // 2 (number)
+console.log(true + 1);    // 2 (number)
+console.log(null == undefined); // true
+console.log(null === undefined); // false
+
+// Функции могут принимать любые типы
+function flexibleFunction(param) {
+  if (typeof param === 'string') {
+    return param.toUpperCase();
+  } else if (typeof param === 'number') {
+    return param * 2;
+  } else if (Array.isArray(param)) {
+    return param.length;
+  }
+  return param;
+}
+
+flexibleFunction(&quot;hello&quot;);  // &quot;HELLO&quot;
+flexibleFunction(5);        // 10
+flexibleFunction([1,2,3]);  // 3
+</code></pre>
+<h4 id="_5">Преимущества динамической типизации</h4>
+<pre><code class="language-javascript">// 1. Быстрое прототипирование
+function processData(data) {
+  // Может работать с любым типом данных
+  return data.map ? data.map(x =&gt; x * 2) : data * 2;
+}
+
+// 2. Гибкость в API
+function apiWrapper(endpoint, options = {}) {
+  // options может быть объектом или функцией
+  const config = typeof options === 'function' 
+    ? { callback: options }
+    : options;
+
+  return fetch(endpoint, config);
+}
+
+// 3. Duck typing
+function processCollection(collection) {
+  // Работает с любым объектом, имеющим метод forEach
+  if (collection.forEach) {
+    collection.forEach(item =&gt; console.log(item));
+  }
+}
+
+processCollection([1, 2, 3]);           // Array
+processCollection(new Set([1, 2, 3]));  // Set
+processCollection(&quot;hello&quot;);             // String (has forEach? No, но можно адаптировать)
+</code></pre>
+<h4 id="_6">Проблемы динамической типизации</h4>
+<pre><code class="language-javascript">// 1. Runtime ошибки
+function calculateArea(width, height) {
+  return width * height; // Что если width - строка?
+}
+
+calculateArea(&quot;10&quot;, 5); // 50 (работает, но может быть неожиданно)
+calculateArea(&quot;hello&quot;, 5); // NaN
+
+// 2. Неожиданное поведение
+const user = { name: &quot;John&quot;, age: 30 };
+console.log(user.name.toUpperCase()); // &quot;JOHN&quot;
+
+// Если name станет null/undefined
+user.name = null;
+// console.log(user.name.toUpperCase()); // TypeError: Cannot read property 'toUpperCase' of null
+
+// 3. Отсутствие автодополнения
+function processUser(user) {
+  // IDE не знает, какие свойства у user
+  return user. // Нет автодополнения
+}
+</code></pre>
+<h3 id="java-">Java - Статическая типизация</h3>
+<h4 id="_7">Особенности</h4>
+<pre><code class="language-java">// Типы объявляются явно и не могут изменяться
+int number = 42;
+String text = &quot;hello&quot;;
+boolean flag = true;
+
+// number = &quot;hello&quot;; // Ошибка компиляции!
+
+// Методы с четкими сигнатурами
+public class Calculator {
+    public int add(int a, int b) {
+        return a + b;
+    }
+
+    public double add(double a, double b) {
+        return a + b;
+    }
+
+    // Перегрузка методов для разных типов
+}
+
+// Generics для типобезопасности
+List&lt;String&gt; names = new ArrayList&lt;&gt;();
+names.add(&quot;John&quot;);
+names.add(&quot;Jane&quot;);
+// names.add(123); // Ошибка компиляции!
+
+// Interface для контрактов
+interface UserService {
+    User findById(Long id);
+    List&lt;User&gt; findAll();
+    void save(User user);
+}
+</code></pre>
+<h4 id="_8">Преимущества статической типизации</h4>
+<pre><code class="language-java">// 1. Безопасность типов на этапе компиляции
+public class BankAccount {
+    private BigDecimal balance;
+
+    public void withdraw(BigDecimal amount) {
+        if (amount.compareTo(BigDecimal.ZERO) &lt;= 0) {
+            throw new IllegalArgumentException(&quot;Amount must be positive&quot;);
+        }
+        if (balance.compareTo(amount) &lt; 0) {
+            throw new InsufficientFundsException();
+        }
+        balance = balance.subtract(amount);
+    }
+}
+
+// 2. Отличная поддержка IDE
+// - Автодополнение
+// - Рефакторинг
+// - Навигация по коду
+// - Статический анализ
+
+// 3. Документация через типы
+public interface PaymentProcessor {
+    PaymentResult processPayment(
+        PaymentRequest request,
+        PaymentMethod method
+    ) throws PaymentException;
+}
+</code></pre>
+<h3 id="typescript-">TypeScript - Лучшее из двух миров</h3>
+<h4 id="_9">Основные возможности</h4>
+<pre><code class="language-typescript">// 1. Постепенная типизация
+let id: number = 123;
+let name: string = &quot;John&quot;;
+let isActive: boolean = true;
+
+// Можно начать без типов
+let dynamicValue; // any by default (если не строгий режим)
+
+// 2. Интерфейсы и типы
+interface User {
+  id: number;
+  name: string;
+  email?: string; // опциональное свойство
+  readonly createdAt: Date; // только для чтения
+}
+
+type UserRole = 'admin' | 'user' | 'moderator'; // union types
+
+// 3. Generics
+interface ApiResponse&lt;T&gt; {
+  data: T;
+  status: number;
+  message: string;
+}
+
+function fetchData&lt;T&gt;(url: string): Promise&lt;ApiResponse&lt;T&gt;&gt; {
+  return fetch(url).then(response =&gt; response.json());
+}
+
+// Использование
+const users = await fetchData&lt;User[]&gt;('/api/users');
+// users.data имеет тип User[]
+</code></pre>
+<h4 id="typescript">Продвинутые возможности TypeScript</h4>
+<pre><code class="language-typescript">// 1. Conditional types
+type NonNullable&lt;T&gt; = T extends null | undefined ? never : T;
+
+// 2. Mapped types
+type Partial&lt;T&gt; = {
+  [P in keyof T]?: T[P];
+};
+
+type ReadOnly&lt;T&gt; = {
+  readonly [P in keyof T]: T[P];
+};
+
+// 3. Template literal types
+type EventName&lt;T extends string&gt; = `on${Capitalize&lt;T&gt;}`;
+type ClickEvent = EventName&lt;'click'&gt;; // 'onClick'
+
+// 4. Utility types
+interface DatabaseUser {
+  id: number;
+  name: string;
+  email: string;
+  password: string;
+  createdAt: Date;
+}
+
+type PublicUser = Omit&lt;DatabaseUser, 'password'&gt;; // Без password
+type UserUpdate = Partial&lt;Pick&lt;DatabaseUser, 'name' | 'email'&gt;&gt;; // Опциональные name и email
+type UserKeys = keyof DatabaseUser; // 'id' | 'name' | 'email' | 'password' | 'createdAt'
+</code></pre>
+<h3 id="typescript-react">TypeScript в React проектах</h3>
+<h4 id="_10">Типизация компонентов</h4>
+<pre><code class="language-typescript">// 1. Functional Component
+interface ButtonProps {
+  children: React.ReactNode;
+  variant?: 'primary' | 'secondary' | 'danger';
+  disabled?: boolean;
+  onClick?: (event: React.MouseEvent&lt;HTMLButtonElement&gt;) =&gt; void;
+}
+
+const Button: React.FC&lt;ButtonProps&gt; = ({ 
+  children, 
+  variant = 'primary', 
+  disabled = false, 
+  onClick 
+}) =&gt; {
+  return (
+    &lt;button 
+      className={`btn btn-${variant}`}
+      disabled={disabled}
+      onClick={onClick}
+    &gt;
+      {children}
+    &lt;/button&gt;
+  );
+};
+
+// 2. Generic Component
+interface ListProps&lt;T&gt; {
+  items: T[];
+  renderItem: (item: T, index: number) =&gt; React.ReactNode;
+  keyExtractor: (item: T) =&gt; string | number;
+}
+
+function List&lt;T&gt;({ items, renderItem, keyExtractor }: ListProps&lt;T&gt;) {
+  return (
+    &lt;ul&gt;
+      {items.map((item, index) =&gt; (
+        &lt;li key={keyExtractor(item)}&gt;
+          {renderItem(item, index)}
+        &lt;/li&gt;
+      ))}
+    &lt;/ul&gt;
+  );
+}
+
+// Использование
+&lt;List
+  items={users}
+  renderItem={(user) =&gt; &lt;span&gt;{user.name}&lt;/span&gt;}
+  keyExtractor={(user) =&gt; user.id}
+/&gt;
+</code></pre>
+<h4 id="_11">Типизация хуков</h4>
+<pre><code class="language-typescript">// 1. useState с типами
+const [user, setUser] = useState&lt;User | null&gt;(null);
+const [loading, setLoading] = useState&lt;boolean&gt;(false);
+const [errors, setErrors] = useState&lt;string[]&gt;([]);
+
+// 2. useReducer
+interface State {
+  count: number;
+  error: string | null;
+}
+
+type Action = 
+  | { type: 'increment' }
+  | { type: 'decrement' }
+  | { type: 'reset' }
+  | { type: 'error'; payload: string };
+
+const reducer = (state: State, action: Action): State =&gt; {
+  switch (action.type) {
+    case 'increment':
+      return { ...state, count: state.count + 1, error: null };
+    case 'decrement':
+      return { ...state, count: state.count - 1, error: null };
+    case 'reset':
+      return { count: 0, error: null };
+    case 'error':
+      return { ...state, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+// 3. Custom hooks
+function useApi&lt;T&gt;(url: string) {
+  const [data, setData] = useState&lt;T | null&gt;(null);
+  const [loading, setLoading] = useState&lt;boolean&gt;(false);
+  const [error, setError] = useState&lt;Error | null&gt;(null);
+
+  const fetchData = useCallback(async () =&gt; {
+    try {
+      setLoading(true);
+      setError(null);
+
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result: T = await response.json();
+      setData(result);
+    } catch (err) {
+      setError(err as Error);
+    } finally {
+      setLoading(false);
+    }
+  }, [url]);
+
+  return { data, loading, error, refetch: fetchData };
+}
+
+// Использование
+const { data: users, loading, error } = useApi&lt;User[]&gt;('/api/users');
+</code></pre>
+<h4 id="_12">Типизация событий</h4>
+<pre><code class="language-typescript">// Event handlers
+interface FormProps {
+  onSubmit: (data: FormData) =&gt; void;
+}
+
+const ContactForm: React.FC&lt;FormProps&gt; = ({ onSubmit }) =&gt; {
+  const handleSubmit = (event: React.FormEvent&lt;HTMLFormElement&gt;) =&gt; {
+    event.preventDefault();
+
+    const formData = new FormData(event.currentTarget);
+    const data = {
+      name: formData.get('name') as string,
+      email: formData.get('email') as string,
+    };
+
+    onSubmit(data);
+  };
+
+  const handleInputChange = (event: React.ChangeEvent&lt;HTMLInputElement&gt;) =&gt; {
+    const { name, value } = event.target;
+    // Типизированная обработка изменений
+  };
+
+  return (
+    &lt;form onSubmit={handleSubmit}&gt;
+      &lt;input name=&quot;name&quot; onChange={handleInputChange} /&gt;
+      &lt;input name=&quot;email&quot; type=&quot;email&quot; onChange={handleInputChange} /&gt;
+      &lt;button type=&quot;submit&quot;&gt;Submit&lt;/button&gt;
+    &lt;/form&gt;
+  );
+};
+</code></pre>
+<h4 id="_13">Типизация контекста</h4>
+<pre><code class="language-typescript">// Context с типами
+interface AuthContextType {
+  user: User | null;
+  login: (email: string, password: string) =&gt; Promise&lt;void&gt;;
+  logout: () =&gt; void;
+  loading: boolean;
+}
+
+const AuthContext = createContext&lt;AuthContextType | undefined&gt;(undefined);
+
+export const AuthProvider: React.FC&lt;{ children: React.ReactNode }&gt; = ({ children }) =&gt; {
+  const [user, setUser] = useState&lt;User | null&gt;(null);
+  const [loading, setLoading] = useState&lt;boolean&gt;(false);
+
+  const login = async (email: string, password: string): Promise&lt;void&gt; =&gt; {
+    setLoading(true);
+    try {
+      const response = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Login failed');
+      }
+
+      const userData: User = await response.json();
+      setUser(userData);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const logout = (): void =&gt; {
+    setUser(null);
+  };
+
+  return (
+    &lt;AuthContext.Provider value={{ user, login, logout, loading }}&gt;
+      {children}
+    &lt;/AuthContext.Provider&gt;
+  );
+};
+
+// Custom hook с типизацией
+export const useAuth = (): AuthContextType =&gt; {
+  const context = useContext(AuthContext);
+  if (context === undefined) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
+};
+</code></pre>
+<h3 id="_14">Сравнение влияния на разработку</h3>
+<h4 id="javascript-_1">JavaScript - Быстрое прототипирование</h4>
+<pre><code class="language-javascript">// Преимущества:
+// + Быстрый старт
+// + Гибкость
+// + Простота изучения
+// + Подходит для MVP и экспериментов
+
+function createApp() {
+  const state = {};
+
+  return {
+    getData: (key) =&gt; state[key],
+    setData: (key, value) =&gt; state[key] = value,
+    render: () =&gt; JSON.stringify(state)
+  };
+}
+
+// Недостатки:
+// - Runtime ошибки
+// - Слабая поддержка IDE
+// - Сложность рефакторинга
+// - Проблемы в больших проектах
+</code></pre>
+<h4 id="java-enterprise">Java - Enterprise разработка</h4>
+<pre><code class="language-java">// Преимущества:
+// + Типобезопасность
+// + Отличная поддержка IDE
+// + Легкий рефакторинг
+// + Масштабируемость
+
+@Service
+public class UserServiceImpl implements UserService {
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Override
+    @Transactional
+    public User createUser(CreateUserRequest request) {
+        validateUserRequest(request);
+
+        User user = User.builder()
+            .name(request.getName())
+            .email(request.getEmail())
+            .build();
+
+        return userRepository.save(user);
+    }
+}
+
+// Недостатки:
+// - Verbose синтаксис
+// - Медленное прототипирование
+// - Сложность для начинающих
+// - Больше boilerplate кода
+</code></pre>
+<h4 id="typescript-_1">TypeScript - Баланс</h4>
+<pre><code class="language-typescript">// Преимущества TypeScript в React:
+// + Типобезопасность на этапе разработки
+// + Отличная поддержка IDE
+// + Постепенная миграция с JS
+// + Самодокументирующийся код
+
+interface Props {
+  user: User;
+  onEdit: (user: User) =&gt; void;
+}
+
+const UserCard: React.FC&lt;Props&gt; = ({ user, onEdit }) =&gt; {
+  // IDE знает все свойства user
+  // Автодополнение работает идеально
+  // Рефакторинг безопасен
+
+  return (
+    &lt;div&gt;
+      &lt;h3&gt;{user.name}&lt;/h3&gt;
+      &lt;p&gt;{user.email}&lt;/p&gt;
+      &lt;button onClick={() =&gt; onEdit(user)}&gt;
+        Edit
+      &lt;/button&gt;
+    &lt;/div&gt;
+  );
+};
+</code></pre>
+<h3 id="typescript-react_1">Лучшие практики для TypeScript в React</h3>
+<h4 id="1-strict">1. Strict конфигурация</h4>
+<pre><code class="language-json">// tsconfig.json
+{
+  &quot;compilerOptions&quot;: {
+    &quot;strict&quot;: true,
+    &quot;noImplicitAny&quot;: true,
+    &quot;strictNullChecks&quot;: true,
+    &quot;strictFunctionTypes&quot;: true,
+    &quot;noImplicitReturns&quot;: true,
+    &quot;noFallthroughCasesInSwitch&quot;: true,
+    &quot;noUncheckedIndexedAccess&quot;: true
+  }
+}
+</code></pre>
+<h4 id="2-any">2. Избегание any</h4>
+<pre><code class="language-typescript">// ❌ Плохо
+const processData = (data: any) =&gt; {
+  return data.someProperty;
+};
+
+// ✅ Хорошо
+interface DataType {
+  someProperty: string;
+  // другие свойства
+}
+
+const processData = (data: DataType) =&gt; {
+  return data.someProperty;
+};
+
+// ✅ Или с generic
+const processData = &lt;T extends { someProperty: string }&gt;(data: T) =&gt; {
+  return data.someProperty;
+};
+</code></pre>
+<h4 id="3">3. Правильные типы для событий</h4>
+<pre><code class="language-typescript">// ✅ Правильная типизация событий
+const handleChange = (event: React.ChangeEvent&lt;HTMLInputElement&gt;) =&gt; {
+  console.log(event.target.value);
+};
+
+const handleClick = (event: React.MouseEvent&lt;HTMLButtonElement&gt;) =&gt; {
+  console.log('Button clicked');
+};
+
+const handleSubmit = (event: React.FormEvent&lt;HTMLFormElement&gt;) =&gt; {
+  event.preventDefault();
+};
+</code></pre>
+<h3 id="javascript-typescript">Миграция с JavaScript на TypeScript</h3>
+<h4 id="_15">Пошаговый подход</h4>
+<pre><code class="language-typescript">// 1. Начните с любых типов
+let userData: any = fetchUserData();
+
+// 2. Добавьте базовые типы
+let userId: number = 123;
+let userName: string = &quot;John&quot;;
+
+// 3. Создайте интерфейсы
+interface User {
+  id: number;
+  name: string;
+  email: string;
+}
+
+// 4. Типизируйте функции
+function getUser(id: number): Promise&lt;User&gt; {
+  return fetch(`/api/users/${id}`).then(r =&gt; r.json());
+}
+
+// 5. Включайте строгие проверки постепенно
+</code></pre>
+<h3 id="senior-">Senior-советы</h3>
+<ol>
+<li><strong>Начинайте с TypeScript</strong> в новых React проектах</li>
+<li><strong>Используйте strict режим</strong> для максимальной безопасности</li>
+<li><strong>Создавайте типы для API</strong> ответов и состояния</li>
+<li><strong>Избегайте any</strong> - используйте unknown для неизвестных типов</li>
+<li><strong>Документируйте сложные типы</strong> комментариями</li>
+<li><strong>Используйте utility types</strong> для трансформации типов</li>
+<li><strong>Настройте ESLint</strong> с TypeScript правилами</li>
+</ol>
+<h3 id="_16">Заключение</h3>
+<p>TypeScript в React проектах предоставляет:
+- <strong>Безопасность</strong> статической типизации Java
+- <strong>Гибкость</strong> динамической типизации JavaScript<br />
+- <strong>Отличную поддержку IDE</strong> с автодополнением и рефакторингом
+- <strong>Лучшую документацию</strong> кода через типы
+- <strong>Меньше runtime ошибок</strong> благодаря compile-time проверкам</p>
+<h2 id="_17">🔗 Связанные темы</h2>
+<ul>
+<li><a href="../scope-hoisting/">Let, Const, Var: Scope и Hoisting</a></li>
+<li><a href="../currying/">Currying в JavaScript</a></li>
+<li><a href="../architecture/state-architecture.md">Архитектура состояния приложения</a></li>
+<li><a href="../../react/hoc/">Higher-Order Components (HOC)</a></li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../scope-hoisting_small/" class="btn btn-neutral float-left" title="Let, Const, Var - Шпаргалка (small)"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../typing-comparison_small/" class="btn btn-neutral float-right" title="JS vs Java Typing + TypeScript - Senior Cheat Sheet (small)">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../scope-hoisting_small/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../typing-comparison_small/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../..";</script>
+    <script src="../../../js/theme_extra.js"></script>
+    <script src="../../../js/theme.js"></script>
+      <script src="../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

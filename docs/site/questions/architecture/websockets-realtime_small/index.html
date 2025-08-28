@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../../img/favicon.ico" />
+    <title>WebSockets и Real-time коммуникация (small) - My Docs</title>
+    <link rel="stylesheet" href="../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "WebSockets \u0438 Real-time \u043a\u043e\u043c\u043c\u0443\u043d\u0438\u043a\u0430\u0446\u0438\u044f (small)";
+        var mkdocs_page_input_path = "questions/architecture/websockets-realtime_small.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../../.." class="icon icon-home"> My Docs
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../..">📚 Подготовка к собеседованию: JavaScript, React и архитектура</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Questions</span></p>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current" >Architecture</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../ddd/">Domain-Driven Design (DDD) во Frontend</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../ddd_small/">Domain-Driven Design (DDD) во Frontend (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../microfrontends/">Микрофронтенды (Microfrontends)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../microfrontends_small/">Microfrontends - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../offline-first/">Offline-first архитектура</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../offline-first_small/">Offline-First Архитектура (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../resilient-frontend/">Устойчивая frontend архитектура</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../resilient-frontend_small/">Устойчивая Frontend Архитектура (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../state-management/">Архитектура управления состоянием</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../state-management_small/">State Management Architecture - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../websockets-realtime/">WebSockets и real-time коммуникация</a>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" href="#">WebSockets и Real-time коммуникация (small)</a>
+    <ul class="current">
+    <li class="toctree-l3"><a class="reference internal" href="#_1">Технологии сравнение</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#websocket">WebSocket с переподключением</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#react-hook-websockets">React Hook для WebSockets</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#websocket-context">WebSocket Context для глобального состояния</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#server-sent-events-sse">Server-Sent Events (SSE)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_2">Продвинутые паттерны</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#roomchannel-management">Room/Channel Management</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#message-queue-offline">Message Queue для offline поддержки</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_3">Оптимизация производительности</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#message-batching">Message Batching</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#connection-pooling">Connection Pooling</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_4">Безопасность</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#websocket_1">Аутентификация WebSocket</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_5">Ключевые проблемы и решения</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#best-practices-senior-level">Best Practices Senior-level</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#senior">Частые Senior вопросы</a>
+    </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Javascript</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/async-programming/">Promises, Async/Await и Generators</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/async-programming_small/">Async Programming - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/currying/">Currying в JavaScript</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/currying_small/">Currying - Шпаргалка (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/event-loop/">Event Loop, Microtasks и Macrotasks</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/event-loop_small/">Event Loop - Шпаргалка (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/execution-model/">Модель выполнения JavaScript</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/execution-model_small/">JavaScript Execution Model - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/garbage-collection/">Garbage Collection и оптимизация памяти</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/garbage-collection_small/">Garbage Collection - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/scope-hoisting/">Let, Const, Var: Scope и Hoisting</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/scope-hoisting_small/">Let, Const, Var - Шпаргалка (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/typing-comparison/">Сравнение типизации JS и Java</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/typing-comparison_small/">JS vs Java Typing + TypeScript - Senior Cheat Sheet (small)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Performance</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../performance/optimization/">Оптимизация производительности frontend-приложений</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../performance/optimization_small/">Оптимизация производительности Frontend (small)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >React</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/concurrent-rendering/">Конкурентный рендеринг React 18</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/concurrent-rendering_small/">React 18 Concurrent Rendering - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/context-api/">Context API vs Redux</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/context-api_small/">Context API vs Redux - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/hoc/">Higher-Order Components (HOC)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/hoc_small/">Higher-Order Components - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/reconciliation/">Reconciliation и Virtual DOM</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/reconciliation_small/">Reconciliation &amp; Virtual DOM - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/rerender-optimization/">Оптимизация ререндеров в React</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/rerender-optimization_small/">React Rerender Optimization - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/ssr-rsc/">SSR/SSG и React Server Components</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/ssr-rsc_small/">SSR/SSG &amp; React Server Components - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/use-effect/">useEffect и Side Effects</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/use-effect_small/">useEffect &amp; Side Effects - Senior Cheat Sheet</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Security</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../security/frontend-security/">Безопасность Frontend Приложений</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../security/frontend-security_small/">Frontend Security (small)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Testing</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../testing/strategies/">Стратегии тестирования frontend-приложений</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../testing/strategies_small/">Стратегии тестирования Frontend (small)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Typescript</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../typescript/advanced-types/">Продвинутые типы TypeScript</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../typescript/advanced-types_small/">Продвинутые типы TypeScript (small)</a>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../..">My Docs</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Questions</li>
+          <li class="breadcrumb-item">Architecture</li>
+      <li class="breadcrumb-item active">WebSockets и Real-time коммуникация (small)</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="websockets-real-time-small">WebSockets и Real-time коммуникация (small)</h1>
+<h2 id="_1">Технологии сравнение</h2>
+<table>
+<thead>
+<tr>
+<th>Технология</th>
+<th>Направление</th>
+<th>Задержка</th>
+<th>Overhead</th>
+<th>Proxy support</th>
+<th>Use Case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>WebSockets</td>
+<td>Двунаправленная</td>
+<td>Очень низкая</td>
+<td>Низкий</td>
+<td>Ограниченная</td>
+<td>Чаты, игры</td>
+</tr>
+<tr>
+<td>SSE</td>
+<td>Односторонняя</td>
+<td>Низкая</td>
+<td>Средний</td>
+<td>Хорошая</td>
+<td>Уведомления, live updates</td>
+</tr>
+<tr>
+<td>Long Polling</td>
+<td>Односторонняя</td>
+<td>Средняя</td>
+<td>Высокий</td>
+<td>Отличная</td>
+<td>Fallback решения</td>
+</tr>
+<tr>
+<td>WebRTC</td>
+<td>P2P</td>
+<td>Очень низкая</td>
+<td>Низкий</td>
+<td>Ограниченная</td>
+<td>Видео/аудио звонки</td>
+</tr>
+</tbody>
+</table>
+<h2 id="websocket">WebSocket с переподключением</h2>
+<pre><code class="language-javascript">class WebSocketConnection {
+  constructor(url, options = {}) {
+    this.url = url;
+    this.ws = null;
+    this.reconnectAttempts = 0;
+    this.maxReconnectAttempts = options.maxReconnectAttempts || 5;
+    this.reconnectInterval = options.reconnectInterval || 1000;
+    this.listeners = new Map();
+  }
+
+  connect() {
+    this.ws = new WebSocket(this.url);
+
+    this.ws.onopen = () =&gt; {
+      this.reconnectAttempts = 0;
+      this.emit('connected');
+    };
+
+    this.ws.onmessage = (event) =&gt; {
+      const data = JSON.parse(event.data);
+      this.emit(data.type, data.payload);
+    };
+
+    this.ws.onclose = (event) =&gt; {
+      if (!event.wasClean) this.handleReconnect();
+    };
+  }
+
+  handleReconnect() {
+    if (this.reconnectAttempts &lt; this.maxReconnectAttempts) {
+      this.reconnectAttempts++;
+      setTimeout(() =&gt; this.connect(), 
+        this.reconnectInterval * this.reconnectAttempts);
+    }
+  }
+
+  send(type, payload) {
+    if (this.ws?.readyState === WebSocket.OPEN) {
+      this.ws.send(JSON.stringify({ type, payload }));
+    }
+  }
+}
+</code></pre>
+<h2 id="react-hook-websockets">React Hook для WebSockets</h2>
+<pre><code class="language-javascript">const useWebSocket = (url, options = {}) =&gt; {
+  const [connectionStatus, setConnectionStatus] = useState('Disconnected');
+  const [lastMessage, setLastMessage] = useState(null);
+  const ws = useRef(null);
+  const reconnectTimeoutId = useRef(null);
+
+  const connect = useCallback(() =&gt; {
+    ws.current = new WebSocket(url);
+
+    ws.current.onopen = () =&gt; setConnectionStatus('Connected');
+    ws.current.onmessage = (event) =&gt; setLastMessage(JSON.parse(event.data));
+    ws.current.onclose = (event) =&gt; {
+      setConnectionStatus('Disconnected');
+      if (!event.wasClean) {
+        setConnectionStatus('Reconnecting');
+        reconnectTimeoutId.current = setTimeout(connect, 3000);
+      }
+    };
+  }, [url]);
+
+  const sendMessage = useCallback((message) =&gt; {
+    if (ws.current?.readyState === WebSocket.OPEN) {
+      ws.current.send(JSON.stringify(message));
+      return true;
+    }
+    return false;
+  }, []);
+
+  useEffect(() =&gt; {
+    connect();
+    return () =&gt; {
+      clearTimeout(reconnectTimeoutId.current);
+      ws.current?.close();
+    };
+  }, [connect]);
+
+  return { connectionStatus, lastMessage, sendMessage };
+};
+</code></pre>
+<h2 id="websocket-context">WebSocket Context для глобального состояния</h2>
+<pre><code class="language-javascript">const WebSocketContext = createContext();
+
+function websocketReducer(state, action) {
+  switch (action.type) {
+    case 'CONNECT': return { ...state, isConnected: true, error: null };
+    case 'DISCONNECT': return { ...state, isConnected: false };
+    case 'MESSAGE_RECEIVED': 
+      return { ...state, messages: [...state.messages, action.payload] };
+    case 'USERS_UPDATE': 
+      return { ...state, activeUsers: action.payload };
+    default: return state;
+  }
+}
+
+export function WebSocketProvider({ children, url }) {
+  const [state, dispatch] = useReducer(websocketReducer, {
+    isConnected: false,
+    messages: [],
+    activeUsers: [],
+    error: null
+  });
+
+  const wsRef = useRef();
+
+  useEffect(() =&gt; {
+    const connect = () =&gt; {
+      wsRef.current = new WebSocket(url);
+      wsRef.current.onopen = () =&gt; dispatch({ type: 'CONNECT' });
+      wsRef.current.onmessage = (event) =&gt; {
+        const data = JSON.parse(event.data);
+        dispatch({ type: `${data.type.toUpperCase()}`, payload: data.payload });
+      };
+      wsRef.current.onclose = () =&gt; {
+        dispatch({ type: 'DISCONNECT' });
+        setTimeout(connect, 3000);
+      };
+    };
+
+    connect();
+    return () =&gt; wsRef.current?.close();
+  }, [url]);
+
+  const sendMessage = (message) =&gt; {
+    if (wsRef.current?.readyState === WebSocket.OPEN) {
+      wsRef.current.send(JSON.stringify(message));
+    }
+  };
+
+  return (
+    &lt;WebSocketContext.Provider value={{ ...state, sendMessage }}&gt;
+      {children}
+    &lt;/WebSocketContext.Provider&gt;
+  );
+}
+</code></pre>
+<h2 id="server-sent-events-sse">Server-Sent Events (SSE)</h2>
+<pre><code class="language-javascript">class ServerSentEvents {
+  constructor(url) {
+    this.eventSource = new EventSource(url);
+    this.listeners = new Map();
+
+    this.eventSource.onmessage = (event) =&gt; {
+      const data = JSON.parse(event.data);
+      this.emit('message', data);
+    };
+  }
+
+  // Кастомные события
+  addEventListener(type, callback) {
+    this.eventSource.addEventListener(type, callback);
+  }
+
+  on(event, callback) {
+    if (!this.listeners.has(event)) {
+      this.listeners.set(event, []);
+    }
+    this.listeners.get(event).push(callback);
+  }
+
+  emit(event, data) {
+    this.listeners.get(event)?.forEach(callback =&gt; callback(data));
+  }
+}
+</code></pre>
+<h2 id="_2">Продвинутые паттерны</h2>
+<h3 id="roomchannel-management">Room/Channel Management</h3>
+<pre><code class="language-javascript">class RoomManager {
+  constructor(websocket) {
+    this.ws = websocket;
+    this.rooms = new Map();
+    this.currentRooms = new Set();
+  }
+
+  joinRoom(roomId, callbacks = {}) {
+    if (this.currentRooms.has(roomId)) return false;
+
+    this.rooms.set(roomId, callbacks);
+    this.currentRooms.add(roomId);
+    this.ws.send({ type: 'join_room', payload: { roomId } });
+    return true;
+  }
+
+  handleMessage(data) {
+    if (data.roomId &amp;&amp; this.rooms.has(data.roomId)) {
+      const callbacks = this.rooms.get(data.roomId);
+      callbacks[`on${data.type}`]?.(data.payload);
+    }
+  }
+}
+</code></pre>
+<h3 id="message-queue-offline">Message Queue для offline поддержки</h3>
+<pre><code class="language-javascript">class MessageQueue {
+  constructor(websocket) {
+    this.ws = websocket;
+    this.queue = JSON.parse(localStorage.getItem('messageQueue') || '[]');
+    this.isOnline = navigator.onLine;
+
+    window.addEventListener('online', () =&gt; {
+      this.isOnline = true;
+      this.processQueue();
+    });
+
+    window.addEventListener('offline', () =&gt; this.isOnline = false);
+  }
+
+  send(message) {
+    const queuedMessage = {
+      ...message,
+      id: crypto.randomUUID(),
+      timestamp: Date.now(),
+      retryCount: 0
+    };
+
+    if (this.isOnline &amp;&amp; this.ws.isConnected()) {
+      this.sendMessage(queuedMessage);
+    } else {
+      this.enqueue(queuedMessage);
+    }
+  }
+
+  enqueue(message) {
+    this.queue.push(message);
+    localStorage.setItem('messageQueue', JSON.stringify(this.queue));
+  }
+
+  processQueue() {
+    while (this.queue.length &gt; 0 &amp;&amp; this.isOnline) {
+      const message = this.queue.shift();
+      this.sendMessage(message);
+    }
+    localStorage.setItem('messageQueue', JSON.stringify(this.queue));
+  }
+}
+</code></pre>
+<h2 id="_3">Оптимизация производительности</h2>
+<h3 id="message-batching">Message Batching</h3>
+<pre><code class="language-javascript">class MessageBatcher {
+  constructor(websocket, { batchSize = 10, flushInterval = 100 } = {}) {
+    this.ws = websocket;
+    this.batchSize = batchSize;
+    this.flushInterval = flushInterval;
+    this.buffer = [];
+    this.timeoutId = null;
+  }
+
+  send(message) {
+    this.buffer.push(message);
+
+    if (this.buffer.length &gt;= this.batchSize) {
+      this.flush();
+    } else if (!this.timeoutId) {
+      this.timeoutId = setTimeout(() =&gt; this.flush(), this.flushInterval);
+    }
+  }
+
+  flush() {
+    if (this.buffer.length === 0) return;
+
+    this.ws.send({ type: 'batch', payload: this.buffer });
+    this.buffer = [];
+    clearTimeout(this.timeoutId);
+    this.timeoutId = null;
+  }
+}
+</code></pre>
+<h3 id="connection-pooling">Connection Pooling</h3>
+<pre><code class="language-javascript">class WebSocketPool {
+  constructor(urls) {
+    this.connections = urls.map(url =&gt; new WebSocketConnection(url));
+    this.currentIndex = 0;
+  }
+
+  send(message) {
+    const connection = this.connections[this.currentIndex];
+    this.currentIndex = (this.currentIndex + 1) % this.connections.length;
+    connection.send(message);
+  }
+
+  broadcast(message) {
+    this.connections.forEach(conn =&gt; conn.send(message));
+  }
+}
+</code></pre>
+<h2 id="_4">Безопасность</h2>
+<h3 id="websocket_1">Аутентификация WebSocket</h3>
+<pre><code class="language-javascript">class SecureWebSocket extends WebSocketConnection {
+  constructor(url, { token, refreshToken } = {}) {
+    super(url);
+    this.token = token;
+    this.refreshToken = refreshToken;
+  }
+
+  connect() {
+    const urlWithAuth = `${this.url}?token=${this.token}`;
+    this.ws = new WebSocket(urlWithAuth);
+    this.setupEventHandlers();
+  }
+
+  send(type, payload) {
+    const message = {
+      type,
+      payload,
+      token: this.token,
+      timestamp: Date.now()
+    };
+    super.send(message);
+  }
+
+  async refreshAuthToken() {
+    const response = await fetch('/api/auth/refresh', {
+      method: 'POST',
+      body: JSON.stringify({ refreshToken: this.refreshToken })
+    });
+    const data = await response.json();
+    this.token = data.accessToken;
+    this.reconnect();
+  }
+}
+</code></pre>
+<h2 id="_5">Ключевые проблемы и решения</h2>
+<p><strong>Проблемы масштабирования</strong>:
+- Sticky sessions для WebSockets
+- Redis pub/sub для multi-instance
+- Message brokers (RabbitMQ, Apache Kafka)</p>
+<p><strong>Обработка разрывов соединения</strong>:
+- Exponential backoff для переподключений
+- Heartbeat/ping-pong для проверки соединения
+- Circuit breaker pattern</p>
+<p><strong>Fallback стратегии</strong>:</p>
+<pre><code class="language-javascript">const RealtimeClient = {
+  async connect(url) {
+    try {
+      return new WebSocketConnection(url);
+    } catch {
+      try {
+        return new ServerSentEvents(url + '/sse');
+      } catch {
+        return new LongPolling(url + '/poll');
+      }
+    }
+  }
+};
+</code></pre>
+<h2 id="best-practices-senior-level">Best Practices Senior-level</h2>
+<ol>
+<li><strong>Graceful degradation</strong>: WebSocket → SSE → Long polling</li>
+<li><strong>Message validation</strong>: JSON schema валидация</li>
+<li><strong>Rate limiting</strong>: Throttling на клиенте и сервере</li>
+<li><strong>Monitoring</strong>: Connection health, message latency</li>
+<li><strong>Testing</strong>: Mock WebSocket для unit тестов</li>
+<li><strong>Error recovery</strong>: Exponential backoff, circuit breaker</li>
+<li><strong>Security</strong>: Token refresh, message encryption</li>
+<li><strong>Performance</strong>: Batching, compression, connection pooling</li>
+</ol>
+<h2 id="senior">Частые Senior вопросы</h2>
+<ul>
+<li><strong>Масштабирование</strong>: Horizontal scaling WebSocket servers</li>
+<li><strong>Load balancing</strong>: Sticky sessions vs stateless approach  </li>
+<li><strong>Message ordering</strong>: Гарантии доставки и порядка</li>
+<li><strong>Backpressure</strong>: Обработка медленных клиентов</li>
+<li><strong>Monitoring</strong>: Метрики для WebSocket соединений</li>
+<li><strong>Security</strong>: CSRF, XSS защита в real-time приложениях</li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../websockets-realtime/" class="btn btn-neutral float-left" title="WebSockets и real-time коммуникация"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../../javascript/async-programming/" class="btn btn-neutral float-right" title="Promises, Async/Await и Generators">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../websockets-realtime/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../../javascript/async-programming/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../..";</script>
+    <script src="../../../js/theme_extra.js"></script>
+    <script src="../../../js/theme.js"></script>
+      <script src="../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

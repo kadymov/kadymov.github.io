@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../../img/favicon.ico" />
+    <title>Offline-First Архитектура (small) - My Docs</title>
+    <link rel="stylesheet" href="../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Offline-First \u0410\u0440\u0445\u0438\u0442\u0435\u043a\u0442\u0443\u0440\u0430 (small)";
+        var mkdocs_page_input_path = "questions/architecture/offline-first_small.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../../.." class="icon icon-home"> My Docs
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../..">📚 Подготовка к собеседованию: JavaScript, React и архитектура</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Questions</span></p>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current" >Architecture</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../ddd/">Domain-Driven Design (DDD) во Frontend</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../ddd_small/">Domain-Driven Design (DDD) во Frontend (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../microfrontends/">Микрофронтенды (Microfrontends)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../microfrontends_small/">Microfrontends - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../offline-first/">Offline-first архитектура</a>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" href="#">Offline-First Архитектура (small)</a>
+    <ul class="current">
+    <li class="toctree-l3"><a class="reference internal" href="#offline-first">Принципы Offline-First</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#indexeddb-offline-storage">IndexedDB для Offline Storage</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#offline-first-data-service">Offline-First Data Service</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_1">Синхронизация данных</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_2">Разрешение конфликтов</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#react-hooks-offline-first">React Hooks для Offline-First</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#service-worker-offline-first">Service Worker для Offline-First</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_3">Оптимизация для мобильных устройств</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#sync-status-component">Sync Status Component</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#offline-first_1">Ключевые принципы Offline-First</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#data-consistency-models">Data Consistency Models</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#storage-limits">Storage Limits и Управление</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#best-practices-senior-level">Best Practices Senior-level</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#senior">Частые Senior вопросы</a>
+    </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../resilient-frontend/">Устойчивая frontend архитектура</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../resilient-frontend_small/">Устойчивая Frontend Архитектура (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../state-management/">Архитектура управления состоянием</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../state-management_small/">State Management Architecture - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../websockets-realtime/">WebSockets и real-time коммуникация</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../websockets-realtime_small/">WebSockets и Real-time коммуникация (small)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Javascript</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/async-programming/">Promises, Async/Await и Generators</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/async-programming_small/">Async Programming - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/currying/">Currying в JavaScript</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/currying_small/">Currying - Шпаргалка (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/event-loop/">Event Loop, Microtasks и Macrotasks</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/event-loop_small/">Event Loop - Шпаргалка (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/execution-model/">Модель выполнения JavaScript</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/execution-model_small/">JavaScript Execution Model - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/garbage-collection/">Garbage Collection и оптимизация памяти</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/garbage-collection_small/">Garbage Collection - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/scope-hoisting/">Let, Const, Var: Scope и Hoisting</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/scope-hoisting_small/">Let, Const, Var - Шпаргалка (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/typing-comparison/">Сравнение типизации JS и Java</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/typing-comparison_small/">JS vs Java Typing + TypeScript - Senior Cheat Sheet (small)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Performance</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../performance/optimization/">Оптимизация производительности frontend-приложений</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../performance/optimization_small/">Оптимизация производительности Frontend (small)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >React</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/concurrent-rendering/">Конкурентный рендеринг React 18</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/concurrent-rendering_small/">React 18 Concurrent Rendering - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/context-api/">Context API vs Redux</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/context-api_small/">Context API vs Redux - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/hoc/">Higher-Order Components (HOC)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/hoc_small/">Higher-Order Components - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/reconciliation/">Reconciliation и Virtual DOM</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/reconciliation_small/">Reconciliation &amp; Virtual DOM - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/rerender-optimization/">Оптимизация ререндеров в React</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/rerender-optimization_small/">React Rerender Optimization - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/ssr-rsc/">SSR/SSG и React Server Components</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/ssr-rsc_small/">SSR/SSG &amp; React Server Components - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/use-effect/">useEffect и Side Effects</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/use-effect_small/">useEffect &amp; Side Effects - Senior Cheat Sheet</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Security</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../security/frontend-security/">Безопасность Frontend Приложений</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../security/frontend-security_small/">Frontend Security (small)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Testing</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../testing/strategies/">Стратегии тестирования frontend-приложений</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../testing/strategies_small/">Стратегии тестирования Frontend (small)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Typescript</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../typescript/advanced-types/">Продвинутые типы TypeScript</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../typescript/advanced-types_small/">Продвинутые типы TypeScript (small)</a>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../..">My Docs</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Questions</li>
+          <li class="breadcrumb-item">Architecture</li>
+      <li class="breadcrumb-item active">Offline-First Архитектура (small)</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="offline-first-small">Offline-First Архитектура (small)</h1>
+<h2 id="offline-first">Принципы Offline-First</h2>
+<p><strong>Локальное хранение как источник истины</strong>:
+- IndexedDB для основных данных
+- localStorage для метаданных
+- Service Worker для кеширования ресурсов
+- Синхронизация в фоновом режиме</p>
+<h2 id="indexeddb-offline-storage">IndexedDB для Offline Storage</h2>
+<pre><code class="language-javascript">class OfflineDatabase {
+  constructor(dbName, version = 1) {
+    this.dbName = dbName;
+    this.version = version;
+    this.db = null;
+  }
+
+  async init() {
+    return new Promise((resolve, reject) =&gt; {
+      const request = indexedDB.open(this.dbName, this.version);
+
+      request.onsuccess = () =&gt; {
+        this.db = request.result;
+        resolve(this.db);
+      };
+
+      request.onupgradeneeded = (event) =&gt; {
+        const db = event.target.result;
+        this.createStores(db);
+      };
+    });
+  }
+
+  createStores(db) {
+    // Основные данные
+    const dataStore = db.createObjectStore('posts', { keyPath: 'id' });
+    dataStore.createIndex('timestamp', 'timestamp');
+
+    // Очередь синхронизации
+    const syncStore = db.createObjectStore('syncQueue', { keyPath: 'id', autoIncrement: true });
+    syncStore.createIndex('operation', 'operation');
+  }
+
+  async get(storeName, id) {
+    const transaction = this.db.transaction([storeName], 'readonly');
+    const store = transaction.objectStore(storeName);
+    return new Promise((resolve, reject) =&gt; {
+      const request = store.get(id);
+      request.onsuccess = () =&gt; resolve(request.result);
+      request.onerror = () =&gt; reject(request.error);
+    });
+  }
+
+  async put(storeName, data) {
+    const transaction = this.db.transaction([storeName], 'readwrite');
+    const store = transaction.objectStore(storeName);
+    return new Promise((resolve, reject) =&gt; {
+      const request = store.put(data);
+      request.onsuccess = () =&gt; resolve(request.result);
+      request.onerror = () =&gt; reject(request.error);
+    });
+  }
+}
+</code></pre>
+<h2 id="offline-first-data-service">Offline-First Data Service</h2>
+<pre><code class="language-javascript">class OfflineDataService {
+  constructor(database, syncService) {
+    this.db = database;
+    this.syncService = syncService;
+  }
+
+  // Локальные операции с отложенной синхронизацией
+  async create(data) {
+    const item = {
+      id: this.generateOfflineId(),
+      ...data,
+      timestamp: Date.now(),
+      status: 'pending',
+      version: 1
+    };
+
+    await this.db.put('posts', item);
+    await this.syncService.addToQueue('CREATE', item);
+    return item;
+  }
+
+  async update(id, updates) {
+    const existing = await this.db.get('posts', id);
+    const updated = {
+      ...existing,
+      ...updates,
+      version: existing.version + 1,
+      lastModified: Date.now(),
+      status: 'pending'
+    };
+
+    await this.db.put('posts', updated);
+    await this.syncService.addToQueue('UPDATE', updated);
+    return updated;
+  }
+
+  async delete(id) {
+    const item = await this.db.get('posts', id);
+
+    if (item.status === 'pending') {
+      // Локальное удаление
+      await this.db.delete('posts', id);
+      await this.syncService.removeFromQueue('CREATE', { id });
+    } else {
+      // Помечаем для синхронизации
+      await this.db.put('posts', { ...item, isDeleted: true, deletedAt: Date.now() });
+      await this.syncService.addToQueue('DELETE', { id });
+    }
+  }
+
+  generateOfflineId() {
+    return `offline_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+  }
+}
+</code></pre>
+<h2 id="_1">Синхронизация данных</h2>
+<pre><code class="language-javascript">class SyncService {
+  constructor(database, apiClient) {
+    this.db = database;
+    this.api = apiClient;
+    this.isOnline = navigator.onLine;
+    this.isSyncing = false;
+
+    window.addEventListener('online', () =&gt; {
+      this.isOnline = true;
+      this.startSync();
+    });
+  }
+
+  async addToQueue(operation, data) {
+    const queueItem = {
+      operation,
+      data,
+      timestamp: Date.now(),
+      attempts: 0
+    };
+
+    await this.db.put('syncQueue', queueItem);
+
+    if (this.isOnline) this.startSync();
+  }
+
+  async startSync() {
+    if (!this.isOnline || this.isSyncing) return;
+
+    this.isSyncing = true;
+
+    try {
+      await this.downloadChanges();
+      await this.uploadChanges();
+    } finally {
+      this.isSyncing = false;
+    }
+  }
+
+  async downloadChanges() {
+    const lastSync = await this.getLastSyncTime();
+    const changes = await this.api.getChanges({ since: lastSync });
+
+    for (const change of changes) {
+      await this.applyRemoteChange(change);
+    }
+  }
+
+  async uploadChanges() {
+    const queue = await this.db.getAll('syncQueue');
+
+    for (const item of queue) {
+      try {
+        await this.processQueueItem(item);
+        await this.db.delete('syncQueue', item.id);
+      } catch (error) {
+        if (++item.attempts &gt;= 3) {
+          await this.db.delete('syncQueue', item.id);
+        }
+      }
+    }
+  }
+
+  async processQueueItem(item) {
+    switch (item.operation) {
+      case 'CREATE':
+        const serverItem = await this.api.create(item.data);
+        await this.updateLocalWithServerData(item.data.id, serverItem);
+        break;
+      case 'UPDATE':
+        const updated = await this.api.update(item.data.id, item.data);
+        await this.updateLocalWithServerData(item.data.id, updated);
+        break;
+      case 'DELETE':
+        await this.api.delete(item.data.id);
+        await this.db.delete('posts', item.data.id);
+        break;
+    }
+  }
+}
+</code></pre>
+<h2 id="_2">Разрешение конфликтов</h2>
+<pre><code class="language-javascript">class ConflictResolver {
+  resolve(localData, remoteData) {
+    const strategy = this.selectStrategy(localData, remoteData);
+
+    switch (strategy) {
+      case 'last-write-wins':
+        return this.lastWriteWins(localData, remoteData);
+      case 'merge-fields':
+        return this.mergeFields(localData, remoteData);
+      case 'user-choice':
+        return this.requestUserChoice(localData, remoteData);
+    }
+  }
+
+  selectStrategy(localData, remoteData) {
+    const criticalFields = ['title', 'content'];
+    const hasConflict = criticalFields.some(field =&gt; 
+      localData[field] !== remoteData[field]
+    );
+
+    return hasConflict ? 'user-choice' : 'merge-fields';
+  }
+
+  lastWriteWins(localData, remoteData) {
+    const localTime = localData.lastModified || localData.timestamp;
+    const remoteTime = remoteData.lastModified || remoteData.timestamp;
+    return localTime &gt; remoteTime ? localData : remoteData;
+  }
+
+  mergeFields(localData, remoteData) {
+    return {
+      ...remoteData,
+      ...localData,
+      tags: [...new Set([...(localData.tags || []), ...(remoteData.tags || [])])],
+      lastModified: Math.max(
+        localData.lastModified || 0,
+        remoteData.lastModified || 0
+      )
+    };
+  }
+
+  async requestUserChoice(localData, remoteData) {
+    return new Promise((resolve) =&gt; {
+      window.dispatchEvent(new CustomEvent('conflict-resolution', {
+        detail: { local: localData, remote: remoteData, resolve }
+      }));
+    });
+  }
+}
+</code></pre>
+<h2 id="react-hooks-offline-first">React Hooks для Offline-First</h2>
+<pre><code class="language-javascript">const useOfflineData = (storeName) =&gt; {
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [isOnline, setIsOnline] = useState(navigator.onLine);
+
+  const dbRef = useRef(null);
+  const serviceRef = useRef(null);
+
+  useEffect(() =&gt; {
+    const initOffline = async () =&gt; {
+      dbRef.current = new OfflineDatabase('AppDB');
+      await dbRef.current.init();
+
+      serviceRef.current = new OfflineDataService(
+        dbRef.current,
+        new SyncService(dbRef.current, new APIClient())
+      );
+
+      await loadData();
+      setLoading(false);
+    };
+
+    initOffline();
+  }, []);
+
+  const loadData = async () =&gt; {
+    const items = await dbRef.current.getAll(storeName);
+    setData(items.filter(item =&gt; !item.isDeleted));
+  };
+
+  const create = useCallback(async (itemData) =&gt; {
+    const item = await serviceRef.current.create(itemData);
+    await loadData();
+    return item;
+  }, []);
+
+  const update = useCallback(async (id, updates) =&gt; {
+    const item = await serviceRef.current.update(id, updates);
+    await loadData();
+    return item;
+  }, []);
+
+  const remove = useCallback(async (id) =&gt; {
+    await serviceRef.current.delete(id);
+    await loadData();
+  }, []);
+
+  return { data, loading, isOnline, create, update, remove };
+};
+
+// Sync status hook
+const useSyncStatus = () =&gt; {
+  const [status, setStatus] = useState({
+    isSyncing: false,
+    pendingCount: 0,
+    lastSync: null
+  });
+
+  useEffect(() =&gt; {
+    const updateStatus = async () =&gt; {
+      // Получаем статус от sync service
+      if (window.syncService) {
+        const newStatus = await window.syncService.getStatus();
+        setStatus(newStatus);
+      }
+    };
+
+    const interval = setInterval(updateStatus, 5000);
+    return () =&gt; clearInterval(interval);
+  }, []);
+
+  return status;
+};
+</code></pre>
+<h2 id="service-worker-offline-first">Service Worker для Offline-First</h2>
+<pre><code class="language-javascript">// sw.js - Offline-first caching strategy
+const CACHE_NAME = 'offline-first-v1';
+const APP_SHELL = ['/', '/static/js/bundle.js', '/static/css/main.css'];
+
+// Offline-first для API
+self.addEventListener('fetch', (event) =&gt; {
+  const { request } = event;
+
+  if (request.url.includes('/api/')) {
+    event.respondWith(
+      // Сначала кеш, потом сеть
+      caches.match(request)
+        .then(cachedResponse =&gt; {
+          if (cachedResponse) return cachedResponse;
+
+          return fetch(request)
+            .then(response =&gt; {
+              if (response.status === 200) {
+                const responseClone = response.clone();
+                caches.open(CACHE_NAME)
+                  .then(cache =&gt; cache.put(request, responseClone));
+              }
+              return response;
+            })
+            .catch(() =&gt; {
+              return new Response(JSON.stringify({
+                error: 'Network unavailable',
+                offline: true
+              }), {
+                headers: { 'Content-Type': 'application/json' }
+              });
+            });
+        })
+    );
+  }
+});
+
+// Background sync
+self.addEventListener('sync', (event) =&gt; {
+  if (event.tag === 'background-sync') {
+    event.waitUntil(handleBackgroundSync());
+  }
+});
+
+async function handleBackgroundSync() {
+  // Обработка отложенных операций
+  const db = await openDatabase();
+  const queue = await getAllFromStore(db, 'syncQueue');
+
+  for (const item of queue) {
+    try {
+      await syncItem(item);
+      await deleteFromStore(db, 'syncQueue', item.id);
+    } catch (error) {
+      console.error('Background sync failed:', error);
+    }
+  }
+}
+</code></pre>
+<h2 id="_3">Оптимизация для мобильных устройств</h2>
+<pre><code class="language-javascript">class OfflineOptimizer {
+  constructor() {
+    this.batteryOptimized = false;
+    this.connectionQuality = 'good';
+    this.setupMonitoring();
+  }
+
+  async setupMonitoring() {
+    // Battery API
+    if ('getBattery' in navigator) {
+      const battery = await navigator.getBattery();
+      this.batteryOptimized = battery.level &lt; 0.2;
+    }
+
+    // Network Information API
+    if ('connection' in navigator) {
+      const connection = navigator.connection;
+      this.connectionQuality = this.getConnectionQuality(connection.effectiveType);
+    }
+  }
+
+  getConnectionQuality(effectiveType) {
+    const qualityMap = {
+      'slow-2g': 'poor',
+      '2g': 'poor',
+      '3g': 'moderate',
+      '4g': 'good'
+    };
+    return qualityMap[effectiveType] || 'good';
+  }
+
+  getSyncInterval() {
+    if (this.batteryOptimized) return 300000; // 5 min
+
+    switch (this.connectionQuality) {
+      case 'poor': return 120000; // 2 min
+      case 'moderate': return 60000; // 1 min
+      default: return 30000; // 30 sec
+    }
+  }
+
+  shouldOptimizeSync() {
+    return this.batteryOptimized || this.connectionQuality === 'poor';
+  }
+}
+</code></pre>
+<h2 id="sync-status-component">Sync Status Component</h2>
+<pre><code class="language-javascript">function SyncStatusIndicator() {
+  const { isSyncing, pendingCount, lastSync } = useSyncStatus();
+  const isOnline = navigator.onLine;
+
+  const getStatusText = () =&gt; {
+    if (!isOnline) return 'Offline';
+    if (isSyncing) return 'Syncing...';
+    if (pendingCount &gt; 0) return `Pending: ${pendingCount}`;
+    return 'Synced';
+  };
+
+  const getStatusColor = () =&gt; {
+    if (!isOnline) return 'orange';
+    if (isSyncing) return 'blue';
+    if (pendingCount &gt; 0) return 'yellow';
+    return 'green';
+  };
+
+  return (
+    &lt;div className={`sync-status ${getStatusColor()}`}&gt;
+      &lt;div className=&quot;indicator&quot; /&gt;
+      &lt;span&gt;{getStatusText()}&lt;/span&gt;
+      {lastSync &amp;&amp; &lt;small&gt;Last: {new Date(lastSync).toLocaleTimeString()}&lt;/small&gt;}
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+<h2 id="offline-first_1">Ключевые принципы Offline-First</h2>
+<p><strong>Local-First Philosophy</strong>:
+- Локальная база данных как единственный источник истины
+- Мгновенный ответ на пользовательские действия
+- Синхронизация в фоновом режиме</p>
+<p><strong>Sync Strategies</strong>:</p>
+<pre><code class="language-javascript">const syncStrategies = {
+  immediate: 'Синхронизация при каждом изменении',
+  batched: 'Групповая синхронизация через интервалы',
+  manual: 'Синхронизация по запросу пользователя',
+  background: 'Фоновая синхронизация через Service Worker'
+};
+</code></pre>
+<p><strong>Conflict Resolution</strong>:
+- <strong>Last Write Wins</strong>: Простой, но может потерять данные
+- <strong>Manual Resolution</strong>: Пользователь выбирает версию
+- <strong>Automatic Merge</strong>: Объединение по правилам
+- <strong>Vector Clocks</strong>: Для сложных сценариев</p>
+<h2 id="data-consistency-models">Data Consistency Models</h2>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Consistency</th>
+<th>Availability</th>
+<th>Partition Tolerance</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Strong Consistency</strong></td>
+<td>Высокая</td>
+<td>Низкая</td>
+<td>Низкая</td>
+</tr>
+<tr>
+<td><strong>Eventual Consistency</strong></td>
+<td>Низкая</td>
+<td>Высокая</td>
+<td>Высокая</td>
+</tr>
+<tr>
+<td><strong>Causal Consistency</strong></td>
+<td>Средняя</td>
+<td>Высокая</td>
+<td>Высокая</td>
+</tr>
+</tbody>
+</table>
+<p>Offline-first обычно использует <strong>Eventual Consistency</strong>.</p>
+<h2 id="storage-limits">Storage Limits и Управление</h2>
+<pre><code class="language-javascript">// Проверка и управление квотами
+const checkStorageQuota = async () =&gt; {
+  if ('storage' in navigator &amp;&amp; 'estimate' in navigator.storage) {
+    const estimate = await navigator.storage.estimate();
+    return {
+      used: estimate.usage,
+      available: estimate.quota,
+      percentage: (estimate.usage / estimate.quota) * 100
+    };
+  }
+};
+
+// Очистка старых данных
+const cleanupOldData = async (db, maxAge = 30 * 24 * 60 * 60 * 1000) =&gt; {
+  const cutoff = Date.now() - maxAge;
+  const oldItems = await db.getAll('posts', 'timestamp', IDBKeyRange.upperBound(cutoff));
+
+  for (const item of oldItems) {
+    if (item.status === 'synced') {
+      await db.delete('posts', item.id);
+    }
+  }
+};
+</code></pre>
+<h2 id="best-practices-senior-level">Best Practices Senior-level</h2>
+<ol>
+<li><strong>Progressive Enhancement</strong>: Приложение работает без сети</li>
+<li><strong>Optimistic UI</strong>: Мгновенные обновления интерфейса</li>
+<li><strong>Conflict Resolution</strong>: Стратегии разрешения конфликтов</li>
+<li><strong>Battery Optimization</strong>: Адаптация к состоянию батареи</li>
+<li><strong>Storage Management</strong>: Управление квотами и очистка</li>
+<li><strong>Background Sync</strong>: Service Worker для фоновой синхронизации</li>
+<li><strong>User Feedback</strong>: Индикаторы состояния синхронизации</li>
+</ol>
+<h2 id="senior">Частые Senior вопросы</h2>
+<ul>
+<li><strong>Как обеспечить eventual consistency в offline-first приложениях?</strong></li>
+<li><strong>Стратегии разрешения конфликтов данных?</strong></li>
+<li><strong>Оптимизация синхронизации для мобильных устройств?</strong></li>
+<li><strong>Управление storage quota и очистка данных?</strong></li>
+<li><strong>Тестирование offline functionality?</strong></li>
+<li><strong>Миграция схемы данных в IndexedDB?</strong></li>
+<li><strong>Performance considerations для больших offline datasets?</strong></li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../offline-first/" class="btn btn-neutral float-left" title="Offline-first архитектура"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../resilient-frontend/" class="btn btn-neutral float-right" title="Устойчивая frontend архитектура">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../offline-first/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../resilient-frontend/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../..";</script>
+    <script src="../../../js/theme_extra.js"></script>
+    <script src="../../../js/theme.js"></script>
+      <script src="../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

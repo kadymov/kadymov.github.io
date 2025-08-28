@@ -1,0 +1,1737 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../../img/favicon.ico" />
+    <title>Оптимизация производительности frontend-приложений - My Docs</title>
+    <link rel="stylesheet" href="../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "\u041e\u043f\u0442\u0438\u043c\u0438\u0437\u0430\u0446\u0438\u044f \u043f\u0440\u043e\u0438\u0437\u0432\u043e\u0434\u0438\u0442\u0435\u043b\u044c\u043d\u043e\u0441\u0442\u0438 frontend-\u043f\u0440\u0438\u043b\u043e\u0436\u0435\u043d\u0438\u0439";
+        var mkdocs_page_input_path = "questions/performance/optimization.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../../.." class="icon icon-home"> My Docs
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../..">📚 Подготовка к собеседованию: JavaScript, React и архитектура</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Questions</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" >Architecture</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/ddd/">Domain-Driven Design (DDD) во Frontend</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/ddd_small/">Domain-Driven Design (DDD) во Frontend (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/microfrontends/">Микрофронтенды (Microfrontends)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/microfrontends_small/">Microfrontends - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/offline-first/">Offline-first архитектура</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/offline-first_small/">Offline-First Архитектура (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/resilient-frontend/">Устойчивая frontend архитектура</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/resilient-frontend_small/">Устойчивая Frontend Архитектура (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/state-management/">Архитектура управления состоянием</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/state-management_small/">State Management Architecture - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/websockets-realtime/">WebSockets и real-time коммуникация</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/websockets-realtime_small/">WebSockets и Real-time коммуникация (small)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Javascript</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/async-programming/">Promises, Async/Await и Generators</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/async-programming_small/">Async Programming - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/currying/">Currying в JavaScript</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/currying_small/">Currying - Шпаргалка (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/event-loop/">Event Loop, Microtasks и Macrotasks</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/event-loop_small/">Event Loop - Шпаргалка (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/execution-model/">Модель выполнения JavaScript</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/execution-model_small/">JavaScript Execution Model - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/garbage-collection/">Garbage Collection и оптимизация памяти</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/garbage-collection_small/">Garbage Collection - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/scope-hoisting/">Let, Const, Var: Scope и Hoisting</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/scope-hoisting_small/">Let, Const, Var - Шпаргалка (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/typing-comparison/">Сравнение типизации JS и Java</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/typing-comparison_small/">JS vs Java Typing + TypeScript - Senior Cheat Sheet (small)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" >Performance</a>
+    <ul class="current">
+                <li class="toctree-l2 current"><a class="reference internal current" href="#">Оптимизация производительности frontend-приложений</a>
+    <ul class="current">
+    <li class="toctree-l3"><a class="reference internal" href="#_1">Описание</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_2">Детальный ответ</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#core-web-vitals">Core Web Vitals</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#_3">Оптимизация рендеринга</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#_4">Оптимизация ресурсов</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#bundle-optimization">Bundle Optimization</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#monitoring-measurement">Monitoring и Measurement</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#memory-management">Memory Management</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#1_1">1. Предотвращение утечек памяти</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#2_2">2. Оптимизация больших объектов</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#network-optimization">Network Optimization</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#1-http2-http3">1. HTTP/2 и HTTP/3 оптимизации</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#2-request-optimization">2. Request optimization</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#best-practices-summary">Best Practices Summary</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#tools-for-performance-monitoring">Tools for Performance Monitoring</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_5">Связанные темы</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_6">Рекомендации для собеседования</a>
+    </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../optimization_small/">Оптимизация производительности Frontend (small)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >React</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/concurrent-rendering/">Конкурентный рендеринг React 18</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/concurrent-rendering_small/">React 18 Concurrent Rendering - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/context-api/">Context API vs Redux</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/context-api_small/">Context API vs Redux - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/hoc/">Higher-Order Components (HOC)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/hoc_small/">Higher-Order Components - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/reconciliation/">Reconciliation и Virtual DOM</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/reconciliation_small/">Reconciliation &amp; Virtual DOM - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/rerender-optimization/">Оптимизация ререндеров в React</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/rerender-optimization_small/">React Rerender Optimization - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/ssr-rsc/">SSR/SSG и React Server Components</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/ssr-rsc_small/">SSR/SSG &amp; React Server Components - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/use-effect/">useEffect и Side Effects</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/use-effect_small/">useEffect &amp; Side Effects - Senior Cheat Sheet</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Security</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../security/frontend-security/">Безопасность Frontend Приложений</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../security/frontend-security_small/">Frontend Security (small)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Testing</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../testing/strategies/">Стратегии тестирования frontend-приложений</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../testing/strategies_small/">Стратегии тестирования Frontend (small)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Typescript</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../typescript/advanced-types/">Продвинутые типы TypeScript</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../typescript/advanced-types_small/">Продвинутые типы TypeScript (small)</a>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../..">My Docs</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Questions</li>
+          <li class="breadcrumb-item">Performance</li>
+      <li class="breadcrumb-item active">Оптимизация производительности frontend-приложений</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="frontend-">Оптимизация производительности frontend-приложений</h1>
+<h2 id="_1">Описание</h2>
+<p>Вопрос касается различных техник и стратегий оптимизации производительности frontend-приложений, включая Core Web Vitals, оптимизацию рендеринга, загрузки ресурсов и runtime производительности.</p>
+<h2 id="_2">Детальный ответ</h2>
+<h3 id="core-web-vitals">Core Web Vitals</h3>
+<h4 id="1-largest-contentful-paint-lcp">1. Largest Contentful Paint (LCP)</h4>
+<p>Время загрузки самого крупного элемента на странице.</p>
+<pre><code class="language-javascript">// Измерение LCP
+const observer = new PerformanceObserver((list) =&gt; {
+  for (const entry of list.getEntries()) {
+    if (entry.entryType === 'largest-contentful-paint') {
+      console.log('LCP:', entry.startTime);
+
+      // Отправляем метрику в аналитику
+      gtag('event', 'web_vitals', {
+        name: 'LCP',
+        value: Math.round(entry.startTime),
+        event_category: 'Web Vitals'
+      });
+    }
+  }
+});
+
+observer.observe({ type: 'largest-contentful-paint', buffered: true });
+
+// Оптимизация LCP
+// 1. Оптимизация изображений
+function OptimizedImage({ src, alt, width, height, priority = false }) {
+  return (
+    &lt;img
+      src={src}
+      alt={alt}
+      width={width}
+      height={height}
+      loading={priority ? 'eager' : 'lazy'}
+      decoding=&quot;async&quot;
+      style={{
+        width: '100%',
+        height: 'auto',
+        aspectRatio: `${width} / ${height}`
+      }}
+    /&gt;
+  );
+}
+
+// 2. Preload критических ресурсов
+function CriticalResourcePreloader() {
+  useEffect(() =&gt; {
+    // Preload hero image
+    const link = document.createElement('link');
+    link.rel = 'preload';
+    link.as = 'image';
+    link.href = '/hero-image.webp';
+    document.head.appendChild(link);
+
+    return () =&gt; {
+      document.head.removeChild(link);
+    };
+  }, []);
+
+  return null;
+}
+
+// 3. Критический CSS inline
+const criticalCSS = `
+  .hero {
+    background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+`;
+
+function CriticalCSS() {
+  return &lt;style dangerouslySetInnerHTML={{ __html: criticalCSS }} /&gt;;
+}
+</code></pre>
+<h4 id="2-first-input-delay-fid-interaction-to-next-paint-inp">2. First Input Delay (FID) / Interaction to Next Paint (INP)</h4>
+<p>Время отклика на первое взаимодействие пользователя.</p>
+<pre><code class="language-javascript">// Измерение FID
+const observer = new PerformanceObserver((list) =&gt; {
+  for (const entry of list.getEntries()) {
+    if (entry.entryType === 'first-input') {
+      const fid = entry.processingStart - entry.startTime;
+      console.log('FID:', fid);
+
+      gtag('event', 'web_vitals', {
+        name: 'FID',
+        value: Math.round(fid),
+        event_category: 'Web Vitals'
+      });
+    }
+  }
+});
+
+observer.observe({ type: 'first-input', buffered: true });
+
+// Оптимизация FID/INP
+// 1. Debouncing и throttling
+function useDebounce(value, delay) {
+  const [debouncedValue, setDebouncedValue] = useState(value);
+
+  useEffect(() =&gt; {
+    const handler = setTimeout(() =&gt; {
+      setDebouncedValue(value);
+    }, delay);
+
+    return () =&gt; {
+      clearTimeout(handler);
+    };
+  }, [value, delay]);
+
+  return debouncedValue;
+}
+
+function SearchInput() {
+  const [query, setQuery] = useState('');
+  const debouncedQuery = useDebounce(query, 300);
+
+  useEffect(() =&gt; {
+    if (debouncedQuery) {
+      // Выполняем поиск только после задержки
+      performSearch(debouncedQuery);
+    }
+  }, [debouncedQuery]);
+
+  return (
+    &lt;input
+      type=&quot;text&quot;
+      value={query}
+      onChange={(e) =&gt; setQuery(e.target.value)}
+      placeholder=&quot;Search...&quot;
+    /&gt;
+  );
+}
+
+// 2. Web Workers для тяжелых вычислений
+// worker.js
+self.onmessage = function(e) {
+  const { data, operation } = e.data;
+
+  switch (operation) {
+    case 'processLargeDataset':
+      const result = processData(data);
+      self.postMessage({ result });
+      break;
+
+    case 'generateReport':
+      const report = generateComplexReport(data);
+      self.postMessage({ report });
+      break;
+  }
+};
+
+function processData(data) {
+  // Тяжелые вычисления
+  return data.map(item =&gt; ({
+    ...item,
+    processed: true,
+    score: calculateComplexScore(item)
+  }));
+}
+
+// React компонент с Web Worker
+function DataProcessor() {
+  const [result, setResult] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const workerRef = useRef();
+
+  useEffect(() =&gt; {
+    workerRef.current = new Worker('/worker.js');
+
+    workerRef.current.onmessage = (e) =&gt; {
+      setResult(e.data.result);
+      setLoading(false);
+    };
+
+    return () =&gt; {
+      workerRef.current?.terminate();
+    };
+  }, []);
+
+  const processData = (data) =&gt; {
+    setLoading(true);
+    workerRef.current.postMessage({
+      data,
+      operation: 'processLargeDataset'
+    });
+  };
+
+  return (
+    &lt;div&gt;
+      {loading ? &lt;div&gt;Processing...&lt;/div&gt; : &lt;DataView data={result} /&gt;}
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+<h4 id="3-cumulative-layout-shift-cls">3. Cumulative Layout Shift (CLS)</h4>
+<p>Стабильность визуальной компоновки страницы.</p>
+<pre><code class="language-javascript">// Измерение CLS
+let clsValue = 0;
+
+const observer = new PerformanceObserver((list) =&gt; {
+  for (const entry of list.getEntries()) {
+    if (!entry.hadRecentInput) {
+      clsValue += entry.value;
+    }
+  }
+});
+
+observer.observe({ type: 'layout-shift', buffered: true });
+
+// Отправляем CLS при выгрузке страницы
+window.addEventListener('beforeunload', () =&gt; {
+  gtag('event', 'web_vitals', {
+    name: 'CLS',
+    value: Math.round(clsValue * 1000),
+    event_category: 'Web Vitals'
+  });
+});
+
+// Оптимизация CLS
+// 1. Резервирование места для изображений
+function StableImage({ src, alt, width, height }) {
+  const [loaded, setLoaded] = useState(false);
+
+  return (
+    &lt;div
+      style={{
+        width: '100%',
+        maxWidth: width,
+        aspectRatio: `${width} / ${height}`,
+        backgroundColor: '#f0f0f0',
+        position: 'relative'
+      }}
+    &gt;
+      &lt;img
+        src={src}
+        alt={alt}
+        onLoad={() =&gt; setLoaded(true)}
+        style={{
+          width: '100%',
+          height: '100%',
+          objectFit: 'cover',
+          opacity: loaded ? 1 : 0,
+          transition: 'opacity 0.3s'
+        }}
+      /&gt;
+      {!loaded &amp;&amp; (
+        &lt;div
+          style={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            color: '#999'
+          }}
+        &gt;
+          Loading...
+        &lt;/div&gt;
+      )}
+    &lt;/div&gt;
+  );
+}
+
+// 2. Стабильные размеры для динамического контента
+function DynamicContent() {
+  const [content, setContent] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() =&gt; {
+    fetchContent().then(data =&gt; {
+      setContent(data);
+      setLoading(false);
+    });
+  }, []);
+
+  return (
+    &lt;div
+      style={{
+        minHeight: '200px', // Резервируем минимальную высоту
+        display: 'flex',
+        alignItems: loading ? 'center' : 'flex-start',
+        justifyContent: loading ? 'center' : 'flex-start'
+      }}
+    &gt;
+      {loading ? (
+        &lt;div&gt;Loading content...&lt;/div&gt;
+      ) : (
+        &lt;div&gt;{content}&lt;/div&gt;
+      )}
+    &lt;/div&gt;
+  );
+}
+
+// 3. Skeleton screens
+function UserCardSkeleton() {
+  return (
+    &lt;div className=&quot;user-card-skeleton&quot;&gt;
+      &lt;div className=&quot;skeleton-avatar&quot; /&gt;
+      &lt;div className=&quot;skeleton-content&quot;&gt;
+        &lt;div className=&quot;skeleton-line skeleton-title&quot; /&gt;
+        &lt;div className=&quot;skeleton-line skeleton-subtitle&quot; /&gt;
+      &lt;/div&gt;
+      &lt;style jsx&gt;{`
+        .user-card-skeleton {
+          display: flex;
+          align-items: center;
+          padding: 16px;
+          border: 1px solid #e0e0e0;
+          border-radius: 8px;
+        }
+
+        .skeleton-avatar {
+          width: 48px;
+          height: 48px;
+          border-radius: 50%;
+          background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+          background-size: 200% 100%;
+          animation: loading 1.5s infinite;
+        }
+
+        .skeleton-content {
+          margin-left: 12px;
+          flex: 1;
+        }
+
+        .skeleton-line {
+          height: 16px;
+          background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+          background-size: 200% 100%;
+          animation: loading 1.5s infinite;
+          border-radius: 4px;
+        }
+
+        .skeleton-title {
+          width: 60%;
+          margin-bottom: 8px;
+        }
+
+        .skeleton-subtitle {
+          width: 40%;
+        }
+
+        @keyframes loading {
+          0% { background-position: 200% 0; }
+          100% { background-position: -200% 0; }
+        }
+      `}&lt;/style&gt;
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+<h3 id="_3">Оптимизация рендеринга</h3>
+<h4 id="1-reactmemo">1. React.memo и мемоизация</h4>
+<pre><code class="language-javascript">// Мемоизация компонентов
+const UserCard = React.memo(({ user, onEdit, onDelete }) =&gt; {
+  return (
+    &lt;div className=&quot;user-card&quot;&gt;
+      &lt;h3&gt;{user.name}&lt;/h3&gt;
+      &lt;p&gt;{user.email}&lt;/p&gt;
+      &lt;button onClick={() =&gt; onEdit(user.id)}&gt;Edit&lt;/button&gt;
+      &lt;button onClick={() =&gt; onDelete(user.id)}&gt;Delete&lt;/button&gt;
+    &lt;/div&gt;
+  );
+}, (prevProps, nextProps) =&gt; {
+  // Кастомная функция сравнения
+  return (
+    prevProps.user.id === nextProps.user.id &amp;&amp;
+    prevProps.user.name === nextProps.user.name &amp;&amp;
+    prevProps.user.email === nextProps.user.email
+  );
+});
+
+// useMemo для тяжелых вычислений
+function ExpensiveComponent({ items, filters }) {
+  const filteredItems = useMemo(() =&gt; {
+    return items.filter(item =&gt; {
+      return filters.every(filter =&gt; {
+        switch (filter.type) {
+          case 'category':
+            return item.category === filter.value;
+          case 'price':
+            return item.price &gt;= filter.min &amp;&amp; item.price &lt;= filter.max;
+          case 'rating':
+            return item.rating &gt;= filter.value;
+          default:
+            return true;
+        }
+      });
+    }).sort((a, b) =&gt; {
+      // Сложная сортировка
+      return a.relevance - b.relevance;
+    });
+  }, [items, filters]);
+
+  const statistics = useMemo(() =&gt; {
+    return {
+      totalItems: filteredItems.length,
+      averagePrice: filteredItems.reduce((sum, item) =&gt; sum + item.price, 0) / filteredItems.length,
+      topCategory: getTopCategory(filteredItems)
+    };
+  }, [filteredItems]);
+
+  return (
+    &lt;div&gt;
+      &lt;div&gt;Found {statistics.totalItems} items&lt;/div&gt;
+      &lt;div&gt;Average price: ${statistics.averagePrice.toFixed(2)}&lt;/div&gt;
+      &lt;ItemList items={filteredItems} /&gt;
+    &lt;/div&gt;
+  );
+}
+
+// useCallback для функций
+function UserList({ users }) {
+  const [selectedUsers, setSelectedUsers] = useState([]);
+
+  const handleUserSelect = useCallback((userId, selected) =&gt; {
+    setSelectedUsers(prev =&gt; {
+      if (selected) {
+        return [...prev, userId];
+      } else {
+        return prev.filter(id =&gt; id !== userId);
+      }
+    });
+  }, []);
+
+  const handleBulkAction = useCallback((action) =&gt; {
+    // Выполняем действие для всех выбранных пользователей
+    console.log(`Performing ${action} on users:`, selectedUsers);
+  }, [selectedUsers]);
+
+  return (
+    &lt;div&gt;
+      {users.map(user =&gt; (
+        &lt;UserRow
+          key={user.id}
+          user={user}
+          onSelect={handleUserSelect}
+          selected={selectedUsers.includes(user.id)}
+        /&gt;
+      ))}
+      &lt;BulkActions onAction={handleBulkAction} /&gt;
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+<h4 id="2">2. Виртуализация списков</h4>
+<pre><code class="language-javascript">// react-window для больших списков
+import { FixedSizeList as List } from 'react-window';
+
+function VirtualizedUserList({ users }) {
+  const Row = ({ index, style }) =&gt; {
+    const user = users[index];
+
+    return (
+      &lt;div style={style}&gt;
+        &lt;UserCard user={user} /&gt;
+      &lt;/div&gt;
+    );
+  };
+
+  return (
+    &lt;List
+      height={600}
+      itemCount={users.length}
+      itemSize={80}
+      width=&quot;100%&quot;
+    &gt;
+      {Row}
+    &lt;/List&gt;
+  );
+}
+
+// Кастомная виртуализация с Intersection Observer
+function useVirtualization(items, itemHeight = 80, containerHeight = 600) {
+  const [visibleRange, setVisibleRange] = useState({ start: 0, end: 10 });
+  const scrollElementRef = useRef();
+
+  useEffect(() =&gt; {
+    const element = scrollElementRef.current;
+    if (!element) return;
+
+    const handleScroll = () =&gt; {
+      const scrollTop = element.scrollTop;
+      const start = Math.floor(scrollTop / itemHeight);
+      const visibleCount = Math.ceil(containerHeight / itemHeight);
+      const end = Math.min(start + visibleCount + 5, items.length); // +5 для буфера
+
+      setVisibleRange({ start: Math.max(0, start - 5), end });
+    };
+
+    element.addEventListener('scroll', handleScroll);
+    handleScroll(); // Инициальный расчет
+
+    return () =&gt; element.removeEventListener('scroll', handleScroll);
+  }, [items.length, itemHeight, containerHeight]);
+
+  const visibleItems = items.slice(visibleRange.start, visibleRange.end);
+
+  return {
+    scrollElementRef,
+    visibleItems,
+    totalHeight: items.length * itemHeight,
+    offsetY: visibleRange.start * itemHeight
+  };
+}
+
+function CustomVirtualizedList({ items }) {
+  const { scrollElementRef, visibleItems, totalHeight, offsetY } = useVirtualization(items);
+
+  return (
+    &lt;div
+      ref={scrollElementRef}
+      style={{
+        height: '600px',
+        overflow: 'auto'
+      }}
+    &gt;
+      &lt;div style={{ height: totalHeight, position: 'relative' }}&gt;
+        &lt;div
+          style={{
+            transform: `translateY(${offsetY}px)`
+          }}
+        &gt;
+          {visibleItems.map((item, index) =&gt; (
+            &lt;div key={item.id} style={{ height: '80px' }}&gt;
+              &lt;ItemComponent item={item} /&gt;
+            &lt;/div&gt;
+          ))}
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+<h4 id="3-code-splitting-lazy-loading">3. Code Splitting и Lazy Loading</h4>
+<pre><code class="language-javascript">// Динамические импорты
+const LazyDashboard = React.lazy(() =&gt; import('./Dashboard'));
+const LazyUserProfile = React.lazy(() =&gt; import('./UserProfile'));
+const LazySettings = React.lazy(() =&gt; import('./Settings'));
+
+function App() {
+  return (
+    &lt;Router&gt;
+      &lt;Suspense fallback={&lt;div&gt;Loading...&lt;/div&gt;}&gt;
+        &lt;Routes&gt;
+          &lt;Route path=&quot;/dashboard&quot; element={&lt;LazyDashboard /&gt;} /&gt;
+          &lt;Route path=&quot;/profile&quot; element={&lt;LazyUserProfile /&gt;} /&gt;
+          &lt;Route path=&quot;/settings&quot; element={&lt;LazySettings /&gt;} /&gt;
+        &lt;/Routes&gt;
+      &lt;/Suspense&gt;
+    &lt;/Router&gt;
+  );
+}
+
+// Preloading на hover
+function NavigationLink({ to, children }) {
+  const handleMouseEnter = () =&gt; {
+    // Предзагружаем компонент при hover
+    switch (to) {
+      case '/dashboard':
+        import('./Dashboard');
+        break;
+      case '/profile':
+        import('./UserProfile');
+        break;
+      case '/settings':
+        import('./Settings');
+        break;
+    }
+  };
+
+  return (
+    &lt;Link
+      to={to}
+      onMouseEnter={handleMouseEnter}
+    &gt;
+      {children}
+    &lt;/Link&gt;
+  );
+}
+
+// Условная загрузка больших библиотек
+function ChartComponent({ data }) {
+  const [ChartLibrary, setChartLibrary] = useState(null);
+
+  useEffect(() =&gt; {
+    // Загружаем тяжелую библиотеку только когда нужно
+    if (data &amp;&amp; data.length &gt; 0) {
+      import('recharts').then(lib =&gt; {
+        setChartLibrary(lib);
+      });
+    }
+  }, [data]);
+
+  if (!data || data.length === 0) {
+    return &lt;div&gt;No data to display&lt;/div&gt;;
+  }
+
+  if (!ChartLibrary) {
+    return &lt;div&gt;Loading chart...&lt;/div&gt;;
+  }
+
+  const { LineChart, Line, XAxis, YAxis } = ChartLibrary;
+
+  return (
+    &lt;LineChart width={400} height={200} data={data}&gt;
+      &lt;Line type=&quot;monotone&quot; dataKey=&quot;value&quot; stroke=&quot;#8884d8&quot; /&gt;
+      &lt;XAxis dataKey=&quot;name&quot; /&gt;
+      &lt;YAxis /&gt;
+    &lt;/LineChart&gt;
+  );
+}
+</code></pre>
+<h3 id="_4">Оптимизация ресурсов</h3>
+<h4 id="1">1. Оптимизация изображений</h4>
+<pre><code class="language-javascript">// Адаптивные изображения
+function ResponsiveImage({ src, alt, sizes }) {
+  const generateSrcSet = (baseSrc) =&gt; {
+    const formats = ['webp', 'avif'];
+    const sizes = [320, 640, 1024, 1920];
+
+    return formats.map(format =&gt; 
+      sizes.map(size =&gt; 
+        `${baseSrc}?w=${size}&amp;f=${format} ${size}w`
+      ).join(', ')
+    );
+  };
+
+  return (
+    &lt;picture&gt;
+      &lt;source
+        srcSet={generateSrcSet(src)[1]} // AVIF
+        type=&quot;image/avif&quot;
+        sizes={sizes}
+      /&gt;
+      &lt;source
+        srcSet={generateSrcSet(src)[0]} // WebP
+        type=&quot;image/webp&quot;
+        sizes={sizes}
+      /&gt;
+      &lt;img
+        src={`${src}?w=640`} // Fallback
+        alt={alt}
+        loading=&quot;lazy&quot;
+        decoding=&quot;async&quot;
+      /&gt;
+    &lt;/picture&gt;
+  );
+}
+
+// Прогрессивная загрузка изображений
+function ProgressiveImage({ lowQualitySrc, highQualitySrc, alt }) {
+  const [loaded, setLoaded] = useState(false);
+  const [error, setError] = useState(false);
+
+  useEffect(() =&gt; {
+    const img = new Image();
+    img.onload = () =&gt; setLoaded(true);
+    img.onerror = () =&gt; setError(true);
+    img.src = highQualitySrc;
+  }, [highQualitySrc]);
+
+  return (
+    &lt;div className=&quot;progressive-image&quot;&gt;
+      &lt;img
+        src={lowQualitySrc}
+        alt={alt}
+        className={`low-quality ${loaded ? 'fade-out' : ''}`}
+      /&gt;
+      {loaded &amp;&amp; (
+        &lt;img
+          src={highQualitySrc}
+          alt={alt}
+          className=&quot;high-quality fade-in&quot;
+        /&gt;
+      )}
+      {error &amp;&amp; (
+        &lt;div className=&quot;error-placeholder&quot;&gt;
+          Failed to load image
+        &lt;/div&gt;
+      )}
+
+      &lt;style jsx&gt;{`
+        .progressive-image {
+          position: relative;
+          overflow: hidden;
+        }
+
+        .low-quality {
+          filter: blur(5px);
+          transition: opacity 0.3s;
+        }
+
+        .low-quality.fade-out {
+          opacity: 0;
+        }
+
+        .high-quality {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+
+        .fade-in {
+          animation: fadeIn 0.3s ease-in;
+        }
+
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+      `}&lt;/style&gt;
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+<h4 id="2_1">2. Оптимизация шрифтов</h4>
+<pre><code class="language-javascript">// Оптимизация загрузки шрифтов
+function FontOptimizer() {
+  useEffect(() =&gt; {
+    // Preload критических шрифтов
+    const criticalFonts = [
+      '/fonts/inter-400.woff2',
+      '/fonts/inter-600.woff2'
+    ];
+
+    criticalFonts.forEach(font =&gt; {
+      const link = document.createElement('link');
+      link.rel = 'preload';
+      link.as = 'font';
+      link.type = 'font/woff2';
+      link.crossOrigin = 'anonymous';
+      link.href = font;
+      document.head.appendChild(link);
+    });
+
+    // Font loading API
+    if ('fonts' in document) {
+      Promise.all([
+        document.fonts.load('400 16px Inter'),
+        document.fonts.load('600 16px Inter')
+      ]).then(() =&gt; {
+        document.body.classList.add('fonts-loaded');
+      });
+    }
+  }, []);
+
+  return null;
+}
+
+// CSS для font-display
+const fontCSS = `
+  @font-face {
+    font-family: 'Inter';
+    src: url('/fonts/inter-400.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap; /* Показываем fallback шрифт сразу */
+  }
+
+  @font-face {
+    font-family: 'Inter';
+    src: url('/fonts/inter-600.woff2') format('woff2');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  body {
+    font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+
+  /* Предотвращаем layout shift */
+  .fonts-loaded .heading {
+    font-weight: 600;
+  }
+`;
+</code></pre>
+<h4 id="3-service-worker">3. Service Worker для кеширования</h4>
+<pre><code class="language-javascript">// sw.js - Service Worker с продвинутым кешированием
+const CACHE_NAME = 'app-v1';
+const PRECACHE_URLS = [
+  '/',
+  '/static/js/bundle.js',
+  '/static/css/main.css'
+];
+
+// Стратегии кеширования
+const strategies = {
+  // Кеш сначала для статических ресурсов
+  cacheFirst: async (request) =&gt; {
+    const cache = await caches.open(CACHE_NAME);
+    const cached = await cache.match(request);
+
+    if (cached) {
+      return cached;
+    }
+
+    const response = await fetch(request);
+    cache.put(request, response.clone());
+    return response;
+  },
+
+  // Сеть сначала для API
+  networkFirst: async (request) =&gt; {
+    const cache = await caches.open(CACHE_NAME);
+
+    try {
+      const response = await fetch(request);
+      cache.put(request, response.clone());
+      return response;
+    } catch (error) {
+      const cached = await cache.match(request);
+      if (cached) {
+        return cached;
+      }
+      throw error;
+    }
+  },
+
+  // Stale-while-revalidate для обновляемого контента
+  staleWhileRevalidate: async (request) =&gt; {
+    const cache = await caches.open(CACHE_NAME);
+    const cached = await cache.match(request);
+
+    const fetchPromise = fetch(request).then(response =&gt; {
+      cache.put(request, response.clone());
+      return response;
+    });
+
+    return cached || fetchPromise;
+  }
+};
+
+self.addEventListener('fetch', (event) =&gt; {
+  const { request } = event;
+  const url = new URL(request.url);
+
+  // Выбираем стратегию кеширования
+  if (url.pathname.startsWith('/api/')) {
+    event.respondWith(strategies.networkFirst(request));
+  } else if (url.pathname.startsWith('/static/')) {
+    event.respondWith(strategies.cacheFirst(request));
+  } else {
+    event.respondWith(strategies.staleWhileRevalidate(request));
+  }
+});
+</code></pre>
+<h3 id="bundle-optimization">Bundle Optimization</h3>
+<h4 id="1-tree-shaking-dead-code-elimination">1. Tree Shaking и Dead Code Elimination</h4>
+<pre><code class="language-javascript">// webpack.config.js
+module.exports = {
+  mode: 'production',
+  optimization: {
+    usedExports: true,
+    sideEffects: false, // Или массив файлов с побочными эффектами
+  },
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: [
+              ['@babel/preset-env', {
+                modules: false, // Сохраняем ES modules для tree shaking
+                useBuiltIns: 'usage',
+                corejs: 3
+              }]
+            ]
+          }
+        }
+      }
+    ]
+  }
+};
+
+// Правильный импорт для tree shaking
+// ❌ Неправильно - импортирует всю библиотеку
+import _ from 'lodash';
+import * as dateFns from 'date-fns';
+
+// ✅ Правильно - импортирует только нужные функции
+import { debounce, throttle } from 'lodash';
+import { format, addDays } from 'date-fns';
+
+// Или с помощью babel-plugin-import
+// ❌ Так писать не нужно после настройки плагина
+import { Button } from 'antd/lib/button';
+
+// ✅ Плагин автоматически преобразует это
+import { Button } from 'antd';
+</code></pre>
+<h4 id="2-code-splitting">2. Code Splitting стратегии</h4>
+<pre><code class="language-javascript">// 1. Route-based splitting
+const routes = [
+  {
+    path: '/dashboard',
+    component: () =&gt; import('./pages/Dashboard')
+  },
+  {
+    path: '/users',
+    component: () =&gt; import('./pages/Users')
+  }
+];
+
+// 2. Feature-based splitting
+const FeatureToggle = ({ feature, children, fallback }) =&gt; {
+  const [Component, setComponent] = useState(null);
+
+  useEffect(() =&gt; {
+    if (feature === 'advanced-analytics') {
+      import('./features/AdvancedAnalytics').then(module =&gt; {
+        setComponent(() =&gt; module.default);
+      });
+    } else if (feature === 'admin-panel') {
+      import('./features/AdminPanel').then(module =&gt; {
+        setComponent(() =&gt; module.default);
+      });
+    }
+  }, [feature]);
+
+  if (!Component) {
+    return fallback || &lt;div&gt;Loading feature...&lt;/div&gt;;
+  }
+
+  return &lt;Component&gt;{children}&lt;/Component&gt;;
+};
+
+// 3. Library splitting
+// webpack.config.js
+module.exports = {
+  optimization: {
+    splitChunks: {
+      chunks: 'all',
+      cacheGroups: {
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendors',
+          chunks: 'all'
+        },
+        common: {
+          name: 'common',
+          minChunks: 2,
+          chunks: 'all',
+          enforce: true
+        }
+      }
+    }
+  }
+};
+</code></pre>
+<h3 id="monitoring-measurement">Monitoring и Measurement</h3>
+<h4 id="1-performance-api">1. Performance API</h4>
+<pre><code class="language-javascript">class PerformanceMonitor {
+  constructor() {
+    this.metrics = new Map();
+    this.setupObservers();
+  }
+
+  setupObservers() {
+    // Navigation timing
+    window.addEventListener('load', () =&gt; {
+      const navigation = performance.getEntriesByType('navigation')[0];
+      this.recordMetric('page_load_time', navigation.loadEventEnd - navigation.loadEventStart);
+      this.recordMetric('dom_content_loaded', navigation.domContentLoadedEventEnd - navigation.domContentLoadedEventStart);
+    });
+
+    // Resource timing
+    const resourceObserver = new PerformanceObserver((list) =&gt; {
+      for (const entry of list.getEntries()) {
+        if (entry.duration &gt; 1000) { // Медленные ресурсы
+          this.recordMetric('slow_resource', {
+            name: entry.name,
+            duration: entry.duration,
+            size: entry.transferSize
+          });
+        }
+      }
+    });
+    resourceObserver.observe({ entryTypes: ['resource'] });
+
+    // Long tasks
+    const longTaskObserver = new PerformanceObserver((list) =&gt; {
+      for (const entry of list.getEntries()) {
+        this.recordMetric('long_task', {
+          duration: entry.duration,
+          startTime: entry.startTime
+        });
+      }
+    });
+    longTaskObserver.observe({ entryTypes: ['longtask'] });
+  }
+
+  recordMetric(name, value) {
+    this.metrics.set(name, value);
+
+    // Отправляем в аналитику
+    if (typeof gtag !== 'undefined') {
+      gtag('event', 'performance_metric', {
+        metric_name: name,
+        metric_value: typeof value === 'object' ? JSON.stringify(value) : value
+      });
+    }
+  }
+
+  getMetrics() {
+    return Object.fromEntries(this.metrics);
+  }
+}
+
+// React hook для мониторинга производительности
+function usePerformanceMonitor() {
+  const [metrics, setMetrics] = useState({});
+  const monitorRef = useRef();
+
+  useEffect(() =&gt; {
+    monitorRef.current = new PerformanceMonitor();
+
+    const interval = setInterval(() =&gt; {
+      setMetrics(monitorRef.current.getMetrics());
+    }, 5000);
+
+    return () =&gt; clearInterval(interval);
+  }, []);
+
+  return metrics;
+}
+</code></pre>
+<h4 id="2-react-devtools-profiler">2. React DevTools Profiler</h4>
+<pre><code class="language-javascript">// Профилирование компонентов с Profiler API
+function ProfiledComponent({ children, id }) {
+  const onRenderCallback = (id, phase, actualDuration, baseDuration, startTime, commitTime) =&gt; {
+    // Логируем медленные рендеры
+    if (actualDuration &gt; 16) { // 16ms = 60fps
+      console.warn(`Slow render detected in ${id}:`, {
+        phase,
+        actualDuration,
+        baseDuration,
+        startTime,
+        commitTime
+      });
+    }
+
+    // Отправляем в аналитику
+    gtag('event', 'react_render', {
+      component_id: id,
+      phase,
+      duration: Math.round(actualDuration),
+      event_category: 'Performance'
+    });
+  };
+
+  return (
+    &lt;Profiler id={id} onRender={onRenderCallback}&gt;
+      {children}
+    &lt;/Profiler&gt;
+  );
+}
+
+// Кастомный hook для измерения времени выполнения
+function useExecutionTime(label) {
+  const start = useRef();
+
+  useEffect(() =&gt; {
+    start.current = performance.now();
+
+    return () =&gt; {
+      const duration = performance.now() - start.current;
+      console.log(`${label} took ${duration.toFixed(2)}ms`);
+    };
+  });
+}
+
+function ExpensiveComponent() {
+  useExecutionTime('ExpensiveComponent render');
+
+  // Тяжелая логика рендеринга
+  return &lt;div&gt;Complex content&lt;/div&gt;;
+}
+</code></pre>
+<h2 id="memory-management">Memory Management</h2>
+<h4 id="1_1">1. Предотвращение утечек памяти</h4>
+<pre><code class="language-javascript">// Event listeners cleanup
+function WindowResizeHandler() {
+  useEffect(() =&gt; {
+    const handleResize = () =&gt; {
+      console.log('Window resized');
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    // ✅ Обязательно очищаем event listener
+    return () =&gt; {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  return null;
+}
+
+// Очистка timers
+function TimerComponent() {
+  useEffect(() =&gt; {
+    const interval = setInterval(() =&gt; {
+      console.log('Timer tick');
+    }, 1000);
+
+    const timeout = setTimeout(() =&gt; {
+      console.log('Delayed action');
+    }, 5000);
+
+    // ✅ Очищаем timers
+    return () =&gt; {
+      clearInterval(interval);
+      clearTimeout(timeout);
+    };
+  }, []);
+
+  return &lt;div&gt;Timer component&lt;/div&gt;;
+}
+
+// Очистка subscriptions
+function SubscriptionComponent() {
+  useEffect(() =&gt; {
+    const subscription = eventEmitter.subscribe('data', handleData);
+
+    // ✅ Отписываемся при unmount
+    return () =&gt; {
+      subscription.unsubscribe();
+    };
+  }, []);
+
+  return &lt;div&gt;Subscription component&lt;/div&gt;;
+}
+
+// Weak references для предотвращения циклических ссылок
+class ComponentRegistry {
+  constructor() {
+    this.components = new WeakMap();
+  }
+
+  register(component, metadata) {
+    this.components.set(component, metadata);
+  }
+
+  getMetadata(component) {
+    return this.components.get(component);
+  }
+}
+</code></pre>
+<h4 id="2_2">2. Оптимизация больших объектов</h4>
+<pre><code class="language-javascript">// Immutable updates с immer
+import produce from 'immer';
+
+function useOptimizedState(initialState) {
+  const [state, setState] = useState(initialState);
+
+  const updateState = useCallback((updater) =&gt; {
+    setState(produce(updater));
+  }, []);
+
+  return [state, updateState];
+}
+
+// Пример использования
+function LargeDataComponent() {
+  const [data, updateData] = useOptimizedState({
+    users: [],
+    posts: [],
+    comments: []
+  });
+
+  const addUser = useCallback((user) =&gt; {
+    updateData(draft =&gt; {
+      draft.users.push(user);
+    });
+  }, [updateData]);
+
+  return &lt;div&gt;Large data component&lt;/div&gt;;
+}
+
+// Object pooling для часто создаваемых объектов
+class ObjectPool {
+  constructor(createFn, resetFn, maxSize = 100) {
+    this.createFn = createFn;
+    this.resetFn = resetFn;
+    this.pool = [];
+    this.maxSize = maxSize;
+  }
+
+  acquire() {
+    if (this.pool.length &gt; 0) {
+      return this.pool.pop();
+    }
+    return this.createFn();
+  }
+
+  release(obj) {
+    if (this.pool.length &lt; this.maxSize) {
+      this.resetFn(obj);
+      this.pool.push(obj);
+    }
+  }
+}
+
+// Пример использования object pool
+const rectanglePool = new ObjectPool(
+  () =&gt; ({ x: 0, y: 0, width: 0, height: 0 }),
+  (rect) =&gt; {
+    rect.x = 0;
+    rect.y = 0;
+    rect.width = 0;
+    rect.height = 0;
+  }
+);
+</code></pre>
+<h2 id="network-optimization">Network Optimization</h2>
+<h4 id="1-http2-http3">1. HTTP/2 и HTTP/3 оптимизации</h4>
+<pre><code class="language-javascript">// Resource hints
+function ResourceHints() {
+  useEffect(() =&gt; {
+    // DNS prefetch для внешних доменов
+    const dnsPrefetchDomains = [
+      'https://api.example.com',
+      'https://cdn.example.com'
+    ];
+
+    dnsPrefetchDomains.forEach(domain =&gt; {
+      const link = document.createElement('link');
+      link.rel = 'dns-prefetch';
+      link.href = domain;
+      document.head.appendChild(link);
+    });
+
+    // Preconnect для критических ресурсов
+    const preconnectUrls = [
+      'https://fonts.googleapis.com',
+      'https://api.example.com'
+    ];
+
+    preconnectUrls.forEach(url =&gt; {
+      const link = document.createElement('link');
+      link.rel = 'preconnect';
+      link.href = url;
+      link.crossOrigin = 'anonymous';
+      document.head.appendChild(link);
+    });
+  }, []);
+
+  return null;
+}
+
+// HTTP/2 Server Push simulation
+function CriticalResourceLoader() {
+  useEffect(() =&gt; {
+    // Симулируем server push с prefetch
+    const criticalResources = [
+      '/api/user/current',
+      '/api/notifications/unread'
+    ];
+
+    criticalResources.forEach(url =&gt; {
+      const link = document.createElement('link');
+      link.rel = 'prefetch';
+      link.href = url;
+      document.head.appendChild(link);
+    });
+  }, []);
+
+  return null;
+}
+</code></pre>
+<h4 id="2-request-optimization">2. Request optimization</h4>
+<pre><code class="language-javascript">// Request batching
+class RequestBatcher {
+  constructor(batchSize = 10, flushInterval = 100) {
+    this.batchSize = batchSize;
+    this.flushInterval = flushInterval;
+    this.queue = [];
+    this.timeoutId = null;
+  }
+
+  add(request) {
+    return new Promise((resolve, reject) =&gt; {
+      this.queue.push({ request, resolve, reject });
+
+      if (this.queue.length &gt;= this.batchSize) {
+        this.flush();
+      } else if (!this.timeoutId) {
+        this.timeoutId = setTimeout(() =&gt; this.flush(), this.flushInterval);
+      }
+    });
+  }
+
+  async flush() {
+    if (this.queue.length === 0) return;
+
+    const batch = this.queue.splice(0);
+
+    if (this.timeoutId) {
+      clearTimeout(this.timeoutId);
+      this.timeoutId = null;
+    }
+
+    try {
+      const requests = batch.map(item =&gt; item.request);
+      const responses = await this.executeBatch(requests);
+
+      batch.forEach((item, index) =&gt; {
+        item.resolve(responses[index]);
+      });
+    } catch (error) {
+      batch.forEach(item =&gt; {
+        item.reject(error);
+      });
+    }
+  }
+
+  async executeBatch(requests) {
+    const response = await fetch('/api/batch', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ requests })
+    });
+
+    return response.json();
+  }
+}
+
+// GraphQL-style request combining
+class RequestCombiner {
+  constructor() {
+    this.pendingRequests = new Map();
+  }
+
+  async request(query, variables = {}) {
+    const key = this.generateKey(query, variables);
+
+    if (this.pendingRequests.has(key)) {
+      return this.pendingRequests.get(key);
+    }
+
+    const promise = this.executeRequest(query, variables);
+    this.pendingRequests.set(key, promise);
+
+    // Очищаем кеш после выполнения
+    promise.finally(() =&gt; {
+      this.pendingRequests.delete(key);
+    });
+
+    return promise;
+  }
+
+  generateKey(query, variables) {
+    return `${query}:${JSON.stringify(variables)}`;
+  }
+
+  async executeRequest(query, variables) {
+    const response = await fetch('/graphql', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ query, variables })
+    });
+
+    return response.json();
+  }
+}
+</code></pre>
+<h2 id="best-practices-summary">Best Practices Summary</h2>
+<ol>
+<li><strong>Core Web Vitals</strong>:</li>
+<li>LCP &lt; 2.5s (оптимизация изображений, критические ресурсы)</li>
+<li>FID &lt; 100ms (debouncing, Web Workers)</li>
+<li>
+<p>CLS &lt; 0.1 (стабильные размеры, skeleton screens)</p>
+</li>
+<li>
+<p><strong>Rendering Optimization</strong>:</p>
+</li>
+<li>React.memo для предотвращения ненужных рендеров</li>
+<li>useMemo/useCallback для тяжелых вычислений</li>
+<li>
+<p>Виртуализация для больших списков</p>
+</li>
+<li>
+<p><strong>Code Splitting</strong>:</p>
+</li>
+<li>Route-based splitting</li>
+<li>Component-based splitting</li>
+<li>
+<p>Library splitting</p>
+</li>
+<li>
+<p><strong>Resource Optimization</strong>:</p>
+</li>
+<li>Оптимизация изображений (WebP, AVIF, lazy loading)</li>
+<li>Font optimization (preload, font-display: swap)</li>
+<li>
+<p>Service Worker кеширование</p>
+</li>
+<li>
+<p><strong>Bundle Optimization</strong>:</p>
+</li>
+<li>Tree shaking</li>
+<li>Dead code elimination</li>
+<li>
+<p>Proper imports</p>
+</li>
+<li>
+<p><strong>Memory Management</strong>:</p>
+</li>
+<li>Cleanup event listeners, timers, subscriptions</li>
+<li>Weak references для предотвращения утечек</li>
+<li>Object pooling для часто создаваемых объектов</li>
+</ol>
+<h2 id="tools-for-performance-monitoring">Tools for Performance Monitoring</h2>
+<ul>
+<li><strong>Lighthouse</strong> - Аудит производительности</li>
+<li><strong>Chrome DevTools</strong> - Profiling и debugging</li>
+<li><strong>React DevTools</strong> - React-специфичный профайлинг</li>
+<li><strong>Web Vitals</strong> - Мониторинг Core Web Vitals</li>
+<li><strong>Bundle Analyzer</strong> - Анализ размера бандла</li>
+</ul>
+<h2 id="_5">Связанные темы</h2>
+<ul>
+<li><a href="../../react/rerender-optimization/">React Optimization</a> - Оптимизация React компонентов</li>
+<li><a href="../../architecture/resilient-frontend/">Architecture</a> - Архитектура для производительности</li>
+<li><a href="../../testing/strategies/">Testing Performance</a> - Тестирование производительности</li>
+</ul>
+<h2 id="_6">Рекомендации для собеседования</h2>
+<p><strong>Senior-level ожидания</strong>:
+- Глубокое понимание Core Web Vitals и способов их оптимизации
+- Знание техник оптимизации рендеринга (мемоизация, виртуализация)
+- Опыт с bundle optimization и code splitting
+- Понимание memory management и предотвращения утечек
+- Знание инструментов профилирования и мониторинга</p>
+<p><strong>Частые вопросы</strong>:
+- Что такое Core Web Vitals и как их оптимизировать?
+- Как оптимизировать производительность React приложений?
+- Что такое tree shaking и как его настроить?
+- Как предотвратить утечки памяти в JavaScript?
+- Какие инструменты используете для мониторинга производительности?</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../../javascript/typing-comparison_small/" class="btn btn-neutral float-left" title="JS vs Java Typing + TypeScript - Senior Cheat Sheet (small)"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../optimization_small/" class="btn btn-neutral float-right" title="Оптимизация производительности Frontend (small)">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../../javascript/typing-comparison_small/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../optimization_small/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../..";</script>
+    <script src="../../../js/theme_extra.js"></script>
+    <script src="../../../js/theme.js"></script>
+      <script src="../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

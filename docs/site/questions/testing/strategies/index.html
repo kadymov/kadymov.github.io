@@ -1,0 +1,1598 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../../img/favicon.ico" />
+    <title>Стратегии тестирования frontend-приложений - My Docs</title>
+    <link rel="stylesheet" href="../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "\u0421\u0442\u0440\u0430\u0442\u0435\u0433\u0438\u0438 \u0442\u0435\u0441\u0442\u0438\u0440\u043e\u0432\u0430\u043d\u0438\u044f frontend-\u043f\u0440\u0438\u043b\u043e\u0436\u0435\u043d\u0438\u0439";
+        var mkdocs_page_input_path = "questions/testing/strategies.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../../.." class="icon icon-home"> My Docs
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../..">📚 Подготовка к собеседованию: JavaScript, React и архитектура</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Questions</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" >Architecture</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/ddd/">Domain-Driven Design (DDD) во Frontend</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/ddd_small/">Domain-Driven Design (DDD) во Frontend (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/microfrontends/">Микрофронтенды (Microfrontends)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/microfrontends_small/">Microfrontends - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/offline-first/">Offline-first архитектура</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/offline-first_small/">Offline-First Архитектура (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/resilient-frontend/">Устойчивая frontend архитектура</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/resilient-frontend_small/">Устойчивая Frontend Архитектура (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/state-management/">Архитектура управления состоянием</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/state-management_small/">State Management Architecture - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/websockets-realtime/">WebSockets и real-time коммуникация</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/websockets-realtime_small/">WebSockets и Real-time коммуникация (small)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Javascript</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/async-programming/">Promises, Async/Await и Generators</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/async-programming_small/">Async Programming - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/currying/">Currying в JavaScript</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/currying_small/">Currying - Шпаргалка (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/event-loop/">Event Loop, Microtasks и Macrotasks</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/event-loop_small/">Event Loop - Шпаргалка (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/execution-model/">Модель выполнения JavaScript</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/execution-model_small/">JavaScript Execution Model - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/garbage-collection/">Garbage Collection и оптимизация памяти</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/garbage-collection_small/">Garbage Collection - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/scope-hoisting/">Let, Const, Var: Scope и Hoisting</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/scope-hoisting_small/">Let, Const, Var - Шпаргалка (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/typing-comparison/">Сравнение типизации JS и Java</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/typing-comparison_small/">JS vs Java Typing + TypeScript - Senior Cheat Sheet (small)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Performance</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../performance/optimization/">Оптимизация производительности frontend-приложений</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../performance/optimization_small/">Оптимизация производительности Frontend (small)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >React</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/concurrent-rendering/">Конкурентный рендеринг React 18</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/concurrent-rendering_small/">React 18 Concurrent Rendering - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/context-api/">Context API vs Redux</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/context-api_small/">Context API vs Redux - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/hoc/">Higher-Order Components (HOC)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/hoc_small/">Higher-Order Components - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/reconciliation/">Reconciliation и Virtual DOM</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/reconciliation_small/">Reconciliation &amp; Virtual DOM - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/rerender-optimization/">Оптимизация ререндеров в React</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/rerender-optimization_small/">React Rerender Optimization - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/ssr-rsc/">SSR/SSG и React Server Components</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/ssr-rsc_small/">SSR/SSG &amp; React Server Components - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/use-effect/">useEffect и Side Effects</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/use-effect_small/">useEffect &amp; Side Effects - Senior Cheat Sheet</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Security</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../security/frontend-security/">Безопасность Frontend Приложений</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../security/frontend-security_small/">Frontend Security (small)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" >Testing</a>
+    <ul class="current">
+                <li class="toctree-l2 current"><a class="reference internal current" href="#">Стратегии тестирования frontend-приложений</a>
+    <ul class="current">
+    <li class="toctree-l3"><a class="reference internal" href="#_1">Описание</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_2">Детальный ответ</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#_3">Пирамида тестирования</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#integration">Integration тестирование</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#mock-stubbing">Mock и stubbing</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#e2e">E2E тестирование</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#visual-regression">Visual Regression тестирование</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#accessibility">Accessibility тестирование</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#performance">Performance тестирование</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#test-utils-helpers">Test Utils и Helpers</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#test-configuration">Test Configuration</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#best-practices">Best Practices</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#cicd-integration">CI/CD Integration</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_4">Связанные темы</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_5">Рекомендации для собеседования</a>
+    </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../strategies_small/">Стратегии тестирования Frontend (small)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Typescript</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../typescript/advanced-types/">Продвинутые типы TypeScript</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../typescript/advanced-types_small/">Продвинутые типы TypeScript (small)</a>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../..">My Docs</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Questions</li>
+          <li class="breadcrumb-item">Testing</li>
+      <li class="breadcrumb-item active">Стратегии тестирования frontend-приложений</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="frontend-">Стратегии тестирования frontend-приложений</h1>
+<h2 id="_1">Описание</h2>
+<p>Вопрос касается различных подходов к тестированию frontend-приложений, включая unit, integration и e2e тестирование, а также современные инструменты и best practices для обеспечения качества кода.</p>
+<h2 id="_2">Детальный ответ</h2>
+<h3 id="_3">Пирамида тестирования</h3>
+<h4 id="1-unit">1. Unit тестирование (основание пирамиды)</h4>
+<p>Unit тесты проверяют отдельные функции, компоненты или модули в изоляции.</p>
+<pre><code class="language-javascript">// Тестирование утилитных функций
+// utils/validation.js
+export function validateEmail(email) {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+}
+
+export function formatCurrency(amount, currency = 'USD') {
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: currency
+  }).format(amount);
+}
+
+// utils/validation.test.js
+import { validateEmail, formatCurrency } from './validation';
+
+describe('validateEmail', () =&gt; {
+  it('should return true for valid email', () =&gt; {
+    expect(validateEmail('test@example.com')).toBe(true);
+    expect(validateEmail('user.name+tag@domain.co.uk')).toBe(true);
+  });
+
+  it('should return false for invalid email', () =&gt; {
+    expect(validateEmail('invalid-email')).toBe(false);
+    expect(validateEmail('test@')).toBe(false);
+    expect(validateEmail('@example.com')).toBe(false);
+    expect(validateEmail('')).toBe(false);
+  });
+
+  it('should handle edge cases', () =&gt; {
+    expect(validateEmail(null)).toBe(false);
+    expect(validateEmail(undefined)).toBe(false);
+    expect(validateEmail(123)).toBe(false);
+  });
+});
+
+describe('formatCurrency', () =&gt; {
+  it('should format USD currency correctly', () =&gt; {
+    expect(formatCurrency(1234.56)).toBe('$1,234.56');
+    expect(formatCurrency(0)).toBe('$0.00');
+  });
+
+  it('should handle different currencies', () =&gt; {
+    expect(formatCurrency(1000, 'EUR')).toBe('€1,000.00');
+    expect(formatCurrency(1000, 'GBP')).toBe('£1,000.00');
+  });
+
+  it('should handle edge cases', () =&gt; {
+    expect(formatCurrency(-100)).toBe('-$100.00');
+    expect(formatCurrency(0.01)).toBe('$0.01');
+  });
+});
+</code></pre>
+<h4 id="2-component-react">2. Component тестирование (React)</h4>
+<pre><code class="language-javascript">// components/UserCard.jsx
+import React from 'react';
+
+export function UserCard({ user, onEdit, onDelete, isLoading = false }) {
+  if (isLoading) {
+    return &lt;div data-testid=&quot;loading&quot;&gt;Loading...&lt;/div&gt;;
+  }
+
+  if (!user) {
+    return &lt;div data-testid=&quot;no-user&quot;&gt;No user data&lt;/div&gt;;
+  }
+
+  return (
+    &lt;div data-testid=&quot;user-card&quot;&gt;
+      &lt;h3 data-testid=&quot;user-name&quot;&gt;{user.name}&lt;/h3&gt;
+      &lt;p data-testid=&quot;user-email&quot;&gt;{user.email}&lt;/p&gt;
+      &lt;div className=&quot;actions&quot;&gt;
+        &lt;button 
+          data-testid=&quot;edit-button&quot;
+          onClick={() =&gt; onEdit(user.id)}
+        &gt;
+          Edit
+        &lt;/button&gt;
+        &lt;button 
+          data-testid=&quot;delete-button&quot;
+          onClick={() =&gt; onDelete(user.id)}
+          className=&quot;danger&quot;
+        &gt;
+          Delete
+        &lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+}
+
+// components/UserCard.test.jsx
+import React from 'react';
+import { render, screen, fireEvent } from '@testing-library/react';
+import { UserCard } from './UserCard';
+
+const mockUser = {
+  id: '1',
+  name: 'John Doe',
+  email: 'john@example.com'
+};
+
+describe('UserCard', () =&gt; {
+  it('should render user information correctly', () =&gt; {
+    render(&lt;UserCard user={mockUser} /&gt;);
+
+    expect(screen.getByTestId('user-card')).toBeInTheDocument();
+    expect(screen.getByTestId('user-name')).toHaveTextContent('John Doe');
+    expect(screen.getByTestId('user-email')).toHaveTextContent('john@example.com');
+  });
+
+  it('should show loading state', () =&gt; {
+    render(&lt;UserCard isLoading={true} /&gt;);
+
+    expect(screen.getByTestId('loading')).toBeInTheDocument();
+    expect(screen.queryByTestId('user-card')).not.toBeInTheDocument();
+  });
+
+  it('should show no user message when user is null', () =&gt; {
+    render(&lt;UserCard user={null} /&gt;);
+
+    expect(screen.getByTestId('no-user')).toBeInTheDocument();
+    expect(screen.queryByTestId('user-card')).not.toBeInTheDocument();
+  });
+
+  it('should call onEdit when edit button is clicked', () =&gt; {
+    const onEdit = jest.fn();
+    render(&lt;UserCard user={mockUser} onEdit={onEdit} /&gt;);
+
+    fireEvent.click(screen.getByTestId('edit-button'));
+
+    expect(onEdit).toHaveBeenCalledWith('1');
+  });
+
+  it('should call onDelete when delete button is clicked', () =&gt; {
+    const onDelete = jest.fn();
+    render(&lt;UserCard user={mockUser} onDelete={onDelete} /&gt;);
+
+    fireEvent.click(screen.getByTestId('delete-button'));
+
+    expect(onDelete).toHaveBeenCalledWith('1');
+  });
+
+  it('should have correct CSS classes', () =&gt; {
+    render(&lt;UserCard user={mockUser} /&gt;);
+
+    const deleteButton = screen.getByTestId('delete-button');
+    expect(deleteButton).toHaveClass('danger');
+  });
+});
+</code></pre>
+<h4 id="3-custom-hooks">3. Custom Hooks тестирование</h4>
+<pre><code class="language-javascript">// hooks/useCounter.js
+import { useState, useCallback } from 'react';
+
+export function useCounter(initialValue = 0) {
+  const [count, setCount] = useState(initialValue);
+
+  const increment = useCallback(() =&gt; {
+    setCount(prev =&gt; prev + 1);
+  }, []);
+
+  const decrement = useCallback(() =&gt; {
+    setCount(prev =&gt; prev - 1);
+  }, []);
+
+  const reset = useCallback(() =&gt; {
+    setCount(initialValue);
+  }, [initialValue]);
+
+  const setValue = useCallback((value) =&gt; {
+    setCount(value);
+  }, []);
+
+  return {
+    count,
+    increment,
+    decrement,
+    reset,
+    setValue
+  };
+}
+
+// hooks/useCounter.test.js
+import { renderHook, act } from '@testing-library/react';
+import { useCounter } from './useCounter';
+
+describe('useCounter', () =&gt; {
+  it('should initialize with default value', () =&gt; {
+    const { result } = renderHook(() =&gt; useCounter());
+
+    expect(result.current.count).toBe(0);
+  });
+
+  it('should initialize with custom value', () =&gt; {
+    const { result } = renderHook(() =&gt; useCounter(10));
+
+    expect(result.current.count).toBe(10);
+  });
+
+  it('should increment count', () =&gt; {
+    const { result } = renderHook(() =&gt; useCounter(5));
+
+    act(() =&gt; {
+      result.current.increment();
+    });
+
+    expect(result.current.count).toBe(6);
+  });
+
+  it('should decrement count', () =&gt; {
+    const { result } = renderHook(() =&gt; useCounter(5));
+
+    act(() =&gt; {
+      result.current.decrement();
+    });
+
+    expect(result.current.count).toBe(4);
+  });
+
+  it('should reset to initial value', () =&gt; {
+    const { result } = renderHook(() =&gt; useCounter(10));
+
+    act(() =&gt; {
+      result.current.increment();
+      result.current.increment();
+    });
+
+    expect(result.current.count).toBe(12);
+
+    act(() =&gt; {
+      result.current.reset();
+    });
+
+    expect(result.current.count).toBe(10);
+  });
+
+  it('should set specific value', () =&gt; {
+    const { result } = renderHook(() =&gt; useCounter());
+
+    act(() =&gt; {
+      result.current.setValue(100);
+    });
+
+    expect(result.current.count).toBe(100);
+  });
+});
+</code></pre>
+<h3 id="integration">Integration тестирование</h3>
+<h4 id="1">1. Тестирование взаимодействия компонентов</h4>
+<pre><code class="language-javascript">// components/UserList.jsx
+import React, { useState, useEffect } from 'react';
+import { UserCard } from './UserCard';
+import { userService } from '../services/userService';
+
+export function UserList() {
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() =&gt; {
+    loadUsers();
+  }, []);
+
+  const loadUsers = async () =&gt; {
+    try {
+      setLoading(true);
+      setError(null);
+      const userData = await userService.getUsers();
+      setUsers(userData);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleEdit = (userId) =&gt; {
+    // Навигация к форме редактирования
+    window.location.href = `/users/${userId}/edit`;
+  };
+
+  const handleDelete = async (userId) =&gt; {
+    if (window.confirm('Are you sure?')) {
+      try {
+        await userService.deleteUser(userId);
+        setUsers(prev =&gt; prev.filter(user =&gt; user.id !== userId));
+      } catch (err) {
+        setError(err.message);
+      }
+    }
+  };
+
+  if (loading) {
+    return &lt;div data-testid=&quot;loading&quot;&gt;Loading users...&lt;/div&gt;;
+  }
+
+  if (error) {
+    return &lt;div data-testid=&quot;error&quot;&gt;Error: {error}&lt;/div&gt;;
+  }
+
+  return (
+    &lt;div data-testid=&quot;user-list&quot;&gt;
+      {users.length === 0 ? (
+        &lt;div data-testid=&quot;empty-state&quot;&gt;No users found&lt;/div&gt;
+      ) : (
+        users.map(user =&gt; (
+          &lt;UserCard
+            key={user.id}
+            user={user}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+          /&gt;
+        ))
+      )}
+    &lt;/div&gt;
+  );
+}
+
+// components/UserList.test.jsx
+import React from 'react';
+import { render, screen, waitFor, fireEvent } from '@testing-library/react';
+import { UserList } from './UserList';
+import { userService } from '../services/userService';
+
+// Мокаем сервис
+jest.mock('../services/userService');
+const mockUserService = userService as jest.Mocked&lt;typeof userService&gt;;
+
+// Мокаем window.confirm и window.location
+const mockConfirm = jest.fn();
+const mockLocation = { href: '' };
+
+Object.defineProperty(window, 'confirm', {
+  value: mockConfirm,
+  writable: true
+});
+
+Object.defineProperty(window, 'location', {
+  value: mockLocation,
+  writable: true
+});
+
+const mockUsers = [
+  { id: '1', name: 'John Doe', email: 'john@example.com' },
+  { id: '2', name: 'Jane Smith', email: 'jane@example.com' }
+];
+
+describe('UserList Integration', () =&gt; {
+  beforeEach(() =&gt; {
+    jest.clearAllMocks();
+    mockLocation.href = '';
+  });
+
+  it('should load and display users', async () =&gt; {
+    mockUserService.getUsers.mockResolvedValue(mockUsers);
+
+    render(&lt;UserList /&gt;);
+
+    // Проверяем loading состояние
+    expect(screen.getByTestId('loading')).toBeInTheDocument();
+
+    // Ждем загрузки данных
+    await waitFor(() =&gt; {
+      expect(screen.getByTestId('user-list')).toBeInTheDocument();
+    });
+
+    // Проверяем, что пользователи отображаются
+    expect(screen.getByText('John Doe')).toBeInTheDocument();
+    expect(screen.getByText('Jane Smith')).toBeInTheDocument();
+    expect(mockUserService.getUsers).toHaveBeenCalledTimes(1);
+  });
+
+  it('should handle loading error', async () =&gt; {
+    const errorMessage = 'Failed to load users';
+    mockUserService.getUsers.mockRejectedValue(new Error(errorMessage));
+
+    render(&lt;UserList /&gt;);
+
+    await waitFor(() =&gt; {
+      expect(screen.getByTestId('error')).toBeInTheDocument();
+    });
+
+    expect(screen.getByText(`Error: ${errorMessage}`)).toBeInTheDocument();
+  });
+
+  it('should show empty state when no users', async () =&gt; {
+    mockUserService.getUsers.mockResolvedValue([]);
+
+    render(&lt;UserList /&gt;);
+
+    await waitFor(() =&gt; {
+      expect(screen.getByTestId('empty-state')).toBeInTheDocument();
+    });
+
+    expect(screen.getByText('No users found')).toBeInTheDocument();
+  });
+
+  it('should handle edit user', async () =&gt; {
+    mockUserService.getUsers.mockResolvedValue(mockUsers);
+
+    render(&lt;UserList /&gt;);
+
+    await waitFor(() =&gt; {
+      expect(screen.getByTestId('user-list')).toBeInTheDocument();
+    });
+
+    const editButtons = screen.getAllByTestId('edit-button');
+    fireEvent.click(editButtons[0]);
+
+    expect(mockLocation.href).toBe('/users/1/edit');
+  });
+
+  it('should handle delete user with confirmation', async () =&gt; {
+    mockUserService.getUsers.mockResolvedValue(mockUsers);
+    mockUserService.deleteUser.mockResolvedValue();
+    mockConfirm.mockReturnValue(true);
+
+    render(&lt;UserList /&gt;);
+
+    await waitFor(() =&gt; {
+      expect(screen.getByTestId('user-list')).toBeInTheDocument();
+    });
+
+    const deleteButtons = screen.getAllByTestId('delete-button');
+    fireEvent.click(deleteButtons[0]);
+
+    expect(mockConfirm).toHaveBeenCalledWith('Are you sure?');
+
+    await waitFor(() =&gt; {
+      expect(mockUserService.deleteUser).toHaveBeenCalledWith('1');
+    });
+
+    // Проверяем, что пользователь удален из списка
+    expect(screen.queryByText('John Doe')).not.toBeInTheDocument();
+    expect(screen.getByText('Jane Smith')).toBeInTheDocument();
+  });
+
+  it('should not delete user when confirmation is cancelled', async () =&gt; {
+    mockUserService.getUsers.mockResolvedValue(mockUsers);
+    mockConfirm.mockReturnValue(false);
+
+    render(&lt;UserList /&gt;);
+
+    await waitFor(() =&gt; {
+      expect(screen.getByTestId('user-list')).toBeInTheDocument();
+    });
+
+    const deleteButtons = screen.getAllByTestId('delete-button');
+    fireEvent.click(deleteButtons[0]);
+
+    expect(mockConfirm).toHaveBeenCalledWith('Are you sure?');
+    expect(mockUserService.deleteUser).not.toHaveBeenCalled();
+    expect(screen.getByText('John Doe')).toBeInTheDocument();
+  });
+});
+</code></pre>
+<h3 id="mock-stubbing">Mock и stubbing</h3>
+<h4 id="1-api">1. Мокирование API вызовов</h4>
+<pre><code class="language-javascript">// services/apiClient.js
+class ApiClient {
+  constructor(baseURL) {
+    this.baseURL = baseURL;
+  }
+
+  async get(endpoint) {
+    const response = await fetch(`${this.baseURL}${endpoint}`);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return response.json();
+  }
+
+  async post(endpoint, data) {
+    const response = await fetch(`${this.baseURL}${endpoint}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return response.json();
+  }
+}
+
+// services/userService.js
+import { ApiClient } from './apiClient';
+
+const apiClient = new ApiClient('/api');
+
+export const userService = {
+  async getUsers() {
+    return apiClient.get('/users');
+  },
+
+  async getUserById(id) {
+    return apiClient.get(`/users/${id}`);
+  },
+
+  async createUser(userData) {
+    return apiClient.post('/users', userData);
+  },
+
+  async updateUser(id, userData) {
+    return apiClient.put(`/users/${id}`, userData);
+  },
+
+  async deleteUser(id) {
+    return apiClient.delete(`/users/${id}`);
+  }
+};
+
+// services/userService.test.js
+import { userService } from './userService';
+
+// Мокаем fetch
+global.fetch = jest.fn();
+const mockFetch = fetch as jest.MockedFunction&lt;typeof fetch&gt;;
+
+describe('userService', () =&gt; {
+  beforeEach(() =&gt; {
+    mockFetch.mockClear();
+  });
+
+  describe('getUsers', () =&gt; {
+    it('should fetch users successfully', async () =&gt; {
+      const mockUsers = [
+        { id: '1', name: 'John Doe' },
+        { id: '2', name: 'Jane Smith' }
+      ];
+
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () =&gt; mockUsers,
+      } as Response);
+
+      const users = await userService.getUsers();
+
+      expect(mockFetch).toHaveBeenCalledWith('/api/users');
+      expect(users).toEqual(mockUsers);
+    });
+
+    it('should handle API errors', async () =&gt; {
+      mockFetch.mockResolvedValueOnce({
+        ok: false,
+        status: 500,
+      } as Response);
+
+      await expect(userService.getUsers()).rejects.toThrow('HTTP error! status: 500');
+      expect(mockFetch).toHaveBeenCalledWith('/api/users');
+    });
+
+    it('should handle network errors', async () =&gt; {
+      mockFetch.mockRejectedValueOnce(new Error('Network error'));
+
+      await expect(userService.getUsers()).rejects.toThrow('Network error');
+    });
+  });
+
+  describe('createUser', () =&gt; {
+    it('should create user successfully', async () =&gt; {
+      const newUser = { name: 'John Doe', email: 'john@example.com' };
+      const createdUser = { id: '1', ...newUser };
+
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () =&gt; createdUser,
+      } as Response);
+
+      const result = await userService.createUser(newUser);
+
+      expect(mockFetch).toHaveBeenCalledWith('/api/users', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newUser),
+      });
+      expect(result).toEqual(createdUser);
+    });
+  });
+});
+</code></pre>
+<h4 id="2">2. Мокирование внешних зависимостей</h4>
+<pre><code class="language-javascript">// utils/analytics.js
+export const analytics = {
+  track: (event, properties) =&gt; {
+    if (typeof window !== 'undefined' &amp;&amp; window.gtag) {
+      window.gtag('event', event, properties);
+    }
+  },
+
+  identify: (userId, traits) =&gt; {
+    if (typeof window !== 'undefined' &amp;&amp; window.gtag) {
+      window.gtag('config', 'GA_TRACKING_ID', {
+        user_id: userId,
+        custom_map: traits
+      });
+    }
+  }
+};
+
+// components/AnalyticsButton.jsx
+import React from 'react';
+import { analytics } from '../utils/analytics';
+
+export function AnalyticsButton({ children, event, properties, onClick }) {
+  const handleClick = (e) =&gt; {
+    analytics.track(event, properties);
+    onClick?.(e);
+  };
+
+  return (
+    &lt;button onClick={handleClick}&gt;
+      {children}
+    &lt;/button&gt;
+  );
+}
+
+// components/AnalyticsButton.test.jsx
+import React from 'react';
+import { render, screen, fireEvent } from '@testing-library/react';
+import { AnalyticsButton } from './AnalyticsButton';
+import { analytics } from '../utils/analytics';
+
+// Мокаем модуль analytics
+jest.mock('../utils/analytics', () =&gt; ({
+  analytics: {
+    track: jest.fn(),
+    identify: jest.fn()
+  }
+}));
+
+const mockAnalytics = analytics as jest.Mocked&lt;typeof analytics&gt;;
+
+describe('AnalyticsButton', () =&gt; {
+  beforeEach(() =&gt; {
+    jest.clearAllMocks();
+  });
+
+  it('should track analytics event on click', () =&gt; {
+    const mockOnClick = jest.fn();
+    const eventName = 'button_clicked';
+    const properties = { section: 'header' };
+
+    render(
+      &lt;AnalyticsButton
+        event={eventName}
+        properties={properties}
+        onClick={mockOnClick}
+      &gt;
+        Click me
+      &lt;/AnalyticsButton&gt;
+    );
+
+    fireEvent.click(screen.getByRole('button'));
+
+    expect(mockAnalytics.track).toHaveBeenCalledWith(eventName, properties);
+    expect(mockOnClick).toHaveBeenCalled();
+  });
+
+  it('should work without onClick handler', () =&gt; {
+    const eventName = 'button_clicked';
+
+    render(
+      &lt;AnalyticsButton event={eventName}&gt;
+        Click me
+      &lt;/AnalyticsButton&gt;
+    );
+
+    fireEvent.click(screen.getByRole('button'));
+
+    expect(mockAnalytics.track).toHaveBeenCalledWith(eventName, undefined);
+  });
+});
+</code></pre>
+<h3 id="e2e">E2E тестирование</h3>
+<h4 id="1-playwright">1. Playwright тесты</h4>
+<pre><code class="language-javascript">// tests/e2e/userManagement.spec.js
+import { test, expect } from '@playwright/test';
+
+test.describe('User Management', () =&gt; {
+  test.beforeEach(async ({ page }) =&gt; {
+    await page.goto('/users');
+  });
+
+  test('should display user list', async ({ page }) =&gt; {
+    await expect(page.getByTestId('user-list')).toBeVisible();
+
+    // Проверяем, что загружается список пользователей
+    await expect(page.locator('[data-testid=&quot;user-card&quot;]')).toHaveCount(3);
+  });
+
+  test('should create new user', async ({ page }) =&gt; {
+    // Кликаем на кнопку добавления пользователя
+    await page.click('[data-testid=&quot;add-user-button&quot;]');
+
+    // Заполняем форму
+    await page.fill('[data-testid=&quot;name-input&quot;]', 'John Doe');
+    await page.fill('[data-testid=&quot;email-input&quot;]', 'john@example.com');
+
+    // Отправляем форму
+    await page.click('[data-testid=&quot;submit-button&quot;]');
+
+    // Проверяем, что пользователь был добавлен
+    await expect(page.getByText('John Doe')).toBeVisible();
+    await expect(page.getByText('john@example.com')).toBeVisible();
+
+    // Проверяем успешное уведомление
+    await expect(page.getByText('User created successfully')).toBeVisible();
+  });
+
+  test('should edit existing user', async ({ page }) =&gt; {
+    // Кликаем на кнопку редактирования первого пользователя
+    await page.click('[data-testid=&quot;user-card&quot;]:first-child [data-testid=&quot;edit-button&quot;]');
+
+    // Ждем загрузки формы редактирования
+    await expect(page.getByTestId('edit-user-form')).toBeVisible();
+
+    // Изменяем имя
+    await page.fill('[data-testid=&quot;name-input&quot;]', 'Updated Name');
+
+    // Сохраняем изменения
+    await page.click('[data-testid=&quot;save-button&quot;]');
+
+    // Проверяем, что изменения сохранились
+    await expect(page.getByText('Updated Name')).toBeVisible();
+  });
+
+  test('should delete user with confirmation', async ({ page }) =&gt; {
+    // Получаем количество пользователей до удаления
+    const initialCount = await page.locator('[data-testid=&quot;user-card&quot;]').count();
+
+    // Кликаем на кнопку удаления
+    await page.click('[data-testid=&quot;user-card&quot;]:first-child [data-testid=&quot;delete-button&quot;]');
+
+    // Подтверждаем удаление в диалоге
+    page.on('dialog', async dialog =&gt; {
+      expect(dialog.message()).toBe('Are you sure you want to delete this user?');
+      await dialog.accept();
+    });
+
+    // Проверяем, что пользователь удален
+    await expect(page.locator('[data-testid=&quot;user-card&quot;]')).toHaveCount(initialCount - 1);
+  });
+
+  test('should handle validation errors', async ({ page }) =&gt; {
+    await page.click('[data-testid=&quot;add-user-button&quot;]');
+
+    // Пытаемся отправить пустую форму
+    await page.click('[data-testid=&quot;submit-button&quot;]');
+
+    // Проверяем ошибки валидации
+    await expect(page.getByText('Name is required')).toBeVisible();
+    await expect(page.getByText('Email is required')).toBeVisible();
+
+    // Вводим невалидный email
+    await page.fill('[data-testid=&quot;email-input&quot;]', 'invalid-email');
+    await page.click('[data-testid=&quot;submit-button&quot;]');
+
+    await expect(page.getByText('Please enter a valid email')).toBeVisible();
+  });
+
+  test('should handle network errors gracefully', async ({ page }) =&gt; {
+    // Отключаем сеть
+    await page.route('**/api/users', route =&gt; route.abort());
+
+    await page.goto('/users');
+
+    // Проверяем, что отображается сообщение об ошибке
+    await expect(page.getByTestId('error-message')).toBeVisible();
+    await expect(page.getByText('Failed to load users')).toBeVisible();
+
+    // Проверяем кнопку retry
+    await expect(page.getByTestId('retry-button')).toBeVisible();
+  });
+});
+</code></pre>
+<h4 id="2-cypress">2. Cypress тесты</h4>
+<pre><code class="language-javascript">// cypress/integration/userFlow.spec.js
+describe('User Flow', () =&gt; {
+  beforeEach(() =&gt; {
+    cy.visit('/');
+
+    // Мокаем API вызовы
+    cy.intercept('GET', '/api/users', { fixture: 'users.json' }).as('getUsers');
+    cy.intercept('POST', '/api/users', { fixture: 'newUser.json' }).as('createUser');
+  });
+
+  it('should complete full user management flow', () =&gt; {
+    // Переходим на страницу пользователей
+    cy.get('[data-testid=&quot;users-nav&quot;]').click();
+    cy.wait('@getUsers');
+
+    // Проверяем загрузку пользователей
+    cy.get('[data-testid=&quot;user-list&quot;]').should('be.visible');
+    cy.get('[data-testid=&quot;user-card&quot;]').should('have.length', 3);
+
+    // Создаем нового пользователя
+    cy.get('[data-testid=&quot;add-user-button&quot;]').click();
+    cy.get('[data-testid=&quot;user-form&quot;]').should('be.visible');
+
+    cy.get('[data-testid=&quot;name-input&quot;]').type('John Doe');
+    cy.get('[data-testid=&quot;email-input&quot;]').type('john@example.com');
+    cy.get('[data-testid=&quot;submit-button&quot;]').click();
+
+    cy.wait('@createUser');
+
+    // Проверяем успешное создание
+    cy.get('[data-testid=&quot;success-message&quot;]').should('contain', 'User created');
+
+    // Возвращаемся к списку
+    cy.get('[data-testid=&quot;back-button&quot;]').click();
+    cy.get('[data-testid=&quot;user-list&quot;]').should('be.visible');
+  });
+
+  it('should handle responsive design', () =&gt; {
+    cy.viewport(375, 667); // Mobile viewport
+
+    cy.get('[data-testid=&quot;users-nav&quot;]').click();
+    cy.wait('@getUsers');
+
+    // Проверяем мобильную версию
+    cy.get('[data-testid=&quot;mobile-menu&quot;]').should('be.visible');
+    cy.get('[data-testid=&quot;user-card&quot;]').should('have.css', 'flex-direction', 'column');
+  });
+
+  it('should handle keyboard navigation', () =&gt; {
+    cy.get('[data-testid=&quot;users-nav&quot;]').click();
+    cy.wait('@getUsers');
+
+    // Навигация с клавиатуры
+    cy.get('body').tab();
+    cy.get('[data-testid=&quot;add-user-button&quot;]').should('have.focus');
+
+    cy.get('body').tab();
+    cy.get('[data-testid=&quot;user-card&quot;]:first [data-testid=&quot;edit-button&quot;]').should('have.focus');
+  });
+});
+
+// cypress/fixtures/users.json
+[
+  {
+    &quot;id&quot;: &quot;1&quot;,
+    &quot;name&quot;: &quot;Alice Johnson&quot;,
+    &quot;email&quot;: &quot;alice@example.com&quot;
+  },
+  {
+    &quot;id&quot;: &quot;2&quot;, 
+    &quot;name&quot;: &quot;Bob Smith&quot;,
+    &quot;email&quot;: &quot;bob@example.com&quot;
+  },
+  {
+    &quot;id&quot;: &quot;3&quot;,
+    &quot;name&quot;: &quot;Carol Brown&quot;,
+    &quot;email&quot;: &quot;carol@example.com&quot;
+  }
+]
+</code></pre>
+<h3 id="visual-regression">Visual Regression тестирование</h3>
+<h4 id="1-chromatic-storybook">1. Chromatic (Storybook)</h4>
+<pre><code class="language-javascript">// .storybook/main.js
+module.exports = {
+  stories: ['../src/**/*.stories.@(js|jsx|ts|tsx)'],
+  addons: [
+    '@storybook/addon-essentials',
+    '@storybook/addon-a11y',
+    'chromatic/storybook'
+  ],
+};
+
+// src/components/Button.stories.jsx
+import React from 'react';
+import { Button } from './Button';
+
+export default {
+  title: 'Components/Button',
+  component: Button,
+  parameters: {
+    chromatic: { delay: 300 }, // Задержка для анимаций
+  },
+};
+
+export const Primary = {
+  args: {
+    variant: 'primary',
+    children: 'Primary Button',
+  },
+};
+
+export const Secondary = {
+  args: {
+    variant: 'secondary',
+    children: 'Secondary Button',
+  },
+};
+
+export const Loading = {
+  args: {
+    variant: 'primary',
+    loading: true,
+    children: 'Loading Button',
+  },
+};
+
+export const Disabled = {
+  args: {
+    variant: 'primary',
+    disabled: true,
+    children: 'Disabled Button',
+  },
+};
+
+// Тестирование различных размеров
+export const AllSizes = () =&gt; (
+  &lt;div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}&gt;
+    &lt;Button size=&quot;small&quot;&gt;Small&lt;/Button&gt;
+    &lt;Button size=&quot;medium&quot;&gt;Medium&lt;/Button&gt;
+    &lt;Button size=&quot;large&quot;&gt;Large&lt;/Button&gt;
+  &lt;/div&gt;
+);
+</code></pre>
+<h4 id="2-percy-visual-testing">2. Percy (Visual Testing)</h4>
+<pre><code class="language-javascript">// tests/visual/percy.spec.js
+import { test } from '@playwright/test';
+import { percySnapshot } from '@percy/playwright';
+
+test.describe('Visual Regression Tests', () =&gt; {
+  test('should match homepage design', async ({ page }) =&gt; {
+    await page.goto('/');
+    await page.waitForLoadState('networkidle');
+
+    await percySnapshot(page, 'Homepage');
+  });
+
+  test('should match user list design', async ({ page }) =&gt; {
+    await page.goto('/users');
+    await page.waitForSelector('[data-testid=&quot;user-list&quot;]');
+
+    await percySnapshot(page, 'User List');
+  });
+
+  test('should match responsive design', async ({ page }) =&gt; {
+    await page.goto('/');
+
+    // Desktop
+    await page.setViewportSize({ width: 1200, height: 800 });
+    await percySnapshot(page, 'Homepage - Desktop');
+
+    // Tablet
+    await page.setViewportSize({ width: 768, height: 1024 });
+    await percySnapshot(page, 'Homepage - Tablet');
+
+    // Mobile
+    await page.setViewportSize({ width: 375, height: 667 });
+    await percySnapshot(page, 'Homepage - Mobile');
+  });
+
+  test('should match dark theme', async ({ page }) =&gt; {
+    await page.goto('/');
+
+    // Переключаем на темную тему
+    await page.click('[data-testid=&quot;theme-toggle&quot;]');
+    await page.waitForSelector('body[data-theme=&quot;dark&quot;]');
+
+    await percySnapshot(page, 'Homepage - Dark Theme');
+  });
+});
+</code></pre>
+<h3 id="accessibility">Accessibility тестирование</h3>
+<h4 id="1-jest-jest-axe">1. Jest + jest-axe</h4>
+<pre><code class="language-javascript">// components/Form.test.jsx
+import React from 'react';
+import { render } from '@testing-library/react';
+import { axe, toHaveNoViolations } from 'jest-axe';
+import { UserForm } from './UserForm';
+
+expect.extend(toHaveNoViolations);
+
+describe('UserForm Accessibility', () =&gt; {
+  it('should not have accessibility violations', async () =&gt; {
+    const { container } = render(
+      &lt;UserForm onSubmit={() =&gt; {}} /&gt;
+    );
+
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
+  });
+
+  it('should have proper form labels', () =&gt; {
+    const { getByLabelText } = render(
+      &lt;UserForm onSubmit={() =&gt; {}} /&gt;
+    );
+
+    expect(getByLabelText('Name')).toBeInTheDocument();
+    expect(getByLabelText('Email')).toBeInTheDocument();
+  });
+
+  it('should show validation errors with proper ARIA attributes', async () =&gt; {
+    const { getByRole, findByRole } = render(
+      &lt;UserForm onSubmit={() =&gt; {}} /&gt;
+    );
+
+    const submitButton = getByRole('button', { name: /submit/i });
+    fireEvent.click(submitButton);
+
+    const nameInput = getByRole('textbox', { name: /name/i });
+    const errorMessage = await findByRole('alert');
+
+    expect(nameInput).toHaveAttribute('aria-invalid', 'true');
+    expect(nameInput).toHaveAttribute('aria-describedby');
+    expect(errorMessage).toBeInTheDocument();
+  });
+});
+</code></pre>
+<h4 id="2-playwright-axe-playwright">2. Playwright + axe-playwright</h4>
+<pre><code class="language-javascript">// tests/a11y/accessibility.spec.js
+import { test, expect } from '@playwright/test';
+import AxeBuilder from '@axe-core/playwright';
+
+test.describe('Accessibility Tests', () =&gt; {
+  test('should not have accessibility violations on homepage', async ({ page }) =&gt; {
+    await page.goto('/');
+
+    const accessibilityScanResults = await new AxeBuilder({ page })
+      .withTags(['wcag2a', 'wcag2aa', 'wcag21aa'])
+      .analyze();
+
+    expect(accessibilityScanResults.violations).toEqual([]);
+  });
+
+  test('should support keyboard navigation', async ({ page }) =&gt; {
+    await page.goto('/users');
+
+    // Табуляция по интерактивным элементам
+    await page.keyboard.press('Tab');
+    await expect(page.locator('[data-testid=&quot;add-user-button&quot;]')).toBeFocused();
+
+    await page.keyboard.press('Tab');
+    await expect(page.locator('[data-testid=&quot;user-card&quot;]:first-child [data-testid=&quot;edit-button&quot;]')).toBeFocused();
+
+    // Enter должен активировать кнопку
+    await page.keyboard.press('Enter');
+    await expect(page.locator('[data-testid=&quot;user-form&quot;]')).toBeVisible();
+  });
+
+  test('should work with screen reader', async ({ page }) =&gt; {
+    await page.goto('/users');
+
+    // Проверяем aria-labels и role attributes
+    const userList = page.locator('[data-testid=&quot;user-list&quot;]');
+    await expect(userList).toHaveAttribute('role', 'list');
+
+    const userCards = page.locator('[data-testid=&quot;user-card&quot;]');
+    await expect(userCards.first()).toHaveAttribute('role', 'listitem');
+  });
+});
+</code></pre>
+<h3 id="performance">Performance тестирование</h3>
+<h4 id="1-lighthouse-ci">1. Lighthouse CI</h4>
+<pre><code class="language-javascript">// lighthouserc.js
+module.exports = {
+  ci: {
+    collect: {
+      url: ['http://localhost:3000', 'http://localhost:3000/users'],
+      numberOfRuns: 3,
+    },
+    assert: {
+      assertions: {
+        'categories:performance': ['error', { minScore: 0.8 }],
+        'categories:accessibility': ['error', { minScore: 0.9 }],
+        'categories:best-practices': ['error', { minScore: 0.9 }],
+        'categories:seo': ['error', { minScore: 0.8 }],
+        'first-contentful-paint': ['error', { maxNumericValue: 2000 }],
+        'largest-contentful-paint': ['error', { maxNumericValue: 3000 }],
+        'cumulative-layout-shift': ['error', { maxNumericValue: 0.1 }],
+      },
+    },
+    upload: {
+      target: 'temporary-public-storage',
+    },
+  },
+};
+</code></pre>
+<h4 id="2-bundle-size">2. Bundle Size тестирование</h4>
+<pre><code class="language-javascript">// tests/bundle-size.test.js
+import { getPackageSize } from 'package-size';
+
+describe('Bundle Size', () =&gt; {
+  it('should keep main bundle under size limit', async () =&gt; {
+    const size = await getPackageSize('dist/main.js');
+    expect(size.gzipped).toBeLessThan(250 * 1024); // 250KB
+  });
+
+  it('should keep vendor bundle under size limit', async () =&gt; {
+    const size = await getPackageSize('dist/vendor.js');
+    expect(size.gzipped).toBeLessThan(500 * 1024); // 500KB
+  });
+});
+</code></pre>
+<h3 id="test-utils-helpers">Test Utils и Helpers</h3>
+<h4 id="1-custom-render-react">1. Custom Render для React</h4>
+<pre><code class="language-javascript">// test-utils/render.jsx
+import React from 'react';
+import { render as rtlRender } from '@testing-library/react';
+import { BrowserRouter } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { ThemeProvider } from 'styled-components';
+import { defaultTheme } from '../src/theme';
+
+function render(
+  ui,
+  {
+    initialEntries = ['/'],
+    theme = defaultTheme,
+    queryClient = new QueryClient({
+      defaultOptions: {
+        queries: { retry: false },
+        mutations: { retry: false },
+      },
+    }),
+    ...renderOptions
+  } = {}
+) {
+  function Wrapper({ children }) {
+    return (
+      &lt;BrowserRouter&gt;
+        &lt;QueryClientProvider client={queryClient}&gt;
+          &lt;ThemeProvider theme={theme}&gt;
+            {children}
+          &lt;/ThemeProvider&gt;
+        &lt;/QueryClientProvider&gt;
+      &lt;/BrowserRouter&gt;
+    );
+  }
+
+  return rtlRender(ui, { wrapper: Wrapper, ...renderOptions });
+}
+
+// Экспортируем все из RTL
+export * from '@testing-library/react';
+// Переопределяем render
+export { render };
+</code></pre>
+<h4 id="2-mock-factories">2. Mock Factories</h4>
+<pre><code class="language-javascript">// test-utils/factories.js
+import { faker } from '@faker-js/faker';
+
+export const createMockUser = (overrides = {}) =&gt; ({
+  id: faker.datatype.uuid(),
+  name: faker.name.fullName(),
+  email: faker.internet.email(),
+  avatar: faker.image.avatar(),
+  createdAt: faker.date.past(),
+  ...overrides,
+});
+
+export const createMockPost = (overrides = {}) =&gt; ({
+  id: faker.datatype.uuid(),
+  title: faker.lorem.sentence(),
+  content: faker.lorem.paragraphs(3),
+  authorId: faker.datatype.uuid(),
+  createdAt: faker.date.past(),
+  updatedAt: faker.date.recent(),
+  ...overrides,
+});
+
+export const createMockUsers = (count = 3) =&gt; 
+  Array.from({ length: count }, () =&gt; createMockUser());
+
+// Использование в тестах
+import { createMockUser, createMockUsers } from '../test-utils/factories';
+
+describe('UserList', () =&gt; {
+  it('should render multiple users', () =&gt; {
+    const users = createMockUsers(5);
+    render(&lt;UserList users={users} /&gt;);
+
+    expect(screen.getAllByTestId('user-card')).toHaveLength(5);
+  });
+});
+</code></pre>
+<h3 id="test-configuration">Test Configuration</h3>
+<h4 id="1-jest-configuration">1. Jest Configuration</h4>
+<pre><code class="language-javascript">// jest.config.js
+module.exports = {
+  testEnvironment: 'jsdom',
+  setupFilesAfterEnv: ['&lt;rootDir&gt;/src/test-utils/setup.js'],
+  moduleNameMapping: {
+    '^@/(.*)$': '&lt;rootDir&gt;/src/$1',
+    '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
+  },
+  collectCoverageFrom: [
+    'src/**/*.{js,jsx,ts,tsx}',
+    '!src/**/*.d.ts',
+    '!src/test-utils/**',
+    '!src/**/*.stories.{js,jsx,ts,tsx}',
+  ],
+  coverageThreshold: {
+    global: {
+      branches: 80,
+      functions: 80,
+      lines: 80,
+      statements: 80,
+    },
+  },
+  testMatch: [
+    '&lt;rootDir&gt;/src/**/__tests__/**/*.{js,jsx,ts,tsx}',
+    '&lt;rootDir&gt;/src/**/*.{spec,test}.{js,jsx,ts,tsx}',
+  ],
+};
+
+// src/test-utils/setup.js
+import '@testing-library/jest-dom';
+import { configure } from '@testing-library/react';
+
+// Увеличиваем timeout для медленных тестов
+configure({ testIdAttribute: 'data-testid' });
+
+// Мокаем matchMedia
+Object.defineProperty(window, 'matchMedia', {
+  writable: true,
+  value: jest.fn().mockImplementation(query =&gt; ({
+    matches: false,
+    media: query,
+    onchange: null,
+    addListener: jest.fn(),
+    removeListener: jest.fn(),
+    addEventListener: jest.fn(),
+    removeEventListener: jest.fn(),
+    dispatchEvent: jest.fn(),
+  })),
+});
+
+// Мокаем IntersectionObserver
+global.IntersectionObserver = jest.fn().mockImplementation(() =&gt; ({
+  observe: jest.fn(),
+  unobserve: jest.fn(),
+  disconnect: jest.fn(),
+}));
+</code></pre>
+<h2 id="best-practices">Best Practices</h2>
+<ol>
+<li><strong>Пирамида тестирования</strong>: 70% unit, 20% integration, 10% e2e</li>
+<li><strong>Test-first approach</strong>: Пишите тесты до или вместе с кодом</li>
+<li><strong>Один assert на тест</strong>: Фокусируйтесь на одном аспекте</li>
+<li><strong>Дескриптивные названия</strong>: Тест должен читаться как спецификация</li>
+<li><strong>Изоляция тестов</strong>: Каждый тест должен быть независимым</li>
+<li><strong>Тестируйте поведение, не реализацию</strong>: Фокус на пользовательский опыт</li>
+<li><strong>Используйте data-testid</strong>: Для стабильных селекторов</li>
+<li><strong>Мокайте внешние зависимости</strong>: API, localStorage, timers</li>
+</ol>
+<h2 id="cicd-integration">CI/CD Integration</h2>
+<pre><code class="language-yaml"># .github/workflows/test.yml
+name: Tests
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run unit tests
+        run: npm run test:unit
+
+      - name: Run integration tests
+        run: npm run test:integration
+
+      - name: Build application
+        run: npm run build
+
+      - name: Run E2E tests
+        run: npm run test:e2e
+
+      - name: Upload coverage reports
+        uses: codecov/codecov-action@v3
+        with:
+          file: ./coverage/lcov.info
+</code></pre>
+<h2 id="_4">Связанные темы</h2>
+<ul>
+<li><a href="../../performance/optimization/">Performance Optimization</a> - Тестирование производительности</li>
+<li><a href="../../typescript/advanced-types/">TypeScript</a> - Типизация тестов</li>
+<li><a href="../../architecture/state-management/">State Management</a> - Тестирование состояния</li>
+</ul>
+<h2 id="_5">Рекомендации для собеседования</h2>
+<p><strong>Senior-level ожидания</strong>:
+- Глубокое понимание стратегий тестирования
+- Опыт с различными инструментами (Jest, RTL, Playwright, Cypress)
+- Знание best practices и anti-patterns
+- Понимание TDD/BDD подходов
+- Опыт с визуальным и accessibility тестированием</p>
+<p><strong>Частые вопросы</strong>:
+- Разница между unit, integration и e2e тестами
+- Как тестировать async код и хуки?
+- Что такое test doubles (mock, stub, spy)?
+- Как организовать тесты в большом проекте?
+- Как тестировать пользовательские взаимодействия?</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../../security/frontend-security_small/" class="btn btn-neutral float-left" title="Frontend Security (small)"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../strategies_small/" class="btn btn-neutral float-right" title="Стратегии тестирования Frontend (small)">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../../security/frontend-security_small/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../strategies_small/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../..";</script>
+    <script src="../../../js/theme_extra.js"></script>
+    <script src="../../../js/theme.js"></script>
+      <script src="../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

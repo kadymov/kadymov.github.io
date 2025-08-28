@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../../img/favicon.ico" />
+    <title>SSR/SSG &amp; React Server Components - Senior Cheat Sheet (small) - My Docs</title>
+    <link rel="stylesheet" href="../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "SSR/SSG \u0026amp; React Server Components - Senior Cheat Sheet (small)";
+        var mkdocs_page_input_path = "questions/react/ssr-rsc_small.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../../.." class="icon icon-home"> My Docs
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../..">📚 Подготовка к собеседованию: JavaScript, React и архитектура</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Questions</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" >Architecture</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/ddd/">Domain-Driven Design (DDD) во Frontend</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/ddd_small/">Domain-Driven Design (DDD) во Frontend (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/microfrontends/">Микрофронтенды (Microfrontends)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/microfrontends_small/">Microfrontends - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/offline-first/">Offline-first архитектура</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/offline-first_small/">Offline-First Архитектура (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/resilient-frontend/">Устойчивая frontend архитектура</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/resilient-frontend_small/">Устойчивая Frontend Архитектура (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/state-management/">Архитектура управления состоянием</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/state-management_small/">State Management Architecture - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/websockets-realtime/">WebSockets и real-time коммуникация</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/websockets-realtime_small/">WebSockets и Real-time коммуникация (small)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Javascript</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/async-programming/">Promises, Async/Await и Generators</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/async-programming_small/">Async Programming - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/currying/">Currying в JavaScript</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/currying_small/">Currying - Шпаргалка (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/event-loop/">Event Loop, Microtasks и Macrotasks</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/event-loop_small/">Event Loop - Шпаргалка (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/execution-model/">Модель выполнения JavaScript</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/execution-model_small/">JavaScript Execution Model - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/garbage-collection/">Garbage Collection и оптимизация памяти</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/garbage-collection_small/">Garbage Collection - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/scope-hoisting/">Let, Const, Var: Scope и Hoisting</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/scope-hoisting_small/">Let, Const, Var - Шпаргалка (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/typing-comparison/">Сравнение типизации JS и Java</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/typing-comparison_small/">JS vs Java Typing + TypeScript - Senior Cheat Sheet (small)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Performance</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../performance/optimization/">Оптимизация производительности frontend-приложений</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../performance/optimization_small/">Оптимизация производительности Frontend (small)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" >React</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../concurrent-rendering/">Конкурентный рендеринг React 18</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../concurrent-rendering_small/">React 18 Concurrent Rendering - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../context-api/">Context API vs Redux</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../context-api_small/">Context API vs Redux - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../hoc/">Higher-Order Components (HOC)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../hoc_small/">Higher-Order Components - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../reconciliation/">Reconciliation и Virtual DOM</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../reconciliation_small/">Reconciliation &amp; Virtual DOM - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../rerender-optimization/">Оптимизация ререндеров в React</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../rerender-optimization_small/">React Rerender Optimization - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../ssr-rsc/">SSR/SSG и React Server Components</a>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" href="#">SSR/SSG &amp; React Server Components - Senior Cheat Sheet (small)</a>
+    <ul class="current">
+    <li class="toctree-l3"><a class="reference internal" href="#_1">Основные подходы</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#ssr-server-side-rendering">SSR (Server-Side Rendering)</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#ssg-static-site-generation">SSG (Static Site Generation)</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#rsc-react-server-components">RSC (React Server Components)</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_2">Сравнение</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_3">Проблемы гидратации</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#mismatch">Mismatch проблема</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#selective-hydration-react-18">Selective Hydration (React 18)</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#nextjs-app-router-rsc">Next.js App Router (RSC)</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#_4">Структура</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#server-actions">Server Actions</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#data-fetching-patterns">Data Fetching patterns</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#performance">Performance оптимизация</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#streaming-ssr">Streaming SSR</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#bundle-optimization">Bundle optimization</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#best-practices">Best Practices</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#1-serverclient">1. Правильное разделение Server/Client</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#2-waterfall">2. Избегание waterfall запросов</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#3">3. Кеширование</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#senior-rules">Senior Rules</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_5">Когда что использовать</a>
+    </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../use-effect/">useEffect и Side Effects</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../use-effect_small/">useEffect &amp; Side Effects - Senior Cheat Sheet</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Security</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../security/frontend-security/">Безопасность Frontend Приложений</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../security/frontend-security_small/">Frontend Security (small)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Testing</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../testing/strategies/">Стратегии тестирования frontend-приложений</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../testing/strategies_small/">Стратегии тестирования Frontend (small)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Typescript</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../typescript/advanced-types/">Продвинутые типы TypeScript</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../typescript/advanced-types_small/">Продвинутые типы TypeScript (small)</a>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../..">My Docs</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Questions</li>
+          <li class="breadcrumb-item">React</li>
+      <li class="breadcrumb-item active">SSR/SSG &amp; React Server Components - Senior Cheat Sheet (small)</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="ssrssg-react-server-components-senior-cheat-sheet-small">SSR/SSG &amp; React Server Components - Senior Cheat Sheet (small)</h1>
+<h2 id="_1">Основные подходы</h2>
+<h3 id="ssr-server-side-rendering">SSR (Server-Side Rendering)</h3>
+<ul>
+<li><strong>Что</strong>: Рендеринг React на сервере, отправка готового HTML</li>
+<li><strong>Плюсы</strong>: Быстрый FCP, лучшее SEO, работа на медленных устройствах</li>
+<li><strong>Минусы</strong>: Нагрузка на сервер, проблемы гидратации, медленный TTI</li>
+</ul>
+<pre><code class="language-jsx">// Next.js SSR
+export async function getServerSideProps(context) {
+  const data = await fetchUserData(context.params.id);
+  return { props: { user: data } };
+}
+
+export default function UserPage({ user }) {
+  return &lt;div&gt;{user.name}&lt;/div&gt;;
+}
+</code></pre>
+<h3 id="ssg-static-site-generation">SSG (Static Site Generation)</h3>
+<ul>
+<li><strong>Что</strong>: Генерация статического HTML во время сборки</li>
+<li><strong>Плюсы</strong>: Максимальная производительность, CDN, отличное SEO</li>
+<li><strong>Минусы</strong>: Не для динамического контента, время сборки</li>
+</ul>
+<pre><code class="language-jsx">// Next.js SSG + ISR
+export async function getStaticProps() {
+  const posts = await fetchPosts();
+  return {
+    props: { posts },
+    revalidate: 60 // ISR - регенерация каждые 60 сек
+  };
+}
+
+export async function getStaticPaths() {
+  const posts = await fetchPosts();
+  return {
+    paths: posts.map(p =&gt; ({ params: { id: p.id } })),
+    fallback: 'blocking'
+  };
+}
+</code></pre>
+<h3 id="rsc-react-server-components">RSC (React Server Components)</h3>
+<ul>
+<li><strong>Что</strong>: Компоненты выполняются ТОЛЬКО на сервере</li>
+<li><strong>Плюсы</strong>: Прямой доступ к DB, меньший бандл, async/await из коробки</li>
+<li><strong>Минусы</strong>: Новая парадигма, сложность</li>
+</ul>
+<pre><code class="language-jsx">// Server Component (по умолчанию в Next.js App Router)
+async function BlogPost({ id }) {
+  const post = await db.posts.findById(id); // Прямой доступ к DB
+  const comments = await db.comments.findByPostId(id);
+
+  return (
+    &lt;article&gt;
+      &lt;h1&gt;{post.title}&lt;/h1&gt;
+      &lt;CommentSection comments={comments} /&gt; {/* Client Component */}
+    &lt;/article&gt;
+  );
+}
+
+// Client Component
+'use client';
+function CommentSection({ comments }) {
+  const [newComment, setNewComment] = useState('');
+  // Интерактивность только здесь
+}
+</code></pre>
+<h2 id="_2">Сравнение</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>SSR</th>
+<th>SSG</th>
+<th>RSC</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Performance</strong></td>
+<td>Средняя</td>
+<td>Высокая</td>
+<td>Высокая</td>
+</tr>
+<tr>
+<td><strong>SEO</strong></td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+</tr>
+<tr>
+<td><strong>Dynamic Content</strong></td>
+<td>✅</td>
+<td>❌ (ISR)</td>
+<td>✅</td>
+</tr>
+<tr>
+<td><strong>Bundle Size</strong></td>
+<td>Большой</td>
+<td>Большой</td>
+<td><strong>Меньше</strong></td>
+</tr>
+<tr>
+<td><strong>DB Access</strong></td>
+<td>Ограниченный</td>
+<td>Ограниченный</td>
+<td><strong>Прямой</strong></td>
+</tr>
+<tr>
+<td><strong>Complexity</strong></td>
+<td>Средняя</td>
+<td>Низкая</td>
+<td>Высокая</td>
+</tr>
+</tbody>
+</table>
+<h2 id="_3">Проблемы гидратации</h2>
+<h3 id="mismatch">Mismatch проблема</h3>
+<pre><code class="language-jsx">// ❌ Проблема - разные данные сервер/клиент
+function Component() {
+  const [time, setTime] = useState(Date.now()); // Разное время на сервере и клиенте
+  return &lt;div&gt;{time}&lt;/div&gt;;
+}
+
+// ✅ Решение - useEffect или динамическая загрузка
+import dynamic from 'next/dynamic';
+
+const ClientOnlyComponent = dynamic(
+  () =&gt; import('./ClientComponent'),
+  { ssr: false }
+);
+
+// Или с useEffect
+function TimeComponent() {
+  const [time, setTime] = useState(null);
+
+  useEffect(() =&gt; {
+    setTime(Date.now());
+  }, []);
+
+  return &lt;div&gt;{time || 'Loading...'}&lt;/div&gt;;
+}
+</code></pre>
+<h3 id="selective-hydration-react-18">Selective Hydration (React 18)</h3>
+<pre><code class="language-jsx">// Автоматическая селективная гидратация с Suspense
+function App() {
+  return (
+    &lt;div&gt;
+      &lt;Header /&gt; {/* Гидратируется сразу */}
+
+      &lt;Suspense fallback={&lt;Skeleton /&gt;}&gt;
+        &lt;HeavyComponent /&gt; {/* Гидратируется когда нужно */}
+      &lt;/Suspense&gt;
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+<h2 id="nextjs-app-router-rsc">Next.js App Router (RSC)</h2>
+<h3 id="_4">Структура</h3>
+<pre><code>app/
+  layout.js      // Root layout (Server Component)
+  page.js        // Home page (Server Component)
+  posts/
+    page.js      // Posts page (Server Component)
+    [id]/
+      page.js    // Dynamic route (Server Component)
+</code></pre>
+<h3 id="server-actions">Server Actions</h3>
+<pre><code class="language-jsx">// Server Action
+async function createPost(formData) {
+  'use server';
+
+  const title = formData.get('title');
+  await db.posts.create({ title });
+  revalidatePath('/posts');
+}
+
+// Использование в Server Component
+export default function CreatePost() {
+  return (
+    &lt;form action={createPost}&gt;
+      &lt;input name=&quot;title&quot; /&gt;
+      &lt;button type=&quot;submit&quot;&gt;Create&lt;/button&gt;
+    &lt;/form&gt;
+  );
+}
+</code></pre>
+<h3 id="data-fetching-patterns">Data Fetching patterns</h3>
+<pre><code class="language-jsx">// Параллельные запросы
+async function Page() {
+  const postsPromise = fetchPosts();
+  const usersPromise = fetchUsers();
+
+  const [posts, users] = await Promise.all([postsPromise, usersPromise]);
+
+  return (
+    &lt;div&gt;
+      &lt;PostList posts={posts} /&gt;
+      &lt;UserList users={users} /&gt;
+    &lt;/div&gt;
+  );
+}
+
+// Потоковая загрузка
+export default async function Page() {
+  return (
+    &lt;div&gt;
+      &lt;Suspense fallback={&lt;PostsSkeleton /&gt;}&gt;
+        &lt;Posts /&gt;
+      &lt;/Suspense&gt;
+      &lt;Suspense fallback={&lt;CommentsSkeleton /&gt;}&gt;
+        &lt;Comments /&gt;
+      &lt;/Suspense&gt;
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+<h2 id="performance">Performance оптимизация</h2>
+<h3 id="streaming-ssr">Streaming SSR</h3>
+<pre><code class="language-jsx">// Потоковая отправка HTML частями
+import { renderToReadableStream } from 'react-dom/server';
+
+const stream = await renderToReadableStream(&lt;App /&gt;, {
+  onError(error) {
+    console.error(error);
+  }
+});
+</code></pre>
+<h3 id="bundle-optimization">Bundle optimization</h3>
+<pre><code class="language-jsx">// Разделение Server/Client кода
+// server-utils.js (только на сервере)
+export function connectDB() { ... }
+
+// Client Component с минимальным JS
+'use client';
+export function InteractiveButton() {
+  return &lt;button onClick={() =&gt; alert('clicked')}&gt;Click&lt;/button&gt;;
+}
+</code></pre>
+<h2 id="best-practices">Best Practices</h2>
+<h3 id="1-serverclient">1. Правильное разделение Server/Client</h3>
+<pre><code class="language-jsx">// ✅ Server Component для данных
+async function ProductPage({ id }) {
+  const product = await fetchProduct(id);
+
+  return (
+    &lt;div&gt;
+      &lt;h1&gt;{product.name}&lt;/h1&gt;
+      &lt;AddToCartButton product={product} /&gt; {/* Client для интерактивности */}
+    &lt;/div&gt;
+  );
+}
+
+// ✅ Client Component для интерактивности
+'use client';
+function AddToCartButton({ product }) {
+  const [loading, setLoading] = useState(false);
+  // Логика добавления в корзину
+}
+</code></pre>
+<h3 id="2-waterfall">2. Избегание waterfall запросов</h3>
+<pre><code class="language-jsx">// ❌ Waterfall
+async function BlogPost({ id }) {
+  const post = await fetchPost(id);
+  const author = await fetchAuthor(post.authorId); // Ждет первый запрос
+
+  return &lt;div&gt;...&lt;/div&gt;;
+}
+
+// ✅ Параллельные запросы
+async function BlogPost({ id }) {
+  const [post, author] = await Promise.all([
+    fetchPost(id),
+    fetchAuthor(id) // Если знаем authorId заранее
+  ]);
+}
+</code></pre>
+<h3 id="3">3. Кеширование</h3>
+<pre><code class="language-jsx">// Next.js встроенное кеширование запросов
+async function getData() {
+  const res = await fetch('https://api.example.com/data', {
+    next: { revalidate: 3600 } // Кеш на 1 час
+  });
+  return res.json();
+}
+</code></pre>
+<h2 id="senior-rules">Senior Rules</h2>
+<ol>
+<li><strong>SSG &gt; SSR &gt; Client</strong> - для производительности</li>
+<li><strong>RSC для data-heavy логики</strong> - прямой доступ к DB</li>
+<li><strong>Client Components минимально</strong> - только для интерактивности</li>
+<li><strong>Избегай waterfall</strong> - используй Promise.all</li>
+<li><strong>Suspense boundaries</strong> - для потоковой загрузки</li>
+<li><strong>Server Actions</strong> для мутаций без API routes</li>
+<li><strong>Кеширование на всех уровнях</strong> - CDN, fetch cache, React cache</li>
+<li><strong>Мониторь Core Web Vitals</strong> - особенно FCP, LCP, CLS</li>
+</ol>
+<h2 id="_5">Когда что использовать</h2>
+<ul>
+<li><strong>SSG</strong> - блоги, landing pages, документация</li>
+<li><strong>SSR</strong> - e-commerce, dashboards, персонализированный контент</li>
+<li><strong>RSC</strong> - приложения с тяжелой серверной логикой</li>
+<li><strong>Client-only</strong> - админки, SPA с аутентификацией</li>
+</ul>
+<p><strong>Главное</strong>: Начинай с сервера, добавляй клиент только где нужна интерактивность!</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../ssr-rsc/" class="btn btn-neutral float-left" title="SSR/SSG и React Server Components"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../use-effect/" class="btn btn-neutral float-right" title="useEffect и Side Effects">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../ssr-rsc/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../use-effect/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../..";</script>
+    <script src="../../../js/theme_extra.js"></script>
+    <script src="../../../js/theme.js"></script>
+      <script src="../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

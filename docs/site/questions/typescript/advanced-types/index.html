@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../../img/favicon.ico" />
+    <title>Продвинутые типы TypeScript - My Docs</title>
+    <link rel="stylesheet" href="../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "\u041f\u0440\u043e\u0434\u0432\u0438\u043d\u0443\u0442\u044b\u0435 \u0442\u0438\u043f\u044b TypeScript";
+        var mkdocs_page_input_path = "questions/typescript/advanced-types.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../../.." class="icon icon-home"> My Docs
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../..">📚 Подготовка к собеседованию: JavaScript, React и архитектура</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Questions</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" >Architecture</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/ddd/">Domain-Driven Design (DDD) во Frontend</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/ddd_small/">Domain-Driven Design (DDD) во Frontend (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/microfrontends/">Микрофронтенды (Microfrontends)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/microfrontends_small/">Microfrontends - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/offline-first/">Offline-first архитектура</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/offline-first_small/">Offline-First Архитектура (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/resilient-frontend/">Устойчивая frontend архитектура</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/resilient-frontend_small/">Устойчивая Frontend Архитектура (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/state-management/">Архитектура управления состоянием</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/state-management_small/">State Management Architecture - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/websockets-realtime/">WebSockets и real-time коммуникация</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/websockets-realtime_small/">WebSockets и Real-time коммуникация (small)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Javascript</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/async-programming/">Promises, Async/Await и Generators</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/async-programming_small/">Async Programming - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/currying/">Currying в JavaScript</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/currying_small/">Currying - Шпаргалка (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/event-loop/">Event Loop, Microtasks и Macrotasks</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/event-loop_small/">Event Loop - Шпаргалка (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/execution-model/">Модель выполнения JavaScript</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/execution-model_small/">JavaScript Execution Model - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/garbage-collection/">Garbage Collection и оптимизация памяти</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/garbage-collection_small/">Garbage Collection - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/scope-hoisting/">Let, Const, Var: Scope и Hoisting</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/scope-hoisting_small/">Let, Const, Var - Шпаргалка (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/typing-comparison/">Сравнение типизации JS и Java</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/typing-comparison_small/">JS vs Java Typing + TypeScript - Senior Cheat Sheet (small)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Performance</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../performance/optimization/">Оптимизация производительности frontend-приложений</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../performance/optimization_small/">Оптимизация производительности Frontend (small)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >React</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/concurrent-rendering/">Конкурентный рендеринг React 18</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/concurrent-rendering_small/">React 18 Concurrent Rendering - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/context-api/">Context API vs Redux</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/context-api_small/">Context API vs Redux - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/hoc/">Higher-Order Components (HOC)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/hoc_small/">Higher-Order Components - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/reconciliation/">Reconciliation и Virtual DOM</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/reconciliation_small/">Reconciliation &amp; Virtual DOM - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/rerender-optimization/">Оптимизация ререндеров в React</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/rerender-optimization_small/">React Rerender Optimization - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/ssr-rsc/">SSR/SSG и React Server Components</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/ssr-rsc_small/">SSR/SSG &amp; React Server Components - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/use-effect/">useEffect и Side Effects</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/use-effect_small/">useEffect &amp; Side Effects - Senior Cheat Sheet</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Security</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../security/frontend-security/">Безопасность Frontend Приложений</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../security/frontend-security_small/">Frontend Security (small)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Testing</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../testing/strategies/">Стратегии тестирования frontend-приложений</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../testing/strategies_small/">Стратегии тестирования Frontend (small)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" >Typescript</a>
+    <ul class="current">
+                <li class="toctree-l2 current"><a class="reference internal current" href="#">Продвинутые типы TypeScript</a>
+    <ul class="current">
+    <li class="toctree-l3"><a class="reference internal" href="#_1">Описание</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_2">Детальный ответ</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#utility-types">Utility Types</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#conditional-types">Conditional Types</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#mapped-types">Mapped Types</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#template-literal-types">Template Literal Types</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#infer-keyword">Infer Keyword</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#recursive-types">Recursive Types</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#branded-types">Брендированные типы (Branded Types)</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#_3">Практические паттерны</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#best-practices">Best Practices</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_4">Связанные темы</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_5">Рекомендации для собеседования</a>
+    </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../advanced-types_small/">Продвинутые типы TypeScript (small)</a>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../..">My Docs</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Questions</li>
+          <li class="breadcrumb-item">Typescript</li>
+      <li class="breadcrumb-item active">Продвинутые типы TypeScript</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="typescript">Продвинутые типы TypeScript</h1>
+<h2 id="_1">Описание</h2>
+<p>Вопрос касается использования продвинутых возможностей системы типов TypeScript для создания безопасного и масштабируемого кода, включая utility types, conditional types, mapped types и другие сложные конструкции.</p>
+<h2 id="_2">Детальный ответ</h2>
+<h3 id="utility-types">Utility Types</h3>
+<h4 id="1-utility-types">1. Основные Utility Types</h4>
+<pre><code class="language-typescript">// Pick - выбирает определенные свойства из типа
+interface User {
+  id: string;
+  name: string;
+  email: string;
+  password: string;
+  createdAt: Date;
+}
+
+type PublicUser = Pick&lt;User, 'id' | 'name' | 'email'&gt;;
+// Результат: { id: string; name: string; email: string; }
+
+// Omit - исключает определенные свойства
+type CreateUser = Omit&lt;User, 'id' | 'createdAt'&gt;;
+// Результат: { name: string; email: string; password: string; }
+
+// Partial - делает все свойства опциональными
+type UpdateUser = Partial&lt;User&gt;;
+// Результат: { id?: string; name?: string; email?: string; ... }
+
+// Required - делает все свойства обязательными
+interface OptionalConfig {
+  apiUrl?: string;
+  timeout?: number;
+  retries?: number;
+}
+
+type RequiredConfig = Required&lt;OptionalConfig&gt;;
+// Результат: { apiUrl: string; timeout: number; retries: number; }
+
+// Record - создает тип с заданными ключами и значениями
+type Status = 'pending' | 'approved' | 'rejected';
+type StatusMessages = Record&lt;Status, string&gt;;
+// Результат: { pending: string; approved: string; rejected: string; }
+
+const messages: StatusMessages = {
+  pending: 'Ожидает рассмотрения',
+  approved: 'Одобрено',
+  rejected: 'Отклонено'
+};
+</code></pre>
+<h4 id="2-utility-types">2. Продвинутые Utility Types</h4>
+<pre><code class="language-typescript">// Exclude - исключает типы из union
+type AllColors = 'red' | 'green' | 'blue' | 'yellow';
+type PrimaryColors = Exclude&lt;AllColors, 'yellow'&gt;;
+// Результат: 'red' | 'green' | 'blue'
+
+// Extract - извлекает типы из union
+type WarmColors = Extract&lt;AllColors, 'red' | 'yellow' | 'orange'&gt;;
+// Результат: 'red' | 'yellow'
+
+// NonNullable - исключает null и undefined
+type MaybeString = string | null | undefined;
+type DefiniteString = NonNullable&lt;MaybeString&gt;;
+// Результат: string
+
+// ReturnType - получает тип возвращаемого значения функции
+function getUser(): Promise&lt;User&gt; {
+  return Promise.resolve({} as User);
+}
+
+type UserPromise = ReturnType&lt;typeof getUser&gt;;
+// Результат: Promise&lt;User&gt;
+
+// Parameters - получает типы параметров функции
+function updateUser(id: string, data: Partial&lt;User&gt;): Promise&lt;User&gt; {
+  return Promise.resolve({} as User);
+}
+
+type UpdateUserParams = Parameters&lt;typeof updateUser&gt;;
+// Результат: [string, Partial&lt;User&gt;]
+
+// ConstructorParameters - параметры конструктора
+class ApiClient {
+  constructor(baseUrl: string, apiKey: string) {}
+}
+
+type ApiClientParams = ConstructorParameters&lt;typeof ApiClient&gt;;
+// Результат: [string, string]
+</code></pre>
+<h3 id="conditional-types">Conditional Types</h3>
+<h4 id="1-conditional-types">1. Базовые Conditional Types</h4>
+<pre><code class="language-typescript">// Простой conditional type
+type IsString&lt;T&gt; = T extends string ? true : false;
+
+type Test1 = IsString&lt;string&gt;; // true
+type Test2 = IsString&lt;number&gt;; // false
+
+// Более сложный пример
+type ApiResponse&lt;T&gt; = T extends string
+  ? { message: T }
+  : T extends number
+  ? { code: T }
+  : { data: T };
+
+type StringResponse = ApiResponse&lt;string&gt;; // { message: string }
+type NumberResponse = ApiResponse&lt;number&gt;; // { code: number }
+type ObjectResponse = ApiResponse&lt;User&gt;; // { data: User }
+
+// Использование с union types
+type ToArray&lt;T&gt; = T extends any ? T[] : never;
+type StringOrNumberArray = ToArray&lt;string | number&gt;;
+// Результат: string[] | number[]
+</code></pre>
+<h4 id="2-distributive-conditional-types">2. Distributive Conditional Types</h4>
+<pre><code class="language-typescript">// Distributive behavior с union types
+type Flatten&lt;T&gt; = T extends (infer U)[] ? U : T;
+
+type FlatString = Flatten&lt;string[]&gt;; // string
+type FlatNumber = Flatten&lt;number&gt;; // number
+type FlatUnion = Flatten&lt;string[] | number[]&gt;; // string | number
+
+// Отключение distributive behavior
+type StrictFlatten&lt;T&gt; = [T] extends [(infer U)[]] ? U : T;
+type StrictResult = StrictFlatten&lt;string[] | number[]&gt;; // string[] | number[]
+
+// Практический пример: получение типов событий
+interface EventMap {
+  click: MouseEvent;
+  keydown: KeyboardEvent;
+  change: Event;
+}
+
+type EventNames = keyof EventMap; // 'click' | 'keydown' | 'change'
+
+type EventHandler&lt;T extends EventNames&gt; = T extends keyof EventMap
+  ? (event: EventMap[T]) =&gt; void
+  : never;
+
+type ClickHandler = EventHandler&lt;'click'&gt;; // (event: MouseEvent) =&gt; void
+</code></pre>
+<h3 id="mapped-types">Mapped Types</h3>
+<h4 id="1-mapped-types">1. Базовые Mapped Types</h4>
+<pre><code class="language-typescript">// Создание readonly версии типа
+type Readonly&lt;T&gt; = {
+  readonly [P in keyof T]: T[P];
+};
+
+type ReadonlyUser = Readonly&lt;User&gt;;
+
+// Создание mutable версии (убираем readonly)
+type Mutable&lt;T&gt; = {
+  -readonly [P in keyof T]: T[P];
+};
+
+// Добавление опциональности
+type Optional&lt;T&gt; = {
+  [P in keyof T]?: T[P];
+};
+
+// Убираем опциональность
+type Required&lt;T&gt; = {
+  [P in keyof T]-?: T[P];
+};
+
+// Изменение типов значений
+type Stringify&lt;T&gt; = {
+  [P in keyof T]: string;
+};
+
+type StringifiedUser = Stringify&lt;User&gt;;
+// Все свойства становятся string
+</code></pre>
+<h4 id="2-mapped-types">2. Продвинутые Mapped Types</h4>
+<pre><code class="language-typescript">// Mapped type с условиями
+type NullableKeys&lt;T&gt; = {
+  [K in keyof T]: null extends T[K] ? K : never;
+}[keyof T];
+
+interface MixedData {
+  id: string;
+  name: string | null;
+  email?: string;
+  count: number | null;
+}
+
+type NullableFields = NullableKeys&lt;MixedData&gt;; // 'name' | 'count'
+
+// Создание getters
+type Getters&lt;T&gt; = {
+  [K in keyof T as `get${Capitalize&lt;string &amp; K&gt;}`]: () =&gt; T[K];
+};
+
+type UserGetters = Getters&lt;Pick&lt;User, 'name' | 'email'&gt;&gt;;
+// { getName: () =&gt; string; getEmail: () =&gt; string; }
+
+// Создание setters
+type Setters&lt;T&gt; = {
+  [K in keyof T as `set${Capitalize&lt;string &amp; K&gt;}`]: (value: T[K]) =&gt; void;
+};
+
+// Комбинированный тип
+type UserAccessors = Getters&lt;User&gt; &amp; Setters&lt;User&gt;;
+</code></pre>
+<h3 id="template-literal-types">Template Literal Types</h3>
+<h4 id="1">1. Базовое использование</h4>
+<pre><code class="language-typescript">// Простые template literal types
+type Greeting = `Hello ${string}`;
+type ValidGreeting = Greeting; // &quot;Hello world&quot;, &quot;Hello TypeScript&quot;, etc.
+
+// С union types
+type Color = 'red' | 'green' | 'blue';
+type Size = 'small' | 'medium' | 'large';
+type Variant = `${Color}-${Size}`;
+// 'red-small' | 'red-medium' | 'red-large' | 'green-small' | ...
+
+// CSS свойства
+type CSSProperty = 
+  | `margin-${'top' | 'right' | 'bottom' | 'left'}`
+  | `padding-${'top' | 'right' | 'bottom' | 'left'}`;
+// 'margin-top' | 'margin-right' | ... | 'padding-top' | ...
+</code></pre>
+<h4 id="2-template-literal-types">2. Продвинутые Template Literal Types</h4>
+<pre><code class="language-typescript">// Создание event listeners
+type EventName&lt;T extends string&gt; = `on${Capitalize&lt;T&gt;}`;
+
+type ButtonEvents = EventName&lt;'click' | 'hover' | 'focus'&gt;;
+// 'onClick' | 'onHover' | 'onFocus'
+
+// Создание API endpoints
+type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
+type Resource = 'users' | 'posts' | 'comments';
+
+type APIEndpoint = `${HttpMethod} /api/${Resource}`;
+// 'GET /api/users' | 'POST /api/users' | ...
+
+// Типизация CSS классов
+type BEMElement&lt;B extends string, E extends string&gt; = `${B}__${E}`;
+type BEMModifier&lt;B extends string, M extends string&gt; = `${B}--${M}`;
+
+type ButtonElement = BEMElement&lt;'button', 'text' | 'icon'&gt;;
+// 'button__text' | 'button__icon'
+
+type ButtonModifier = BEMModifier&lt;'button', 'primary' | 'secondary'&gt;;
+// 'button--primary' | 'button--secondary'
+</code></pre>
+<h3 id="infer-keyword">Infer Keyword</h3>
+<h4 id="1-infer">1. Базовое использование infer</h4>
+<pre><code class="language-typescript">// Получение типа элемента массива
+type ArrayElement&lt;T&gt; = T extends (infer U)[] ? U : never;
+
+type StringElement = ArrayElement&lt;string[]&gt;; // string
+type NumberElement = ArrayElement&lt;number[]&gt;; // number
+
+// Получение типа из Promise
+type PromiseValue&lt;T&gt; = T extends Promise&lt;infer U&gt; ? U : never;
+
+type StringPromise = PromiseValue&lt;Promise&lt;string&gt;&gt;; // string
+type UserPromise = PromiseValue&lt;Promise&lt;User&gt;&gt;; // User
+
+// Получение параметров функции
+type FirstParameter&lt;T&gt; = T extends (first: infer U, ...args: any[]) =&gt; any ? U : never;
+
+type GetUserFirstParam = FirstParameter&lt;typeof updateUser&gt;; // string
+</code></pre>
+<h4 id="2-infer">2. Продвинутое использование infer</h4>
+<pre><code class="language-typescript">// Получение возвращаемого типа из nested Promise
+type DeepPromiseValue&lt;T&gt; = T extends Promise&lt;infer U&gt;
+  ? U extends Promise&lt;any&gt;
+    ? DeepPromiseValue&lt;U&gt;
+    : U
+  : T;
+
+type NestedPromise = Promise&lt;Promise&lt;Promise&lt;string&gt;&gt;&gt;;
+type FinalValue = DeepPromiseValue&lt;NestedPromise&gt;; // string
+
+// Получение типов из функции с несколькими параметрами
+type FunctionArgs&lt;T&gt; = T extends (...args: infer U) =&gt; any ? U : never;
+
+function complexFunction(a: string, b: number, c: boolean): void {}
+type ComplexArgs = FunctionArgs&lt;typeof complexFunction&gt;; // [string, number, boolean]
+
+// Создание Tail типа (все элементы кроме первого)
+type Tail&lt;T extends readonly unknown[]&gt; = T extends readonly [any, ...infer U] ? U : [];
+
+type RestNumbers = Tail&lt;[1, 2, 3, 4]&gt;; // [2, 3, 4]
+type EmptyTail = Tail&lt;[1]&gt;; // []
+</code></pre>
+<h3 id="recursive-types">Recursive Types</h3>
+<h4 id="1_1">1. Простая рекурсия</h4>
+<pre><code class="language-typescript">// Nested object type
+type NestedObject&lt;T&gt; = {
+  [K in keyof T]: T[K] | NestedObject&lt;T[K]&gt;;
+};
+
+// JSON типы
+type JSONValue = 
+  | string
+  | number
+  | boolean
+  | null
+  | JSONObject
+  | JSONArray;
+
+interface JSONObject {
+  [key: string]: JSONValue;
+}
+
+interface JSONArray extends Array&lt;JSONValue&gt; {}
+</code></pre>
+<h4 id="2">2. Продвинутая рекурсия</h4>
+<pre><code class="language-typescript">// Deep Readonly
+type DeepReadonly&lt;T&gt; = {
+  readonly [P in keyof T]: T[P] extends object ? DeepReadonly&lt;T[P]&gt; : T[P];
+};
+
+// Deep Partial
+type DeepPartial&lt;T&gt; = {
+  [P in keyof T]?: T[P] extends object ? DeepPartial&lt;T[P]&gt; : T[P];
+};
+
+// Flatten object type
+type Flatten&lt;T&gt; = T extends object
+  ? T extends infer O
+    ? { [K in keyof O]: Flatten&lt;O[K]&gt; }
+    : never
+  : T;
+
+// Path string type для nested objects
+type PathsToStringProps&lt;T&gt; = T extends string
+  ? []
+  : {
+      [K in Extract&lt;keyof T, string&gt;]: [K, ...PathsToStringProps&lt;T[K]&gt;];
+    }[Extract&lt;keyof T, string&gt;];
+
+type JoinPaths&lt;T extends string[]&gt; = T extends []
+  ? never
+  : T extends [infer Head]
+  ? Head
+  : T extends [infer Head, ...infer Tail]
+  ? Head extends string
+    ? Tail extends string[]
+      ? `${Head}.${JoinPaths&lt;Tail&gt;}`
+      : never
+    : never
+  : never;
+
+interface NestedUser {
+  profile: {
+    personal: {
+      name: string;
+      age: number;
+    };
+    contact: {
+      email: string;
+    };
+  };
+}
+
+type UserPaths = JoinPaths&lt;PathsToStringProps&lt;NestedUser&gt;&gt;;
+// 'profile.personal.name' | 'profile.contact.email'
+</code></pre>
+<h3 id="branded-types">Брендированные типы (Branded Types)</h3>
+<pre><code class="language-typescript">// Создание брендированных типов для безопасности
+declare const __brand: unique symbol;
+type Brand&lt;T, TBrand&gt; = T &amp; { [__brand]: TBrand };
+
+// Типы для ID разных сущностей
+type UserId = Brand&lt;string, 'UserId'&gt;;
+type PostId = Brand&lt;string, 'PostId'&gt;;
+type SessionId = Brand&lt;string, 'SessionId'&gt;;
+
+// Функции-конструкторы
+function createUserId(id: string): UserId {
+  return id as UserId;
+}
+
+function createPostId(id: string): PostId {
+  return id as PostId;
+}
+
+// Функции, работающие с конкретными типами
+function getUserById(id: UserId): Promise&lt;User&gt; {
+  // Реализация
+  return Promise.resolve({} as User);
+}
+
+function getPostById(id: PostId): Promise&lt;Post&gt; {
+  // Реализация
+  return Promise.resolve({} as Post);
+}
+
+// Безопасное использование
+const userId = createUserId('user-123');
+const postId = createPostId('post-456');
+
+// Это работает
+getUserById(userId);
+getPostById(postId);
+
+// Это вызовет ошибку типизации
+// getUserById(postId); // Error: Argument of type 'PostId' is not assignable to parameter of type 'UserId'
+
+// Валидационные типы
+type Email = Brand&lt;string, 'Email'&gt;;
+type URL = Brand&lt;string, 'URL'&gt;;
+
+function validateEmail(email: string): Email | null {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email) ? (email as Email) : null;
+}
+
+function validateURL(url: string): URL | null {
+  try {
+    new URL(url);
+    return url as URL;
+  } catch {
+    return null;
+  }
+}
+</code></pre>
+<h3 id="_3">Практические паттерны</h3>
+<h4 id="1-builder-pattern">1. Builder Pattern с типами</h4>
+<pre><code class="language-typescript">interface UserBuilder {
+  name?: string;
+  email?: string;
+  age?: number;
+}
+
+type RequiredFields&lt;T, K extends keyof T&gt; = T &amp; Required&lt;Pick&lt;T, K&gt;&gt;;
+
+class FluentUserBuilder {
+  private user: UserBuilder = {};
+
+  setName(name: string): FluentUserBuilder &amp; { user: RequiredFields&lt;UserBuilder, 'name'&gt; } {
+    this.user.name = name;
+    return this as any;
+  }
+
+  setEmail(email: string): FluentUserBuilder &amp; { user: RequiredFields&lt;UserBuilder, 'email'&gt; } {
+    this.user.email = email;
+    return this as any;
+  }
+
+  setAge(age: number): FluentUserBuilder &amp; { user: RequiredFields&lt;UserBuilder, 'age'&gt; } {
+    this.user.age = age;
+    return this as any;
+  }
+
+  build&lt;T extends UserBuilder&gt;(
+    this: FluentUserBuilder &amp; { user: T }
+  ): T extends RequiredFields&lt;UserBuilder, 'name' | 'email'&gt;
+    ? User
+    : 'Missing required fields: name and email' {
+    return this.user as any;
+  }
+}
+
+// Использование
+const user = new FluentUserBuilder()
+  .setName('John')
+  .setEmail('john@example.com')
+  .setAge(30)
+  .build(); // User
+
+// Это вызовет ошибку типизации
+// const invalidUser = new FluentUserBuilder()
+//   .setName('John')
+//   .build(); // Error: Missing required fields
+</code></pre>
+<h4 id="2-type-safe-event-system">2. Type-safe event system</h4>
+<pre><code class="language-typescript">interface EventMap {
+  'user:created': { user: User };
+  'user:updated': { user: User; changes: Partial&lt;User&gt; };
+  'user:deleted': { userId: string };
+  'post:created': { post: Post };
+}
+
+class TypedEventEmitter {
+  private listeners: {
+    [K in keyof EventMap]?: Array&lt;(data: EventMap[K]) =&gt; void&gt;;
+  } = {};
+
+  on&lt;K extends keyof EventMap&gt;(
+    event: K,
+    listener: (data: EventMap[K]) =&gt; void
+  ): void {
+    if (!this.listeners[event]) {
+      this.listeners[event] = [];
+    }
+    this.listeners[event]!.push(listener);
+  }
+
+  emit&lt;K extends keyof EventMap&gt;(event: K, data: EventMap[K]): void {
+    const eventListeners = this.listeners[event];
+    if (eventListeners) {
+      eventListeners.forEach(listener =&gt; listener(data));
+    }
+  }
+
+  off&lt;K extends keyof EventMap&gt;(
+    event: K,
+    listener: (data: EventMap[K]) =&gt; void
+  ): void {
+    const eventListeners = this.listeners[event];
+    if (eventListeners) {
+      const index = eventListeners.indexOf(listener);
+      if (index &gt; -1) {
+        eventListeners.splice(index, 1);
+      }
+    }
+  }
+}
+
+// Использование
+const emitter = new TypedEventEmitter();
+
+emitter.on('user:created', (data) =&gt; {
+  // data типизирован как { user: User }
+  console.log('User created:', data.user.name);
+});
+
+emitter.emit('user:created', { user: {} as User });
+
+// Ошибка типизации при неправильных данных
+// emitter.emit('user:created', { post: {} as Post }); // Error
+</code></pre>
+<h2 id="best-practices">Best Practices</h2>
+<ol>
+<li><strong>Используйте строгие типы</strong>: Включайте <code>strict</code> режим в tsconfig.json</li>
+<li><strong>Избегайте <code>any</code></strong>: Используйте <code>unknown</code> или создавайте специфические типы</li>
+<li><strong>Композиция типов</strong>: Создавайте сложные типы из простых</li>
+<li><strong>Брендированные типы</strong>: Для критически важных значений (ID, email, URL)</li>
+<li><strong>Readonly по умолчанию</strong>: Делайте данные immutable, где это возможно</li>
+<li><strong>Type guards</strong>: Используйте для runtime проверок типов</li>
+</ol>
+<h2 id="_4">Связанные темы</h2>
+<ul>
+<li><a href="../../react/context-api/">React Context API</a> - Типизация React контекста</li>
+<li><a href="../../architecture/state-management/">State Management</a> - Типизация состояния</li>
+<li><a href="../../testing/strategies/">Testing Strategies</a> - Тестирование типизированного кода</li>
+</ul>
+<h2 id="_5">Рекомендации для собеседования</h2>
+<p><strong>Senior-level ожидания</strong>:
+- Глубокое понимание системы типов TypeScript
+- Опыт с conditional и mapped types
+- Знание utility types и умение создавать свои
+- Понимание брендированных типов и их применения
+- Опыт с type-safe архитектурными паттернами</p>
+<p><strong>Частые вопросы</strong>:
+- Разница между <code>interface</code> и <code>type</code>
+- Как работают conditional types?
+- Что такое mapped types и когда их использовать?
+- Как создать type-safe API?
+- Как типизировать сложные JavaScript паттерны?</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../../testing/strategies_small/" class="btn btn-neutral float-left" title="Стратегии тестирования Frontend (small)"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../advanced-types_small/" class="btn btn-neutral float-right" title="Продвинутые типы TypeScript (small)">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../../testing/strategies_small/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../advanced-types_small/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../..";</script>
+    <script src="../../../js/theme_extra.js"></script>
+    <script src="../../../js/theme.js"></script>
+      <script src="../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

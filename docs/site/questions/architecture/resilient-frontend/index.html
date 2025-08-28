@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../../img/favicon.ico" />
+    <title>Устойчивая frontend архитектура - My Docs</title>
+    <link rel="stylesheet" href="../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "\u0423\u0441\u0442\u043e\u0439\u0447\u0438\u0432\u0430\u044f frontend \u0430\u0440\u0445\u0438\u0442\u0435\u043a\u0442\u0443\u0440\u0430";
+        var mkdocs_page_input_path = "questions/architecture/resilient-frontend.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../../.." class="icon icon-home"> My Docs
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../..">📚 Подготовка к собеседованию: JavaScript, React и архитектура</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Questions</span></p>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current" >Architecture</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../ddd/">Domain-Driven Design (DDD) во Frontend</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../ddd_small/">Domain-Driven Design (DDD) во Frontend (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../microfrontends/">Микрофронтенды (Microfrontends)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../microfrontends_small/">Microfrontends - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../offline-first/">Offline-first архитектура</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../offline-first_small/">Offline-First Архитектура (small)</a>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" href="#">Устойчивая frontend архитектура</a>
+    <ul class="current">
+    <li class="toctree-l3"><a class="reference internal" href="#_1">Описание</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_2">Детальный ответ</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#_3">Принципы устойчивой архитектуры</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#_4">Кеширование и оффлайн поддержка</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#error-boundaries-error-handling">Error Boundaries и Error Handling</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#_5">Мониторинг и наблюдаемость</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#best-practices">Best Practices для устойчивой архитектуры</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_6">Связанные темы</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_7">Рекомендации для собеседования</a>
+    </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../resilient-frontend_small/">Устойчивая Frontend Архитектура (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../state-management/">Архитектура управления состоянием</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../state-management_small/">State Management Architecture - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../websockets-realtime/">WebSockets и real-time коммуникация</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../websockets-realtime_small/">WebSockets и Real-time коммуникация (small)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Javascript</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/async-programming/">Promises, Async/Await и Generators</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/async-programming_small/">Async Programming - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/currying/">Currying в JavaScript</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/currying_small/">Currying - Шпаргалка (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/event-loop/">Event Loop, Microtasks и Macrotasks</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/event-loop_small/">Event Loop - Шпаргалка (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/execution-model/">Модель выполнения JavaScript</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/execution-model_small/">JavaScript Execution Model - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/garbage-collection/">Garbage Collection и оптимизация памяти</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/garbage-collection_small/">Garbage Collection - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/scope-hoisting/">Let, Const, Var: Scope и Hoisting</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/scope-hoisting_small/">Let, Const, Var - Шпаргалка (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/typing-comparison/">Сравнение типизации JS и Java</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/typing-comparison_small/">JS vs Java Typing + TypeScript - Senior Cheat Sheet (small)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Performance</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../performance/optimization/">Оптимизация производительности frontend-приложений</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../performance/optimization_small/">Оптимизация производительности Frontend (small)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >React</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/concurrent-rendering/">Конкурентный рендеринг React 18</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/concurrent-rendering_small/">React 18 Concurrent Rendering - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/context-api/">Context API vs Redux</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/context-api_small/">Context API vs Redux - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/hoc/">Higher-Order Components (HOC)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/hoc_small/">Higher-Order Components - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/reconciliation/">Reconciliation и Virtual DOM</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/reconciliation_small/">Reconciliation &amp; Virtual DOM - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/rerender-optimization/">Оптимизация ререндеров в React</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/rerender-optimization_small/">React Rerender Optimization - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/ssr-rsc/">SSR/SSG и React Server Components</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/ssr-rsc_small/">SSR/SSG &amp; React Server Components - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/use-effect/">useEffect и Side Effects</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/use-effect_small/">useEffect &amp; Side Effects - Senior Cheat Sheet</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Security</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../security/frontend-security/">Безопасность Frontend Приложений</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../security/frontend-security_small/">Frontend Security (small)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Testing</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../testing/strategies/">Стратегии тестирования frontend-приложений</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../testing/strategies_small/">Стратегии тестирования Frontend (small)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Typescript</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../typescript/advanced-types/">Продвинутые типы TypeScript</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../typescript/advanced-types_small/">Продвинутые типы TypeScript (small)</a>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../..">My Docs</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Questions</li>
+          <li class="breadcrumb-item">Architecture</li>
+      <li class="breadcrumb-item active">Устойчивая frontend архитектура</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="frontend">Устойчивая frontend архитектура</h1>
+<h2 id="_1">Описание</h2>
+<p>Вопрос касается создания отказоустойчивых frontend-приложений, способных работать в условиях нестабильного соединения, высоких нагрузок и различных видов сбоев.</p>
+<h2 id="_2">Детальный ответ</h2>
+<h3 id="_3">Принципы устойчивой архитектуры</h3>
+<h4 id="1-graceful-degradation">1. Graceful Degradation</h4>
+<p>Приложение должно продолжать работать даже при отказе части функциональности.</p>
+<pre><code class="language-javascript">// Компонент с graceful degradation
+function WeatherWidget() {
+  const [weather, setWeather] = useState(null);
+  const [error, setError] = useState(null);
+  const [isOnline, setIsOnline] = useState(navigator.onLine);
+
+  useEffect(() =&gt; {
+    const handleOnlineStatus = () =&gt; setIsOnline(navigator.onLine);
+
+    window.addEventListener('online', handleOnlineStatus);
+    window.addEventListener('offline', handleOnlineStatus);
+
+    return () =&gt; {
+      window.removeEventListener('online', handleOnlineStatus);
+      window.removeEventListener('offline', handleOnlineStatus);
+    };
+  }, []);
+
+  useEffect(() =&gt; {
+    const fetchWeather = async () =&gt; {
+      try {
+        const response = await fetch('/api/weather');
+        if (!response.ok) throw new Error('Weather service unavailable');
+
+        const data = await response.json();
+        setWeather(data);
+        setError(null);
+      } catch (err) {
+        setError(err.message);
+        // Fallback к кешированным данным
+        const cachedWeather = localStorage.getItem('weather');
+        if (cachedWeather) {
+          setWeather(JSON.parse(cachedWeather));
+        }
+      }
+    };
+
+    if (isOnline) {
+      fetchWeather();
+    }
+  }, [isOnline]);
+
+  // Graceful degradation в рендеринге
+  if (!isOnline) {
+    return (
+      &lt;div className=&quot;weather-widget offline&quot;&gt;
+        &lt;p&gt;📱 Нет подключения к интернету&lt;/p&gt;
+        {weather &amp;&amp; (
+          &lt;div&gt;
+            &lt;p&gt;Последние данные о погоде:&lt;/p&gt;
+            &lt;p&gt;{weather.temperature}°C (кешированные данные)&lt;/p&gt;
+          &lt;/div&gt;
+        )}
+      &lt;/div&gt;
+    );
+  }
+
+  if (error &amp;&amp; !weather) {
+    return (
+      &lt;div className=&quot;weather-widget error&quot;&gt;
+        &lt;p&gt;⚠️ Сервис погоды недоступен&lt;/p&gt;
+        &lt;p&gt;Попробуйте позже&lt;/p&gt;
+      &lt;/div&gt;
+    );
+  }
+
+  return (
+    &lt;div className=&quot;weather-widget&quot;&gt;
+      {weather ? (
+        &lt;div&gt;
+          &lt;p&gt;{weather.temperature}°C&lt;/p&gt;
+          &lt;p&gt;{weather.condition}&lt;/p&gt;
+        &lt;/div&gt;
+      ) : (
+        &lt;p&gt;Загрузка погоды...&lt;/p&gt;
+      )}
+      {error &amp;&amp; (
+        &lt;small className=&quot;warning&quot;&gt;
+          Показаны кешированные данные
+        &lt;/small&gt;
+      )}
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+<h4 id="2-circuit-breaker-pattern">2. Circuit Breaker Pattern</h4>
+<p>Предотвращение каскадных отказов при проблемах с внешними сервисами.</p>
+<pre><code class="language-javascript">class CircuitBreaker {
+  constructor(options = {}) {
+    this.failureThreshold = options.failureThreshold || 5;
+    this.resetTimeout = options.resetTimeout || 60000;
+    this.monitoringPeriod = options.monitoringPeriod || 10000;
+
+    this.state = 'CLOSED'; // CLOSED, OPEN, HALF_OPEN
+    this.failureCount = 0;
+    this.lastFailureTime = null;
+    this.successCount = 0;
+  }
+
+  async execute(operation) {
+    if (this.state === 'OPEN') {
+      if (Date.now() - this.lastFailureTime &gt; this.resetTimeout) {
+        this.state = 'HALF_OPEN';
+        this.successCount = 0;
+      } else {
+        throw new Error('Circuit breaker is OPEN');
+      }
+    }
+
+    try {
+      const result = await operation();
+
+      if (this.state === 'HALF_OPEN') {
+        this.successCount++;
+        if (this.successCount &gt;= 3) {
+          this.reset();
+        }
+      } else {
+        this.reset();
+      }
+
+      return result;
+    } catch (error) {
+      this.recordFailure();
+      throw error;
+    }
+  }
+
+  recordFailure() {
+    this.failureCount++;
+    this.lastFailureTime = Date.now();
+
+    if (this.failureCount &gt;= this.failureThreshold) {
+      this.state = 'OPEN';
+    }
+  }
+
+  reset() {
+    this.state = 'CLOSED';
+    this.failureCount = 0;
+    this.lastFailureTime = null;
+  }
+
+  getState() {
+    return {
+      state: this.state,
+      failureCount: this.failureCount,
+      lastFailureTime: this.lastFailureTime
+    };
+  }
+}
+
+// Использование Circuit Breaker
+const apiCircuitBreaker = new CircuitBreaker({
+  failureThreshold: 3,
+  resetTimeout: 30000
+});
+
+class APIService {
+  async fetchUserData(userId) {
+    return apiCircuitBreaker.execute(async () =&gt; {
+      const response = await fetch(`/api/users/${userId}`);
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+
+      return response.json();
+    });
+  }
+}
+
+// React hook для Circuit Breaker
+const useCircuitBreaker = (operation, dependencies = []) =&gt; {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [circuitState, setCircuitState] = useState('CLOSED');
+
+  const circuitBreakerRef = useRef(new CircuitBreaker());
+
+  const execute = useCallback(async () =&gt; {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const result = await circuitBreakerRef.current.execute(operation);
+      setData(result);
+      setCircuitState(circuitBreakerRef.current.getState().state);
+    } catch (err) {
+      setError(err.message);
+      setCircuitState(circuitBreakerRef.current.getState().state);
+    } finally {
+      setLoading(false);
+    }
+  }, dependencies);
+
+  return { data, loading, error, circuitState, execute };
+};
+</code></pre>
+<h4 id="3-retry-logic-exponential-backoff">3. Retry Logic с Exponential Backoff</h4>
+<pre><code class="language-javascript">class RetryManager {
+  constructor(options = {}) {
+    this.maxRetries = options.maxRetries || 3;
+    this.baseDelay = options.baseDelay || 1000;
+    this.maxDelay = options.maxDelay || 30000;
+    this.factor = options.factor || 2;
+    this.jitter = options.jitter || true;
+  }
+
+  async execute(operation, context = {}) {
+    let lastError;
+
+    for (let attempt = 0; attempt &lt;= this.maxRetries; attempt++) {
+      try {
+        return await operation();
+      } catch (error) {
+        lastError = error;
+
+        // Не повторяем для определенных ошибок
+        if (this.shouldNotRetry(error)) {
+          throw error;
+        }
+
+        if (attempt === this.maxRetries) {
+          break;
+        }
+
+        const delay = this.calculateDelay(attempt);
+        console.log(`Retry attempt ${attempt + 1} after ${delay}ms`);
+
+        await this.sleep(delay);
+      }
+    }
+
+    throw lastError;
+  }
+
+  shouldNotRetry(error) {
+    // Не повторяем для клиентских ошибок (4xx)
+    if (error.status &gt;= 400 &amp;&amp; error.status &lt; 500) {
+      return true;
+    }
+
+    // Не повторяем для специфических ошибок
+    const nonRetryableErrors = [
+      'ValidationError',
+      'AuthenticationError',
+      'AuthorizationError'
+    ];
+
+    return nonRetryableErrors.includes(error.name);
+  }
+
+  calculateDelay(attempt) {
+    let delay = this.baseDelay * Math.pow(this.factor, attempt);
+    delay = Math.min(delay, this.maxDelay);
+
+    if (this.jitter) {
+      // Добавляем случайность для избежания thundering herd
+      delay = delay * (0.5 + Math.random() * 0.5);
+    }
+
+    return Math.floor(delay);
+  }
+
+  sleep(ms) {
+    return new Promise(resolve =&gt; setTimeout(resolve, ms));
+  }
+}
+
+// HTTP Client с retry logic
+class ResilientHttpClient {
+  constructor(options = {}) {
+    this.retryManager = new RetryManager(options.retry);
+    this.circuitBreaker = new CircuitBreaker(options.circuitBreaker);
+    this.timeout = options.timeout || 10000;
+  }
+
+  async request(url, options = {}) {
+    return this.circuitBreaker.execute(async () =&gt; {
+      return this.retryManager.execute(async () =&gt; {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() =&gt; controller.abort(), this.timeout);
+
+        try {
+          const response = await fetch(url, {
+            ...options,
+            signal: controller.signal
+          });
+
+          if (!response.ok) {
+            const error = new Error(`HTTP ${response.status}`);
+            error.status = response.status;
+            throw error;
+          }
+
+          return response.json();
+        } finally {
+          clearTimeout(timeoutId);
+        }
+      });
+    });
+  }
+}
+
+// React hook для resilient API calls
+const useResilientAPI = () =&gt; {
+  const clientRef = useRef(new ResilientHttpClient({
+    retry: { maxRetries: 3, baseDelay: 1000 },
+    circuitBreaker: { failureThreshold: 5 },
+    timeout: 15000
+  }));
+
+  const request = useCallback(async (url, options) =&gt; {
+    return clientRef.current.request(url, options);
+  }, []);
+
+  return { request };
+};
+</code></pre>
+<h3 id="_4">Кеширование и оффлайн поддержка</h3>
+<h4 id="service-worker">Service Worker для кеширования</h4>
+<pre><code class="language-javascript">// sw.js - Service Worker
+const CACHE_NAME = 'app-cache-v1';
+const STATIC_CACHE_URLS = [
+  '/',
+  '/static/js/bundle.js',
+  '/static/css/main.css',
+  '/offline.html'
+];
+
+// Стратегии кеширования
+const cacheStrategies = {
+  // Сначала кеш, потом сеть
+  cacheFirst: async (request) =&gt; {
+    const cached = await caches.match(request);
+    if (cached) return cached;
+
+    try {
+      const response = await fetch(request);
+      const cache = await caches.open(CACHE_NAME);
+      cache.put(request, response.clone());
+      return response;
+    } catch (error) {
+      // Fallback для оффлайн
+      if (request.destination === 'document') {
+        return caches.match('/offline.html');
+      }
+      throw error;
+    }
+  },
+
+  // Сначала сеть, потом кеш
+  networkFirst: async (request) =&gt; {
+    try {
+      const response = await fetch(request);
+      const cache = await caches.open(CACHE_NAME);
+      cache.put(request, response.clone());
+      return response;
+    } catch (error) {
+      const cached = await caches.match(request);
+      if (cached) return cached;
+      throw error;
+    }
+  },
+
+  // Stale-while-revalidate
+  staleWhileRevalidate: async (request) =&gt; {
+    const cached = await caches.match(request);
+
+    const fetchPromise = fetch(request).then(response =&gt; {
+      const cache = caches.open(CACHE_NAME);
+      cache.then(c =&gt; c.put(request, response.clone()));
+      return response;
+    });
+
+    return cached || fetchPromise;
+  }
+};
+
+self.addEventListener('install', (event) =&gt; {
+  event.waitUntil(
+    caches.open(CACHE_NAME)
+      .then(cache =&gt; cache.addAll(STATIC_CACHE_URLS))
+  );
+});
+
+self.addEventListener('fetch', (event) =&gt; {
+  const { request } = event;
+  const url = new URL(request.url);
+
+  // Выбираем стратегию кеширования
+  if (url.pathname.startsWith('/api/')) {
+    // API - network first
+    event.respondWith(cacheStrategies.networkFirst(request));
+  } else if (url.pathname.startsWith('/static/')) {
+    // Статические ресурсы - cache first
+    event.respondWith(cacheStrategies.cacheFirst(request));
+  } else {
+    // HTML страницы - stale while revalidate
+    event.respondWith(cacheStrategies.staleWhileRevalidate(request));
+  }
+});
+
+// Обработка фоновой синхронизации
+self.addEventListener('sync', (event) =&gt; {
+  if (event.tag === 'background-sync') {
+    event.waitUntil(handleBackgroundSync());
+  }
+});
+
+async function handleBackgroundSync() {
+  // Отправка отложенных запросов
+  const requests = await getPendingRequests();
+
+  for (const request of requests) {
+    try {
+      await fetch(request.url, request.options);
+      await removePendingRequest(request.id);
+    } catch (error) {
+      console.log('Background sync failed:', error);
+    }
+  }
+}
+</code></pre>
+<h4 id="offline-queue-management">Offline Queue Management</h4>
+<pre><code class="language-javascript">class OfflineQueue {
+  constructor() {
+    this.queue = [];
+    this.isOnline = navigator.onLine;
+    this.setupEventListeners();
+    this.loadPersistedQueue();
+  }
+
+  setupEventListeners() {
+    window.addEventListener('online', () =&gt; {
+      this.isOnline = true;
+      this.processQueue();
+    });
+
+    window.addEventListener('offline', () =&gt; {
+      this.isOnline = false;
+    });
+  }
+
+  async add(request) {
+    const queueItem = {
+      id: crypto.randomUUID(),
+      ...request,
+      timestamp: Date.now(),
+      retryCount: 0
+    };
+
+    this.queue.push(queueItem);
+    await this.persistQueue();
+
+    if (this.isOnline) {
+      this.processQueue();
+    }
+
+    return queueItem.id;
+  }
+
+  async processQueue() {
+    if (!this.isOnline || this.queue.length === 0) return;
+
+    const processedIds = [];
+
+    for (const item of this.queue) {
+      try {
+        await this.executeRequest(item);
+        processedIds.push(item.id);
+      } catch (error) {
+        item.retryCount++;
+
+        if (item.retryCount &gt;= 3) {
+          console.error('Request failed after 3 retries:', item);
+          processedIds.push(item.id);
+        }
+      }
+    }
+
+    // Удаляем обработанные элементы
+    this.queue = this.queue.filter(item =&gt; !processedIds.includes(item.id));
+    await this.persistQueue();
+  }
+
+  async executeRequest(item) {
+    const response = await fetch(item.url, {
+      method: item.method,
+      headers: item.headers,
+      body: item.body
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}`);
+    }
+
+    return response;
+  }
+
+  async persistQueue() {
+    try {
+      localStorage.setItem('offlineQueue', JSON.stringify(this.queue));
+    } catch (error) {
+      console.error('Failed to persist offline queue:', error);
+    }
+  }
+
+  async loadPersistedQueue() {
+    try {
+      const stored = localStorage.getItem('offlineQueue');
+      if (stored) {
+        this.queue = JSON.parse(stored);
+      }
+    } catch (error) {
+      console.error('Failed to load offline queue:', error);
+      this.queue = [];
+    }
+  }
+
+  getQueueStatus() {
+    return {
+      isOnline: this.isOnline,
+      queueLength: this.queue.length,
+      pendingItems: this.queue.map(item =&gt; ({
+        id: item.id,
+        url: item.url,
+        method: item.method,
+        timestamp: item.timestamp,
+        retryCount: item.retryCount
+      }))
+    };
+  }
+}
+
+// React hook для offline queue
+const useOfflineQueue = () =&gt; {
+  const queueRef = useRef(new OfflineQueue());
+  const [queueStatus, setQueueStatus] = useState(
+    queueRef.current.getQueueStatus()
+  );
+
+  useEffect(() =&gt; {
+    const updateStatus = () =&gt; {
+      setQueueStatus(queueRef.current.getQueueStatus());
+    };
+
+    const interval = setInterval(updateStatus, 1000);
+    window.addEventListener('online', updateStatus);
+    window.addEventListener('offline', updateStatus);
+
+    return () =&gt; {
+      clearInterval(interval);
+      window.removeEventListener('online', updateStatus);
+      window.removeEventListener('offline', updateStatus);
+    };
+  }, []);
+
+  const addToQueue = useCallback((request) =&gt; {
+    return queueRef.current.add(request);
+  }, []);
+
+  return { queueStatus, addToQueue };
+};
+</code></pre>
+<h3 id="error-boundaries-error-handling">Error Boundaries и Error Handling</h3>
+<h4 id="advanced-error-boundary">Advanced Error Boundary</h4>
+<pre><code class="language-javascript">class ResilientErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      hasError: false,
+      error: null,
+      errorInfo: null,
+      retryCount: 0
+    };
+  }
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    this.setState({
+      error,
+      errorInfo,
+      retryCount: this.state.retryCount + 1
+    });
+
+    // Логирование ошибки
+    this.logError(error, errorInfo);
+
+    // Автоматическое восстановление для определенных ошибок
+    if (this.shouldAutoRecover(error)) {
+      setTimeout(() =&gt; {
+        this.handleRetry();
+      }, 2000);
+    }
+  }
+
+  shouldAutoRecover(error) {
+    // Автоматическое восстановление для network ошибок
+    return error.name === 'ChunkLoadError' || 
+           error.message.includes('Loading chunk');
+  }
+
+  logError(error, errorInfo) {
+    const errorReport = {
+      message: error.message,
+      stack: error.stack,
+      componentStack: errorInfo.componentStack,
+      timestamp: new Date().toISOString(),
+      userAgent: navigator.userAgent,
+      url: window.location.href,
+      userId: this.props.userId
+    };
+
+    // Отправка в систему мониторинга
+    if (window.errorReporting) {
+      window.errorReporting.captureException(error, { extra: errorReport });
+    }
+
+    // Локальное логирование для оффлайн
+    const errors = JSON.parse(localStorage.getItem('errorLog') || '[]');
+    errors.push(errorReport);
+
+    // Оставляем только последние 50 ошибок
+    if (errors.length &gt; 50) {
+      errors.splice(0, errors.length - 50);
+    }
+
+    localStorage.setItem('errorLog', JSON.stringify(errors));
+  }
+
+  handleRetry = () =&gt; {
+    this.setState({
+      hasError: false,
+      error: null,
+      errorInfo: null
+    });
+  };
+
+  render() {
+    if (this.state.hasError) {
+      const { error, retryCount } = this.state;
+      const { fallback: FallbackComponent } = this.props;
+
+      if (FallbackComponent) {
+        return (
+          &lt;FallbackComponent
+            error={error}
+            retryCount={retryCount}
+            onRetry={this.handleRetry}
+          /&gt;
+        );
+      }
+
+      return (
+        &lt;div className=&quot;error-boundary&quot;&gt;
+          &lt;h2&gt;Что-то пошло не так&lt;/h2&gt;
+          &lt;details&gt;
+            &lt;summary&gt;Подробности ошибки&lt;/summary&gt;
+            &lt;pre&gt;{error?.message}&lt;/pre&gt;
+          &lt;/details&gt;
+
+          {retryCount &lt; 3 &amp;&amp; (
+            &lt;button onClick={this.handleRetry}&gt;
+              Попробовать снова ({retryCount}/3)
+            &lt;/button&gt;
+          )}
+
+          {retryCount &gt;= 3 &amp;&amp; (
+            &lt;div&gt;
+              &lt;p&gt;Попробуйте перезагрузить страницу&lt;/p&gt;
+              &lt;button onClick={() =&gt; window.location.reload()}&gt;
+                Перезагрузить
+              &lt;/button&gt;
+            &lt;/div&gt;
+          )}
+        &lt;/div&gt;
+      );
+    }
+
+    return this.props.children;
+  }
+}
+
+// Компонент fallback для ошибок
+function ErrorFallback({ error, retryCount, onRetry }) {
+  const isNetworkError = error?.name === 'ChunkLoadError' || 
+                         error?.message?.includes('fetch');
+
+  return (
+    &lt;div className=&quot;error-fallback&quot;&gt;
+      {isNetworkError ? (
+        &lt;div&gt;
+          &lt;h3&gt;Проблемы с подключением&lt;/h3&gt;
+          &lt;p&gt;Проверьте интернет-соединение и попробуйте снова&lt;/p&gt;
+        &lt;/div&gt;
+      ) : (
+        &lt;div&gt;
+          &lt;h3&gt;Произошла ошибка&lt;/h3&gt;
+          &lt;p&gt;Мы уже работаем над исправлением&lt;/p&gt;
+        &lt;/div&gt;
+      )}
+
+      &lt;button onClick={onRetry} disabled={retryCount &gt;= 3}&gt;
+        Попробовать снова
+      &lt;/button&gt;
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+<h3 id="_5">Мониторинг и наблюдаемость</h3>
+<h4 id="performance-error-monitoring">Performance и Error Monitoring</h4>
+<pre><code class="language-javascript">class FrontendMonitoring {
+  constructor(options = {}) {
+    this.config = options;
+    this.metrics = new Map();
+    this.errors = [];
+    this.setupPerformanceObserver();
+    this.setupErrorHandling();
+  }
+
+  setupPerformanceObserver() {
+    if ('PerformanceObserver' in window) {
+      // Мониторинг Core Web Vitals
+      const observer = new PerformanceObserver((list) =&gt; {
+        for (const entry of list.getEntries()) {
+          this.recordMetric(entry.name, entry.value);
+        }
+      });
+
+      observer.observe({ entryTypes: ['largest-contentful-paint', 'first-input', 'layout-shift'] });
+    }
+
+    // Мониторинг навигации
+    window.addEventListener('load', () =&gt; {
+      const navigation = performance.getEntriesByType('navigation')[0];
+      this.recordMetric('page-load-time', navigation.loadEventEnd - navigation.loadEventStart);
+      this.recordMetric('dom-content-loaded', navigation.domContentLoadedEventEnd);
+    });
+  }
+
+  setupErrorHandling() {
+    window.addEventListener('error', (event) =&gt; {
+      this.recordError({
+        type: 'javascript-error',
+        message: event.message,
+        filename: event.filename,
+        lineno: event.lineno,
+        colno: event.colno,
+        stack: event.error?.stack
+      });
+    });
+
+    window.addEventListener('unhandledrejection', (event) =&gt; {
+      this.recordError({
+        type: 'unhandled-promise-rejection',
+        message: event.reason?.message || String(event.reason),
+        stack: event.reason?.stack
+      });
+    });
+  }
+
+  recordMetric(name, value) {
+    const timestamp = Date.now();
+
+    if (!this.metrics.has(name)) {
+      this.metrics.set(name, []);
+    }
+
+    this.metrics.get(name).push({ value, timestamp });
+
+    // Отправляем критические метрики сразу
+    if (this.isCriticalMetric(name)) {
+      this.sendMetric(name, value);
+    }
+  }
+
+  recordError(error) {
+    const errorData = {
+      ...error,
+      timestamp: Date.now(),
+      url: window.location.href,
+      userAgent: navigator.userAgent
+    };
+
+    this.errors.push(errorData);
+
+    // Отправляем ошибки сразу
+    this.sendError(errorData);
+  }
+
+  isCriticalMetric(name) {
+    const criticalMetrics = [
+      'largest-contentful-paint',
+      'first-input-delay',
+      'cumulative-layout-shift'
+    ];
+    return criticalMetrics.includes(name);
+  }
+
+  async sendMetric(name, value) {
+    try {
+      await fetch('/api/metrics', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type: 'metric',
+          name,
+          value,
+          timestamp: Date.now()
+        })
+      });
+    } catch (error) {
+      console.error('Failed to send metric:', error);
+    }
+  }
+
+  async sendError(error) {
+    try {
+      await fetch('/api/errors', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(error)
+      });
+    } catch (err) {
+      // Сохраняем в локальном хранилище если не можем отправить
+      const storedErrors = JSON.parse(localStorage.getItem('pendingErrors') || '[]');
+      storedErrors.push(error);
+      localStorage.setItem('pendingErrors', JSON.stringify(storedErrors));
+    }
+  }
+
+  getHealthStatus() {
+    const recentErrors = this.errors.filter(
+      error =&gt; Date.now() - error.timestamp &lt; 300000 // последние 5 минут
+    );
+
+    return {
+      status: recentErrors.length &gt; 10 ? 'unhealthy' : 'healthy',
+      errorRate: recentErrors.length,
+      lastError: recentErrors[recentErrors.length - 1],
+      metrics: Object.fromEntries(this.metrics)
+    };
+  }
+}
+
+// React hook для мониторинга
+const useAppHealth = () =&gt; {
+  const [healthStatus, setHealthStatus] = useState({ status: 'healthy' });
+  const monitoringRef = useRef(new FrontendMonitoring());
+
+  useEffect(() =&gt; {
+    const interval = setInterval(() =&gt; {
+      setHealthStatus(monitoringRef.current.getHealthStatus());
+    }, 30000); // обновляем каждые 30 секунд
+
+    return () =&gt; clearInterval(interval);
+  }, []);
+
+  return healthStatus;
+};
+</code></pre>
+<h2 id="best-practices">Best Practices для устойчивой архитектуры</h2>
+<ol>
+<li><strong>Fail Fast, Recover Gracefully</strong>: Быстро обнаруживайте проблемы и изящно восстанавливайтесь</li>
+<li><strong>Defensive Programming</strong>: Предполагайте, что что-то пойдет не так</li>
+<li><strong>Progressive Enhancement</strong>: Базовая функциональность работает всегда</li>
+<li><strong>Bulkhead Pattern</strong>: Изолируйте критические компоненты</li>
+<li><strong>Health Checks</strong>: Регулярно проверяйте состояние системы</li>
+<li><strong>Graceful Timeouts</strong>: Устанавливайте разумные таймауты</li>
+<li><strong>User Feedback</strong>: Информируйте пользователя о состоянии системы</li>
+</ol>
+<h2 id="_6">Связанные темы</h2>
+<ul>
+<li><a href="../../performance/optimization/">Performance Optimization</a> - Оптимизация производительности</li>
+<li><a href="../websockets-realtime/">WebSockets</a> - Устойчивые real-time соединения</li>
+<li><a href="../state-management/">State Management</a> - Устойчивое управление состоянием</li>
+</ul>
+<h2 id="_7">Рекомендации для собеседования</h2>
+<p><strong>Senior-level ожидания</strong>:
+- Понимание принципов отказоустойчивости
+- Опыт с паттернами Circuit Breaker, Retry, Bulkhead
+- Знание стратегий кеширования и offline поддержки
+- Понимание мониторинга и наблюдаемости
+- Опыт с Service Workers и PWA</p>
+<p><strong>Частые вопросы</strong>:
+- Как обеспечить работу приложения при нестабильном соединении?
+- Какие паттерны помогают предотвратить каскадные отказы?
+- Как реализовать graceful degradation?
+- Как мониторить здоровье frontend-приложения?
+- Как балансировать производительность и отказоустойчивость?</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../offline-first_small/" class="btn btn-neutral float-left" title="Offline-First Архитектура (small)"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../resilient-frontend_small/" class="btn btn-neutral float-right" title="Устойчивая Frontend Архитектура (small)">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../offline-first_small/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../resilient-frontend_small/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../..";</script>
+    <script src="../../../js/theme_extra.js"></script>
+    <script src="../../../js/theme.js"></script>
+      <script src="../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

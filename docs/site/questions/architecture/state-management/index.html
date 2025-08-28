@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../../img/favicon.ico" />
+    <title>Архитектура управления состоянием - My Docs</title>
+    <link rel="stylesheet" href="../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "\u0410\u0440\u0445\u0438\u0442\u0435\u043a\u0442\u0443\u0440\u0430 \u0443\u043f\u0440\u0430\u0432\u043b\u0435\u043d\u0438\u044f \u0441\u043e\u0441\u0442\u043e\u044f\u043d\u0438\u0435\u043c";
+        var mkdocs_page_input_path = "questions/architecture/state-management.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../../.." class="icon icon-home"> My Docs
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../..">📚 Подготовка к собеседованию: JavaScript, React и архитектура</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Questions</span></p>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current" >Architecture</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../ddd/">Domain-Driven Design (DDD) во Frontend</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../ddd_small/">Domain-Driven Design (DDD) во Frontend (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../microfrontends/">Микрофронтенды (Microfrontends)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../microfrontends_small/">Microfrontends - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../offline-first/">Offline-first архитектура</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../offline-first_small/">Offline-First Архитектура (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../resilient-frontend/">Устойчивая frontend архитектура</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../resilient-frontend_small/">Устойчивая Frontend Архитектура (small)</a>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" href="#">Архитектура управления состоянием</a>
+    <ul class="current">
+    <li class="toctree-l3"><a class="reference internal" href="#_2">Описание</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_3">Детальный ответ</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#_4">Сравнение подходов управления состоянием</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#_5">Архитектурные паттерны</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#_6">Нормализация данных</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#_7">Оптимизация производительности</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#middleware">Middleware и побочные эффекты</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_9">Рекомендации по выбору</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#_10">Критерии выбора решения</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#best-practices">Best Practices</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_11">Связанные темы</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_12">Рекомендации для собеседования</a>
+    </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../state-management_small/">State Management Architecture - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../websockets-realtime/">WebSockets и real-time коммуникация</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../websockets-realtime_small/">WebSockets и Real-time коммуникация (small)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Javascript</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/async-programming/">Promises, Async/Await и Generators</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/async-programming_small/">Async Programming - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/currying/">Currying в JavaScript</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/currying_small/">Currying - Шпаргалка (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/event-loop/">Event Loop, Microtasks и Macrotasks</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/event-loop_small/">Event Loop - Шпаргалка (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/execution-model/">Модель выполнения JavaScript</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/execution-model_small/">JavaScript Execution Model - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/garbage-collection/">Garbage Collection и оптимизация памяти</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/garbage-collection_small/">Garbage Collection - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/scope-hoisting/">Let, Const, Var: Scope и Hoisting</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/scope-hoisting_small/">Let, Const, Var - Шпаргалка (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/typing-comparison/">Сравнение типизации JS и Java</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/typing-comparison_small/">JS vs Java Typing + TypeScript - Senior Cheat Sheet (small)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Performance</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../performance/optimization/">Оптимизация производительности frontend-приложений</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../performance/optimization_small/">Оптимизация производительности Frontend (small)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >React</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/concurrent-rendering/">Конкурентный рендеринг React 18</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/concurrent-rendering_small/">React 18 Concurrent Rendering - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/context-api/">Context API vs Redux</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/context-api_small/">Context API vs Redux - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/hoc/">Higher-Order Components (HOC)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/hoc_small/">Higher-Order Components - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/reconciliation/">Reconciliation и Virtual DOM</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/reconciliation_small/">Reconciliation &amp; Virtual DOM - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/rerender-optimization/">Оптимизация ререндеров в React</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/rerender-optimization_small/">React Rerender Optimization - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/ssr-rsc/">SSR/SSG и React Server Components</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/ssr-rsc_small/">SSR/SSG &amp; React Server Components - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/use-effect/">useEffect и Side Effects</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/use-effect_small/">useEffect &amp; Side Effects - Senior Cheat Sheet</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Security</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../security/frontend-security/">Безопасность Frontend Приложений</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../security/frontend-security_small/">Frontend Security (small)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Testing</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../testing/strategies/">Стратегии тестирования frontend-приложений</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../testing/strategies_small/">Стратегии тестирования Frontend (small)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Typescript</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../typescript/advanced-types/">Продвинутые типы TypeScript</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../typescript/advanced-types_small/">Продвинутые типы TypeScript (small)</a>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../..">My Docs</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Questions</li>
+          <li class="breadcrumb-item">Architecture</li>
+      <li class="breadcrumb-item active">Архитектура управления состоянием</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="_1">Архитектура управления состоянием</h1>
+<h2 id="_2">Описание</h2>
+<p>Вопрос касается различных подходов к организации и управлению состоянием в масштабных frontend-приложениях, включая выбор между Redux, Context API, Zustand и другими решениями.</p>
+<h2 id="_3">Детальный ответ</h2>
+<h3 id="_4">Сравнение подходов управления состоянием</h3>
+<h4 id="redux">Redux</h4>
+<p><strong>Преимущества</strong>:
+- Предсказуемые изменения состояния
+- Отличные DevTools
+- Middleware система
+- Time travel debugging
+- Строгая архитектура</p>
+<p><strong>Недостатки</strong>:
+- Много boilerplate кода
+- Кривая обучения
+- Overkill для простых приложений</p>
+<pre><code class="language-javascript">// Redux Toolkit - современный подход
+import { createSlice, configureStore } from '@reduxjs/toolkit';
+
+const userSlice = createSlice({
+  name: 'user',
+  initialState: {
+    profile: null,
+    loading: false,
+    error: null,
+  },
+  reducers: {
+    setLoading: (state, action) =&gt; {
+      state.loading = action.payload;
+    },
+    setUser: (state, action) =&gt; {
+      state.profile = action.payload;
+      state.loading = false;
+      state.error = null;
+    },
+    setError: (state, action) =&gt; {
+      state.error = action.payload;
+      state.loading = false;
+    },
+  },
+});
+
+// Async thunk для API вызовов
+export const fetchUser = createAsyncThunk(
+  'user/fetchUser',
+  async (userId, { rejectWithValue }) =&gt; {
+    try {
+      const response = await api.getUser(userId);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+const store = configureStore({
+  reducer: {
+    user: userSlice.reducer,
+  },
+  middleware: (getDefaultMiddleware) =&gt;
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }),
+});
+</code></pre>
+<h4 id="context-api-usereducer">Context API + useReducer</h4>
+<p><strong>Преимущества</strong>:
+- Встроен в React
+- Нет дополнительных зависимостей
+- Простота для локального состояния</p>
+<p><strong>Недостатки</strong>:
+- Проблемы с производительностью при частых обновлениях
+- Нет встроенных DevTools
+- Сложность отладки в больших приложениях</p>
+<pre><code class="language-javascript">// Архитектура с Context API
+const UserContext = createContext();
+const UserDispatchContext = createContext();
+
+function userReducer(state, action) {
+  switch (action.type) {
+    case 'SET_LOADING':
+      return { ...state, loading: action.payload };
+    case 'SET_USER':
+      return {
+        ...state,
+        profile: action.payload,
+        loading: false,
+        error: null,
+      };
+    case 'SET_ERROR':
+      return {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+    default:
+      throw new Error(`Unknown action: ${action.type}`);
+  }
+}
+
+export function UserProvider({ children }) {
+  const [state, dispatch] = useReducer(userReducer, {
+    profile: null,
+    loading: false,
+    error: null,
+  });
+
+  return (
+    &lt;UserContext.Provider value={state}&gt;
+      &lt;UserDispatchContext.Provider value={dispatch}&gt;
+        {children}
+      &lt;/UserDispatchContext.Provider&gt;
+    &lt;/UserContext.Provider&gt;
+  );
+}
+
+// Кастомные хуки для удобства использования
+export function useUser() {
+  const context = useContext(UserContext);
+  if (context === undefined) {
+    throw new Error('useUser must be used within a UserProvider');
+  }
+  return context;
+}
+
+export function useUserDispatch() {
+  const context = useContext(UserDispatchContext);
+  if (context === undefined) {
+    throw new Error('useUserDispatch must be used within a UserProvider');
+  }
+  return context;
+}
+</code></pre>
+<h4 id="zustand">Zustand</h4>
+<p><strong>Преимущества</strong>:
+- Минимальный boilerplate
+- TypeScript поддержка из коробки
+- Хорошая производительность
+- Простота тестирования</p>
+<pre><code class="language-javascript">import { create } from 'zustand';
+import { devtools, persist } from 'zustand/middleware';
+
+const useUserStore = create(
+  devtools(
+    persist(
+      (set, get) =&gt; ({
+        profile: null,
+        loading: false,
+        error: null,
+
+        setLoading: (loading) =&gt; set({ loading }),
+
+        setUser: (profile) =&gt; set({
+          profile,
+          loading: false,
+          error: null,
+        }),
+
+        setError: (error) =&gt; set({
+          error,
+          loading: false,
+        }),
+
+        fetchUser: async (userId) =&gt; {
+          set({ loading: true });
+          try {
+            const user = await api.getUser(userId);
+            get().setUser(user);
+          } catch (error) {
+            get().setError(error.message);
+          }
+        },
+
+        reset: () =&gt; set({
+          profile: null,
+          loading: false,
+          error: null,
+        }),
+      }),
+      {
+        name: 'user-storage',
+        partialize: (state) =&gt; ({ profile: state.profile }),
+      }
+    )
+  )
+);
+</code></pre>
+<h3 id="_5">Архитектурные паттерны</h3>
+<h4 id="flux-architecture">Flux Architecture</h4>
+<pre><code class="language-javascript">// Однонаправленный поток данных
+// Action -&gt; Dispatcher -&gt; Store -&gt; View -&gt; Action
+
+// Actions
+const UserActions = {
+  FETCH_USER_REQUEST: 'FETCH_USER_REQUEST',
+  FETCH_USER_SUCCESS: 'FETCH_USER_SUCCESS',
+  FETCH_USER_FAILURE: 'FETCH_USER_FAILURE',
+};
+
+// Action Creators
+const fetchUser = (userId) =&gt; async (dispatch) =&gt; {
+  dispatch({ type: UserActions.FETCH_USER_REQUEST });
+
+  try {
+    const user = await api.getUser(userId);
+    dispatch({
+      type: UserActions.FETCH_USER_SUCCESS,
+      payload: user,
+    });
+  } catch (error) {
+    dispatch({
+      type: UserActions.FETCH_USER_FAILURE,
+      payload: error.message,
+    });
+  }
+};
+</code></pre>
+<h4 id="cqrs-command-query-responsibility-segregation">CQRS (Command Query Responsibility Segregation)</h4>
+<pre><code class="language-javascript">// Разделение команд и запросов
+class UserCommands {
+  constructor(store) {
+    this.store = store;
+  }
+
+  async updateProfile(userId, data) {
+    this.store.dispatch({ type: 'UPDATE_PROFILE_START' });
+
+    try {
+      await api.updateUser(userId, data);
+      this.store.dispatch({
+        type: 'UPDATE_PROFILE_SUCCESS',
+        payload: { userId, data },
+      });
+    } catch (error) {
+      this.store.dispatch({
+        type: 'UPDATE_PROFILE_ERROR',
+        payload: error.message,
+      });
+    }
+  }
+}
+
+class UserQueries {
+  constructor(store) {
+    this.store = store;
+  }
+
+  getUser(userId) {
+    return this.store.getState().users.entities[userId];
+  }
+
+  getUsersList() {
+    return Object.values(this.store.getState().users.entities);
+  }
+
+  isUserLoading(userId) {
+    return this.store.getState().users.loading[userId] || false;
+  }
+}
+</code></pre>
+<h3 id="_6">Нормализация данных</h3>
+<pre><code class="language-javascript">// Нормализованная структура состояния
+const normalizedState = {
+  users: {
+    byId: {
+      '1': { id: '1', name: 'John', posts: ['1', '2'] },
+      '2': { id: '2', name: 'Jane', posts: ['3'] },
+    },
+    allIds: ['1', '2'],
+  },
+  posts: {
+    byId: {
+      '1': { id: '1', title: 'Post 1', authorId: '1' },
+      '2': { id: '2', title: 'Post 2', authorId: '1' },
+      '3': { id: '3', title: 'Post 3', authorId: '2' },
+    },
+    allIds: ['1', '2', '3'],
+  },
+};
+
+// Селекторы для денормализации
+const selectUserWithPosts = createSelector(
+  [selectUserById, selectAllPosts],
+  (user, posts) =&gt; ({
+    ...user,
+    posts: user.posts.map(postId =&gt; posts[postId]),
+  })
+);
+</code></pre>
+<h3 id="_7">Оптимизация производительности</h3>
+<h4 id="_8">Мемоизация селекторов</h4>
+<pre><code class="language-javascript">import { createSelector } from '@reduxjs/toolkit';
+
+// Базовые селекторы
+const selectUsers = (state) =&gt; state.users.byId;
+const selectUserIds = (state) =&gt; state.users.allIds;
+const selectFilter = (state) =&gt; state.ui.userFilter;
+
+// Мемоизированные селекторы
+const selectFilteredUsers = createSelector(
+  [selectUsers, selectUserIds, selectFilter],
+  (users, userIds, filter) =&gt; {
+    if (!filter) return userIds.map(id =&gt; users[id]);
+
+    return userIds
+      .map(id =&gt; users[id])
+      .filter(user =&gt; 
+        user.name.toLowerCase().includes(filter.toLowerCase())
+      );
+  }
+);
+</code></pre>
+<h4 id="subscription">Subscription паттерн</h4>
+<pre><code class="language-javascript">// Паттерн подписки для оптимизации Context API
+function createSubscription() {
+  const listeners = new Set();
+
+  return {
+    subscribe: (callback) =&gt; {
+      listeners.add(callback);
+      return () =&gt; listeners.delete(callback);
+    },
+
+    notify: (data) =&gt; {
+      listeners.forEach(callback =&gt; callback(data));
+    },
+  };
+}
+
+// Контекст с подпиской
+const StateContext = createContext();
+
+function StateProvider({ children }) {
+  const [state, setState] = useState(initialState);
+  const subscription = useMemo(() =&gt; createSubscription(), []);
+
+  const updateState = useCallback((newState) =&gt; {
+    setState(newState);
+    subscription.notify(newState);
+  }, [subscription]);
+
+  return (
+    &lt;StateContext.Provider value={{ state, updateState, subscription }}&gt;
+      {children}
+    &lt;/StateContext.Provider&gt;
+  );
+}
+</code></pre>
+<h3 id="middleware">Middleware и побочные эффекты</h3>
+<h4 id="redux-saga">Redux Saga</h4>
+<pre><code class="language-javascript">import { call, put, takeEvery, takeLatest } from 'redux-saga/effects';
+
+function* fetchUserSaga(action) {
+  try {
+    yield put({ type: 'FETCH_USER_REQUEST' });
+    const user = yield call(api.getUser, action.payload.userId);
+    yield put({ type: 'FETCH_USER_SUCCESS', payload: user });
+  } catch (error) {
+    yield put({ type: 'FETCH_USER_FAILURE', payload: error.message });
+  }
+}
+
+function* watchFetchUser() {
+  yield takeLatest('FETCH_USER', fetchUserSaga);
+}
+
+function* rootSaga() {
+  yield all([
+    watchFetchUser(),
+    // другие watchers...
+  ]);
+}
+</code></pre>
+<h4 id="custom-middleware">Custom Middleware</h4>
+<pre><code class="language-javascript">const apiMiddleware = (store) =&gt; (next) =&gt; (action) =&gt; {
+  if (action.type?.endsWith('_REQUEST')) {
+    // Логирование API запросов
+    console.log('API Request:', action);
+  }
+
+  return next(action);
+};
+
+const errorMiddleware = (store) =&gt; (next) =&gt; (action) =&gt; {
+  const result = next(action);
+
+  if (action.error) {
+    // Централизованная обработка ошибок
+    console.error('Error occurred:', action.payload);
+    // Показать toast notification
+  }
+
+  return result;
+};
+</code></pre>
+<h2 id="_9">Рекомендации по выбору</h2>
+<h3 id="_10">Критерии выбора решения</h3>
+<ol>
+<li><strong>Размер приложения</strong>:</li>
+<li>Малые: useState + Context API</li>
+<li>Средние: Zustand или Context API + useReducer</li>
+<li>
+<p>Большие: Redux Toolkit</p>
+</li>
+<li>
+<p><strong>Команда</strong>:</p>
+</li>
+<li>Джуниоры: Context API</li>
+<li>Миксованная: Zustand</li>
+<li>
+<p>Опытная: Redux</p>
+</li>
+<li>
+<p><strong>Требования</strong>:</p>
+</li>
+<li>DevTools: Redux</li>
+<li>Простота: Zustand</li>
+<li>TypeScript: Zustand или Redux Toolkit</li>
+<li>SSR: любое с правильной гидратацией</li>
+</ol>
+<h3 id="best-practices">Best Practices</h3>
+<ol>
+<li><strong>Держите состояние локальным</strong>: Поднимайте состояние только когда необходимо</li>
+<li><strong>Нормализуйте данные</strong>: Избегайте дублирования и вложенности</li>
+<li><strong>Используйте селекторы</strong>: Мемоизируйте вычисления</li>
+<li><strong>Разделяйте UI и бизнес-логику</strong>: Состояние UI отдельно от данных</li>
+<li><strong>Тестируйте логику</strong>: Делайте reducers и actions тестируемыми</li>
+</ol>
+<h2 id="_11">Связанные темы</h2>
+<ul>
+<li><a href="../../performance/optimization/">Performance Optimization</a> - Оптимизация производительности</li>
+<li><a href="../../react/context-api/">React Context API</a> - Context API в деталях</li>
+<li><a href="../../testing/strategies/">Testing Strategies</a> - Тестирование состояния</li>
+</ul>
+<h2 id="_12">Рекомендации для собеседования</h2>
+<p><strong>Senior-level ожидания</strong>:
+- Понимание trade-offs разных решений
+- Опыт работы с несколькими state management решениями
+- Знание паттернов нормализации данных
+- Понимание проблем производительности
+- Опыт с middleware и асинхронными операциями</p>
+<p><strong>Частые вопросы</strong>:
+- Когда использовать Redux vs Context API?
+- Как решать проблемы производительности Context API?
+- Как тестировать state management логику?
+- Как организовать состояние в больших приложениях?</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../resilient-frontend_small/" class="btn btn-neutral float-left" title="Устойчивая Frontend Архитектура (small)"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../state-management_small/" class="btn btn-neutral float-right" title="State Management Architecture - Senior Cheat Sheet (small)">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../resilient-frontend_small/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../state-management_small/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../..";</script>
+    <script src="../../../js/theme_extra.js"></script>
+    <script src="../../../js/theme.js"></script>
+      <script src="../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
