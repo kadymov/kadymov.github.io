@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Пиксельная физика с горением</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #111;
+        }
+        canvas {
+            border: 1px solid #444;
+        }
+        .controls {
+            margin-top: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 5px;
+            border: none;
+            background-color: #333;
+            color: #fff;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #555;
+        }
+        select {
+            padding: 5px;
+            font-size: 16px;
+            margin: 5px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="simulationCanvas"></canvas>
+    <div class="controls">
+        <button onclick="setBrush('WOOD')">Дерево</button>
+        <button onclick="setBrush('FIRE_PARTICLE')">Горящие частицы</button>
+        <button onclick="setBrush('TNT')">TNT</button>
+        <select id="brushSizeSelector" onchange="updateBrushSize()">
+            <option value="1">Размер кисти: 1x1</option>
+            <option value="3">Размер кисти: 3x3</option>
+            <option value="5">Размер кисти: 5x5</option>
+        </select>
+    </div>
+    <script>
+        const canvas = document.getElementById('simulationCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Настройка размеров холста для мобильных устройств
+        const cellSize = 8; // Увеличенный размер для удобства на телефоне
+        canvas.width = Math.floor(window.innerWidth / cellSize) * cellSize;
+        canvas.height = Math.floor((window.innerHeight - 100) / cellSize) * cellSize;
+        const cols = canvas.width / cellSize;
+        const rows = canvas.height / cellSize;
+
+        const types = {
+            EMPTY: 0,
+            WOOD: 1,
+            FIRE_PARTICLE: 2,
+            ASH: 3,
+            FIRE: 4,
+            TNT: 5
+        };
+
+        let grid = createGrid();
+        let currentBrush = 'WOOD';
+        let isDrawing = false;
+        let brushSize = 1; // Размер кисти по умолчанию
+
+        function createGrid() {
+            return Array.from({ length: cols }, () => 
+                Array.from({ length: rows }, () => ({
+                    type: types.EMPTY,
+                    life: 0,
+                    isStatic: false
+                }))
+            );
+        }
+
+        function draw() {
+            ctx.fillStyle = '#222';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            for (let x = 0; x < cols; x++) {
+                for (let y = 0; y < rows; y++) {
+                    const cell = grid[x][y];
+                    if (cell.type === types.EMPTY) continue;
+                    
+                    ctx.fillStyle = getCellColor(cell);
+                    ctx.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
+                }
+            }
+        }
+
+        function getCellColor(cell) {
+            switch(cell.type) {
+                case types.WOOD: return '#8B4513';
+                case types.FIRE_PARTICLE: return '#FF4500';
+                case types.ASH: return '#444';
+                case types.FIRE: return `hsl(20, 100%, ${50 + Math.random() * 30}%)`;
+                case types.TNT: return '#FF00FF'; // Фиолетовый цвет для TNT
+                default: return '#000';
+            }
+        }
+
+        function update() {
+            for (let x = 0; x < cols; x++) {
+                for (let y = rows - 1; y >= 0; y--) {
+                    const cell = grid[x][y];
+                    
+                    if (cell.type === types.FIRE) {
+                        cell.life--;
+                        if (cell.life <= 0) {
+                            cell.type = types.ASH;
+                            cell.life = 0;
+                        } else {
+                            spreadFire(x, y);
+                        }
+                    }
+
+                    if (cell.type === types.TNT && isNeighborOnFire(x, y)) {
+                        explode(x, y);
+                    }
+                    
+                    if (cell.type === types.FIRE_PARTICLE || cell.type === types.ASH) {
+                        if (y < rows - 1 && grid[x][y+1].type === types.EMPTY) {
+                            swapCells(x, y, x, y+1);
+                        } else {
+                            const direction = Math.random() < 0.5 ? -1 : 1;
+                            if (x + direction >= 0 && x + direction < cols && 
+                                grid[x + direction][y+1]?.type === types.EMPTY) {
+                                swapCells(x, y, x + direction, y+1);
+                            }
+                        }
+                        
+                        if (cell.type === types.FIRE_PARTICLE && Math.random() < 0.002) {
+                            ignite(x, y);
+                        }
+                    }
+                }
+            }
+        }
+
+        function swapCells(x1, y1, x2, y2) {
+            const temp = grid[x1][y1];
+            grid[x1][y1] = grid[x2][y2];
+            grid[x2][y2] = temp;
+        }
+
+        function spreadFire(x, y) {
+            const directions = [
+                [x-1, y], [x+1, y],
+                [x, y-1], [x, y+1],
+                [x-1, y-1], [x+1, y-1]
+            ];
+            
+            directions.forEach(([nx, ny]) => {
+                if (nx < 0 || nx >= cols || ny < 0 || ny >= rows) return;
+                const neighbor = grid[nx][ny];
+                
+                if (!neighbor) return;
+                
+                if ((neighbor.type === types.WOOD || neighbor.type === types.FIRE_PARTICLE || neighbor.type === types.TNT) 
+                    && Math.random() < (neighbor.type === types.WOOD ? 0.3 : 0.1)) {
+                    ignite(nx, ny);
+                }
+            });
+        }
+
+        function ignite(x, y) {
+            if (grid[x][y].type === types.WOOD) {
+                grid[x][y].type = types.FIRE;
+                grid[x][y].life = 120 + Math.random() * 60;
+            } else {
+                grid[x][y].type = types.FIRE;
+                grid[x][y].life = 30 + Math.random() * 20;
+            }
+        }
+
+        function isNeighborOnFire(x, y) {
+            const directions = [
+                [x-1, y], [x+1, y],
+                [x, y-1], [x, y+1],
+                [x-1, y-1], [x+1, y-1]
+            ];
+
+            for (const [nx, ny] of directions) {
+                if (nx >= 0 && nx < cols && ny >= 0 && ny < rows) {
+                    if (grid[nx][ny].type === types.FIRE) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        function explode(x, y) {
+            const radius = 5; // Радиус взрыва
+            for (let dx = -radius; dx <= radius; dx++) {
+                for (let dy = -radius; dy <= radius; dy++) {
+                    const nx = x + dx;
+                    const ny = y + dy;
+                    if (nx >= 0 && nx < cols && ny >= 0 && ny < rows) {
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+                        if (distance <= radius) {
+                            if (Math.random() < 0.5) { // 50% шанс создать горящую частицу
+                                grid[nx][ny].type = types.FIRE_PARTICLE;
+                                grid[nx][ny].isStatic = false;
+                                grid[nx][ny].life = 100;
+                            } else {
+                                grid[nx][ny].type = types.EMPTY; // Остальное уничтожаем
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        function placeParticles(x, y) {
+            const halfSize = Math.floor(brushSize / 2);
+            for (let dx = -halfSize; dx <= halfSize; dx++) {
+                for (let dy = -halfSize; dy <= halfSize; dy++) {
+                    const nx = x + dx;
+                    const ny = y + dy;
+                    if (nx >= 0 && nx < cols && ny >= 0 && ny < rows) {
+                        if (currentBrush === 'WOOD') {
+                            grid[nx][ny].type = types.WOOD;
+                            grid[nx][ny].isStatic = true;
+                        } else if (currentBrush === 'FIRE_PARTICLE') {
+                            grid[nx][ny].type = types.FIRE_PARTICLE;
+                            grid[nx][ny].isStatic = false;
+                            grid[nx][ny].life = 100;
+                        } else if (currentBrush === 'TNT') {
+                            grid[nx][ny].type = types.TNT;
+                            grid[nx][ny].isStatic = true;
+                        }
+                    }
+                }
+            }
+        }
+
+        function getCanvasCoordinates(event) {
+            const rect = canvas.getBoundingClientRect();
+            const touch = event.touches ? event.touches[0] : event;
+            const x = Math.floor((touch.clientX - rect.left) / cellSize);
+            const y = Math.floor((touch.clientY - rect.top) / cellSize);
+            return { x, y };
+        }
+
+        canvas.addEventListener('mousedown', (e) => {
+            isDrawing = true;
+            const { x, y } = getCanvasCoordinates(e);
+            placeParticles(x, y);
+        });
+
+        canvas.addEventListener('mousemove', (e) => {
+            if (isDrawing) {
+                const { x, y } = getCanvasCoordinates(e);
+                placeParticles(x, y);
+            }
+        });
+
+        canvas.addEventListener('mouseup', () => {
+            isDrawing = false;
+        });
+
+        canvas.addEventListener('touchstart', (e) => {
+            e.preventDefault(); // Отключаем прокрутку
+            isDrawing = true;
+            const { x, y } = getCanvasCoordinates(e);
+            placeParticles(x, y);
+        });
+
+        canvas.addEventListener('touchmove', (e) => {
+            e.preventDefault(); // Отключаем прокрутку
+            if (isDrawing) {
+                const { x, y } = getCanvasCoordinates(e);
+                placeParticles(x, y);
+            }
+        });
+
+        canvas.addEventListener('touchend', () => {
+            isDrawing = false;
+        });
+
+        function setBrush(type) {
+            currentBrush = type;
+        }
+
+        function updateBrushSize() {
+            const selector = document.getElementById('brushSizeSelector');
+            brushSize = parseInt(selector.value);
+        }
+
+        function gameLoop() {
+            update();
+            draw();
+            requestAnimationFrame(gameLoop);
+        }
+
+        gameLoop();
+    </script>
+</body>
+</html>

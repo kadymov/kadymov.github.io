@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>G-Code viewer</title>
+<script src="theme-switcher.js"></script>
+<style>
+/* Специфичные стили для visualizer */
+html, body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  max-width: none;
+  padding: 0;
+}
+
+#top {
+  padding: 15px;
+  background: rgba(255,255,255,0.05);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  display: flex;
+  align-items: end;
+  gap: 15px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+
+#gcode {
+  flex: 1 1 50%;
+  height: 90px;
+  resize: none;
+  background: rgba(0,0,0,0.3);
+  min-width: 400px;
+}
+
+#main {
+  height: calc(100% - 170px);
+}
+
+#canvas {
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.2);
+  cursor: grab;
+  display: block;
+}
+
+#canvas:active {
+  cursor: grabbing;
+}
+
+button {
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  box-shadow: 0 2px 8px rgba(79,195,247,0.3);
+  margin: 0;
+}
+
+button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(79,195,247,0.4);
+}
+
+#file {
+  border-radius: 6px;
+}
+
+@media (max-width: 768px) {
+  #top {
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+  }
+  
+  #gcode {
+    height: 70px;
+  }
+  
+  #main {
+    height: calc(100% - 200px);
+  }
+  
+  button {
+    width: 100%;
+  }
+}
+</style>
+
+</head>
+<body>
+
+<div id="top">
+  <textarea id="gcode" placeholder="Вставьте сюда G-код…"></textarea>
+  <input type="file" id="file">
+  <button id="build">Построить</button>
+</div>
+
+<div id="main">
+  <canvas id="canvas"></canvas>
+</div>
+
+<script src="gcode-visualizer.js"></script>
+<script>
+/* ---------- DOM ---------- */
+const ta = document.getElementById('gcode');
+const fileIn = document.getElementById('file');
+const btnBuild = document.getElementById('build');
+const canvas = document.getElementById('canvas');
+
+// Создание экземпляра визуализатора
+let visualizer = new GCodeVisualizer(canvas);
+
+// G-код по умолчанию - простая программа фрезерования квадрата
+const defaultGCode = `; Простая программа фрезерования квадрата 20x20мм
+G21 ; миллиметры
+G90 ; абсолютные координаты
+G17 ; плоскость XY
+F300 ; скорость подачи 300мм/мин
+
+; Быстрый подход к начальной точке
+G0 Z5
+G0 X0 Y0
+G0 Z1
+
+; Фрезерование контура квадрата
+G1 Z-1 F100 ; врезание
+G1 X20 F300 ; первая сторона
+G1 Y20 ; вторая сторона  
+G1 X0 ; третья сторона
+G1 Y0 ; четвертая сторона
+
+; Отвод
+G0 Z5
+G0 X30 Y30 ; безопасная позиция
+M30 ; конец программы`;
+
+// Загружаем G-код по умолчанию
+ta.value = defaultGCode;
+visualizer.loadGCode(defaultGCode);
+
+/* ---------- Кнопки ---------- */
+btnBuild.onclick = () => {
+  visualizer.loadGCode(ta.value);
+};
+
+
+/* ---------- Загрузка файла ---------- */
+fileIn.onchange = (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    ta.value = ev.target.result;
+    visualizer.loadGCode(ev.target.result);
+  };
+  reader.readAsText(file);
+};
+</script>
+</body>
+</html>
