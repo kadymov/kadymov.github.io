@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../../img/favicon.ico" />
+    <title>Offline-first архитектура (TTS) - My Docs</title>
+    <link rel="stylesheet" href="../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Offline-first \u0430\u0440\u0445\u0438\u0442\u0435\u043a\u0442\u0443\u0440\u0430 (TTS)";
+        var mkdocs_page_input_path = "questions/architecture/offline-first_tts.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../../.." class="icon icon-home"> My Docs
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../..">📚 Подготовка к собеседованию: JavaScript, React и архитектура</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Questions</span></p>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current" >Architecture</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../ddd/">Domain-Driven Design (DDD) во Frontend</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../ddd_small/">Domain-Driven Design (DDD) во Frontend (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../ddd_tts/">Domain-Driven Design (DDD) во Frontend (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../microfrontends/">Микрофронтенды (Microfrontends)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../microfrontends_small/">Microfrontends - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../microfrontends_tts/">Микрофронтенды (Microfrontends) (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../offline-first/">Offline-first архитектура</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../offline-first_small/">Offline-First Архитектура (small)</a>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" href="#">Offline-first архитектура (TTS)</a>
+    <ul class="current">
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../resilient-frontend/">Устойчивая frontend архитектура</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../resilient-frontend_small/">Устойчивая Frontend Архитектура (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../resilient-frontend_tts/">Устойчивая frontend архитектура (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../state-management/">Архитектура управления состоянием</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../state-management_small/">State Management Architecture - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../state-management_tts/">Архитектура управления состоянием (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../websockets-realtime/">WebSockets и real-time коммуникация</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../websockets-realtime_small/">WebSockets и Real-time коммуникация (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../websockets-realtime_tts/">WebSockets и real-time коммуникация (TTS)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Javascript</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/async-programming/">Promises, Async/Await и Generators</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/async-programming_small/">Async Programming - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/async-programming_tts/">Promises, Async/Await и Generators (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/currying/">Currying в JavaScript</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/currying_small/">Currying - Шпаргалка (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/currying_tts/">Currying в JavaScript (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/event-loop/">Event Loop, Microtasks и Macrotasks</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/event-loop_small/">Event Loop - Шпаргалка (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/event-loop_tts/">Event Loop, Microtasks и Macrotasks (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/execution-model/">Модель выполнения JavaScript</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/execution-model_small/">JavaScript Execution Model - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/execution-model_tts/">Модель выполнения JavaScript (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/garbage-collection/">Garbage Collection и оптимизация памяти</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/garbage-collection_small/">Garbage Collection - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/garbage-collection_tts/">Garbage Collection и оптимизация памяти (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/scope-hoisting/">Let, Const, Var: Scope и Hoisting</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/scope-hoisting_small/">Let, Const, Var - Шпаргалка (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/scope-hoisting_tts/">Let, Const, Var: Scope и Hoisting (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/typing-comparison/">Сравнение типизации JS и Java</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/typing-comparison_small/">JS vs Java Typing + TypeScript - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/typing-comparison_tts/">Сравнение типизации JS и Java (TTS)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Performance</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../performance/optimization/">Оптимизация производительности frontend-приложений</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../performance/optimization_small/">Оптимизация производительности Frontend (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../performance/optimization_tts/">Оптимизация производительности frontend-приложений (TTS)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >React</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/concurrent-rendering/">Конкурентный рендеринг React 18</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/concurrent-rendering_small/">React 18 Concurrent Rendering - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/concurrent-rendering_tts/">Конкурентный рендеринг React 18 (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/context-api/">Context API vs Redux</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/context-api_small/">Context API vs Redux - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/context-api_tts/">Context API vs Redux (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/hoc/">Higher-Order Components (HOC)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/hoc_small/">Higher-Order Components - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/hoc_tts/">Higher-Order Components (HOC) (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/reconciliation/">Reconciliation и Virtual DOM</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/reconciliation_small/">Reconciliation &amp; Virtual DOM - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/reconciliation_tts/">Reconciliation и Virtual DOM (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/rerender-optimization/">Оптимизация ререндеров в React</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/rerender-optimization_small/">React Rerender Optimization - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/rerender-optimization_tts/">Оптимизация ререндеров в React (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/ssr-rsc/">SSR/SSG и React Server Components</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/ssr-rsc_small/">SSR/SSG &amp; React Server Components - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/ssr-rsc_tts/">SSR/SSG и React Server Components (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/use-effect/">useEffect и Side Effects</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/use-effect_small/">useEffect &amp; Side Effects - Senior Cheat Sheet</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/use-effect_tts/">useEffect и Side Effects (TTS)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Security</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../security/frontend-security/">Безопасность Frontend Приложений</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../security/frontend-security_small/">Frontend Security (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../security/frontend-security_tts/">Безопасность Frontend Приложений (TTS)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Testing</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../testing/strategies/">Стратегии тестирования frontend-приложений</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../testing/strategies_small/">Стратегии тестирования Frontend (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../testing/strategies_tts/">Стратегии тестирования frontend-приложений (TTS)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Typescript</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../typescript/advanced-types/">Продвинутые типы TypeScript</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../typescript/advanced-types_small/">Продвинутые типы TypeScript (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../typescript/advanced-types_tts/">Продвинутые типы TypeScript (TTS)</a>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../..">My Docs</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Questions</li>
+          <li class="breadcrumb-item">Architecture</li>
+      <li class="breadcrumb-item active">Offline-first архитектура (TTS)</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="offline-first-tts">Offline-first архитектура (TTS)</h1>
+<p>Этот вопрос касается создания приложений, которые в первую очередь рассчитаны на работу в оффлайн режиме, с последующей синхронизацией при появлении соединения. Это подход, где оффлайн-функциональность является основной, а не дополнительной.</p>
+<p>Принципы Offline-First</p>
+<p>Локальное хранение как источник истины
+В offline-first приложениях локальное хранилище является основным источником данных, а не сервер. Приложение сначала работает с локальными данными, а затем синхронизируется с сервером когда это возможно.</p>
+<p>Используется IndexedDB для хранения структурированных данных в браузере. Создается локальная база данных с объектными хранилищами для пользователей, постов, очереди синхронизации и метаданных.</p>
+<p>Локальные операции с отложенной синхронизацией
+Все операции создания, обновления и удаления данных выполняются сначала локально. Изменения помечаются специальными флагами и добавляются в очередь синхронизации.</p>
+<p>При создании нового поста он сразу сохраняется в локальную базу с временным идентификатором и статусом "pending". Операция добавляется в очередь для последующей отправки на сервер.</p>
+<p>Обновления существующих записей также выполняются локально с увеличением версии и пометкой о локальных изменениях.</p>
+<p>При удалении запись помечается как удаленная, но физически остается в локальной базе до успешной синхронизации с сервером.</p>
+<p>Синхронизация данных
+Сервис синхронизации работает в фоновом режиме и активируется при появлении интернет-соединения.</p>
+<p>Процесс синхронизации состоит из двух этапов: сначала загружаются изменения с сервера, затем отправляются локальные изменения.</p>
+<p>При загрузке удаленных изменений проверяется наличие конфликтов с локальными данными. Если конфликтов нет, изменения применяются напрямую.</p>
+<p>Отправка локальных изменений происходит через обработку очереди синхронизации. Каждая операция имеет счетчик попыток, и после нескольких неудачных попыток элемент удаляется из очереди.</p>
+<p>Разрешение конфликтов
+Система разрешения конфликтов определяет стратегию для случаев, когда одни и те же данные изменились и локально, и на сервере.</p>
+<p>Доступны несколько стратегий: "последняя запись побеждает" основана на временных метках, слияние полей объединяет изменения из обеих версий, выбор пользователя требует ручного разрешения конфликта.</p>
+<p>Для критических полей, таких как заголовок или содержимое, используется стратегия выбора пользователя. Показывается интерфейс с локальной и серверной версиями, позволяющий выбрать нужную или создать объединенную версию.</p>
+<p>React Integration для Offline-First</p>
+<p>Custom Hooks для offline-first
+Создается кастомный хук useOfflineData который инкапсулирует всю логику работы с оффлайн данными. Хук предоставляет методы для создания, обновления и удаления записей, а также автоматически отслеживает статус подключения.</p>
+<p>Хук useSyncStatus отслеживает состояние синхронизации: количество ожидающих элементов, время последней синхронизации, наличие конфликтов.</p>
+<p>Компонент SyncStatusIndicator показывает пользователю текущий статус синхронизации с цветовой индикацией: зеленый для синхронизированного состояния, желтый для ожидающих элементов, синий во время синхронизации, оранжевый для оффлайн режима.</p>
+<p>Оптимизация для мобильных устройств</p>
+<p>Управление памятью и батареей
+OfflineOptimizer отслеживает уровень заряда батареи и качество соединения для адаптации стратегии синхронизации.</p>
+<p>При низком заряде батареи или плохом соединении увеличивается интервал между синхронизациями и уменьшается количество одновременных операций.</p>
+<p>Качество соединения определяется через Connection API и влияет на частоту синхронизации: от 30 секунд при хорошем соединении до 5 минут при низком заряде батареи.</p>
+<p>Progressive Web App интеграция</p>
+<p>Манифест и Service Worker
+Service Worker реализует offline-first стратегию кеширования: сначала проверяется кеш, затем делается запрос к сети.</p>
+<p>Для API запросов используется cache-first стратегия с network fallback. Кешированные данные возвращаются немедленно, затем при возможности обновляются из сети.</p>
+<p>Статические ресурсы приложения кешируются при установке Service Worker для обеспечения работы интерфейса в оффлайн режиме.</p>
+<p>Background Sync позволяет отправлять данные в фоне когда соединение восстанавливается, даже если приложение закрыто.</p>
+<p>Архитектурные паттерны</p>
+<p>Event Sourcing для оффлайн
+Все изменения данных сохраняются как последовательность событий, что позволяет точно воспроизвести состояние и разрешить конфликты.</p>
+<p>CRDT - Conflict-free Replicated Data Types
+Структуры данных, которые можно безопасно реплицировать между узлами без координации. Изменения из разных источников автоматически объединяются без конфликтов.</p>
+<p>Operational Transformation
+Техника для совместного редактирования документов, которая трансформирует операции так, чтобы они корректно применялись в разном порядке на разных клиентах.</p>
+<p>Best Practices</p>
+<p>Data Storage Strategy - используйте подходящие технологии хранения для разных типов данных: IndexedDB для структурированных данных, Cache API для ресурсов, localStorage для настроек.</p>
+<p>Sync Strategy - реализуйте интеллектуальную синхронизацию с приоритизацией критически важных данных и батчингом менее важных изменений.</p>
+<p>Conflict Resolution - предусмотрите четкие стратегии разрешения конфликтов и информируйте пользователей о проблемах синхронизации.</p>
+<p>User Experience - обеспечьте понятную индикацию статуса синхронизации и возможность ручного запуска синхронизации.</p>
+<p>Performance - оптимизируйте размер локальной базы данных и implement cleanup старых данных.</p>
+<p>Testing - тестируйте приложение в различных сценариях: полный оффлайн, прерывистое соединение, конфликты данных.</p>
+<p>Рекомендации для собеседования</p>
+<p>На Senior-уровне ожидается понимание принципов offline-first архитектуры, опыт с IndexedDB и Service Workers, знание стратегий разрешения конфликтов, понимание особенностей мобильной оптимизации, опыт с PWA технологиями.</p>
+<p>Частые вопросы на собеседованиях:
+Как обеспечить консистентность данных в offline-first приложении?
+Какие стратегии разрешения конфликтов вы знаете?
+Как оптимизировать синхронизацию для мобильных устройств?
+В чем разница между offline-first и offline-capable?
+Как тестировать offline functionality?</p>
+<p>Этот материал связан с темами устойчивой фронтенд архитектуры, WebSockets и real-time коммуникации, управления состоянием в распределенных системах.</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../offline-first_small/" class="btn btn-neutral float-left" title="Offline-First Архитектура (small)"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../resilient-frontend/" class="btn btn-neutral float-right" title="Устойчивая frontend архитектура">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../offline-first_small/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../resilient-frontend/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../..";</script>
+    <script src="../../../js/theme_extra.js"></script>
+    <script src="../../../js/theme.js"></script>
+      <script src="../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

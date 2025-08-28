@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../../img/favicon.ico" />
+    <title>Продвинутые типы TypeScript (TTS) - My Docs</title>
+    <link rel="stylesheet" href="../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "\u041f\u0440\u043e\u0434\u0432\u0438\u043d\u0443\u0442\u044b\u0435 \u0442\u0438\u043f\u044b TypeScript (TTS)";
+        var mkdocs_page_input_path = "questions/typescript/advanced-types_tts.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../../.." class="icon icon-home"> My Docs
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../..">📚 Подготовка к собеседованию: JavaScript, React и архитектура</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Questions</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" >Architecture</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/ddd/">Domain-Driven Design (DDD) во Frontend</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/ddd_small/">Domain-Driven Design (DDD) во Frontend (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/ddd_tts/">Domain-Driven Design (DDD) во Frontend (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/microfrontends/">Микрофронтенды (Microfrontends)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/microfrontends_small/">Microfrontends - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/microfrontends_tts/">Микрофронтенды (Microfrontends) (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/offline-first/">Offline-first архитектура</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/offline-first_small/">Offline-First Архитектура (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/offline-first_tts/">Offline-first архитектура (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/resilient-frontend/">Устойчивая frontend архитектура</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/resilient-frontend_small/">Устойчивая Frontend Архитектура (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/resilient-frontend_tts/">Устойчивая frontend архитектура (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/state-management/">Архитектура управления состоянием</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/state-management_small/">State Management Architecture - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/state-management_tts/">Архитектура управления состоянием (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/websockets-realtime/">WebSockets и real-time коммуникация</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/websockets-realtime_small/">WebSockets и Real-time коммуникация (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/websockets-realtime_tts/">WebSockets и real-time коммуникация (TTS)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Javascript</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/async-programming/">Promises, Async/Await и Generators</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/async-programming_small/">Async Programming - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/async-programming_tts/">Promises, Async/Await и Generators (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/currying/">Currying в JavaScript</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/currying_small/">Currying - Шпаргалка (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/currying_tts/">Currying в JavaScript (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/event-loop/">Event Loop, Microtasks и Macrotasks</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/event-loop_small/">Event Loop - Шпаргалка (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/event-loop_tts/">Event Loop, Microtasks и Macrotasks (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/execution-model/">Модель выполнения JavaScript</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/execution-model_small/">JavaScript Execution Model - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/execution-model_tts/">Модель выполнения JavaScript (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/garbage-collection/">Garbage Collection и оптимизация памяти</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/garbage-collection_small/">Garbage Collection - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/garbage-collection_tts/">Garbage Collection и оптимизация памяти (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/scope-hoisting/">Let, Const, Var: Scope и Hoisting</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/scope-hoisting_small/">Let, Const, Var - Шпаргалка (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/scope-hoisting_tts/">Let, Const, Var: Scope и Hoisting (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/typing-comparison/">Сравнение типизации JS и Java</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/typing-comparison_small/">JS vs Java Typing + TypeScript - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/typing-comparison_tts/">Сравнение типизации JS и Java (TTS)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Performance</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../performance/optimization/">Оптимизация производительности frontend-приложений</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../performance/optimization_small/">Оптимизация производительности Frontend (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../performance/optimization_tts/">Оптимизация производительности frontend-приложений (TTS)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >React</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/concurrent-rendering/">Конкурентный рендеринг React 18</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/concurrent-rendering_small/">React 18 Concurrent Rendering - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/concurrent-rendering_tts/">Конкурентный рендеринг React 18 (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/context-api/">Context API vs Redux</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/context-api_small/">Context API vs Redux - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/context-api_tts/">Context API vs Redux (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/hoc/">Higher-Order Components (HOC)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/hoc_small/">Higher-Order Components - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/hoc_tts/">Higher-Order Components (HOC) (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/reconciliation/">Reconciliation и Virtual DOM</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/reconciliation_small/">Reconciliation &amp; Virtual DOM - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/reconciliation_tts/">Reconciliation и Virtual DOM (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/rerender-optimization/">Оптимизация ререндеров в React</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/rerender-optimization_small/">React Rerender Optimization - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/rerender-optimization_tts/">Оптимизация ререндеров в React (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/ssr-rsc/">SSR/SSG и React Server Components</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/ssr-rsc_small/">SSR/SSG &amp; React Server Components - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/ssr-rsc_tts/">SSR/SSG и React Server Components (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/use-effect/">useEffect и Side Effects</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/use-effect_small/">useEffect &amp; Side Effects - Senior Cheat Sheet</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/use-effect_tts/">useEffect и Side Effects (TTS)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Security</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../security/frontend-security/">Безопасность Frontend Приложений</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../security/frontend-security_small/">Frontend Security (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../security/frontend-security_tts/">Безопасность Frontend Приложений (TTS)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Testing</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../testing/strategies/">Стратегии тестирования frontend-приложений</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../testing/strategies_small/">Стратегии тестирования Frontend (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../testing/strategies_tts/">Стратегии тестирования frontend-приложений (TTS)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" >Typescript</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../advanced-types/">Продвинутые типы TypeScript</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../advanced-types_small/">Продвинутые типы TypeScript (small)</a>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" href="#">Продвинутые типы TypeScript (TTS)</a>
+    <ul class="current">
+    </ul>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../..">My Docs</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Questions</li>
+          <li class="breadcrumb-item">Typescript</li>
+      <li class="breadcrumb-item active">Продвинутые типы TypeScript (TTS)</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="typescript-tts">Продвинутые типы TypeScript (TTS)</h1>
+<p>Этот вопрос касается использования продвинутых возможностей системы типов TypeScript для создания безопасного и масштабируемого кода, включая utility types, conditional types, mapped types и другие сложные конструкции.</p>
+<p>Utility Types</p>
+<p>Основные Utility Types
+Pick выбирает определенные свойства из типа. Например, из интерфейса User с полями id, name, email, password и createdAt можно создать PublicUser тип, содержащий только id, name и email.</p>
+<p>Omit работает противоположно Pick - исключает определенные свойства. Можно создать CreateUser тип, исключив id и createdAt из User интерфейса.</p>
+<p>Partial делает все свойства типа опциональными. Это полезно для типов обновления, где не все поля обязательны.</p>
+<p>Required делает все свойства обязательными, даже если они были опциональными в оригинальном типе.</p>
+<p>Record создает тип с заданными ключами и значениями. Например, можно создать тип StatusMessages где ключи - это статусы pending, approved, rejected, а значения - строки с сообщениями.</p>
+<p>Продвинутые Utility Types
+Exclude исключает типы из union. Если есть union тип AllColors с red, green, blue, yellow, то Exclude может исключить yellow, оставив только red, green, blue.</p>
+<p>Extract извлекает определенные типы из union. Из того же AllColors можно извлечь только red и yellow.</p>
+<p>NonNullable исключает null и undefined из типа, оставляя только основной тип.</p>
+<p>ReturnType получает тип возвращаемого значения функции. Полезно когда нужно знать что возвращает функция без прямого указания типа.</p>
+<p>Parameters получает типы параметров функции в виде tuple. Если функция принимает string и Partial User, то Parameters вернет кортеж этих типов.</p>
+<p>ConstructorParameters делает то же самое для параметров конструктора класса.</p>
+<p>Conditional Types</p>
+<p>Базовые Conditional Types
+Conditional types используют синтаксис условного оператора для выбора типа. Можно создать тип IsString который возвращает true если тип расширяет string, иначе false.</p>
+<p>Более сложные conditional types могут проверять несколько условий. ApiResponse тип может возвращать разные структуры в зависимости от входного типа: объект с message для строк, с code для чисел, с data для других типов.</p>
+<p>При использовании с union типами conditional types работают дистрибутивно - применяются к каждому члену union отдельно.</p>
+<p>Distributive Conditional Types
+Distributive поведение означает, что conditional type применяется к каждому члену union типа отдельно. Тип Flatten может извлекать элементы из массивов, и при применении к union string array или number array вернет string или number.</p>
+<p>Distributive поведение можно отключить, обернув проверяемый тип в tuple. Тогда conditional type будет применяться ко всему union как к единому типу.</p>
+<p>Практический пример - создание типизированных обработчиков событий, где тип обработчика зависит от имени события.</p>
+<p>Mapped Types</p>
+<p>Базовые Mapped Types
+Mapped types позволяют создавать новые типы, применяя трансформации к каждому свойству существующего типа.</p>
+<p>Можно создать Readonly версию типа, добавив readonly ко всем свойствам. Или наоборот, Mutable тип, который убирает readonly модификаторы.</p>
+<p>Optional тип добавляет знак вопроса ко всем свойствам, делая их опциональными. Required убирает опциональность.</p>
+<p>Stringify изменяет типы всех значений на string, сохраняя структуру объекта.</p>
+<p>Продвинутые Mapped Types
+Mapped types можно комбинировать с условиями для сложной логики. NullableKeys может найти все ключи в типе, значения которых могут быть null.</p>
+<p>Можно создавать getters и setters для всех свойств типа, используя template literal types для генерации имен методов. Например, свойство name становится getName и setName методами.</p>
+<p>Key remapping позволяет изменять имена ключей при создании mapped type, что полезно для создания API с определенными соглашениями об именах.</p>
+<p>Template Literal Types</p>
+<p>Базовое использование
+Template literal types позволяют создавать типы на основе строковых литералов с переменными частями. Greeting тип может принимать любую строку после Hello.</p>
+<p>С union типами template literals создают все возможные комбинации. Color и Size union типы могут создать Variant тип со всеми комбинациями red-small, red-medium и так далее.</p>
+<p>Полезно для типизации CSS свойств, где можно создать все возможные margin и padding свойства.</p>
+<p>Продвинутые Template Literal Types
+Можно создавать имена event listeners, добавляя on к началу и делая первую букву заглавной. click становится onClick, hover становится onHover.</p>
+<p>Для API endpoints можно комбинировать HTTP методы и ресурсы, создавая все возможные комбинации GET /api/users, POST /api/posts и так далее.</p>
+<p>BEM методология CSS может быть типизирована через template literals, создавая правильные имена элементов и модификаторов.</p>
+<p>Infer Keyword</p>
+<p>Базовое использование infer
+Infer позволяет извлекать типы из других типов в conditional types. ArrayElement может извлечь тип элемента из массива, используя infer для захвата типа элемента.</p>
+<p>PromiseValue извлекает тип значения из Promise. Если есть Promise string, то PromiseValue вернет string.</p>
+<p>FirstParameter извлекает тип первого параметра функции, игнорируя остальные параметры.</p>
+<p>Продвинутое использование infer
+DeepPromiseValue может работать с вложенными Promise, рекурсивно извлекая финальный тип даже из Promise Promise Promise string.</p>
+<p>FunctionArgs извлекает все типы параметров функции в виде tuple, что полезно для создания wrapper функций.</p>
+<p>Tail создает тип, содержащий все элементы tuple кроме первого. Это основа для многих utility типов, работающих с кортежами.</p>
+<p>Recursive Types</p>
+<p>Простая рекурсия
+Recursive types ссылаются сами на себя для создания вложенных структур. NestedObject может создавать бесконечно вложенные объекты одного типа.</p>
+<p>JSON типы - классический пример рекурсии, где JSONValue может быть примитивом, объектом или массивом других JSONValue.</p>
+<p>Продвинутая рекурсия
+DeepReadonly рекурсивно применяет readonly ко всем вложенным объектам, создавая полностью неизменяемую структуру.</p>
+<p>DeepPartial делает все свойства опциональными на любом уровне вложенности.</p>
+<p>Можно создавать типы путей для вложенных объектов, генерируя строки типа "profile.personal.name" для доступа к глубоко вложенным свойствам.</p>
+<p>Брендированные типы</p>
+<p>Брендированные типы добавляют уникальные маркеры к примитивным типам для предотвращения случайного смешивания похожих типов.</p>
+<p>UserId, PostId, SessionId - все это строки, но с разными брендами. Это предотвращает передачу UserId в функцию, ожидающую PostId.</p>
+<p>Создаются функции-конструкторы для создания брендированных типов и функции, работающие только с определенными брендами.</p>
+<p>Валидационные типы как Email и URL обеспечивают, что строка прошла валидацию перед использованием в функциях, требующих валидные данные.</p>
+<p>Практические паттерны</p>
+<p>Builder Pattern с типами
+Можно создать типизированный builder pattern, где компилятор проверяет что все обязательные поля установлены перед вызовом build метода.</p>
+<p>FluentUserBuilder требует установки name и email перед build, иначе TypeScript выдаст ошибку компиляции. Это обеспечивает корректность на этапе компиляции.</p>
+<p>Type-safe event system
+TypedEventEmitter использует mapped types для создания типобезопасной системы событий. Каждое событие имеет определенную структуру данных, и TypeScript проверяет соответствие при emit и on вызовах.</p>
+<p>EventMap определяет все возможные события и их типы данных. Обработчики автоматически получают правильно типизированные данные, а emit проверяет что передаются корректные данные.</p>
+<p>Best Practices</p>
+<p>Используйте строгие типы - включайте strict режим в tsconfig.json для максимальной безопасности типов.</p>
+<p>Избегайте any - используйте unknown для неизвестных типов или создавайте специфические типы.</p>
+<p>Композиция типов - создавайте сложные типы из простых, используя union, intersection и utility types.</p>
+<p>Брендированные типы - используйте для критически важных значений вроде ID, email, URL для предотвращения ошибок.</p>
+<p>Readonly по умолчанию - делайте данные immutable где это возможно для предотвращения случайных изменений.</p>
+<p>Type guards - используйте для runtime проверок типов когда TypeScript не может статически определить тип.</p>
+<p>Рекомендации для собеседования</p>
+<p>На Senior-уровне ожидается глубокое понимание системы типов TypeScript, опыт с conditional и mapped types, знание utility types и умение создавать свои, понимание брендированных типов и их применения, опыт с type-safe архитектурными паттернами.</p>
+<p>Частые вопросы на собеседованиях:
+Разница между interface и type?
+Как работают conditional types?
+Что такое mapped types и когда их использовать?
+Как создать type-safe API?
+Как типизировать сложные JavaScript паттерны?</p>
+<p>Этот материал связан с темами типизации React контекста, типизации состояния и тестирования типизированного кода.</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../advanced-types_small/" class="btn btn-neutral float-left" title="Продвинутые типы TypeScript (small)"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../advanced-types_small/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+  </span>
+</div>
+    <script src="../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../..";</script>
+    <script src="../../../js/theme_extra.js"></script>
+    <script src="../../../js/theme.js"></script>
+      <script src="../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../../img/favicon.ico" />
+    <title>Стратегии тестирования frontend-приложений (TTS) - My Docs</title>
+    <link rel="stylesheet" href="../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "\u0421\u0442\u0440\u0430\u0442\u0435\u0433\u0438\u0438 \u0442\u0435\u0441\u0442\u0438\u0440\u043e\u0432\u0430\u043d\u0438\u044f frontend-\u043f\u0440\u0438\u043b\u043e\u0436\u0435\u043d\u0438\u0439 (TTS)";
+        var mkdocs_page_input_path = "questions/testing/strategies_tts.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../../.." class="icon icon-home"> My Docs
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../..">📚 Подготовка к собеседованию: JavaScript, React и архитектура</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Questions</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" >Architecture</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/ddd/">Domain-Driven Design (DDD) во Frontend</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/ddd_small/">Domain-Driven Design (DDD) во Frontend (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/ddd_tts/">Domain-Driven Design (DDD) во Frontend (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/microfrontends/">Микрофронтенды (Microfrontends)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/microfrontends_small/">Microfrontends - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/microfrontends_tts/">Микрофронтенды (Microfrontends) (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/offline-first/">Offline-first архитектура</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/offline-first_small/">Offline-First Архитектура (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/offline-first_tts/">Offline-first архитектура (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/resilient-frontend/">Устойчивая frontend архитектура</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/resilient-frontend_small/">Устойчивая Frontend Архитектура (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/resilient-frontend_tts/">Устойчивая frontend архитектура (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/state-management/">Архитектура управления состоянием</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/state-management_small/">State Management Architecture - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/state-management_tts/">Архитектура управления состоянием (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/websockets-realtime/">WebSockets и real-time коммуникация</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/websockets-realtime_small/">WebSockets и Real-time коммуникация (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/websockets-realtime_tts/">WebSockets и real-time коммуникация (TTS)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Javascript</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/async-programming/">Promises, Async/Await и Generators</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/async-programming_small/">Async Programming - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/async-programming_tts/">Promises, Async/Await и Generators (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/currying/">Currying в JavaScript</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/currying_small/">Currying - Шпаргалка (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/currying_tts/">Currying в JavaScript (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/event-loop/">Event Loop, Microtasks и Macrotasks</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/event-loop_small/">Event Loop - Шпаргалка (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/event-loop_tts/">Event Loop, Microtasks и Macrotasks (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/execution-model/">Модель выполнения JavaScript</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/execution-model_small/">JavaScript Execution Model - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/execution-model_tts/">Модель выполнения JavaScript (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/garbage-collection/">Garbage Collection и оптимизация памяти</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/garbage-collection_small/">Garbage Collection - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/garbage-collection_tts/">Garbage Collection и оптимизация памяти (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/scope-hoisting/">Let, Const, Var: Scope и Hoisting</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/scope-hoisting_small/">Let, Const, Var - Шпаргалка (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/scope-hoisting_tts/">Let, Const, Var: Scope и Hoisting (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/typing-comparison/">Сравнение типизации JS и Java</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/typing-comparison_small/">JS vs Java Typing + TypeScript - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/typing-comparison_tts/">Сравнение типизации JS и Java (TTS)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Performance</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../performance/optimization/">Оптимизация производительности frontend-приложений</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../performance/optimization_small/">Оптимизация производительности Frontend (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../performance/optimization_tts/">Оптимизация производительности frontend-приложений (TTS)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >React</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/concurrent-rendering/">Конкурентный рендеринг React 18</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/concurrent-rendering_small/">React 18 Concurrent Rendering - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/concurrent-rendering_tts/">Конкурентный рендеринг React 18 (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/context-api/">Context API vs Redux</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/context-api_small/">Context API vs Redux - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/context-api_tts/">Context API vs Redux (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/hoc/">Higher-Order Components (HOC)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/hoc_small/">Higher-Order Components - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/hoc_tts/">Higher-Order Components (HOC) (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/reconciliation/">Reconciliation и Virtual DOM</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/reconciliation_small/">Reconciliation &amp; Virtual DOM - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/reconciliation_tts/">Reconciliation и Virtual DOM (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/rerender-optimization/">Оптимизация ререндеров в React</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/rerender-optimization_small/">React Rerender Optimization - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/rerender-optimization_tts/">Оптимизация ререндеров в React (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/ssr-rsc/">SSR/SSG и React Server Components</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/ssr-rsc_small/">SSR/SSG &amp; React Server Components - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/ssr-rsc_tts/">SSR/SSG и React Server Components (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/use-effect/">useEffect и Side Effects</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/use-effect_small/">useEffect &amp; Side Effects - Senior Cheat Sheet</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/use-effect_tts/">useEffect и Side Effects (TTS)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Security</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../security/frontend-security/">Безопасность Frontend Приложений</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../security/frontend-security_small/">Frontend Security (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../security/frontend-security_tts/">Безопасность Frontend Приложений (TTS)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" >Testing</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../strategies/">Стратегии тестирования frontend-приложений</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../strategies_small/">Стратегии тестирования Frontend (small)</a>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" href="#">Стратегии тестирования frontend-приложений (TTS)</a>
+    <ul class="current">
+    </ul>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Typescript</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../typescript/advanced-types/">Продвинутые типы TypeScript</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../typescript/advanced-types_small/">Продвинутые типы TypeScript (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../typescript/advanced-types_tts/">Продвинутые типы TypeScript (TTS)</a>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../..">My Docs</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Questions</li>
+          <li class="breadcrumb-item">Testing</li>
+      <li class="breadcrumb-item active">Стратегии тестирования frontend-приложений (TTS)</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="frontend-tts">Стратегии тестирования frontend-приложений (TTS)</h1>
+<p>Этот вопрос касается различных подходов к тестированию фронтенд-приложений, включая unit, integration и e2e тестирование, а также современные инструменты и best practices для обеспечения качества кода.</p>
+<p>Пирамида тестирования</p>
+<p>Unit тестирование - основание пирамиды
+Unit тесты проверяют отдельные функции, компоненты или модули в изоляции. Они должны составлять около 70% всех тестов.</p>
+<p>Тестирование утилитных функций проверяет простые функции валидации, форматирования и вычислений. Например, функция validateEmail должна корректно определять валидные и невалидные email адреса, включая edge cases как null, undefined или числа.</p>
+<p>Функция formatCurrency должна правильно форматировать числа в валютном формате, поддерживать разные валюты и обрабатывать отрицательные значения и центы.</p>
+<p>Component тестирование для React
+Тестирование React компонентов проверяет рендеринг, взаимодействие с пользователем и различные состояния компонента.</p>
+<p>UserCard компонент должен корректно отображать информацию пользователя, показывать состояние загрузки, обрабатывать случай отсутствия данных и правильно вызывать callback функции при клике на кнопки.</p>
+<p>Тесты должны проверять все состояния компонента: загрузка, успешное отображение данных, ошибка, пустое состояние. Важно тестировать пользовательские взаимодействия через fireEvent или userEvent.</p>
+<p>Custom Hooks тестирование
+Кастомные хуки тестируются с помощью renderHook из React Testing Library. useCounter хук должен правильно инициализироваться, увеличивать и уменьшать значение, сбрасывать к начальному значению и устанавливать конкретное значение.</p>
+<p>Важно обернуть изменения состояния в act функцию для корректного обновления компонентов.</p>
+<p>Integration тестирование</p>
+<p>Тестирование взаимодействия компонентов
+Integration тесты проверяют как компоненты работают вместе. UserList компонент должен загружать пользователей через API, отображать их в виде карточек, обрабатывать редактирование и удаление.</p>
+<p>Такие тесты включают мокирование внешних зависимостей как API сервисы, проверку состояний загрузки и ошибок, взаимодействие между родительскими и дочерними компонентами.</p>
+<p>При тестировании удаления проверяется показ диалога подтверждения, вызов API при подтверждении и обновление списка после успешного удаления.</p>
+<p>Mock и stubbing</p>
+<p>Мокирование API вызовов
+Мокирование fetch функции позволяет тестировать сетевые запросы без реальных HTTP вызовов. userService должен корректно обрабатывать успешные ответы, HTTP ошибки и сетевые проблемы.</p>
+<p>Тесты проверяют правильность URL, HTTP методов, заголовков и тела запроса. Мокирование позволяет симулировать различные сценарии: успешные ответы, серверные ошибки, проблемы с сетью.</p>
+<p>Мокирование внешних зависимостей
+Внешние зависимости как analytics, localStorage или browser APIs мокируются для изоляции тестируемого кода. AnalyticsButton должен вызывать analytics.track с правильными параметрами при клике.</p>
+<p>Jest позволяет мокировать целые модули через jest.mock, что полезно для изоляции компонентов от внешних сервисов.</p>
+<p>E2E тестирование</p>
+<p>Playwright тесты
+End-to-end тесты проверяют полные пользовательские сценарии в реальном браузере. Тестируется создание нового пользователя: переход на форму, заполнение полей, отправка и проверка результата.</p>
+<p>Тесты должны проверять валидацию форм, обработку ошибок сети, responsive дизайн и keyboard navigation. Playwright позволяет тестировать в разных браузерах и на разных устройствах.</p>
+<p>Важно тестировать graceful degradation - как приложение ведет себя при отключении сети или недоступности API.</p>
+<p>Cypress тесты
+Cypress предоставляет интерактивную среду тестирования с возможностью мокирования сетевых запросов через cy.intercept. Тесты могут проверять полные пользовательские flow и responsive поведение.</p>
+<p>Cypress имеет удобный API для взаимодействия с элементами и ожидания изменений состояния.</p>
+<p>Visual Regression тестирование</p>
+<p>Chromatic со Storybook
+Visual regression тесты проверяют что внешний вид компонентов не изменился неожиданно. Storybook stories служат базой для визуального тестирования всех состояний компонентов.</p>
+<p>Chromatic автоматически создает скриншоты stories и сравнивает их с предыдущими версиями, выявляя визуальные изменения.</p>
+<p>Percy Visual Testing
+Percy интегрируется с e2e тестами для создания скриншотов полных страниц. Тестируется дизайн на разных разрешениях экрана и в разных темах оформления.</p>
+<p>Visual regression тестирование особенно важно для дизайн-систем и компонентных библиотек.</p>
+<p>Accessibility тестирование</p>
+<p>Jest с jest-axe
+Accessibility тесты проверяют что интерфейс доступен для пользователей с ограниченными возможностями. jest-axe автоматически находит нарушения WCAG guidelines.</p>
+<p>Тесты проверяют наличие proper labels для форм, корректные ARIA attributes для error messages и keyboard navigation.</p>
+<p>Playwright с axe-playwright
+E2E accessibility тесты проверяют доступность на уровне всей страницы. Тестируется keyboard navigation, screen reader compatibility и соответствие WCAG стандартам.</p>
+<p>Performance тестирование</p>
+<p>Lighthouse CI
+Lighthouse CI автоматически проверяет метрики производительности, accessibility, best practices и SEO. Можно установить минимальные пороги для Core Web Vitals.</p>
+<p>Bundle Size тестирование
+Тесты размера бандла предотвращают неконтролируемый рост размера приложения. Устанавливаются лимиты для main и vendor bundles.</p>
+<p>Test Utils и Helpers</p>
+<p>Custom Render для React
+Кастомная render функция оборачивает компоненты в необходимые providers: Router, Theme, QueryClient. Это упрощает настройку тестовой среды и обеспечивает консистентность.</p>
+<p>Mock Factories
+Фабрики для создания тестовых данных используют faker для генерации реалистичных моковых объектов. createMockUser создает пользователя с случайными, но валидными данными.</p>
+<p>Test Configuration</p>
+<p>Jest Configuration
+Настройка Jest включает testEnvironment для DOM тестирования, setupFiles для глобальной настройки, moduleNameMapping для алиасов путей и collectCoverageFrom для метрик покрытия кода.</p>
+<p>Устанавливаются пороги покрытия кода: минимум 80% для branches, functions, lines и statements.</p>
+<p>Best Practices</p>
+<p>Пирамида тестирования рекомендует 70% unit тестов, 20% integration и 10% e2e тестов. Это обеспечивает быстрое выполнение тестов и раннее обнаружение проблем.</p>
+<p>Test-first approach означает написание тестов до или вместе с кодом, что улучшает дизайн и покрытие.</p>
+<p>Один assert на тест фокусирует внимание на одном аспекте функциональности.</p>
+<p>Дескриптивные названия делают тесты читаемыми как спецификация требований.</p>
+<p>Изоляция тестов обеспечивает независимость и предотвращает влияние тестов друг на друга.</p>
+<p>Тестируйте поведение, не реализацию - фокусируйтесь на пользовательском опыте, а не на внутренних деталях.</p>
+<p>Используйте data-testid для стабильных селекторов, которые не зависят от CSS классов или структуры DOM.</p>
+<p>Мокайте внешние зависимости: API, localStorage, timers для изоляции и контроля тестовой среды.</p>
+<p>CI/CD Integration</p>
+<p>Continuous Integration автоматически запускает тесты при каждом commit и pull request. Pipeline включает unit тесты, integration тесты, сборку приложения и e2e тесты.</p>
+<p>Результаты покрытия кода загружаются в сервисы как Codecov для отслеживания метрик качества.</p>
+<p>Рекомендации для собеседования</p>
+<p>На Senior-уровне ожидается глубокое понимание стратегий тестирования, опыт с различными инструментами как Jest, React Testing Library, Playwright, Cypress, знание best practices и anti-patterns, понимание TDD/BDD подходов, опыт с визуальным и accessibility тестированием.</p>
+<p>Частые вопросы на собеседованиях:
+Разница между unit, integration и e2e тестами?
+Как тестировать асинхронный код и хуки?
+Что такое test doubles - mock, stub, spy?
+Как организовать тесты в большом проекте?
+Как тестировать пользовательские взаимодействия?</p>
+<p>Этот материал связан с темами тестирования производительности, типизации тестов и тестирования состояния.</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../strategies_small/" class="btn btn-neutral float-left" title="Стратегии тестирования Frontend (small)"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../../typescript/advanced-types/" class="btn btn-neutral float-right" title="Продвинутые типы TypeScript">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../strategies_small/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../../typescript/advanced-types/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../..";</script>
+    <script src="../../../js/theme_extra.js"></script>
+    <script src="../../../js/theme.js"></script>
+      <script src="../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../../img/favicon.ico" />
+    <title>Модель выполнения JavaScript (TTS) - My Docs</title>
+    <link rel="stylesheet" href="../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "\u041c\u043e\u0434\u0435\u043b\u044c \u0432\u044b\u043f\u043e\u043b\u043d\u0435\u043d\u0438\u044f JavaScript (TTS)";
+        var mkdocs_page_input_path = "questions/javascript/execution-model_tts.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../../.." class="icon icon-home"> My Docs
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../..">📚 Подготовка к собеседованию: JavaScript, React и архитектура</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Questions</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" >Architecture</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/ddd/">Domain-Driven Design (DDD) во Frontend</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/ddd_small/">Domain-Driven Design (DDD) во Frontend (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/ddd_tts/">Domain-Driven Design (DDD) во Frontend (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/microfrontends/">Микрофронтенды (Microfrontends)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/microfrontends_small/">Microfrontends - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/microfrontends_tts/">Микрофронтенды (Microfrontends) (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/offline-first/">Offline-first архитектура</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/offline-first_small/">Offline-First Архитектура (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/offline-first_tts/">Offline-first архитектура (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/resilient-frontend/">Устойчивая frontend архитектура</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/resilient-frontend_small/">Устойчивая Frontend Архитектура (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/resilient-frontend_tts/">Устойчивая frontend архитектура (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/state-management/">Архитектура управления состоянием</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/state-management_small/">State Management Architecture - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/state-management_tts/">Архитектура управления состоянием (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/websockets-realtime/">WebSockets и real-time коммуникация</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/websockets-realtime_small/">WebSockets и Real-time коммуникация (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/websockets-realtime_tts/">WebSockets и real-time коммуникация (TTS)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" >Javascript</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../async-programming/">Promises, Async/Await и Generators</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../async-programming_small/">Async Programming - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../async-programming_tts/">Promises, Async/Await и Generators (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../currying/">Currying в JavaScript</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../currying_small/">Currying - Шпаргалка (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../currying_tts/">Currying в JavaScript (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../event-loop/">Event Loop, Microtasks и Macrotasks</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../event-loop_small/">Event Loop - Шпаргалка (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../event-loop_tts/">Event Loop, Microtasks и Macrotasks (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../execution-model/">Модель выполнения JavaScript</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../execution-model_small/">JavaScript Execution Model - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" href="#">Модель выполнения JavaScript (TTS)</a>
+    <ul class="current">
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../garbage-collection/">Garbage Collection и оптимизация памяти</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../garbage-collection_small/">Garbage Collection - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../garbage-collection_tts/">Garbage Collection и оптимизация памяти (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../scope-hoisting/">Let, Const, Var: Scope и Hoisting</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../scope-hoisting_small/">Let, Const, Var - Шпаргалка (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../scope-hoisting_tts/">Let, Const, Var: Scope и Hoisting (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../typing-comparison/">Сравнение типизации JS и Java</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../typing-comparison_small/">JS vs Java Typing + TypeScript - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../typing-comparison_tts/">Сравнение типизации JS и Java (TTS)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Performance</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../performance/optimization/">Оптимизация производительности frontend-приложений</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../performance/optimization_small/">Оптимизация производительности Frontend (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../performance/optimization_tts/">Оптимизация производительности frontend-приложений (TTS)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >React</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/concurrent-rendering/">Конкурентный рендеринг React 18</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/concurrent-rendering_small/">React 18 Concurrent Rendering - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/concurrent-rendering_tts/">Конкурентный рендеринг React 18 (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/context-api/">Context API vs Redux</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/context-api_small/">Context API vs Redux - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/context-api_tts/">Context API vs Redux (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/hoc/">Higher-Order Components (HOC)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/hoc_small/">Higher-Order Components - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/hoc_tts/">Higher-Order Components (HOC) (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/reconciliation/">Reconciliation и Virtual DOM</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/reconciliation_small/">Reconciliation &amp; Virtual DOM - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/reconciliation_tts/">Reconciliation и Virtual DOM (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/rerender-optimization/">Оптимизация ререндеров в React</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/rerender-optimization_small/">React Rerender Optimization - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/rerender-optimization_tts/">Оптимизация ререндеров в React (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/ssr-rsc/">SSR/SSG и React Server Components</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/ssr-rsc_small/">SSR/SSG &amp; React Server Components - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/ssr-rsc_tts/">SSR/SSG и React Server Components (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/use-effect/">useEffect и Side Effects</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/use-effect_small/">useEffect &amp; Side Effects - Senior Cheat Sheet</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../react/use-effect_tts/">useEffect и Side Effects (TTS)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Security</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../security/frontend-security/">Безопасность Frontend Приложений</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../security/frontend-security_small/">Frontend Security (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../security/frontend-security_tts/">Безопасность Frontend Приложений (TTS)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Testing</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../testing/strategies/">Стратегии тестирования frontend-приложений</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../testing/strategies_small/">Стратегии тестирования Frontend (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../testing/strategies_tts/">Стратегии тестирования frontend-приложений (TTS)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Typescript</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../typescript/advanced-types/">Продвинутые типы TypeScript</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../typescript/advanced-types_small/">Продвинутые типы TypeScript (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../typescript/advanced-types_tts/">Продвинутые типы TypeScript (TTS)</a>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../..">My Docs</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Questions</li>
+          <li class="breadcrumb-item">Javascript</li>
+      <li class="breadcrumb-item active">Модель выполнения JavaScript (TTS)</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="javascript-tts">Модель выполнения JavaScript (TTS)</h1>
+<p>Вопрос: Объясните модель выполнения JavaScript: стек вызовов, очередь макро- и микрозадач, промисы и async/await. Как распределяются setTimeout(0), queueMicrotask, Promise.then, requestAnimationFrame? Какие есть типичные ловушки порядка вывода?</p>
+<p>Модель выполнения JavaScript — это сложная система, включающая стек вызовов, event loop, и различные очереди задач. Понимание этой модели критично для написания предсказуемого асинхронного кода.</p>
+<p>Архитектура выполнения включает основные компоненты:</p>
+<p>Call Stack или стек вызовов - это место где выполняется синхронный код. Функции добавляются в стек при вызове и удаляются после завершения.</p>
+<p>Web APIs - это асинхронные операции, такие как setTimeout, fetch, DOM события, которые выполняются в фоне браузера.</p>
+<p>Task Queues или очереди задач включают Macrotasks, Microtasks и Animation frames.</p>
+<p>Event Loop координирует выполнение между стеком и очередями.</p>
+<p>Очереди задач:</p>
+<p>Macrotasks или Task Queue включают setTimeout, setInterval, setImmediate в Node.js, операции ввода-вывода, рендеринг UI, и DOM события.</p>
+<p>Microtasks или Job Queue включают Promise.then, catch и finally, queueMicrotask, MutationObserver, и process.nextTick в Node.js.</p>
+<p>Важно понимать, что все Microtasks выполняются перед любой Macrotask.</p>
+<p>Детальное распределение задач:</p>
+<p>setTimeout с нулевой задержкой добавляется в Macrotask queue.</p>
+<p>queueMicrotask добавляется напрямую в Microtask queue.</p>
+<p>Promise.then также добавляется в Microtask queue.</p>
+<p>process.nextTick в Node.js имеет более высокий приоритет чем другие microtasks.</p>
+<p>requestAnimationFrame выполняется перед рендером, но после microtasks.</p>
+<p>Event Loop алгоритм работает следующим образом:</p>
+<p>Сначала выполняется одна задача из macrotask queue. Затем выполняются ВСЕ microtasks из microtask queue. После этого может происходить рендеринг, включая animation callbacks. Затем цикл повторяется.</p>
+<p>Сложные сценарии:</p>
+<p>Рекурсивные microtasks могут заблокировать event loop, так как они будут выполняться бесконечно, не давая возможности выполниться macrotasks.</p>
+<p>Смешанные async/await и промисы требуют понимания того, что каждый await создает новый microtask.</p>
+<p>Типичные ловушки:</p>
+<p>В циклах все промисы выполняются перед любым setTimeout, независимо от порядка их создания.</p>
+<p>Async функции в циклах могут вести себя неожиданно. forEach с async функциями не ждет выполнения каждой итерации.</p>
+<p>Promise constructors ведут себя по-разному при обработке ошибок по сравнению со static методами.</p>
+<p>Применение в React:</p>
+<p>Race conditions в useEffect могут возникать при быстром изменении зависимостей. Решение - использование флага отмены.</p>
+<p>Timing в React updates важно понимать для предсказуемого поведения компонентов.</p>
+<p>Инструменты для отладки:</p>
+<p>Performance API позволяет измерять время выполнения различных операций.</p>
+<p>Chrome DevTools предоставляет инструменты для анализа производительности и порядка выполнения.</p>
+<p>Практические рекомендации:</p>
+<p>Для предотвращения блокировки UI разбивайте тяжелые операции на части с использованием setTimeout или других асинхронных методов.</p>
+<p>Оптимизируйте порядок операций: сначала немедленный UI feedback синхронно, затем критические microtasks, затем некритические операции в macrotasks.</p>
+<p>Советы для senior разработчиков:</p>
+<p>Понимайте приоритеты: Microtasks имеют приоритет выше Animation frames, которые имеют приоритет выше Macrotasks.</p>
+<p>Избегайте бесконечных microtasks, так как они блокируют рендеринг.</p>
+<p>Используйте AbortController для отмены запросов.</p>
+<p>Профилируйте асинхронный код с Performance API.</p>
+<p>В React следите за race conditions в useEffect.</p>
+<p>Разбивайте тяжелые операции на асинхронные части.</p>
+<p>Тестируйте timing-зависимый код с mock timers.</p>
+<p>Debugging техники включают создание wrapper функций для отслеживания порядка выполнения операций.</p>
+<p>Связанные темы: Event Loop, Microtasks и Macrotasks, Promises, Async/Await и Generators, Конкурентный рендеринг React 18, useEffect и Side Effects.</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../execution-model_small/" class="btn btn-neutral float-left" title="JavaScript Execution Model - Senior Cheat Sheet (small)"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../garbage-collection/" class="btn btn-neutral float-right" title="Garbage Collection и оптимизация памяти">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../execution-model_small/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../garbage-collection/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../..";</script>
+    <script src="../../../js/theme_extra.js"></script>
+    <script src="../../../js/theme.js"></script>
+      <script src="../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

@@ -14,7 +14,7 @@
 
 1. **📖 Полная версия (.md)** - Детальные ответы с примерами кода, объяснениями и best practices
 2. **🎯 Компактная версия (_small.md)** - Сжатые ответы для Senior-уровня, исключающие банальности
-3. **🎧 TTS версия (.txt)** - Адаптированные для озвучивания версии без markdown-разметки
+3. **🎧 TTS версия (_tts.md)** - Адаптированные для озвучивания версии без markdown-разметки
 
 ## 🎯 Структура
 
@@ -23,86 +23,86 @@
 ### 🟨 JavaScript (7 вопросов)
 
 1. **Event Loop, Microtasks и Macrotasks**  
-   📖 [Полная версия](questions/javascript/event-loop.md) | 🎯 [Компактная](questions/javascript/event-loop_small.md) | 🎧 [TTS](questions/javascript/event-loop.txt)
+   📖 [Полная версия](questions/javascript/event-loop.md) | 🎯 [Компактная](questions/javascript/event-loop_small.md) | 🎧 [TTS](questions/javascript/event-loop_tts.md)
 
 2. **Currying в JavaScript**  
-   📖 [Полная версия](questions/javascript/currying.md) | 🎯 [Компактная](questions/javascript/currying_small.md) | 🎧 [TTS](questions/javascript/currying.txt)
+   📖 [Полная версия](questions/javascript/currying.md) | 🎯 [Компактная](questions/javascript/currying_small.md) | 🎧 [TTS](questions/javascript/currying_tts.md)
 
 3. **Let, Const, Var: Scope и Hoisting**  
-   📖 [Полная версия](questions/javascript/scope-hoisting.md) | 🎯 [Компактная](questions/javascript/scope-hoisting_small.md) | 🎧 [TTS](questions/javascript/scope-hoisting.txt)
+   📖 [Полная версия](questions/javascript/scope-hoisting.md) | 🎯 [Компактная](questions/javascript/scope-hoisting_small.md) | 🎧 [TTS](questions/javascript/scope-hoisting_tts.md)
 
 4. **Garbage Collection и оптимизация памяти**  
-   📖 [Полная версия](questions/javascript/garbage-collection.md) | 🎯 [Компактная](questions/javascript/garbage-collection_small.md) | 🎧 [TTS](questions/javascript/garbage-collection.txt)
+   📖 [Полная версия](questions/javascript/garbage-collection.md) | 🎯 [Компактная](questions/javascript/garbage-collection_small.md) | 🎧 [TTS](questions/javascript/garbage-collection_tts.md)
 
 5. **Promises, Async/Await и Generators**  
-   📖 [Полная версия](questions/javascript/async-programming.md) | 🎯 [Компактная](questions/javascript/async-programming_small.md) | 🎧 [TTS](questions/javascript/async-programming.txt)
+   📖 [Полная версия](questions/javascript/async-programming.md) | 🎯 [Компактная](questions/javascript/async-programming_small.md) | 🎧 [TTS](questions/javascript/async-programming_tts.md)
 
 6. **Модель выполнения JavaScript**  
-   📖 [Полная версия](questions/javascript/execution-model.md) | 🎯 [Компактная](questions/javascript/execution-model_small.md) | 🎧 [TTS](questions/javascript/execution-model.txt)
+   📖 [Полная версия](questions/javascript/execution-model.md) | 🎯 [Компактная](questions/javascript/execution-model_small.md) | 🎧 [TTS](questions/javascript/execution-model_tts.md)
 
 7. **Сравнение типизации JS и Java**  
-   📖 [Полная версия](questions/javascript/typing-comparison.md) | 🎯 [Компактная](questions/javascript/typing-comparison_small.md) | 🎧 [TTS](questions/javascript/typing-comparison.txt)
+   📖 [Полная версия](questions/javascript/typing-comparison.md) | 🎯 [Компактная](questions/javascript/typing-comparison_small.md) | 🎧 [TTS](questions/javascript/typing-comparison_tts.md)
 
 ### ⚛️ React (7 вопросов)
 
 1. **Reconciliation и Virtual DOM**  
-   📖 [Полная версия](questions/react/reconciliation.md) | 🎯 [Компактная](questions/react/reconciliation_small.md) | 🎧 [TTS](questions/react/reconciliation.txt)
+   📖 [Полная версия](questions/react/reconciliation.md) | 🎯 [Компактная](questions/react/reconciliation_small.md) | 🎧 [TTS](questions/react/reconciliation_tts.md)
 
 2. **Context API vs Redux**  
-   📖 [Полная версия](questions/react/context-api.md) | 🎯 [Компактная](questions/react/context-api_small.md) | 🎧 [TTS](questions/react/context-api.txt)
+   📖 [Полная версия](questions/react/context-api.md) | 🎯 [Компактная](questions/react/context-api_small.md) | 🎧 [TTS](questions/react/context-api_tts.md)
 
 3. **Higher-Order Components (HOC)**  
-   📖 [Полная версия](questions/react/hoc.md) | 🎯 [Компактная](questions/react/hoc_small.md) | 🎧 [TTS](questions/react/hoc.txt)
+   📖 [Полная версия](questions/react/hoc.md) | 🎯 [Компактная](questions/react/hoc_small.md) | 🎧 [TTS](questions/react/hoc_tts.md)
 
 4. **useEffect и Side Effects**  
-   📖 [Полная версия](questions/react/use-effect.md) | 🎯 [Компактная](questions/react/use-effect_small.md) | 🎧 [TTS](questions/react/use-effect.txt)
+   📖 [Полная версия](questions/react/use-effect.md) | 🎯 [Компактная](questions/react/use-effect_small.md) | 🎧 [TTS](questions/react/use-effect_tts.md)
 
 5. **Конкурентный рендеринг React 18**  
-   📖 [Полная версия](questions/react/concurrent-rendering.md) | 🎯 [Компактная](questions/react/concurrent-rendering_small.md) | 🎧 [TTS](questions/react/concurrent-rendering.txt)
+   📖 [Полная версия](questions/react/concurrent-rendering.md) | 🎯 [Компактная](questions/react/concurrent-rendering_small.md) | 🎧 [TTS](questions/react/concurrent-rendering_tts.md)
 
 6. **Оптимизация ререндеров**  
-   📖 [Полная версия](questions/react/rerender-optimization.md) | 🎯 [Компактная](questions/react/rerender-optimization_small.md) | 🎧 [TTS](questions/react/rerender-optimization.txt)
+   📖 [Полная версия](questions/react/rerender-optimization.md) | 🎯 [Компактная](questions/react/rerender-optimization_small.md) | 🎧 [TTS](questions/react/rerender-optimization_tts.md)
 
 7. **SSR/SSG и React Server Components**  
-   📖 [Полная версия](questions/react/ssr-rsc.md) | 🎯 [Компактная](questions/react/ssr-rsc_small.md) | 🎧 [TTS](questions/react/ssr-rsc.txt)
+   📖 [Полная версия](questions/react/ssr-rsc.md) | 🎯 [Компактная](questions/react/ssr-rsc_small.md) | 🎧 [TTS](questions/react/ssr-rsc_tts.md)
 
 ### 🏗️ Архитектура (6 вопросов)
 
 1. **Архитектура состояния приложения**  
-   📖 [Полная версия](questions/architecture/state-management.md) | 🎯 [Компактная](questions/architecture/state-management_small.md) | 🎧 [TTS](questions/architecture/state-management.txt)
+   📖 [Полная версия](questions/architecture/state-management.md) | 🎯 [Компактная](questions/architecture/state-management_small.md) | 🎧 [TTS](questions/architecture/state-management_tts.md)
 
 2. **Микрофронтенд архитектура**  
-   📖 [Полная версия](questions/architecture/microfrontends.md) | 🎯 [Компактная](questions/architecture/microfrontends_small.md) | 🎧 [TTS](questions/architecture/microfrontends.txt)
+   📖 [Полная версия](questions/architecture/microfrontends.md) | 🎯 [Компактная](questions/architecture/microfrontends_small.md) | 🎧 [TTS](questions/architecture/microfrontends_tts.md)
 
 3. **WebSockets и Real-time коммуникации**  
-   📖 [Полная версия](questions/architecture/websockets-realtime.md) | 🎯 [Компактная](questions/architecture/websockets-realtime_small.md) | 🎧 [TTS](questions/architecture/websockets-realtime.txt)
+   📖 [Полная версия](questions/architecture/websockets-realtime.md) | 🎯 [Компактная](questions/architecture/websockets-realtime_small.md) | 🎧 [TTS](questions/architecture/websockets-realtime_tts.md)
 
 4. **Domain-Driven Design в Frontend**  
-   📖 [Полная версия](questions/architecture/ddd.md) | 🎯 [Компактная](questions/architecture/ddd_small.md) | 🎧 [TTS](questions/architecture/ddd.txt)
+   📖 [Полная версия](questions/architecture/ddd.md) | 🎯 [Компактная](questions/architecture/ddd_small.md) | 🎧 [TTS](questions/architecture/ddd_tts.md)
 
 5. **Resilient Frontend паттерны**  
-   📖 [Полная версия](questions/architecture/resilient-frontend.md) | 🎯 [Компактная](questions/architecture/resilient-frontend_small.md) | 🎧 [TTS](questions/architecture/resilient-frontend.txt)
+   📖 [Полная версия](questions/architecture/resilient-frontend.md) | 🎯 [Компактная](questions/architecture/resilient-frontend_small.md) | 🎧 [TTS](questions/architecture/resilient-frontend_tts.md)
 
 6. **Offline-first архитектура**  
-   📖 [Полная версия](questions/architecture/offline-first.md) | 🎯 [Компактная](questions/architecture/offline-first_small.md) | 🎧 [TTS](questions/architecture/offline-first.txt)
+   📖 [Полная версия](questions/architecture/offline-first.md) | 🎯 [Компактная](questions/architecture/offline-first_small.md) | 🎧 [TTS](questions/architecture/offline-first_tts.md)
 
 ### 📘 Дополнительные темы (5 вопросов)
 
 #### TypeScript
 1. **Advanced TypeScript Types**  
-   📖 [Полная версия](questions/typescript/advanced-types.md) | 🎯 [Компактная](questions/typescript/advanced-types_small.md) | 🎧 [TTS](questions/typescript/advanced-types.txt)
+   📖 [Полная версия](questions/typescript/advanced-types.md) | 🎯 [Компактная](questions/typescript/advanced-types_small.md) | 🎧 [TTS](questions/typescript/advanced-types_tts.md)
 
 #### Тестирование
 2. **Стратегии тестирования**  
-   📖 [Полная версия](questions/testing/strategies.md) | 🎯 [Компактная](questions/testing/strategies_small.md) | 🎧 [TTS](questions/testing/strategies.txt)
+   📖 [Полная версия](questions/testing/strategies.md) | 🎯 [Компактная](questions/testing/strategies_small.md) | 🎧 [TTS](questions/testing/strategies_tts.md)
 
 #### Производительность
 3. **Оптимизация производительности**  
-   📖 [Полная версия](questions/performance/optimization.md) | 🎯 [Компактная](questions/performance/optimization_small.md) | 🎧 [TTS](questions/performance/optimization.txt)
+   📖 [Полная версия](questions/performance/optimization.md) | 🎯 [Компактная](questions/performance/optimization_small.md) | 🎧 [TTS](questions/performance/optimization_tts.md)
 
 #### Безопасность
 4. **Безопасность Frontend приложений**  
-   📖 [Полная версия](questions/security/frontend-security.md) | 🎯 [Компактная](questions/security/frontend-security_small.md) | 🎧 [TTS](questions/security/frontend-security.txt)
+   📖 [Полная версия](questions/security/frontend-security.md) | 🎯 [Компактная](questions/security/frontend-security_small.md) | 🎧 [TTS](questions/security/frontend-security_tts.md)
 
 ## 🚀 Как использовать
 
