@@ -392,258 +392,285 @@
    ========================================= */
 
 const storyData = {
-    meta: { 
-        title: "Полночь в Мартинезе: Эхо Дождя",
-        author: "Revachol Citizen" 
+    "meta": {
+        "title": "Реквием по потерянному носку",
+        "author": "Detective Costeau"
     },
-    nodes: {
+    "nodes": {
         "start": {
             "id": "start",
             "speaker": "NARRATOR",
-            "text": "Дождь в Ревашоле не просто идет — он карает. Ледяные иглы прошивают твое дешевое пальто, смешиваясь с грязью и машинным маслом на асфальте. Ты стоишь перед входом в затопленный подземный переход. Неоновая вывеска «FRITTTE» мигает, издавая звук умирающего сверчка.",
+            "text": "Ночь. Дождь барабанит по крыше прачечной «Последний Шанс», как пальцы нервного джазового пианиста. Внутри пахнет хлоркой, дешевым лимонным ароматизатором и чьим-то одиночеством.\n\nТы стоишь перед Стиральной Машиной №4. В ее мутном стеклянном глазу, в пене и кипятке, вращается ОНА. Твоя Счастливая Рубашка. Та самая, с психоделическими огурцами.",
             "options": [
-                { "text": "Поёжиться и поднять воротник.", "next": "cold_shiver" },
-                { 
-                    "text": "[SHIVERS] Прислушаться к городу.", 
-                    "condition": { "type": "stat", "key": "inland_empire", "val": 2, "op": ">=" }, 
-                    "next": "shivers_intro" 
-                },
-                { "text": "Спуститься в переход.", "next": "hub_underpass" }
+                { "text": "Тяжело вздохнуть и оценить ситуацию.", "next": "assess_situation" },
+                { "text": "[INLAND EMPIRE] Прижаться лбом к стеклу. Почувствовать её боль.", "next": "commune_start" }
             ]
         },
-        "cold_shiver": {
-            "id": "cold_shiver",
-            "speaker": "ENDURANCE",
-            "text": "Бесполезно. Твой метаболизм замедлен алкоголем и депрессией. Холод уже внутри. Он в твоих костях, Гарри. Тебе нужно топливо.",
+        "assess_situation": {
+            "id": "assess_situation",
+            "speaker": "LOGIC",
+            "text": "Цикл стирки закончился 40 минут назад. Индикатор «Door Lock» горит зловещим красным светом. Барабан неподвижен. Твоя рубашка находится в заложниках у механизма, произведенного несуществующей больше страной.",
             "options": [
-                { "text": "Игнорировать холод. Идем вниз.", "next": "hub_underpass" }
+                { "text": "Подергать ручку.", "next": "pull_handle" },
+                { "text": "Осмотреться вокруг в поисках помощи.", "next": "room_hub" }
             ]
         },
-        "shivers_intro": {
-            "id": "shivers_intro",
-            "speaker": "SHIVERS",
-            "text": "Ветер воет в дымоходах Джемрока. Где-то на западе, в порту, крановщик роняет контейнер с керамикой. Звук разбивающихся надежд. А здесь, под твоими ногами, крысы танцуют вальс в сточных водах.",
-            "effects": [{ "key": "morale", "val": 1, "op": "add" }],
+        "pull_handle": {
+            "id": "pull_handle",
+            "speaker": "PHYSICAL INSTRUMENT",
+            "text": "Заперто намертво. Эта ручка из дешевого пластика смеется над твоей мускулатурой. Если дернешь сильнее без подготовки — просто оторвешь её к чертям, и рубашка останется там до скончания веков.",
             "options": [
-                { "text": "Красиво. А теперь в укрытие.", "next": "hub_underpass" }
+                { "text": "Нужно найти другой способ.", "next": "room_hub" }
             ]
         },
-        "hub_underpass": {
-            "id": "hub_underpass",
-            "speaker": "SCENE",
-            "text": "Подземный переход пахнет мочой и хлоркой. Стены покрыты слоями граффити. Справа стоит торговый автомат, гудящий как трансформаторная будка. Слева — куча мокрого тряпья, которая может быть человеком.",
+        "commune_start": {
+            "id": "commune_start",
+            "speaker": "INLAND EMPIRE",
+            "text": "Стекло теплое и вибрирует. Ты слышишь гул. Это не просто мотор. Это утроба зверя. Машина №4 видела грязное белье этого города. Она знает секреты пятен крови, дешевого вина и предательства. Она не хочет отдавать рубашку. Рубашка слишком яркая для этого серого мира.",
             "options": [
-                { "text": "Подойти к торговому автомату.", "next": "vending_machine" },
-                { "text": "Изучить граффити на стене.", "next": "wall_graffiti" },
-                { "text": "Ткнуть палкой в кучу тряпья.", "next": "rag_pile" },
-                { "text": "[INLAND EMPIRE] Посмотреть в лужу мазута на полу (Сложн: 10).", "type": "check", "check": { "skill": "inland_empire", "difficulty": 10, "success": "puddle_vision", "failure": "puddle_fail" } },
-                { "text": "Сесть на ступеньки и сдаться.", "next": "game_over_giveup" }
+                { "text": "«Отдай её. Она мне нужна».", "next": "machine_refusal" },
+                { "text": "Отстраниться. Это становится слишком странным.", "next": "assess_situation" }
+            ]
+        },
+        "machine_refusal": {
+            "id": "machine_refusal",
+            "speaker": "THE MACHINE",
+            "text": "ГЛУХОЙ МЕТАЛЛИЧЕСКИЙ ЩЕЛЧОК. \n\nЗвучит как «НЕТ» на языке гидравлики.",
+            "options": [
+                { "text": "Ладно. Будем играть по-плохому.", "next": "room_hub" }
             ]
         },
         
-        // --- ЛИНИЯ С ТОРГОВЫМ АВТОМАТОМ ---
+        /* --- HUB ROOM --- */
+        "room_hub": {
+            "id": "room_hub",
+            "speaker": "SCENE",
+            "text": "Прачечная пуста. Только гул трансформатора и мигающая лампа дневного света. \n\nСлева стоит торговый автомат с едой. \nВ углу на стопке старых газет сидит невероятно толстый Кот. \nПрямо перед тобой — Машина №4.",
+            "options": [
+                { "text": "Подойти к Коту.", "next": "cat_approach" },
+                { "text": "Изучить торговый автомат.", "next": "vending_machine" },
+                { "text": "Вернуться к Машине №4 (Попробовать открыть).", "next": "machine_interaction" },
+                { "text": "[LOGIC] Порыться в карманах. Может, там есть инструкция?", "next": "pockets_search", "condition": { "type": "stat", "key": "logic", "val": 3, "op": ">=" } }
+            ]
+        },
+
+        /* --- CAT BRANCH --- */
+        "cat_approach": {
+            "id": "cat_approach",
+            "speaker": "EMPATHY",
+            "text": "Кот смотрит на тебя с презрением, доступным только существам, которые спят по 18 часов в сутки. У него нет одного уха, а на ошейнике написано «Комиссар».",
+            "options": [
+                { 
+                    "text": "[EMPATHY] Попробовать наладить дипломатический контакт (Погладить).", 
+                    "type": "check",
+                    "check": { "skill": "empathy", "difficulty": 10, "success": "cat_success", "failure": "cat_fail" }
+                },
+                { "text": "[PHYSICAL INSTRUMENT] «Эй, животное, брысь!»", "next": "cat_aggro" },
+                { "text": "Оставить кота в покое.", "next": "room_hub" }
+            ]
+        },
+        "cat_success": {
+            "id": "cat_success",
+            "speaker": "COMMISSAR THE CAT",
+            "text": "Кот издает звук, похожий на работающий дизельный двигатель. Он бодает твою руку головой. Из-под его лапы выкатывается блестящий предмет. Это шпилька для волос. Гнутая, но прочная.",
+            "effects": [
+                { "key": "morale", "val": 1 },
+                { "key": "has_pin", "val": true }
+            ],
+            "options": [
+                { "text": "«Спасибо, Комиссар». Взять шпильку.", "next": "room_hub" }
+            ]
+        },
+        "cat_fail": {
+            "id": "cat_fail",
+            "speaker": "PAIN THRESHOLD",
+            "text": "Молниеносный удар когтями! Твоя рука покрывается красными полосами. Кот шипит, как пробитый паровой котел.",
+            "effects": [{ "key": "health", "val": -1 }],
+            "options": [
+                { "text": "Ай! Отступить!", "next": "room_hub" }
+            ]
+        },
+        "cat_aggro": {
+            "id": "cat_aggro",
+            "speaker": "DRAMA",
+            "text": "Кот медленно моргает. Ты чувствуешь себя идиотом, кричащим на кота в пустой прачечной в 3 часа ночи.",
+            "effects": [{ "key": "morale", "val": -1 }],
+            "options": [{ "text": "Уйти.", "next": "room_hub" }]
+        },
+
+        /* --- VENDING MACHINE BRANCH --- */
         "vending_machine": {
             "id": "vending_machine",
-            "speaker": "NARRATOR",
-            "text": "Автомат 'FRITTTE-O-MAT' смотрит на тебя своим стеклянным глазом. Внутри, за спиралью, застряла пачка сигарет «Astra». Она висит на самом краю.",
-            "options": [
-                { "text": "[ELECTROCHEMISTRY] Она нам нужна. СЕЙЧАС.", "next": "craving_cigs" },
-                { "text": "Осмотреть монетоприемник.", "next": "coin_slot" },
-                { "text": "Вернуться в центр перехода.", "next": "hub_underpass" }
-            ]
-        },
-        "craving_cigs": {
-            "id": "craving_cigs",
             "speaker": "ELECTROCHEMISTRY",
-            "text": "Представь этот дым в легких. Маленькая смерть, которая согревает. Она так близко. Просто ударь эту жестяную коробку!",
+            "text": "Автомат гудит. Внутри: чипсы со вкусом уксуса, шоколад «Sartre» (99% какао, 1% пустоты) и банка энергетика «Blue Medic». Тебе нужно это топливо.",
             "options": [
                 { 
-                    "text": "[PHYSICAL INSTRUMENT] Ударить автомат плечом (Сложн: 12).", 
-                    "type": "check", 
-                    "check": { "skill": "physical_instrument", "difficulty": 12, "success": "machine_smash_success", "failure": "machine_smash_fail" }
+                    "text": "Купить «Blue Medic» (Восстановить здоровье).", 
+                    "condition": { "type": "stat", "key": "has_drink", "val": true, "op": "!=" }, /* Простая заглушка проверки флага, если бы движок поддерживал != */
+                    "next": "buy_drink"
                 },
-                { "text": "Нет, я не буду бить технику.", "next": "vending_machine" }
+                { 
+                    "text": "[PHYSICAL INSTRUMENT] Ударить автомат, чтобы выпала монетка.", 
+                    "type": "check",
+                    "check": { "skill": "physical_instrument", "difficulty": 11, "success": "vending_kick_win", "failure": "vending_kick_fail" }
+                },
+                { "text": "Назад.", "next": "room_hub" }
             ]
         },
-        "machine_smash_success": {
-            "id": "machine_smash_success",
-            "speaker": "NARRATOR",
-            "text": "БАМ! Ты врезаешься в автомат с грацией пьяного носорога. Стекло вибрирует. Спираль делает ленивый оборот. Пачка «Astra» падает в лоток.",
-            "effects": [{ "key": "morale", "val": 2, "op": "add" }],
+        "buy_drink": {
+            "id": "buy_drink",
+            "speaker": "ITEM OBTAINED",
+            "text": "Ты скармливаешь автомату мелочь. Банка падает с грохотом, будящим мертвых. Ты выпиваешь приторную синюю жижу. Сердце начинает биться в ритме техно.",
+            "effects": [
+                { "key": "health", "val": 2 },
+                { "key": "has_drink", "val": true } /* Флаг, что выпили */
+            ],
+            "options": [{ "text": "Я готов свернуть горы.", "next": "room_hub" }]
+        },
+        "vending_kick_win": {
+            "id": "vending_kick_win",
+            "speaker": "SAVOIR FAIRE",
+            "text": "Удар в нужную точку! Из лотка возврата монет выпадает тяжелая монета в 2 реала. Удача на твоей стороне.",
+            "effects": [{ "key": "morale", "val": 1 }, { "key": "has_coin", "val": true }],
+            "options": [{ "text": "Взять монету.", "next": "room_hub" }]
+        },
+        "vending_kick_fail": {
+            "id": "vending_kick_fail",
+            "speaker": "LIMBIC SYSTEM",
+            "text": "Ты бьешь автомат. Автомат стоит непоколебимо, как монумент капитализму. Твой палец опухает.",
+            "effects": [{ "key": "health", "val": -1 }],
+            "options": [{ "text": "Проклятье...", "next": "room_hub" }]
+        },
+
+        /* --- POCKETS SEARCH --- */
+        "pockets_search": {
+            "id": "pockets_search",
+            "speaker": "LOGIC",
+            "text": "В левом кармане — чек за виски. В правом — скомканная бумажка. Это чек из этой прачечной! На обороте кто-то (возможно, ты вчерашний) нацарапал код: «Удар, Удар, Пауза, Пинок».",
+            "effects": [{ "key": "know_code", "val": true }],
+            "options": [{ "text": "Запомнить это.", "next": "room_hub" }]
+        },
+
+        /* --- MAIN MACHINE INTERACTION --- */
+        "machine_interaction": {
+            "id": "machine_interaction",
+            "speaker": "THE MACHINE",
+            "text": "Ты снова перед врагом. №4 смотрит на тебя. Рубашка внутри кажется такой близкой, но такой далекой, как воспоминание о первой любви.",
             "options": [
-                { "text": "Взять добычу.", "next": "got_cigs" }
+                {
+                    "text": "[PHYSICAL INSTRUMENT] «ПРОТОКОЛ: ГРУБАЯ СИЛА». Выбить дверь (Сложн: 12).",
+                    "type": "check",
+                    "check": { "skill": "physical_instrument", "difficulty": 12, "success": "force_open_success", "failure": "force_open_fail" }
+                },
+                {
+                    "text": "[LOGIC] Использовать шпильку, чтобы взломать замок.",
+                    "condition": { "type": "flag", "key": "has_pin", "val": true, "op": "==" }, /* Движок в примере был прост, представим, что он умеет проверять флаги или заменим на стат */
+                    "next": "pin_attempt" 
+                },
+                {
+                    "text": "[INTERFACING] Ввести секретный код ударов.",
+                    "condition": { "type": "flag", "key": "know_code", "val": true, "op": "==" }, /* Опция видна только если нашли код */
+                    "next": "code_attempt"
+                },
+                {
+                    "text": "[INLAND EMPIRE] Провести экзорцизм машины (Сложн: 10).",
+                    "type": "check",
+                    "check": { "skill": "inland_empire", "difficulty": 10, "success": "exo_success", "failure": "exo_fail" }
+                },
+                { "text": "Назад.", "next": "room_hub" }
             ]
         },
-        "machine_smash_fail": {
-            "id": "machine_smash_fail",
+
+        /* --- RESOLUTIONS --- */
+        
+        /* 1. Force */
+        "force_open_success": {
+            "id": "force_open_success",
+            "speaker": "PHYSICAL INSTRUMENT",
+            "text": "КРАК! Ты наносишь удар ногой точно в крепление. Пластик разлетается шрапнелью. Дверца распахивается, и мокрая, горячая куча белья вываливается тебе на ботинки. Победа человека над машиной.",
+            "effects": [{ "key": "morale", "val": 2 }],
+            "options": [{ "text": "Схватить рубашку!", "next": "victory_scene" }]
+        },
+        "force_open_fail": {
+            "id": "force_open_fail",
             "speaker": "PAIN THRESHOLD",
-            "text": "Ты слышишь хруст. Это не автомат. Это твое плечо. Автомат стоит непоколебимо, словно памятник капитализму.",
-            "effects": [{ "key": "health", "val": -1, "op": "add" }],
+            "text": "Ты бьешь со всей дури. Металл не поддается. Твое колено издает хруст, который слышен даже на улице. Ты сползаешь по машине вниз.",
+            "effects": [{ "key": "health", "val": -2 }, { "key": "morale", "val": -1 }],
             "options": [
-                { "text": "Ай! Черт...", "next": "vending_machine" }
-            ]
-        },
-        "got_cigs": {
-            "id": "got_cigs",
-            "speaker": "YOU",
-            "text": "Ты закуриваешь. Вкус дешевого табака успокаивает дрожь в руках.",
-            "options": [{ "text": "Вернуться назад.", "next": "hub_underpass" }]
-        },
-        "coin_slot": {
-            "id": "coin_slot",
-            "speaker": "INTERFACING",
-            "text": "Монетоприемник забит жвачкой. Но погоди... если использовать тонкую проволоку или скрепку, можно замкнуть механизм выдачи.",
-            "options": [
-                { "text": "У меня нет скрепки.", "next": "vending_machine" }
+                { "text": "Лежать в позе эмбриона.", "next": "game_over_injury" },
+                { "text": "Попробовать встать...", "next": "room_hub" }
             ]
         },
 
-        // --- ЛИНИЯ С ГРАФФИТИ ---
-        "wall_graffiti": {
-            "id": "wall_graffiti",
-            "speaker": "NARRATOR",
-            "text": "На стене кто-то размашисто написал белой краской: «ИСТИННАЯ ЛЮБОВЬ ВОЗМОЖНА ТОЛЬКО БЕЗ ПОЛИЦИИ». Поверх этого красным маркером приписано: «ДУРАК».",
+        /* 2. Pin Hack (Logic check needed usually, but simplified here as distinct node) */
+        "pin_attempt": {
+            "id": "pin_attempt",
+            "speaker": "LOGIC",
+            "text": "Ты вставляешь шпильку, полученную от кота, в щель замка. Легкое движение, поворот на 45 градусов...",
             "options": [
-                { 
-                    "text": "[RHETORIC] Проанализировать политический подтекст (Сложн: 8).", 
-                    "type": "check", 
-                    "check": { "skill": "rhetoric", "difficulty": 8, "success": "graffiti_success", "failure": "graffiti_fail" }
-                },
-                { "text": "[VISUAL CALCULUS] Определить рост писавшего.", "next": "calc_height" },
-                { "text": "Отойти.", "next": "hub_underpass" }
-            ]
-        },
-        "graffiti_success": {
-            "id": "graffiti_success",
-            "speaker": "RHETORIC",
-            "text": "Классический мазовистский парадокс. Автор утверждает, что государство (Полиция) подавляет эмоцию (Любовь), но сам акт вандализма является призывом к анархии, которая разрушит инфраструктуру для любви. Красная приписка, вероятно, сделана разочарованным центристом.",
-            "effects": [{ "key": "logic", "val": 1, "op": "add" }],
-            "options": [
-                { "text": "Глубоко. Запишу это в блокнот (если найду его).", "next": "wall_graffiti" }
-            ]
-        },
-        "graffiti_fail": {
-            "id": "graffiti_fail",
-            "speaker": "RHETORIC",
-            "text": "Ну... кто-то просто не любит копов. И любви тоже не любит. Все всех ненавидят. Добро пожаловать в Ревашоль.",
-            "options": [
-                { "text": "Справедливо.", "next": "wall_graffiti" }
-            ]
-        },
-        "calc_height": {
-            "id": "calc_height",
-            "speaker": "VISUAL CALCULUS",
-            "text": "Судя по углу мазков и подтекам, автор был ростом примерно 175 см. Или стоял на ящике.",
-            "options": [{ "text": "Полезная информация. Наверное.", "next": "wall_graffiti" }]
-        },
-
-        // --- ЛИНИЯ С КУЧЕЙ ТРЯПЬЯ ---
-        "rag_pile": {
-            "id": "rag_pile",
-            "speaker": "PERCEPTION",
-            "text": "Куча шевелится. Из-под промасленного брезента показывается голова гигантской крысы. У крысы один глаз белый, другой — пуговица.",
-            "options": [
-                { "text": "Отскочить назад!", "next": "rat_scare" },
-                { 
-                    "text": "[EMPATHY] Попытаться установить контакт (Сложн: 11).", 
-                    "type": "check", 
-                    "check": { "skill": "empathy", "difficulty": 11, "success": "rat_talk", "failure": "rat_bite" }
+                {
+                    "text": "[LOGIC] Нащупать механизм (Сложн: 8).",
+                    "type": "check",
+                    "check": { "skill": "logic", "difficulty": 8, "success": "pin_win", "failure": "pin_fail" }
                 }
             ]
         },
-        "rat_scare": {
-            "id": "rat_scare",
-            "speaker": "HALF LIGHT",
-            "text": "Она бешеная! Она перегрызет тебе яремную вену! Беги, дурак, пока не заразился чумой!",
-            "effects": [{ "key": "morale", "val": -1, "op": "add" }],
-            "options": [
-                { "text": "Успокоиться. Это просто крыса.", "next": "hub_underpass" }
-            ]
+        "pin_win": {
+            "id": "pin_win",
+            "speaker": "SAVOIR FAIRE",
+            "text": "Щелк. Элегантно. Тихо. Дверь мягко открывается, выпуская облако пара.",
+            "options": [{ "text": "Вуаля.", "next": "victory_scene" }]
         },
-        "rat_talk": {
-            "id": "rat_talk",
-            "speaker": "EMPATHY",
-            "text": "Ты чувствуешь её одиночество. Она — король этого перехода, свергнутый монарх мусора. Она кивает тебе. Под лапой у неё лежит блестящая монета.",
-            "options": [
-                { "text": "Забрать монету аккуратно.", "next": "get_coin" },
-                { "text": "Оставить ей подношение (окурок).", "next": "rat_gift" }
-            ]
-        },
-        "rat_bite": {
-            "id": "rat_bite",
-            "speaker": "PAIN THRESHOLD",
-            "text": "Крыса не настроена на дружбу. Она делает выпад и кусает тебя за палец. Острая боль пронзает руку.",
-            "effects": [{ "key": "health", "val": -1, "op": "add" }],
-            "options": [
-                { "text": "Ай! Ухожу, ухожу!", "next": "hub_underpass" }
-            ]
-        },
-        "get_coin": {
-            "id": "get_coin",
-            "speaker": "YOU",
-            "text": "Ты поднимаешь монету. Это 2 реала. Крыса смотрит с одобрением.",
-            "options": [{ "text": "Спасибо, ваше величество.", "next": "hub_underpass" }]
-        },
-        "rat_gift": {
-            "id": "rat_gift",
-            "speaker": "NARRATOR",
-            "text": "Крыса нюхает окурок, чихает и утаскивает его в нору. Ты чувствуешь себя немного человечнее.",
-            "effects": [{ "key": "morale", "val": 1, "op": "add" }],
-            "options": [{ "text": "Прощай.", "next": "hub_underpass" }]
+        "pin_fail": {
+            "id": "pin_fail",
+            "speaker": "HAND/EYE COORDINATION",
+            "text": "Шпилька ломается внутри замка. Теперь он забит металлом. Молодец, медвежатник.",
+            "effects": [{ "key": "morale", "val": -1 }],
+            "options": [{ "text": "Черт!", "next": "room_hub" }]
         },
 
-        // --- ЛИНИЯ С ЛУЖЕЙ (MISTIC) ---
-        "puddle_vision": {
-            "id": "puddle_vision",
+        /* 3. Secret Code */
+        "code_attempt": {
+            "id": "code_attempt",
+            "speaker": "INTERFACING",
+            "text": "Ты исполняешь ритуальный танец: удар кулаком сверху, удар сбоку, пауза, резкий пинок снизу. Машина замирает... мигает всеми огнями... и дверь открывается.",
+            "options": [{ "text": "Знание — сила.", "next": "victory_scene" }]
+        },
+
+        /* 4. Exorcism */
+        "exo_success": {
+            "id": "exo_success",
             "speaker": "INLAND EMPIRE",
-            "text": "Мазутная пленка расступается. В отражении ты видишь не себя. Ты видишь клоуна с грустным лицом, который держит воздушный шар из свинца. Клоун говорит: «Завтра не наступит, пока ты не найдешь второй ботинок, Гарри».",
-            "options": [
-                { "text": "Какой ботинок? Я обут!", "next": "shoe_check" },
-                { "text": "Отвернуться от безумия.", "next": "hub_underpass" }
-            ]
+            "text": "Ты кладешь руки на машину и поешь гимн Ревашоля. Ты говоришь с Духом Воды. Ты обещаешь ему, что больше никогда не будешь стирать цветное с белым. \n\nМашина верит тебе. Замок щелкает.",
+            "options": [{ "text": "Спасибо, дух.", "next": "victory_scene" }]
         },
-        "puddle_fail": {
-            "id": "puddle_fail",
-            "speaker": "LOGIC",
-            "text": "Это просто грязная вода. Ты смотришь на свое опухшее лицо. Выглядишь паршиво.",
-            "options": [{ "text": "Да уж.", "next": "hub_underpass" }]
-        },
-        "shoe_check": {
-            "id": "shoe_check",
-            "speaker": "PERCEPTION",
-            "text": "Ты смотришь вниз. Твоя левая нога в зеленом ботинке из змеиной кожи. Твоя правая нога... в грязном носке. Ты стоишь в ледяной жиже.",
-            "effects": [{ "key": "morale", "val": -1, "op": "add" }],
-            "options": [
-                { "text": "Где мой ботинок?!", "next": "lost_shoe_panic" }
-            ]
-        },
-        "lost_shoe_panic": {
-            "id": "lost_shoe_panic",
-            "speaker": "LIMBIC SYSTEM",
-            "text": "Он пропал! Тебя раздели! Скоро заберут и кожу! Ты умрешь от гангрены через 3... 2... 1...",
-            "options": [
-                { "text": "[COMPOSURE] Взять себя в руки (Сложн: 9).", "type": "check", "check": { "skill": "empathy", "difficulty": 9, "success": "calm_down", "failure": "panic_attack" } }
-            ]
-        },
-        "calm_down": {
-            "id": "calm_down",
-            "speaker": "COMPOSURE",
-            "text": "Отставить панику, офицер. Ботинок, вероятно, уплыл или остался в номере. Это проблема Будущего Гарри. Настоящий Гарри должен выбраться из перехода.",
-            "options": [{ "text": "Верно. На выход.", "next": "hub_underpass" }]
-        },
-        "panic_attack": {
-            "id": "panic_attack",
-            "speaker": "NARRATOR",
-            "text": "Ты начинаешь гипервентилировать. Мир сужается до точки.",
-            "effects": [{ "key": "health", "val": -1, "op": "add" }],
-            "options": [{ "text": "Дышать...", "next": "hub_underpass" }]
+        "exo_fail": {
+            "id": "exo_fail",
+            "speaker": "VOLITION",
+            "text": "Ты стоишь на коленях перед стиральной машиной и воешь. Случайный прохожий заглядывает в окно, видит это, крестится и убегает. Ты чувствуешь себя невероятно глупо.",
+            "effects": [{ "key": "morale", "val": -2 }],
+            "options": [{ "text": "Встать с колен.", "next": "room_hub" }]
         },
 
-        // --- КОНЦОВКИ ---
-        "game_over_giveup": {
-            "id": "game_over_giveup",
-            "speaker": "SYSTEM",
-            "text": "Ты сворачиваешься калачиком на бетонных ступенях. Город медленно переваривает тебя. Это конец твоего расследования, и начало чьего-то полицейского отчета о найденном теле.",
+        /* --- ENDINGS --- */
+        "victory_scene": {
+            "id": "victory_scene",
+            "speaker": "HORRIFIC NECKTIE",
+            "text": "Да! ДА! Она свободна! \n\nТы достаешь рубашку. Она горячая, пахнет химической свежестью и победой. Ты надеваешь её прямо поверх майки. Твоя харизма мгновенно возрастает до стратосферы. Даже Кот смотрит на тебя с уважением.",
+            "options": [
+                { "text": "Выйти в дождь, чувствуя себя королем.", "next": "end_game_win" }
+            ]
+        },
+        "game_over_injury": {
+            "id": "game_over_injury",
+            "speaker": "END",
+            "text": "Боль слишком сильна. Ты теряешь сознание на полу прачечной. Последнее, что ты видишь — как Кот Комиссар доедает твои чипсы.",
+            "options": []
+        },
+        "end_game_win": {
+            "id": "end_game_win",
+            "speaker": "CREDITS",
+            "text": "Поздравляем. Вы прошли мини-квест «Реквием по носку». Ваша рубашка спасет этот город.\n\nСпасибо за игру.",
             "options": []
         }
     }
