@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Disco Dialogue Engine (Mobile)</title>
+    <style>
+        :root {
+            --bg-color: #1e1e1e;
+            --sidebar-bg: #2b2b2b;
+            --text-color: #dcdcdc;
+            --accent-orange: #d66935;
+            --accent-red: #e04f4f;
+            --accent-green: #5faf5f;
+            --skill-blue: #6fa3d2;
+            --skill-purple: #9b72aa;
+            --skill-red: #c45a5a;
+            --skill-yellow: #d4b648;
+            --option-bg: #363636;
+            --option-hover: #454545;
+            --font-main: 'Georgia', serif;
+            --font-ui: 'Arial', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: var(--font-main);
+            height: 100dvh; /* Dynamic viewport height for mobile */
+            display: flex;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* --- Mobile Overlay for Sidebar --- */
+        #sidebar-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 150;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        #sidebar-overlay.visible {
+            display: block;
+            opacity: 1;
+        }
+
+        /* --- Sidebar (Stats) --- */
+        #sidebar {
+            width: 280px;
+            background-color: var(--sidebar-bg);
+            padding: 20px;
+            border-right: 2px solid #000;
+            display: flex;
+            flex-direction: column;
+            font-family: var(--font-ui);
+            z-index: 200;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .stat-block {
+            margin-bottom: 20px;
+            border-bottom: 1px solid #444;
+            padding-bottom: 10px;
+        }
+
+        .stat-title {
+            font-weight: bold;
+            text-transform: uppercase;
+            color: #888;
+            font-size: 0.8em;
+            margin-bottom: 10px;
+        }
+
+        .skill-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+
+        .health-bar {
+            display: flex;
+            gap: 5px;
+            margin-top: 5px;
+        }
+        .hp-pip {
+            width: 15px;
+            height: 8px;
+            background-color: #444;
+        }
+        .hp-pip.active {
+            background-color: var(--accent-orange);
+        }
+
+        /* Close button for mobile sidebar */
+        .close-sidebar-btn {
+            display: none;
+            background: none;
+            border: 1px solid #666;
+            color: #fff;
+            padding: 5px 10px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            text-transform: uppercase;
+            align-self: flex-end;
+        }
+
+        /* --- Main Game Area --- */
+        #game-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            max-width: 900px;
+            margin: 0 auto;
+            height: 100%;
+            position: relative;
+        }
+
+        /* Mobile Header Button */
+        #mobile-menu-btn {
+            display: none; /* Hidden on desktop */
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            z-index: 50;
+            background: var(--sidebar-bg);
+            border: 1px solid var(--accent-orange);
+            color: var(--accent-orange);
+            padding: 8px 12px;
+            font-family: var(--font-ui);
+            font-weight: bold;
+            font-size: 0.8em;
+            text-transform: uppercase;
+            cursor: pointer;
+        }
+
+        #history-log {
+            flex: 1;
+            overflow-y: auto;
+            padding: 40px;
+            padding-top: 60px; /* Space for mobile button if needed */
+            padding-bottom: 20px;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .dialogue-entry {
+            margin-bottom: 20px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .speaker-label {
+            font-family: var(--font-ui);
+            font-weight: bold;
+            font-size: 0.85em;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+        }
+
+        .speaker-YOU { color: var(--accent-orange); }
+        .speaker-REPTILIAN { color: #7a8f7a; }
+        .speaker-LIMBIC { color: #b57b8e; }
+        .speaker-SYSTEM { color: #888; font-style: italic; }
+
+        .dialogue-text {
+            font-size: 1.05em;
+            line-height: 1.5;
+            white-space: pre-wrap;
+        }
+
+        /* --- Options Area --- */
+        #options-area {
+            padding: 15px 20px;
+            background: linear-gradient(to top, var(--bg-color) 90%, transparent);
+            border-top: 1px solid #333;
+            max-height: 45%;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .option-btn {
+            display: block;
+            width: 100%;
+            text-align: left;
+            background-color: var(--option-bg);
+            color: var(--text-color);
+            border: 1px solid #444;
+            padding: 14px 15px; /* Larger touch target */
+            margin-bottom: 10px;
+            cursor: pointer;
+            font-family: var(--font-ui);
+            font-size: 0.95em;
+            transition: all 0.2s;
+            position: relative;
+            line-height: 1.3;
+        }
+
+        .option-btn:active {
+            background-color: #555;
+            transform: scale(0.98);
+        }
+
+        .option-btn:hover {
+            border-color: #777;
+        }
+
+        @media (min-width: 769px) {
+            .option-btn:hover {
+                background-color: var(--option-hover);
+                transform: translateX(5px);
+            }
+        }
+
+        /* Skill Checks tags */
+        .check-tag {
+            display: inline-block;
+            font-weight: bold;
+            margin-right: 6px;
+            padding: 2px 5px;
+            border-radius: 3px;
+            color: #111;
+            font-size: 0.75em;
+            text-transform: uppercase;
+            margin-bottom: 2px;
+        }
+        
+        .check-logic { background-color: var(--skill-blue); }
+        .check-physique { background-color: var(--skill-red); }
+        .check-psyche { background-color: var(--skill-purple); }
+
+        /* --- Dice Overlay --- */
+        #dice-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 300;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        .dice-result-box {
+            background: #222;
+            border: 2px solid var(--text-color);
+            padding: 30px;
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        }
+
+        .dice-nums {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin: 15px 0;
+            font-family: var(--font-ui);
+        }
+        
+        .check-status {
+            font-size: 1.4em;
+            text-transform: uppercase;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        .status-success { color: var(--accent-green); }
+        .status-fail { color: var(--accent-red); }
+
+        /* --- RESPONSIVE MEDIA QUERIES --- */
+        @media (max-width: 768px) {
+            /* Layout shifts to Mobile */
+            
+            /* Sidebar becomes Off-Canvas Drawer */
+            #sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                height: 100%;
+                transform: translateX(-100%); /* Hidden by default */
+                box-shadow: 5px 0 15px rgba(0,0,0,0.5);
+            }
+
+            #sidebar.open {
+                transform: translateX(0);
+            }
+
+            .close-sidebar-btn {
+                display: block;
+            }
+
+            /* Show Mobile Menu Button */
+            #mobile-menu-btn {
+                display: block;
+            }
+
+            /* Adjust spacing */
+            #history-log {
+                padding: 20px;
+                padding-top: 60px; /* Ensure text doesn't go under the button */
+            }
+
+            .dialogue-text {
+                font-size: 1em;
+            }
+
+            .dice-nums {
+                font-size: 2em;
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Mobile Overlay Backgdound -->
+    <div id="sidebar-overlay"></div>
+
+    <!-- Sidebar -->
+    <div id="sidebar">
+        <button class="close-sidebar-btn" id="close-menu-btn">✕ Закрыть</button>
+        
+        <div class="stat-block">
+            <div class="stat-title">Здоровье</div>
+            <div class="health-bar" id="hp-container"></div>
+        </div>
+        <div class="stat-block">
+            <div class="stat-title">Мораль</div>
+            <div class="health-bar" id="mp-container"></div>
+        </div>
+        <div class="stat-block">
+            <div class="stat-title">Навыки (INT)</div>
+            <div class="skill-row"><span>Logic</span> <span id="stat-logic">0</span></div>
+            <div class="skill-row"><span>Rhetoric</span> <span id="stat-rhetoric">0</span></div>
+        </div>
+        <div class="stat-block">
+            <div class="stat-title">Навыки (PHYS)</div>
+            <div class="skill-row"><span>Endurance</span> <span id="stat-endurance">0</span></div>
+            <div class="skill-row"><span>Phys. Instrument</span> <span id="stat-physical_instrument">0</span></div>
+        </div>
+        <div class="stat-block">
+            <div class="stat-title">Навыки (PSY)</div>
+            <div class="skill-row"><span>Inland Empire</span> <span id="stat-inland_empire">0</span></div>
+            <div class="skill-row"><span>Empathy</span> <span id="stat-empathy">0</span></div>
+        </div>
+    </div>
+
+    <!-- Game Area -->
+    <div id="game-container">
+        <button id="mobile-menu-btn">CHAR SHEET</button>
+
+        <div id="history-log">
+            <!-- Dialogue history goes here -->
+        </div>
+        <div id="options-area">
+            <!-- Buttons go here -->
+        </div>
+    </div>
+
+    <!-- Dice Overlay -->
+    <div id="dice-overlay">
+        <div class="dice-result-box">
+            <div id="dice-skill-name" style="color: #888; text-transform: uppercase; font-size: 0.9em;">Logic</div>
+            <div class="dice-nums">
+                <span id="dice-val-1">?</span> + <span id="dice-val-2">?</span> + <span id="dice-bonus">0</span>
+            </div>
+            <div style="font-size: 0.8em; color: #666;">VS TARGET: <span id="dice-target">10</span></div>
+            <div class="dice-nums" style="border-top: 1px solid #444; margin-top: 10px; padding-top: 10px;">
+                = <span id="dice-total">0</span>
+            </div>
+            <div id="dice-status" class="check-status">ROLLING...</div>
+            <button id="dice-continue-btn" class="option-btn" style="margin-top: 20px; display:none; text-align:center;">Продолжить</button>
+        </div>
+    </div>
+
+<script>
+/* =========================================
+   1. DATA & CONFIGURATION (SAME AS BEFORE)
+   ========================================= */
+
+const storyData = {
+    meta: { title: "Отель 'Танцующая Тряпка'" },
+    nodes: {
+        "start": {
+            id: "start",
+            speaker: "REPTILIAN BRAIN",
+            text: "Там, внизу, есть только тьма и гул крови в ушах. Зачем тебе туда? Там больно. Оставайся здесь, в небытии.",
+            options: [
+                { text: "Сделать усилие и проснуться.", next: "limbic_pain" },
+                { 
+                    text: "[INLAND EMPIRE] Поговорить с пустотой.", 
+                    condition: { type: "stat", key: "inland_empire", val: 3, op: ">=" },
+                    next: "void_talk" 
+                }
+            ]
+        },
+        "void_talk": {
+            id: "void_talk",
+            speaker: "INLAND EMPIRE",
+            text: "Пустота смотрит на тебя. Она пахнет дешевым бурбоном и утраченными надеждами. Она шепчет: 'Гарри, где твой пистолет?'",
+            options: [
+                { text: "Плевать на пистолет. Просыпаемся.", next: "limbic_pain" }
+            ]
+        },
+        "limbic_pain": {
+            id: "limbic_pain",
+            speaker: "LIMBIC SYSTEM",
+            text: "Свет! Он режет глаза как бритва. Твоя голова готова взорваться. Твое тело — это мешок с переломанными костями.",
+            options: [
+                {
+                    text: "[PHYSICAL INSTRUMENT] Заставить это дряблое тело сесть (Сложн: 10).",
+                    type: "check",
+                    check: { skill: "physical_instrument", difficulty: 10, success: "awake_success", failure: "awake_fail" }
+                },
+                {
+                    text: "[LOGIC] Оценить обстановку не двигаясь (Сложн: 8).",
+                    type: "check",
+                    check: { skill: "logic", difficulty: 8, success: "scan_room", failure: "scan_fail" }
+                },
+                { text: "Просто лежать и стонать.", next: "game_over_boring" }
+            ]
+        },
+        "awake_success": {
+            id: "awake_success",
+            speaker: "YOU",
+            text: "Ты с хрустом садишься на кровати. Мир вращается, но ты держишь вертикаль. Ты — чемпион похмелья.",
+            effects: [{ key: "morale", val: 1 }],
+            options: [{ text: "Осмотреться.", next: "hub_room" }]
+        },
+        "awake_fail": {
+            id: "awake_fail",
+            speaker: "NARRATOR",
+            text: "Твой мозжечок предает тебя. Ты пытаешься сесть, но спазм швыряет тебя лицом в ковер. Он пахнет плесенью.",
+            effects: [{ key: "health", val: -1 }],
+            options: [{ text: "Попробовать еще раз...", next: "limbic_pain" }]
+        },
+        "scan_room": {
+            id: "scan_room",
+            speaker: "LOGIC",
+            text: "Ты в гостиничном номере. Одежда разбросана. Окно разбито. На вентиляторе висит ужасный цветастый галстук.",
+            options: [{ text: "Встать.", next: "hub_room" }]
+        },
+        "scan_fail": {
+            id: "scan_fail",
+            speaker: "LOGIC",
+            text: "Ты не можешь сосредоточиться. Мысли путаются, как клубок червей.",
+            options: [{ text: "Ладно, пробуем встать силой.", next: "limbic_pain" }]
+        },
+        "hub_room": {
+            id: "hub_room",
+            speaker: "SCENE",
+            text: "Ты стоишь посреди разгромленного номера. Что делать?",
+            options: [
+                { text: "Посмотреть в зеркало.", next: "mirror_scene" },
+                { text: "Снять галстук с вентилятора.", next: "necktie" },
+                { text: "Выйти в коридор (Конец демо).", next: null }
+            ]
+        },
+        "mirror_scene": {
+            id: "mirror_scene",
+            speaker: "YOU",
+            text: "Из зеркала на тебя смотрит распухшее, заросшее щетиной лицо. Выражение — смесь ужаса и идиотизма.",
+            options: [{ text: "Назад.", next: "hub_room" }]
+        },
+        "necktie": {
+            id: "necktie",
+            speaker: "HORRIFIC NECKTIE",
+            text: "«Братан! Ты жив! Я думал, мы сдохли!» — кричит галстук.",
+            options: [{ text: "О боже, он разговаривает.", next: "hub_room" }]
+        },
+        "game_over_boring": {
+            id: "game_over_boring",
+            speaker: "SYSTEM",
+            text: "Ты решил не участвовать в жизни. Игра окончена.",
+            options: []
+        }
+    }
+};
+
+/* =========================================
+   2. GAME ENGINE CLASS
+   ========================================= */
+
+class DiscoEngine {
+    constructor(data, ui) {
+        this.nodes = data.nodes;
+        this.ui = ui;
+        this.state = {
+            stats: { health: 3, morale: 3 },
+            skills: {
+                logic: 4, rhetoric: 2, endurance: 3, 
+                physical_instrument: 2, inland_empire: 4, empathy: 1
+            },
+            flags: {},
+            history: []
+        };
+        this.currentNode = null;
+    }
+
+    start() {
+        this.ui.updateStats(this.state);
+        this.loadNode('start');
+    }
+
+    loadNode(nodeId) {
+        const node = this.nodes[nodeId];
+        if (!node) return;
+
+        this.currentNode = node;
+        this.ui.appendHistory(node);
+        const validOptions = this.processOptions(node.options);
+        this.ui.renderOptions(validOptions, (index) => this.selectOption(index, validOptions));
+    }
+
+    processOptions(options) {
+        if (!options) return [];
+        return options.map((opt, idx) => {
+            if (opt.condition && !this.checkCondition(opt.condition)) return null;
+            return { ...opt, originalIndex: idx };
+        }).filter(Boolean);
+    }
+
+    selectOption(index, currentOptions) {
+        const choice = currentOptions[index];
+        if (!choice) return;
+        this.ui.appendPlayerChoice(choice.text);
+        if (choice.type === 'check') {
+            this.runCheck(choice);
+            return;
+        }
+        this.transition(choice);
+    }
+
+    runCheck(choice) {
+        const { skill, difficulty, success, failure } = choice.check;
+        const skillVal = this.state.skills[skill] || 0;
+
+        this.ui.showDiceRoll(skill, skillVal, difficulty, (passed) => {
+            const nextNodeId = passed ? success : failure;
+            this.transition({ next: nextNodeId, effects: choice.effects });
+        });
+    }
+
+    transition(choice) {
+        if (choice.effects) {
+            choice.effects.forEach(eff => this.applyEffect(eff));
+            this.ui.updateStats(this.state);
+        }
+        if (this.state.stats.health <= 0 || this.state.stats.morale <= 0) {
+            this.ui.appendSystemMessage("КРИТИЧЕСКИЙ СБОЙ СИСТЕМЫ. ВЫ УМЕРЛИ.");
+            this.ui.clearOptions();
+            return;
+        }
+        if (choice.next) {
+            this.loadNode(choice.next);
+        } else {
+            this.ui.appendSystemMessage("КОНЕЦ.");
+            this.ui.clearOptions();
+        }
+    }
+
+    checkCondition(cond) {
+        let val = 0;
+        if (cond.type === 'stat') val = this.state.skills[cond.key] || 0;
+        switch (cond.op) {
+            case '>=': return val >= cond.val;
+            case '<': return val < cond.val;
+            default: return false;
+        }
+    }
+
+    applyEffect(effect) {
+        if (['health', 'morale'].includes(effect.key)) {
+            this.state.stats[effect.key] += effect.val;
+            this.ui.showFloatingText(`${effect.key} ${effect.val > 0 ? '+' : ''}${effect.val}`);
+        }
+    }
+}
+
+/* =========================================
+   3. UI HANDLER
+   ========================================= */
+
+class DiscoUI {
+    constructor() {
+        this.logContainer = document.getElementById('history-log');
+        this.optContainer = document.getElementById('options-area');
+        this.diceOverlay = document.getElementById('dice-overlay');
+        
+        // Mobile Menu Init
+        this.sidebar = document.getElementById('sidebar');
+        this.sidebarOverlay = document.getElementById('sidebar-overlay');
+        this.mobileBtn = document.getElementById('mobile-menu-btn');
+        this.closeBtn = document.getElementById('close-menu-btn');
+
+        this.mobileBtn.onclick = () => this.toggleSidebar(true);
+        this.closeBtn.onclick = () => this.toggleSidebar(false);
+        this.sidebarOverlay.onclick = () => this.toggleSidebar(false);
+    }
+
+    toggleSidebar(show) {
+        if (show) {
+            this.sidebar.classList.add('open');
+            this.sidebarOverlay.classList.add('visible');
+        } else {
+            this.sidebar.classList.remove('open');
+            this.sidebarOverlay.classList.remove('visible');
+        }
+    }
+
+    updateStats(state) {
+        const hpCont = document.getElementById('hp-container');
+        hpCont.innerHTML = '';
+        for(let i=0; i<5; i++) {
+            const pip = document.createElement('div');
+            pip.className = `hp-pip ${i < state.stats.health ? 'active' : ''}`;
+            hpCont.appendChild(pip);
+        }
+
+        const mpCont = document.getElementById('mp-container');
+        mpCont.innerHTML = '';
+        for(let i=0; i<5; i++) {
+            const pip = document.createElement('div');
+            pip.className = `hp-pip ${i < state.stats.morale ? 'active' : ''}`;
+            mpCont.appendChild(pip);
+        }
+
+        for (let [key, val] of Object.entries(state.skills)) {
+            const el = document.getElementById(`stat-${key}`);
+            if (el) el.innerText = val;
+        }
+    }
+
+    appendHistory(node) {
+        const div = document.createElement('div');
+        div.className = 'dialogue-entry';
+        let speakerClass = 'speaker-SYSTEM';
+        if (node.speaker === 'YOU') speakerClass = 'speaker-YOU';
+        else if (node.speaker.includes('REPTILIAN')) speakerClass = 'speaker-REPTILIAN';
+        else if (node.speaker.includes('LIMBIC')) speakerClass = 'speaker-LIMBIC';
+        
+        div.innerHTML = `
+            <div class="speaker-label ${speakerClass}">${node.speaker}</div>
+            <div class="dialogue-text">${node.text}</div>
+        `;
+        this.logContainer.appendChild(div);
+        this.scrollToBottom();
+    }
+
+    appendPlayerChoice(text) {
+        const div = document.createElement('div');
+        div.className = 'dialogue-entry';
+        div.style.opacity = "0.7";
+        div.innerHTML = `
+            <div class="speaker-label speaker-YOU">YOU</div>
+            <div class="dialogue-text" style="font-style: italic;">${text}</div>
+        `;
+        this.logContainer.appendChild(div);
+        this.scrollToBottom();
+    }
+
+    appendSystemMessage(text) {
+        const div = document.createElement('div');
+        div.className = 'dialogue-entry';
+        div.innerHTML = `<div class="dialogue-text" style="color:red; font-weight:bold;">${text}</div>`;
+        this.logContainer.appendChild(div);
+        this.scrollToBottom();
+    }
+
+    scrollToBottom() {
+        this.logContainer.scrollTop = this.logContainer.scrollHeight;
+    }
+
+    showFloatingText(text) {
+        const div = document.createElement('div');
+        div.style.fontSize = '0.8em';
+        div.style.color = '#888';
+        div.style.textAlign = 'center';
+        div.innerText = `[ ${text} ]`;
+        this.logContainer.appendChild(div);
+    }
+
+    renderOptions(options, callback) {
+        this.optContainer.innerHTML = '';
+        options.forEach((opt, index) => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            let html = opt.text;
+            if (opt.type === 'check') {
+                let colorClass = 'check-logic';
+                if (['endurance', 'physical_instrument'].includes(opt.check.skill)) colorClass = 'check-physique';
+                if (['inland_empire', 'empathy'].includes(opt.check.skill)) colorClass = 'check-psyche';
+                html = `<span class="check-tag ${colorClass}">${opt.check.skill} [${opt.check.difficulty}]</span> ${opt.text}`;
+            }
+            btn.innerHTML = html;
+            btn.onclick = () => callback(index);
+            this.optContainer.appendChild(btn);
+        });
+    }
+
+    clearOptions() {
+        this.optContainer.innerHTML = '';
+    }
+
+    showDiceRoll(skill, skillVal, target, onComplete) {
+        this.diceOverlay.style.display = 'flex';
+        const die1El = document.getElementById('dice-val-1');
+        const die2El = document.getElementById('dice-val-2');
+        const bonusEl = document.getElementById('dice-bonus');
+        const totalEl = document.getElementById('dice-total');
+        const statusEl = document.getElementById('dice-status');
+        const btn = document.getElementById('dice-continue-btn');
+        const targetEl = document.getElementById('dice-target');
+        const skillNameEl = document.getElementById('dice-skill-name');
+
+        btn.style.display = 'none';
+        statusEl.innerText = "ROLLING...";
+        statusEl.className = "check-status";
+        statusEl.classList.remove("status-success", "status-fail");
+        bonusEl.innerText = skillVal;
+        targetEl.innerText = target;
+        skillNameEl.innerText = skill;
+
+        let rolls = 0;
+        const interval = setInterval(() => {
+            const r1 = Math.floor(Math.random() * 6) + 1;
+            const r2 = Math.floor(Math.random() * 6) + 1;
+            die1El.innerText = r1;
+            die2El.innerText = r2;
+            totalEl.innerText = r1 + r2 + skillVal;
+            rolls++;
+            
+            if (rolls > 15) {
+                clearInterval(interval);
+                const finalR1 = Math.floor(Math.random() * 6) + 1;
+                const finalR2 = Math.floor(Math.random() * 6) + 1;
+                const total = finalR1 + finalR2 + skillVal;
+                die1El.innerText = finalR1;
+                die2El.innerText = finalR2;
+                totalEl.innerText = total;
+
+                const isCritSuccess = (finalR1 === 6 && finalR2 === 6);
+                const isCritFail = (finalR1 === 1 && finalR2 === 1);
+                let passed = false;
+                if (isCritSuccess) passed = true;
+                else if (isCritFail) passed = false;
+                else passed = total >= target;
+
+                if (passed) {
+                    statusEl.innerText = isCritSuccess ? "CRITICAL SUCCESS!" : "SUCCESS";
+                    statusEl.classList.add("status-success");
+                } else {
+                    statusEl.innerText = isCritFail ? "CRITICAL FAILURE!" : "FAILURE";
+                    statusEl.classList.add("status-fail");
+                }
+                btn.style.display = 'block';
+                btn.onclick = () => {
+                    this.diceOverlay.style.display = 'none';
+                    onComplete(passed);
+                };
+            }
+        }, 80);
+    }
+}
+
+/* =========================================
+   4. BOOTSTRAP
+   ========================================= */
+document.addEventListener("DOMContentLoaded", () => {
+    const ui = new DiscoUI();
+    const engine = new DiscoEngine(storyData, ui);
+    engine.start();
+});
+
+</script>
+</body>
+</html>
