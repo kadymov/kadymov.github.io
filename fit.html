@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Мой план тренировок</title>
+    <style>
+        :root {
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --primary: #0a84ff;
+            --text-main: #e0e0e0;
+            --text-muted: #98989d;
+            --border: #333336;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            padding-bottom: 40px;
+        }
+
+        header {
+            background-color: var(--card-bg);
+            padding: 15px 20px;
+            font-size: 20px;
+            font-weight: bold;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .tabs {
+            display: flex;
+            background-color: var(--card-bg);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 53px;
+            z-index: 9;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 12px 0;
+            text-align: center;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-muted);
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .container { padding: 15px; }
+
+        .notice {
+            background-color: rgba(10, 132, 255, 0.15);
+            color: #66b2ff;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-bottom: 15px;
+            line-height: 1.4;
+            border: 1px solid rgba(10, 132, 255, 0.2);
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .card-header {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            line-height: 1.3;
+            color: #ffffff;
+        }
+
+        .card-desc {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            line-height: 1.3;
+        }
+
+        /* Стили для спойлера с техникой */
+        details {
+            margin-bottom: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            padding: 8px 12px;
+            border: 1px solid var(--border);
+        }
+
+        summary {
+            font-size: 14px;
+            color: var(--primary);
+            cursor: pointer;
+            outline: none;
+            font-weight: 500;
+            list-style: none; /* Убираем стандартный треугольник в некоторых браузерах */
+            display: flex;
+            align-items: center;
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+        }
+
+        summary::before {
+            content: "▶";
+            font-size: 10px;
+            margin-right: 8px;
+            transition: transform 0.2s;
+        }
+
+        details[open] summary::before {
+            transform: rotate(90deg);
+        }
+
+        .technique-text {
+            font-size: 13px;
+            color: #b0b0b5;
+            margin-top: 10px;
+            line-height: 1.5;
+            padding-top: 8px;
+            border-top: 1px dashed var(--border);
+        }
+
+        .technique-text strong {
+            color: #ffffff;
+        }
+
+        .technique-text ul {
+            padding-left: 20px;
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+
+        .card-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--border);
+            padding-top: 12px;
+        }
+
+        .sets {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-main);
+            background: var(--bg-color);
+            padding: 4px 8px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+        }
+
+        .weight-input-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .weight-input-group span {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        input[type="number"] {
+            width: 70px;
+            padding: 8px;
+            font-size: 16px;
+            text-align: center;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--bg-color);
+            color: #ffffff;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input[type="number"]:focus { 
+            border-color: var(--primary); 
+        }
+
+        input[type="number"]::placeholder {
+            color: #555555;
+        }
+
+        .save-indicator {
+            font-size: 12px;
+            color: #32d74b;
+            opacity: 0;
+            transition: opacity 0.3s;
+            position: absolute;
+            right: 15px;
+            margin-top: -20px;
+        }
+
+        .save-indicator.show { opacity: 1; }
+
+        .simple-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+            font-size: 15px;
+            font-weight: 500;
+            text-align: center;
+            color: var(--text-muted);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            border: 1px solid var(--border);
+        }
+    </style>
+</head>
+<body>
+
+    <header>Мои тренировки</header>
+
+    <div class="tabs">
+        <div class="tab active" onclick="renderDay('mon')">Понедельник</div>
+        <div class="tab" onclick="renderDay('wed')">Среда</div>
+        <div class="tab" onclick="renderDay('fri')">Пятница</div>
+    </div>
+
+    <div class="container" id="content">
+        <!-- Контент тренировки -->
+    </div>
+
+    <script>
+        const plan = {
+            mon: {
+                warmup: "Разминка: 10 минут ходьба/эллипс",
+                cooldown: "Заминка: 10-15 минут ходьба",
+                exercises: [
+                    { 
+                        id: "mon_1", name: "Жим ногами в тренажёре", desc: "сиденье под углом, платформа для стоп", sets: "3х12-15",
+                        technique: "<strong>Как делать:</strong> Стопы на ширине плеч. Плавно опускай платформу вниз на вдохе. На выдохе мощно, но без рывка толкай пятками вверх.<br><strong>Избегать:</strong> Не выпрямляй колени до конца в верхней точке (оставляй чуть согнутыми). Не отрывай таз от спинки сиденья. Не задерживай дыхание."
+                    },
+                    { 
+                        id: "mon_2", name: "Тяга горизонтального блока к поясу", desc: "сидя, ручка тянется к животу", sets: "3х12",
+                        technique: "<strong>Как делать:</strong> Спина прямая, грудь вперед. Тяни ручку к низу живота на выдохе, сводя лопатки вместе. Возвращай плавно на вдохе.<br><strong>Избегать:</strong> Не раскачивайся корпусом вперед-назад. Не тяни вес только руками — работай спиной."
+                    },
+                    { 
+                        id: "mon_3", name: "Жим от груди в тренажёре", desc: "сидя, две ручки толкаются вперёд", sets: "3х12",
+                        technique: "<strong>Как делать:</strong> Лопатки прижаты к спинке, грудь колесом. Толкай ручки от себя на выдохе. Возвращай медленно, чувствуя растяжение грудных мышц.<br><strong>Избегать:</strong> Не отрывай спину от тренажера. Не задирай плечи к ушам."
+                    },
+                    { 
+                        id: "mon_4", name: "Сгибание ног в тренажёре", desc: "строго сидя, валик у голени", sets: "2х12-15",
+                        technique: "<strong>Как делать:</strong> Плотно прижми таз и спину к сиденью. На выдохе плавно сгибай ноги вниз/под себя. В нижней точке небольшая пауза.<br><strong>Избегать:</strong> Резких замахов ногами. Если таз отрывается от сиденья — вес слишком большой."
+                    },
+                    { 
+                        id: "mon_5", name: "Разгибание рук на верхнем блоке", desc: "стоя, верхний блок, рукоять вниз", sets: "2х12",
+                        technique: "<strong>Как делать:</strong> Локти прижаты к корпусу и неподвижны. Разгибай руки вниз на выдохе до конца, напрягая трицепс.<br><strong>Избегать:</strong> Движения локтями вверх-вниз (работают только предплечья). Не наваливайся на вес всем телом."
+                    }
+                ]
+            },
+            wed: {
+                warmup: "Разминка: 10 минут велотренажёр/ходьба",
+                cooldown: "Заминка: 10-15 минут ходьба",
+                exercises: [
+                    { 
+                        id: "wed_1", name: "Тяга верхнего блока к груди", desc: "сидя, верхняя перекладина тянется к груди", sets: "3х12",
+                        technique: "<strong>Как делать:</strong> Возьмись за ручку шире плеч. Слегка отклони корпус назад. На выдохе тяни ручку к ключицам, локти направляй вниз и немного назад.<br><strong>Избегать:</strong> Тяги за голову (опасно для плеч). Сильного раскачивания корпуса."
+                    },
+                    { 
+                        id: "wed_2", name: "Жим в тренажёре на плечи", desc: "сидя, ручки выжимаются вверх", sets: "2х12",
+                        technique: "<strong>Как делать:</strong> Спина прижата. На выдохе жми ручки вверх, на вдохе опускай до уровня ушей или чуть ниже.<br><strong>Избегать:</strong> Задержки дыхания и натуживания. Слишком низкого опускания рук (чтобы не перерастягивать сустав)."
+                    },
+                    { 
+                        id: "wed_3", name: "Разгибание ног в тренажёре", desc: "сидя, валик перед голенью", sets: "3х12",
+                        technique: "<strong>Как делать:</strong> Спина плотно прижата. На выдохе плавно разгибай ноги, задержись на долю секунды в верхней точке, напрягая переднюю часть бедра.<br><strong>Избегать:</strong> Резких подкидываний валика ногами. Бросания веса вниз."
+                    },
+                    { 
+                        id: "wed_4", name: "Подъём на носки в тренажёре", desc: "платформа для стоп, движение пятками", sets: "3х15",
+                        technique: "<strong>Как делать:</strong> Опускай пятки вниз до легкого растяжения икр на вдохе. На выдохе поднимайся максимально высоко на носки.<br><strong>Избегать:</strong> Пружинящих, резких движений. Вся работа должна быть медленной и подконтрольной."
+                    },
+                    { 
+                        id: "wed_5", name: "Сгибание рук в тренажёре / нижнем блоке", desc: "сидя или стоя, ручка тянется вверх", sets: "2х12",
+                        technique: "<strong>Как делать:</strong> Локти зафиксированы по бокам. На выдохе сгибай руки силой бицепса, на вдохе медленно опускай.<br><strong>Избегать:</strong> Закидывания веса спиной. Бросания веса вниз."
+                    }
+                ]
+            },
+            fri: {
+                warmup: "Разминка: 10 минут ходьба/эллипс",
+                cooldown: "Заминка: 15-20 минут ходьба",
+                exercises: [
+                    { 
+                        id: "fri_1", name: "Тяга горизонтального блока нейтральным хватом", desc: "сидя, ручка тянется к поясу", sets: "3х12",
+                        technique: "<strong>Как делать:</strong> Используй узкую ручку (ладони смотрят друг на друга). Тяни к животу на выдохе, локти веди максимально близко к туловищу.<br><strong>Избегать:</strong> Округления спины. Расставления локтей в стороны."
+                    },
+                    { 
+                        id: "fri_2", name: "Жим от груди в тренажёре", desc: "сидя, ручки толкаются вперёд", sets: "3х12",
+                        technique: "<strong>Как делать:</strong> Лопатки прижаты, грудь колесом. Толкай ручки от себя на выдохе. Возвращай медленно.<br><strong>Избегать:</strong> Не отрывай спину. Не задирай плечи."
+                    },
+                    { 
+                        id: "fri_3", name: "Разгибание ног в тренажёре", desc: "сидя, валик перед голенью", sets: "2х12-15",
+                        technique: "<strong>Как делать:</strong> На выдохе плавно разгибай ноги, небольшая пауза в верхней точке. На вдохе медленно опускай.<br><strong>Избегать:</strong> Резких рывков (подкидывания веса). Отрыва таза."
+                    },
+                    { 
+                        id: "fri_4", name: "Сгибание ног в тренажёре", desc: "строго сидя, валик у голени", sets: "3х12",
+                        technique: "<strong>Как делать:</strong> Плотно прижми таз. На выдохе плавно сгибай ноги вниз. В нижней точке небольшая пауза.<br><strong>Избегать:</strong> Замахов ногами. Если таз отрывается — снижай вес."
+                    },
+                    { 
+                        id: "fri_5", name: "Разгибание рук на верхнем блоке канатом", desc: "стоя, канат тянется вниз", sets: "2х12",
+                        technique: "<strong>Как делать:</strong> Локти прижаты к ребрам. На выдохе разгибай руки вниз, а в самом низу слегка разводи концы каната в стороны.<br><strong>Избегать:</strong> Движения локтями. Помощи спиной и плечами."
+                    }
+                ]
+            }
+        };
+
+        function saveWeight(id, value) {
+            localStorage.setItem('workout_' + id, value);
+
+            const indicator = document.getElementById('saved_' + id);
+            indicator.classList.add('show');
+            setTimeout(() => {
+                indicator.classList.remove('show');
+            }, 1500);
+        }
+
+        function renderDay(dayKey) {
+            document.querySelectorAll('.tab').forEach((el, index) => {
+                el.classList.remove('active');
+                if ((dayKey === 'mon' && index === 0) || 
+                    (dayKey === 'wed' && index === 1) || 
+                    (dayKey === 'fri' && index === 2)) {
+                    el.classList.add('active');
+                }
+            });
+
+            const dayData = plan[dayKey];
+            const content = document.getElementById('content');
+
+            let html = `
+                <div class="notice">
+                    <b>Важно:</b> Выдох всегда на усилии! Никакой задержки дыхания и натуживания.
+                </div>
+                <div class="simple-card">🏃 ${dayData.warmup}</div>
+            `;
+
+            dayData.exercises.forEach(ex => {
+                const savedWeight = localStorage.getItem('workout_' + ex.id) || '';
+
+                html += `
+                    <div class="card">
+                        <div class="card-header">${ex.name}</div>
+                        <div class="card-desc">${ex.desc}</div>
+
+                        <details>
+                            <summary>Техника и частые ошибки</summary>
+                            <div class="technique-text">${ex.technique}</div>
+                        </details>
+
+                        <div class="card-bottom">
+                            <div class="sets">${ex.sets}</div>
+                            <div class="weight-input-group">
+                                <span>Вес:</span>
+                                <div>
+                                    <input type="number" inputmode="decimal" 
+                                        value="${savedWeight}" 
+                                        placeholder="кг"
+                                        oninput="saveWeight('${ex.id}', this.value)">
+                                    <span class="save-indicator" id="saved_${ex.id}">✓ Сохранено</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            html += `<div class="simple-card">🚶 ${dayData.cooldown}</div>`;
+            content.innerHTML = html;
+        }
+
+        window.onload = () => renderDay('mon');
+    </script>
+</body>
+</html>
