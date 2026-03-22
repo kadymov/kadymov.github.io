@@ -7,18 +7,20 @@ import { Gauge } from './components/Gauge.js';
 import { MacroStats } from './components/MacroStats.js';
 import { FoodList } from './components/FoodList.js';
 import { AddModal } from './components/AddModal.js';
+import { EditFoodModal } from './components/EditFoodModal.js';
 import { SettingsScreen } from './components/SettingsScreen.js';
+import { ChartScreen } from './components/ChartScreen.js';
 import { initFoodsDB } from './data/foodsDb.js';
 
 await initFoodsDB();
 
-
 export function App() {
   const [selectedDate, setSelectedDate] = useState(getTodayKey);
-  const { foods, addFood, removeFood } = useFoods(selectedDate);
+  const { foods, history, addFood, removeFood, updateFood } = useFoods(selectedDate);
   const { dailyGoal, favorites, setDailyGoal, addFavorite, removeFavorite, isFavorite, toggleFavorite } = useSettings();
   const [modalOpen, setModalOpen] = useState(false);
-  const [screen, setScreen] = useState('main'); // 'main' | 'settings'
+  const [screen, setScreen] = useState('main'); // 'main' | 'settings' | 'chart'
+  const [editingEntry, setEditingEntry] = useState(null); // { index, food }
 
   const todayKey = getTodayKey();
   const isToday = selectedDate === todayKey;
@@ -41,6 +43,14 @@ export function App() {
     setModalOpen(prev => !prev);
   }
 
+  function openEdit(index, food) {
+    setEditingEntry({ index, food });
+  }
+
+  function closeEdit() {
+    setEditingEntry(null);
+  }
+
   if (screen === 'settings') {
     return html`
       <${SettingsScreen}
@@ -54,6 +64,16 @@ export function App() {
     `;
   }
 
+  if (screen === 'chart') {
+    return html`
+      <${ChartScreen}
+        history=${history}
+        dailyGoal=${dailyGoal}
+        onBack=${() => setScreen('main')}
+      />
+    `;
+  }
+
   return html`
     <${Header}
       dateKey=${selectedDate}
@@ -61,10 +81,11 @@ export function App() {
       onPrev=${goToPrev}
       onNext=${goToNext}
       onSettings=${() => setScreen('settings')}
+      onChart=${() => setScreen('chart')}
     />
     <${Gauge} remaining=${remaining} fraction=${fraction} />
     <${MacroStats} total=${total} goal=${dailyGoal} count=${foods.length} />
-    <${FoodList} foods=${foods} onRemove=${removeFood} />
+    <${FoodList} foods=${foods} onEdit=${openEdit} />
 
     <button
       class=${'fab' + (modalOpen ? ' rotated' : '')}
@@ -79,6 +100,14 @@ export function App() {
       favorites=${favorites}
       isFavorite=${isFavorite}
       toggleFavorite=${toggleFavorite}
+    />
+
+    <${EditFoodModal}
+      isOpen=${editingEntry !== null}
+      entry=${editingEntry}
+      onClose=${closeEdit}
+      onUpdate=${updateFood}
+      onRemove=${removeFood}
     />
   `;
 }

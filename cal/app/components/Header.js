@@ -9,11 +9,11 @@ function formatDateKey(dateKey) {
   return `${DAYS[date.getDay()]}, ${date.getDate()} ${MONTHS[date.getMonth()]}`;
 }
 
-export function Header({ dateKey, isToday, onPrev, onNext, onSettings }) {
+export function Header({ dateKey, isToday, onPrev, onNext, onSettings, onChart }) {
   return html`
     <div class="header">
       <div class="header-top">
-        <div style="width:40px"></div>
+        <button class="settings-icon-btn" onClick=${onChart} aria-label="График">📊</button>
         <h1>Калории</h1>
         <button class="settings-icon-btn" onClick=${onSettings} aria-label="Настройки">⚙️</button>
       </div>

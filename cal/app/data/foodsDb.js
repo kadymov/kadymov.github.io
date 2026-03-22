@@ -53,14 +53,15 @@ async function getFoods() {
   return cachedFoods;
 }
 
-// Поиск (точно как был раньше)
+// Поиск по нескольким словам с сортировкой по длине имени
 export async function searchFoods(query) {
   if (!query || query.trim().length === 0) return [];
 
-  const q = query.toLowerCase().trim();
+  const words = query.toLowerCase().trim().split(/\s+/).filter(Boolean);
   const foods = await getFoods();
 
-  return foods
-    .filter(f => f.nameLower.includes(q))
-    .slice(0, 30);
+  const filtered = foods.filter(f => words.every(word => f.nameLower.includes(word)));
+  filtered.sort((a, b) => a.name.length - b.name.length);
+
+  return filtered.slice(0, 30);
 }

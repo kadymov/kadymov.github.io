@@ -49,5 +49,5 @@ export function useFoods(dateKey) {
     }));
   }
 
-  return { foods, addFood, removeFood };
+  return { foods, history, addFood, removeFood };
 }

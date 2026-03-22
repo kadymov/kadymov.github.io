@@ -430,6 +430,31 @@
       opacity: 0.9;
     }
 
+    .btn-delete {
+      width: 100%;
+      background: none;
+      border: 2px solid #3a2020;
+      border-radius: 14px;
+      padding: 14px;
+      color: #ef5350;
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: background 0.2s, border-color 0.2s, transform 0.15s;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .btn-delete:hover {
+      background: rgba(239,83,80,0.08);
+      border-color: #ef5350;
+    }
+
+    .btn-delete:active {
+      transform: scale(0.97);
+      background: rgba(239,83,80,0.15);
+    }
+
     .swipe-hint {
       text-align: center;
       font-size: 11px;
@@ -966,6 +991,171 @@
         opacity: 1;
         transform: translateY(0);
       }
+    }
+
+    /* ── Chart screen ── */
+    .chart-screen {
+      min-height: 100vh;
+      background: #121212;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .chart-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px 12px;
+      border-bottom: 1px solid #1e1e1e;
+    }
+
+    .chart-header h1 {
+      font-size: 18px;
+      font-weight: 600;
+      color: #e0e0e0;
+    }
+
+    .chart-back-btn {
+      background: none;
+      border: none;
+      color: #888;
+      font-size: 28px;
+      line-height: 1;
+      cursor: pointer;
+      padding: 2px 8px;
+      border-radius: 8px;
+      transition: color 0.2s, background 0.2s;
+      -webkit-tap-highlight-color: transparent;
+      width: 40px;
+    }
+
+    .chart-back-btn:hover {
+      color: #e0e0e0;
+      background: #1e1e1e;
+    }
+
+    .chart-body {
+      padding: 20px;
+      flex: 1;
+    }
+
+    .chart-legend {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 12px;
+    }
+
+    .chart-legend-goal {
+      font-size: 12px;
+      color: #ef5350;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .chart-svg-wrap {
+      background: #1e1e1e;
+      border-radius: 16px;
+      padding: 12px 8px 4px;
+      overflow: hidden;
+    }
+
+    .chart-summary {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .chart-stat {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #1e1e1e;
+      border-radius: 12px;
+      padding: 14px 16px;
+    }
+
+    .chart-stat-label {
+      font-size: 14px;
+      color: #888;
+    }
+
+    .chart-stat-value {
+      font-size: 16px;
+      font-weight: 600;
+      color: #e0e0e0;
+    }
+
+    .chart-no-data {
+      text-align: center;
+      color: #555;
+      font-size: 14px;
+      padding: 24px 0;
+    }
+
+    /* ── Dropdown поиска по БД в настройках ── */
+    .fav-db-dropdown {
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0;
+      right: 0;
+      background: #2a2a2a;
+      border: 1px solid #3a3a3a;
+      border-radius: 12px;
+      z-index: 50;
+      max-height: 240px;
+      overflow-y: auto;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+    }
+
+    .fav-db-dropdown-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 14px;
+      cursor: pointer;
+      transition: background 0.15s;
+      border-bottom: 1px solid #333;
+    }
+
+    .fav-db-dropdown-item:last-child {
+      border-bottom: none;
+    }
+
+    .fav-db-dropdown-item:hover {
+      background: #333;
+    }
+
+    .fav-db-dropdown-item:active {
+      background: #3a3a3a;
+    }
+
+    .fav-db-dropdown-name {
+      font-size: 14px;
+      color: #e0e0e0;
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-right: 8px;
+    }
+
+    .fav-db-dropdown-kcal {
+      font-size: 12px;
+      color: #66bb6a;
+      font-weight: 600;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .fav-cal-auto {
+      color: #66bb6a;
+      font-size: 11px;
+      font-weight: 500;
+      text-transform: none;
+      letter-spacing: 0;
     }
 
     @media (min-width: 481px) {

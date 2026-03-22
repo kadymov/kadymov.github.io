@@ -1,7 +1,7 @@
 import { html } from '../utils.js';
 import { FoodItem } from './FoodItem.js';
 
-export function FoodList({ foods, onRemove }) {
+export function FoodList({ foods, onEdit }) {
   return html`
     <div class="food-section">
       <div class="section-title">Сегодня</div>
@@ -18,13 +18,13 @@ export function FoodList({ foods, onRemove }) {
               key=${foods.length - 1 - i}
               food=${food}
               index=${foods.length - 1 - i}
-              onRemove=${onRemove}
+              onEdit=${onEdit}
             />
           `)
         }
       </div>
       ${foods.length > 0 && html`
-        <div class="swipe-hint">Нажмите на элемент для удаления</div>
+        <div class="swipe-hint">Нажмите на элемент для редактирования</div>
       `}
     </div>
   `;

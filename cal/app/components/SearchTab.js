@@ -2,7 +2,7 @@ import { html } from '../utils.js';
 import { useState, useRef, useEffect } from 'https://esm.sh/preact@10/hooks';
 import { searchFoods } from '../data/foodsDb.js';
 
-export function SearchTab({ onAdd, onClose, isFavorite, toggleFavorite }) {
+export function SearchTab({ onAdd, onClose, isFavorite, toggleFavorite, isOpen }) {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
   const [selected, setSelected] = useState(null); // { id, name, kcalPer100 }
@@ -10,6 +10,16 @@ export function SearchTab({ onAdd, onClose, isFavorite, toggleFavorite }) {
 
   const searchRef = useRef(null);
   const weightRef = useRef(null);
+
+  // Сброс состояния при закрытии модала
+  useEffect(() => {
+    if (!isOpen) {
+      setQuery('');
+      setResults([]);
+      setSelected(null);
+      setWeight('100');
+    }
+  }, [isOpen]);
 
   // Автофокус на поле поиска при монтировании
   useEffect(() => {

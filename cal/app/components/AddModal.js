@@ -153,6 +153,7 @@ export function AddModal({ isOpen, onClose, onAdd, favorites, isFavorite, toggle
             onClose=${onClose}
             isFavorite=${isFavorite}
             toggleFavorite=${toggleFavorite}
+            isOpen=${isOpen}
           />
         `}
 
