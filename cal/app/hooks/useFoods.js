@@ -49,5 +49,12 @@ export function useFoods(dateKey) {
     }));
   }
 
-  return { foods, history, addFood, removeFood };
+  function updateFood(index, updatedFood) {
+    setHistory(prev => ({
+      ...prev,
+      [dateKey]: (prev[dateKey] || []).map((food, i) => i === index ? updatedFood : food),
+    }));
+  }
+
+  return { foods, history, addFood, removeFood, updateFood };
 }

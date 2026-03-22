@@ -14,6 +14,9 @@ export function AddModal({ isOpen, onClose, onAdd, favorites, isFavorite, toggle
   const [selectedFav, setSelectedFav] = useState(null);
   const [favWeight, setFavWeight] = useState('');
 
+  // Смещение модала над клавиатурой
+  const [keyboardOffset, setKeyboardOffset] = useState(0);
+
   const nameRef = useRef(null);
   const gramsRef = useRef(null);
   const calRef = useRef(null);
@@ -53,6 +56,44 @@ export function AddModal({ isOpen, onClose, onAdd, favorites, isFavorite, toggle
       return () => clearTimeout(t);
     }
   }, [selectedFav]);
+
+  // ── Visual Viewport API: подъём модала над клавиатурой ──
+  useEffect(() => {
+    const vv = window.visualViewport;
+
+    function update() {
+      // Используем visualViewport если доступен, иначе innerHeight
+      let offset = 0;
+      if (vv) {
+        offset = Math.max(0, window.innerHeight - vv.height - vv.offsetTop);
+      } else {
+        // Fallback: запоминаем минимальную высоту и сравниваем
+        offset = Math.max(0, window.innerHeight - 500); // грубая оценка
+      }
+      setKeyboardOffset(offset);
+    }
+
+    if (vv) {
+      vv.addEventListener('resize', update);
+      vv.addEventListener('scroll', update);
+    }
+
+    // Также слушаем resize окна как запасной вариант
+    window.addEventListener('resize', update);
+
+    // Небольшая задержка для стабилизации after layout
+    const timeout = setTimeout(update, 100);
+
+    return () => {
+      if (vv) {
+        vv.removeEventListener('resize', update);
+        vv.removeEventListener('scroll', update);
+      }
+      window.removeEventListener('resize', update);
+      clearTimeout(timeout);
+      setKeyboardOffset(0);
+    };
+  }, []);
 
   // ── Вкладка Вручную ──
   function handleAdd() {
@@ -128,7 +169,7 @@ export function AddModal({ isOpen, onClose, onAdd, favorites, isFavorite, toggle
       class=${'modal-overlay' + (isOpen ? ' active' : '')}
       onClick=${handleOverlayClick}
     >
-      <div class="modal">
+      <div class="modal" style=${`transform: translateY(${-keyboardOffset}px); transition: transform 0.2s ease`}>
         <div class="modal-handle"></div>
         <h2>Добавить продукт</h2>
 

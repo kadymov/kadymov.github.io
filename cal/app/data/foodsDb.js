@@ -28,7 +28,7 @@ export async function initFoodsDB() {
 
   if (count === 0) {
     console.log('Загружаем готовую базу в IndexedDB...');
-    const res = await fetch('/cal/app/data/foods.json', { cache: 'force-cache' });
+    const res = await fetch('/app/data/foods.json', { cache: 'force-cache' });
     if (!res.ok) throw new Error('Не найден foods-preprocessed.json');
 
     const foods = await res.json();
