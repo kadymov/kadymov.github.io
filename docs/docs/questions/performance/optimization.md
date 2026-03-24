@@ -1462,7 +1462,7 @@ class RequestCombiner {
 - **Bundle Analyzer** - Анализ размера бандла
 
 ## Связанные темы
-- [React Optimization](../react/rerender-optimization.md) - Оптимизация React компонентов
+- [React Optimization](../re/rerender-optimization.md) - Оптимизация React компонентов
 - [Architecture](../architecture/resilient-frontend.md) - Архитектура для производительности
 - [Testing Performance](../testing/strategies.md) - Тестирование производительности
 

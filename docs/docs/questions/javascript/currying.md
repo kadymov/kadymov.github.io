@@ -361,6 +361,6 @@ dispatch(setLoading(true));
 
 ## 🔗 Связанные темы
 
-- [Higher-Order Components (HOC)](../react/hoc.md)
-- [useEffect и Side Effects](../react/use-effect.md)
+- [Higher-Order Components (HOC)](../re/hoc.md)
+- [useEffect и Side Effects](../re/use-effect.md)
 - [TypeScript в React проектах](../typescript/typescript-react.md)

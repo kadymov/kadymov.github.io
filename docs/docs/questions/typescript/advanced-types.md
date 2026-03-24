@@ -572,7 +572,7 @@ emitter.emit('user:created', { user: {} as User });
 6. **Type guards**: Используйте для runtime проверок типов
 
 ## Связанные темы
-- [React Context API](../react/context-api.md) - Типизация React контекста
+- [React Context API](../re/context-api.md) - Типизация React контекста
 - [State Management](../architecture/state-management.md) - Типизация состояния
 - [Testing Strategies](../testing/strategies.md) - Тестирование типизированного кода
 

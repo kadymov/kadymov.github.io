@@ -737,6 +737,6 @@ const securityChecks = {
 
 **Связанные материалы:**
 - [JavaScript - Event Loop](../javascript/event-loop.md)
-- [React - Context API](../react/context-api.md)
+- [React - Context API](../re/context-api.md)
 - [Архитектура - State Management](../architecture/state-management.md)
 - [TypeScript - Advanced Types](../typescript/advanced-types.md)

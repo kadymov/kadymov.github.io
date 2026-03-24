@@ -458,7 +458,7 @@ const errorMiddleware = (store) => (next) => (action) => {
 
 ## Связанные темы
 - [Performance Optimization](../performance/optimization.md) - Оптимизация производительности
-- [React Context API](../react/context-api.md) - Context API в деталях
+- [React Context API](../re/context-api.md) - Context API в деталях
 - [Testing Strategies](../testing/strategies.md) - Тестирование состояния
 
 ## Рекомендации для собеседования

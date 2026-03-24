@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../../img/favicon.ico" />
+    <title>Reconciliation и Virtual DOM - My Docs</title>
+    <link rel="stylesheet" href="../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Reconciliation \u0438 Virtual DOM";
+        var mkdocs_page_input_path = "questions/re/reconciliation.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../../.." class="icon icon-home"> My Docs
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../..">📚 Подготовка к собеседованию: JavaScript, React и архитектура</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Questions</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" >Architecture</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/ddd/">Domain-Driven Design (DDD) во Frontend</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/ddd_small/">Domain-Driven Design (DDD) во Frontend (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/ddd_tts/">Domain-Driven Design (DDD) во Frontend (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/microfrontends/">Микрофронтенды (Microfrontends)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/microfrontends_small/">Microfrontends - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/microfrontends_tts/">Микрофронтенды (Microfrontends) (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/offline-first/">Offline-first архитектура</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/offline-first_small/">Offline-First Архитектура (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/offline-first_tts/">Offline-first архитектура (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/resilient-frontend/">Устойчивая frontend архитектура</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/resilient-frontend_small/">Устойчивая Frontend Архитектура (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/resilient-frontend_tts/">Устойчивая frontend архитектура (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/state-management/">Архитектура управления состоянием</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/state-management_small/">State Management Architecture - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/state-management_tts/">Архитектура управления состоянием (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/websockets-realtime/">WebSockets и real-time коммуникация</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/websockets-realtime_small/">WebSockets и Real-time коммуникация (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/websockets-realtime_tts/">WebSockets и real-time коммуникация (TTS)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Javascript</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/async-programming/">Promises, Async/Await и Generators</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/async-programming_small/">Async Programming - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/async-programming_tts/">Promises, Async/Await и Generators (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/currying/">Currying в JavaScript</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/currying_small/">Currying - Шпаргалка (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/currying_tts/">Currying в JavaScript (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/event-loop/">Event Loop, Microtasks и Macrotasks</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/event-loop_small/">Event Loop - Шпаргалка (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/event-loop_tts/">Event Loop, Microtasks и Macrotasks (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/execution-model/">Модель выполнения JavaScript</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/execution-model_small/">JavaScript Execution Model - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/execution-model_tts/">Модель выполнения JavaScript (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/garbage-collection/">Garbage Collection и оптимизация памяти</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/garbage-collection_small/">Garbage Collection - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/garbage-collection_tts/">Garbage Collection и оптимизация памяти (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/scope-hoisting/">Let, Const, Var: Scope и Hoisting</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/scope-hoisting_small/">Let, Const, Var - Шпаргалка (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/scope-hoisting_tts/">Let, Const, Var: Scope и Hoisting (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/typing-comparison/">Сравнение типизации JS и Java</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/typing-comparison_small/">JS vs Java Typing + TypeScript - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/typing-comparison_tts/">Сравнение типизации JS и Java (TTS)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Performance</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../performance/optimization/">Оптимизация производительности frontend-приложений</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../performance/optimization_small/">Оптимизация производительности Frontend (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../performance/optimization_tts/">Оптимизация производительности frontend-приложений (TTS)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" >React</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../concurrent-rendering/">Конкурентный рендеринг React 18</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../concurrent-rendering_small/">React 18 Concurrent Rendering - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../concurrent-rendering_tts/">Конкурентный рендеринг React 18 (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../context-api/">Context API vs Redux</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../context-api_small/">Context API vs Redux - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../context-api_tts/">Context API vs Redux (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../hoc/">Higher-Order Components (HOC)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../hoc_small/">Higher-Order Components - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../hoc_tts/">Higher-Order Components (HOC) (TTS)</a>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" href="#">Reconciliation и Virtual DOM</a>
+    <ul class="current">
+    <li class="toctree-l3"><a class="reference internal" href="#_1">📋 Вопрос</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_2">💡 Ответ</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#virtual-dom-">Virtual DOM - Концепция</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#reconciliation">Процесс Reconciliation</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#diffing-algorithm">Diffing Algorithm</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#fiber-architecture-react-16">Fiber Architecture (React 16+)</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#reconciliation_1">Оптимизация Reconciliation</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#_5">Практические примеры оптимизации</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#_8">Инструменты для анализа</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#_9">Проблемы и решения</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#advanced-patterns">Advanced Patterns</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#senior-">Senior-советы</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#_10">Заключение</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_11">🔗 Связанные темы</a>
+    </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../reconciliation_small/">Reconciliation &amp; Virtual DOM - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../reconciliation_tts/">Reconciliation и Virtual DOM (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../rerender-optimization/">Оптимизация ререндеров в React</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../rerender-optimization_small/">React Rerender Optimization - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../rerender-optimization_tts/">Оптимизация ререндеров в React (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../ssr-rsc/">SSR/SSG и React Server Components</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../ssr-rsc_small/">SSR/SSG &amp; React Server Components - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../ssr-rsc_tts/">SSR/SSG и React Server Components (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../use-effect/">useEffect и Side Effects</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../use-effect_small/">useEffect &amp; Side Effects - Senior Cheat Sheet</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../use-effect_tts/">useEffect и Side Effects (TTS)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Security</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../security/frontend-security/">Безопасность Frontend Приложений</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../security/frontend-security_small/">Frontend Security (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../security/frontend-security_tts/">Безопасность Frontend Приложений (TTS)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Testing</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../testing/strategies/">Стратегии тестирования frontend-приложений</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../testing/strategies_small/">Стратегии тестирования Frontend (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../testing/strategies_tts/">Стратегии тестирования frontend-приложений (TTS)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Typescript</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../typescript/advanced-types/">Продвинутые типы TypeScript</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../typescript/advanced-types_small/">Продвинутые типы TypeScript (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../typescript/advanced-types_tts/">Продвинутые типы TypeScript (TTS)</a>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../..">My Docs</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Questions</li>
+          <li class="breadcrumb-item">React</li>
+      <li class="breadcrumb-item active">Reconciliation и Virtual DOM</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="reconciliation-virtual-dom">Reconciliation и Virtual DOM</h1>
+<h2 id="_1">📋 Вопрос</h2>
+<p>Объясните процесс reconciliation в React и его связь с Virtual DOM.</p>
+<h2 id="_2">💡 Ответ</h2>
+<p>Reconciliation — это процесс, при котором React определяет, какие изменения нужно внести в реальный DOM, сравнивая новое Virtual DOM дерево с предыдущим. Это один из ключевых механизмов, обеспечивающих производительность React.</p>
+<h3 id="virtual-dom-">Virtual DOM - Концепция</h3>
+<p>Virtual DOM — это JavaScript-представление реального DOM, хранящееся в памяти. Это легковесная копия DOM дерева, представленная как обычные JavaScript объекты.</p>
+<h4 id="virtual-dom">Структура Virtual DOM</h4>
+<pre><code class="language-javascript">// JSX
+const element = (
+  &lt;div className=&quot;container&quot;&gt;
+    &lt;h1&gt;Hello World&lt;/h1&gt;
+    &lt;p&gt;This is a paragraph&lt;/p&gt;
+  &lt;/div&gt;
+);
+
+// Virtual DOM представление (упрощенно)
+const virtualElement = {
+  type: 'div',
+  props: {
+    className: 'container',
+    children: [
+      {
+        type: 'h1',
+        props: {
+          children: 'Hello World'
+        }
+      },
+      {
+        type: 'p',
+        props: {
+          children: 'This is a paragraph'
+        }
+      }
+    ]
+  }
+};
+
+// React.createElement под капотом
+const reactElement = React.createElement(
+  'div',
+  { className: 'container' },
+  React.createElement('h1', null, 'Hello World'),
+  React.createElement('p', null, 'This is a paragraph')
+);
+</code></pre>
+<h3 id="reconciliation">Процесс Reconciliation</h3>
+<h4 id="_3">Фазы процесса</h4>
+<ol>
+<li><strong>Render Phase</strong> - создание нового Virtual DOM дерева</li>
+<li><strong>Reconciliation Phase</strong> - сравнение с предыдущим деревом (diffing)</li>
+<li><strong>Commit Phase</strong> - применение изменений к реальному DOM</li>
+</ol>
+<pre><code class="language-javascript">// Пример изменения состояния
+function Counter() {
+  const [count, setCount] = useState(0);
+
+  // При вызове setCount(1):
+  // 1. Render Phase: React создает новое VDOM дерево
+  // 2. Reconciliation: Сравнивает старое дерево (count: 0) с новым (count: 1)
+  // 3. Commit: Обновляет текстовый узел в реальном DOM
+
+  return (
+    &lt;div&gt;
+      &lt;h1&gt;Count: {count}&lt;/h1&gt;
+      &lt;button onClick={() =&gt; setCount(count + 1)}&gt;
+        Increment
+      &lt;/button&gt;
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+<h3 id="diffing-algorithm">Diffing Algorithm</h3>
+<p>React использует эвристический O(n) алгоритм для сравнения деревьев вместо стандартного O(n³).</p>
+<h4 id="diffing">Основные принципы diffing</h4>
+<pre><code class="language-javascript">// 1. Разные типы элементов = полная перестройка
+// Старое дерево
+&lt;div&gt;
+  &lt;Counter /&gt;
+&lt;/div&gt;
+
+// Новое дерево  
+&lt;span&gt;
+  &lt;Counter /&gt;
+&lt;/span&gt;
+// Результат: Counter полностью размонтируется и монтируется заново
+
+// 2. Одинаковые типы = обновление props
+// Старое
+&lt;div className=&quot;old&quot; title=&quot;Old Title&quot;&gt;
+  Content
+&lt;/div&gt;
+
+// Новое
+&lt;div className=&quot;new&quot; title=&quot;New Title&quot;&gt;
+  Content  
+&lt;/div&gt;
+// Результат: Обновляются только className и title
+
+// 3. Компоненты одного типа = обновление props и state сохраняется
+function App() {
+  const [show, setShow] = useState(true);
+
+  return (
+    &lt;div&gt;
+      {show ? (
+        &lt;Counter start={0} /&gt; // State сохранится при изменении props
+      ) : (
+        &lt;span&gt;Hidden&lt;/span&gt;
+      )}
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+<h4 id="_4">Работа с списками и ключи</h4>
+<pre><code class="language-javascript">// ❌ Плохо: без ключей
+function TodoList({ todos }) {
+  return (
+    &lt;ul&gt;
+      {todos.map(todo =&gt; (
+        &lt;li&gt;{todo.text}&lt;/li&gt; // React использует индекс как ключ
+      ))}
+    &lt;/ul&gt;
+  );
+}
+
+// При добавлении элемента в начало:
+// [todo1, todo2] -&gt; [newTodo, todo1, todo2]
+// React думает что:
+// - первый li изменился с todo1 на newTodo
+// - второй li изменился с todo2 на todo1  
+// - третий li добавился с todo2
+// Результат: 2 обновления + 1 вставка вместо 1 вставки
+
+// ✅ Хорошо: с уникальными ключами
+function TodoList({ todos }) {
+  return (
+    &lt;ul&gt;
+      {todos.map(todo =&gt; (
+        &lt;li key={todo.id}&gt;{todo.text}&lt;/li&gt;
+      ))}
+    &lt;/ul&gt;
+  );
+}
+
+// С ключами React понимает:
+// - элемент с key=&quot;newTodo.id&quot; добавлен
+// - элементы с key=&quot;todo1.id&quot; и key=&quot;todo2.id&quot; не изменились
+// Результат: 1 вставка
+</code></pre>
+<h3 id="fiber-architecture-react-16">Fiber Architecture (React 16+)</h3>
+<p>В React 16 был введен Fiber — новая архитектура reconciliation, позволяющая прерывать и возобновлять работу.</p>
+<h4 id="fiber">Преимущества Fiber</h4>
+<pre><code class="language-javascript">// До Fiber (Stack Reconciler)
+function heavyComponent() {
+  // Блокирующая операция
+  const result = [];
+  for (let i = 0; i &lt; 100000; i++) {
+    result.push(&lt;div key={i}&gt;Item {i}&lt;/div&gt;);
+  }
+  return result; // Блокирует main thread до завершения
+}
+
+// С Fiber
+function optimizedComponent() {
+  const [items, setItems] = useState([]);
+
+  useEffect(() =&gt; {
+    // Fiber может прерывать работу для обработки событий высокого приоритета
+    const result = [];
+    for (let i = 0; i &lt; 100000; i++) {
+      result.push(&lt;div key={i}&gt;Item {i}&lt;/div&gt;);
+    }
+    setItems(result);
+  }, []);
+
+  return items;
+}
+</code></pre>
+<h4 id="units-of-work">Units of Work</h4>
+<pre><code class="language-javascript">// Fiber разбивает работу на units of work
+const fiberNode = {
+  type: 'div',
+  props: { className: 'container' },
+  parent: parentFiber,
+  child: firstChildFiber,
+  sibling: nextSiblingFiber,
+  alternate: previousVersionFiber, // Для сравнения
+  effectTag: 'UPDATE', // Тип изменения
+  // ... другие свойства
+};
+
+// Приоритеты в Fiber
+const priorities = {
+  IMMEDIATE: 1,        // Синхронные обновления (click handlers)
+  USER_BLOCKING: 2,    // Пользовательские взаимодействия
+  NORMAL: 3,           // Обычные обновления
+  LOW: 4,              // Фоновые операции
+  IDLE: 5              // Когда нет других задач
+};
+</code></pre>
+<h3 id="reconciliation_1">Оптимизация Reconciliation</h3>
+<h4 id="1-reactmemo">1. React.memo для предотвращения ненужных рендеров</h4>
+<pre><code class="language-javascript">// Компонент без оптимизации
+function ExpensiveChild({ data, onClick }) {
+  console.log('ExpensiveChild render');
+
+  return (
+    &lt;div onClick={onClick}&gt;
+      {data.map(item =&gt; (
+        &lt;div key={item.id}&gt;
+          {/* Сложная обработка */}
+          {processComplexData(item)}
+        &lt;/div&gt;
+      ))}
+    &lt;/div&gt;
+  );
+}
+
+// Оптимизированный компонент
+const OptimizedChild = React.memo(function ExpensiveChild({ data, onClick }) {
+  console.log('OptimizedChild render');
+
+  return (
+    &lt;div onClick={onClick}&gt;
+      {data.map(item =&gt; (
+        &lt;div key={item.id}&gt;
+          {processComplexData(item)}
+        &lt;/div&gt;
+      ))}
+    &lt;/div&gt;
+  );
+}, (prevProps, nextProps) =&gt; {
+  // Кастомное сравнение
+  return (
+    prevProps.data.length === nextProps.data.length &amp;&amp;
+    prevProps.onClick === nextProps.onClick
+  );
+});
+</code></pre>
+<h4 id="2-usememo-usecallback">2. useMemo и useCallback</h4>
+<pre><code class="language-javascript">function OptimizedParent({ items, filter }) {
+  // Мемоизация вычислений
+  const filteredItems = useMemo(() =&gt; {
+    console.log('Filtering items...');
+    return items.filter(item =&gt; item.category === filter);
+  }, [items, filter]);
+
+  // Мемоизация функций
+  const handleClick = useCallback((id) =&gt; {
+    console.log('Item clicked:', id);
+  }, []); // Стабильная ссылка
+
+  return (
+    &lt;OptimizedChild 
+      data={filteredItems}
+      onClick={handleClick}
+    /&gt;
+  );
+}
+</code></pre>
+<h4 id="3">3. Разделение состояния</h4>
+<pre><code class="language-javascript">// ❌ Плохо: все в одном состоянии
+function BadExample() {
+  const [state, setState] = useState({
+    count: 0,
+    text: '',
+    users: [],
+    filters: {}
+  });
+
+  // Любое изменение вызывает полный рендер
+  const updateCount = () =&gt; setState(prev =&gt; ({ ...prev, count: prev.count + 1 }));
+
+  return (
+    &lt;div&gt;
+      &lt;Counter count={state.count} onUpdate={updateCount} /&gt;
+      &lt;UserList users={state.users} filters={state.filters} /&gt;
+      &lt;TextInput value={state.text} onChange={(text) =&gt; setState(prev =&gt; ({ ...prev, text }))} /&gt;
+    &lt;/div&gt;
+  );
+}
+
+// ✅ Хорошо: разделенное состояние
+function GoodExample() {
+  const [count, setCount] = useState(0);
+  const [text, setText] = useState('');
+  const [users, setUsers] = useState([]);
+  const [filters, setFilters] = useState({});
+
+  // Изменение count не влияет на UserList и TextInput
+  return (
+    &lt;div&gt;
+      &lt;Counter count={count} onUpdate={setCount} /&gt;
+      &lt;UserList users={users} filters={filters} /&gt;
+      &lt;TextInput value={text} onChange={setText} /&gt;
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+<h3 id="_5">Практические примеры оптимизации</h3>
+<h4 id="_6">Виртуализация больших списков</h4>
+<pre><code class="language-javascript">import { FixedSizeList as List } from 'react-window';
+
+// ❌ Плохо: рендерим все элементы
+function HugeList({ items }) {
+  return (
+    &lt;div&gt;
+      {items.map((item, index) =&gt; (
+        &lt;div key={item.id} style={{ height: 50 }}&gt;
+          {item.name}
+        &lt;/div&gt;
+      ))}
+    &lt;/div&gt;
+  );
+}
+
+// ✅ Хорошо: виртуализированный список
+function VirtualizedList({ items }) {
+  const Row = ({ index, style }) =&gt; (
+    &lt;div style={style}&gt;
+      {items[index].name}
+    &lt;/div&gt;
+  );
+
+  return (
+    &lt;List
+      height={600}
+      itemCount={items.length}
+      itemSize={50}
+      width=&quot;100%&quot;
+    &gt;
+      {Row}
+    &lt;/List&gt;
+  );
+}
+</code></pre>
+<h4 id="_7">Ленивая загрузка компонентов</h4>
+<pre><code class="language-javascript">import { Suspense, lazy } from 'react';
+
+// Ленивая загрузка компонента
+const HeavyComponent = lazy(() =&gt; import('./HeavyComponent'));
+
+function App() {
+  const [showHeavy, setShowHeavy] = useState(false);
+
+  return (
+    &lt;div&gt;
+      &lt;button onClick={() =&gt; setShowHeavy(!showHeavy)}&gt;
+        Toggle Heavy Component
+      &lt;/button&gt;
+
+      {showHeavy &amp;&amp; (
+        &lt;Suspense fallback={&lt;div&gt;Loading...&lt;/div&gt;}&gt;
+          &lt;HeavyComponent /&gt;
+        &lt;/Suspense&gt;
+      )}
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+<h3 id="_8">Инструменты для анализа</h3>
+<h4 id="react-devtools-profiler">React DevTools Profiler</h4>
+<pre><code class="language-javascript">// Компонент для профилирования
+function ProfiledComponent() {
+  const [count, setCount] = useState(0);
+
+  // Дорогая операция
+  const expensiveValue = useMemo(() =&gt; {
+    console.log('Computing expensive value...');
+    let result = 0;
+    for (let i = 0; i &lt; 1000000; i++) {
+      result += i;
+    }
+    return result;
+  }, [count]);
+
+  return (
+    &lt;div&gt;
+      &lt;p&gt;Count: {count}&lt;/p&gt;
+      &lt;p&gt;Expensive: {expensiveValue}&lt;/p&gt;
+      &lt;button onClick={() =&gt; setCount(c =&gt; c + 1)}&gt;
+        Increment
+      &lt;/button&gt;
+    &lt;/div&gt;
+  );
+}
+
+// Использование Profiler API
+import { Profiler } from 'react';
+
+function onRenderCallback(id, phase, actualDuration, baseDuration, startTime, commitTime) {
+  console.log('Component render info:', {
+    id,
+    phase, // 'mount' или 'update'
+    actualDuration, // Время рендера этого компонента
+    baseDuration, // Время рендера без оптимизаций
+    startTime,
+    commitTime
+  });
+}
+
+function App() {
+  return (
+    &lt;Profiler id=&quot;ProfiledComponent&quot; onRender={onRenderCallback}&gt;
+      &lt;ProfiledComponent /&gt;
+    &lt;/Profiler&gt;
+  );
+}
+</code></pre>
+<h3 id="_9">Проблемы и решения</h3>
+<h4 id="1">1. Избыточные рендеры</h4>
+<pre><code class="language-javascript">// Проблема: компонент рендерится при каждом изменении родителя
+function Parent() {
+  const [count, setCount] = useState(0);
+  const [text, setText] = useState('');
+
+  return (
+    &lt;div&gt;
+      &lt;input value={text} onChange={(e) =&gt; setText(e.target.value)} /&gt;
+      &lt;button onClick={() =&gt; setCount(c =&gt; c + 1)}&gt;Count: {count}&lt;/button&gt;
+      &lt;ExpensiveChild data=&quot;static data&quot; /&gt; {/* Рендерится при изменении text */}
+    &lt;/div&gt;
+  );
+}
+
+// Решение 1: React.memo
+const MemoizedChild = React.memo(ExpensiveChild);
+
+// Решение 2: Разделение компонентов
+function Parent() {
+  return (
+    &lt;div&gt;
+      &lt;TextInput /&gt;
+      &lt;Counter /&gt;
+      &lt;ExpensiveChild data=&quot;static data&quot; /&gt;
+    &lt;/div&gt;
+  );
+}
+
+function TextInput() {
+  const [text, setText] = useState('');
+  return &lt;input value={text} onChange={(e) =&gt; setText(e.target.value)} /&gt;;
+}
+
+function Counter() {
+  const [count, setCount] = useState(0);
+  return &lt;button onClick={() =&gt; setCount(c =&gt; c + 1)}&gt;Count: {count}&lt;/button&gt;;
+}
+</code></pre>
+<h4 id="2">2. Неправильное использование ключей</h4>
+<pre><code class="language-javascript">// ❌ Плохо: индекс как ключ при динамических списках
+function TodoList({ todos }) {
+  return (
+    &lt;ul&gt;
+      {todos.map((todo, index) =&gt; (
+        &lt;TodoItem key={index} todo={todo} /&gt;
+      ))}
+    &lt;/ul&gt;
+  );
+}
+
+// При удалении первого элемента:
+// React думает что удален последний элемент
+// и обновляет все остальные
+
+// ✅ Хорошо: стабильные уникальные ключи
+function TodoList({ todos }) {
+  return (
+    &lt;ul&gt;
+      {todos.map(todo =&gt; (
+        &lt;TodoItem key={todo.id} todo={todo} /&gt;
+      ))}
+    &lt;/ul&gt;
+  );
+}
+
+// Для случаев без ID можно создать стабильный ключ
+const todosWithKeys = todos.map((todo, index) =&gt; ({
+  ...todo,
+  key: todo.id || `${todo.text}-${index}`
+}));
+</code></pre>
+<h3 id="advanced-patterns">Advanced Patterns</h3>
+<h4 id="render-props">Render Props для оптимизации</h4>
+<pre><code class="language-javascript">// Компонент с render prop
+function DataProvider({ children, render }) {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const fetchData = useCallback(async () =&gt; {
+    setLoading(true);
+    try {
+      const result = await fetch('/api/data');
+      setData(await result.json());
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() =&gt; {
+    fetchData();
+  }, [fetchData]);
+
+  // Render prop позволяет переиспользовать логику
+  // без создания лишних wrapper компонентов
+  return render({ data, loading, refetch: fetchData });
+}
+
+// Использование
+function App() {
+  return (
+    &lt;DataProvider
+      render={({ data, loading, refetch }) =&gt; (
+        &lt;div&gt;
+          {loading ? (
+            &lt;div&gt;Loading...&lt;/div&gt;
+          ) : (
+            &lt;div&gt;
+              &lt;pre&gt;{JSON.stringify(data, null, 2)}&lt;/pre&gt;
+              &lt;button onClick={refetch}&gt;Refresh&lt;/button&gt;
+            &lt;/div&gt;
+          )}
+        &lt;/div&gt;
+      )}
+    /&gt;
+  );
+}
+</code></pre>
+<h3 id="senior-">Senior-советы</h3>
+<ol>
+<li><strong>Понимайте diffing algorithm</strong> - это поможет оптимизировать структуру компонентов</li>
+<li><strong>Используйте ключи правильно</strong> - стабильные и уникальные для динамических списков</li>
+<li><strong>Профилируйте перед оптимизацией</strong> - React DevTools Profiler покажет реальные проблемы</li>
+<li><strong>Не злоупотребляйте мемоизацией</strong> - иногда пересчет быстрее проверки равенства</li>
+<li><strong>Разделяйте состояние</strong> - мелкие компоненты со своим состоянием часто лучше</li>
+<li><strong>Используйте Suspense и Error Boundaries</strong> для лучшего UX</li>
+<li><strong>Изучите Fiber</strong> - понимание архитектуры помогает в сложных случаях</li>
+</ol>
+<h3 id="_10">Заключение</h3>
+<p>Reconciliation и Virtual DOM — это основа производительности React. Понимание этих механизмов позволяет:
+- Писать более эффективные компоненты
+- Избегать типичных проблем производительности
+- Правильно структурировать приложение
+- Эффективно использовать инструменты оптимизации</p>
+<h2 id="_11">🔗 Связанные темы</h2>
+<ul>
+<li><a href="../rerender-optimization/">Оптимизация ререндеров</a></li>
+<li><a href="../use-effect/">useEffect и Side Effects</a></li>
+<li><a href="../concurrent-rendering/">Конкурентный рендеринг React 18</a></li>
+<li><a href="../../javascript/garbage-collection/">Garbage Collection и оптимизация памяти</a></li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../hoc_tts/" class="btn btn-neutral float-left" title="Higher-Order Components (HOC) (TTS)"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../reconciliation_small/" class="btn btn-neutral float-right" title="Reconciliation &amp; Virtual DOM - Senior Cheat Sheet (small)">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../hoc_tts/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../reconciliation_small/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../..";</script>
+    <script src="../../../js/theme_extra.js"></script>
+    <script src="../../../js/theme.js"></script>
+      <script src="../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

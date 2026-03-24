@@ -680,4 +680,4 @@ TypeScript в React проектах предоставляет:
 - [Let, Const, Var: Scope и Hoisting](scope-hoisting.md)
 - [Currying в JavaScript](currying.md)
 - [Архитектура состояния приложения](../architecture/state-architecture.md)
-- [Higher-Order Components (HOC)](../react/hoc.md)
+- [Higher-Order Components (HOC)](../re/hoc.md)

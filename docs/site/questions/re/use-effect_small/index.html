@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../../img/favicon.ico" />
+    <title>useEffect &amp; Side Effects - Senior Cheat Sheet - My Docs</title>
+    <link rel="stylesheet" href="../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "useEffect \u0026amp; Side Effects - Senior Cheat Sheet";
+        var mkdocs_page_input_path = "questions/re/use-effect_small.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../../.." class="icon icon-home"> My Docs
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../..">📚 Подготовка к собеседованию: JavaScript, React и архитектура</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Questions</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" >Architecture</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/ddd/">Domain-Driven Design (DDD) во Frontend</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/ddd_small/">Domain-Driven Design (DDD) во Frontend (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/ddd_tts/">Domain-Driven Design (DDD) во Frontend (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/microfrontends/">Микрофронтенды (Microfrontends)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/microfrontends_small/">Microfrontends - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/microfrontends_tts/">Микрофронтенды (Microfrontends) (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/offline-first/">Offline-first архитектура</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/offline-first_small/">Offline-First Архитектура (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/offline-first_tts/">Offline-first архитектура (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/resilient-frontend/">Устойчивая frontend архитектура</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/resilient-frontend_small/">Устойчивая Frontend Архитектура (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/resilient-frontend_tts/">Устойчивая frontend архитектура (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/state-management/">Архитектура управления состоянием</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/state-management_small/">State Management Architecture - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/state-management_tts/">Архитектура управления состоянием (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/websockets-realtime/">WebSockets и real-time коммуникация</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/websockets-realtime_small/">WebSockets и Real-time коммуникация (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/websockets-realtime_tts/">WebSockets и real-time коммуникация (TTS)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Javascript</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/async-programming/">Promises, Async/Await и Generators</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/async-programming_small/">Async Programming - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/async-programming_tts/">Promises, Async/Await и Generators (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/currying/">Currying в JavaScript</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/currying_small/">Currying - Шпаргалка (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/currying_tts/">Currying в JavaScript (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/event-loop/">Event Loop, Microtasks и Macrotasks</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/event-loop_small/">Event Loop - Шпаргалка (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/event-loop_tts/">Event Loop, Microtasks и Macrotasks (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/execution-model/">Модель выполнения JavaScript</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/execution-model_small/">JavaScript Execution Model - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/execution-model_tts/">Модель выполнения JavaScript (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/garbage-collection/">Garbage Collection и оптимизация памяти</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/garbage-collection_small/">Garbage Collection - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/garbage-collection_tts/">Garbage Collection и оптимизация памяти (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/scope-hoisting/">Let, Const, Var: Scope и Hoisting</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/scope-hoisting_small/">Let, Const, Var - Шпаргалка (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/scope-hoisting_tts/">Let, Const, Var: Scope и Hoisting (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/typing-comparison/">Сравнение типизации JS и Java</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/typing-comparison_small/">JS vs Java Typing + TypeScript - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/typing-comparison_tts/">Сравнение типизации JS и Java (TTS)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Performance</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../performance/optimization/">Оптимизация производительности frontend-приложений</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../performance/optimization_small/">Оптимизация производительности Frontend (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../performance/optimization_tts/">Оптимизация производительности frontend-приложений (TTS)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" >React</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../concurrent-rendering/">Конкурентный рендеринг React 18</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../concurrent-rendering_small/">React 18 Concurrent Rendering - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../concurrent-rendering_tts/">Конкурентный рендеринг React 18 (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../context-api/">Context API vs Redux</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../context-api_small/">Context API vs Redux - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../context-api_tts/">Context API vs Redux (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../hoc/">Higher-Order Components (HOC)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../hoc_small/">Higher-Order Components - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../hoc_tts/">Higher-Order Components (HOC) (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../reconciliation/">Reconciliation и Virtual DOM</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../reconciliation_small/">Reconciliation &amp; Virtual DOM - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../reconciliation_tts/">Reconciliation и Virtual DOM (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../rerender-optimization/">Оптимизация ререндеров в React</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../rerender-optimization_small/">React Rerender Optimization - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../rerender-optimization_tts/">Оптимизация ререндеров в React (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../ssr-rsc/">SSR/SSG и React Server Components</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../ssr-rsc_small/">SSR/SSG &amp; React Server Components - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../ssr-rsc_tts/">SSR/SSG и React Server Components (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../use-effect/">useEffect и Side Effects</a>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" href="#">useEffect &amp; Side Effects - Senior Cheat Sheet</a>
+    <ul class="current">
+    <li class="toctree-l3"><a class="reference internal" href="#_1">Основы</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#_2">Базовый синтаксис</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_3">Жизненный цикл</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#mount-componentdidmount">Mount (componentDidMount)</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#update-componentdidupdate">Update (componentDidUpdate)</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#unmount-componentwillunmount">Unmount (componentWillUnmount)</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_4">Типичные ошибки</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#1">1. Бесконечные циклы</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#2-cleanup">2. Забытый cleanup</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#3-missing-dependencies">3. Missing dependencies</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#4-async">4. Async функции</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_5">Основные паттерны</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#data-fetching-cleanup">Data Fetching с cleanup</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#abortcontroller">AbortController для отмены запросов</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#websocket-subscriptions">WebSocket subscriptions</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#event-listeners">Event Listeners</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#custom-hooks">Custom Hooks</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#usedebounce">useDebounce</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#useapi">useAPI</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#uselocalstorage">useLocalStorage</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#performance">Performance оптимизация</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#_6">Мемоизация зависимостей</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_7">Тестирование</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#useeffect">Альтернативы useEffect</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#senior-rules">Senior Rules</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#anti-patterns">Anti-patterns</a>
+    </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../use-effect_tts/">useEffect и Side Effects (TTS)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Security</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../security/frontend-security/">Безопасность Frontend Приложений</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../security/frontend-security_small/">Frontend Security (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../security/frontend-security_tts/">Безопасность Frontend Приложений (TTS)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Testing</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../testing/strategies/">Стратегии тестирования frontend-приложений</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../testing/strategies_small/">Стратегии тестирования Frontend (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../testing/strategies_tts/">Стратегии тестирования frontend-приложений (TTS)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Typescript</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../typescript/advanced-types/">Продвинутые типы TypeScript</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../typescript/advanced-types_small/">Продвинутые типы TypeScript (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../typescript/advanced-types_tts/">Продвинутые типы TypeScript (TTS)</a>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../..">My Docs</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Questions</li>
+          <li class="breadcrumb-item">React</li>
+      <li class="breadcrumb-item active">useEffect &amp; Side Effects - Senior Cheat Sheet</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="useeffect-side-effects-senior-cheat-sheet">useEffect &amp; Side Effects - Senior Cheat Sheet</h1>
+<h2 id="_1">Основы</h2>
+<p><strong>useEffect</strong> = Hook для побочных эффектов (side effects) в функциональных компонентах</p>
+<h3 id="_2">Базовый синтаксис</h3>
+<pre><code class="language-jsx">// После каждого рендера
+useEffect(() =&gt; {
+  document.title = `Count: ${count}`;
+});
+
+// При изменении зависимостей
+useEffect(() =&gt; {
+  console.log('Count changed');
+}, [count]);
+
+// Только при монтировании
+useEffect(() =&gt; {
+  console.log('Mounted');
+}, []);
+
+// С cleanup
+useEffect(() =&gt; {
+  const timer = setInterval(() =&gt; {}, 1000);
+  return () =&gt; clearInterval(timer); // Cleanup
+}, []);
+</code></pre>
+<h2 id="_3">Жизненный цикл</h2>
+<h3 id="mount-componentdidmount">Mount (componentDidMount)</h3>
+<pre><code class="language-jsx">useEffect(() =&gt; {
+  fetchData().then(setData);
+
+  return () =&gt; {
+    // Cleanup при unmount
+  };
+}, []); // Пустой массив = только при монтировании
+</code></pre>
+<h3 id="update-componentdidupdate">Update (componentDidUpdate)</h3>
+<pre><code class="language-jsx">useEffect(() =&gt; {
+  if (userId) {
+    fetchUser(userId).then(setUser);
+  }
+}, [userId]); // При изменении userId
+</code></pre>
+<h3 id="unmount-componentwillunmount">Unmount (componentWillUnmount)</h3>
+<pre><code class="language-jsx">useEffect(() =&gt; {
+  const handleResize = () =&gt; setWidth(window.innerWidth);
+  window.addEventListener('resize', handleResize);
+
+  return () =&gt; {
+    window.removeEventListener('resize', handleResize); // Cleanup
+  };
+}, []);
+</code></pre>
+<h2 id="_4">Типичные ошибки</h2>
+<h3 id="1">1. Бесконечные циклы</h3>
+<pre><code class="language-jsx">// ❌ Бесконечный цикл
+useEffect(() =&gt; {
+  setData([1, 2, 3]); // Новый массив каждый рендер
+}, [data]);
+
+// ✅ Правильно
+useEffect(() =&gt; {
+  setData([1, 2, 3]);
+}, []); // Пустые зависимости
+</code></pre>
+<h3 id="2-cleanup">2. Забытый cleanup</h3>
+<pre><code class="language-jsx">// ❌ Memory leak
+useEffect(() =&gt; {
+  setInterval(() =&gt; {}, 1000); // Нет cleanup!
+}, []);
+
+// ✅ Правильно
+useEffect(() =&gt; {
+  const timer = setInterval(() =&gt; {}, 1000);
+  return () =&gt; clearInterval(timer);
+}, []);
+</code></pre>
+<h3 id="3-missing-dependencies">3. Missing dependencies</h3>
+<pre><code class="language-jsx">// ❌ ESLint exhaustive-deps предупреждение
+useEffect(() =&gt; {
+  fetchUser(userId); // userId не в зависимостях!
+}, []);
+
+// ✅ Правильно
+useEffect(() =&gt; {
+  if (userId) {
+    fetchUser(userId);
+  }
+}, [userId]);
+</code></pre>
+<h3 id="4-async">4. Async функции</h3>
+<pre><code class="language-jsx">// ❌ Неправильно
+useEffect(async () =&gt; {
+  const data = await fetch('/api'); // Warning!
+}, []);
+
+// ✅ Правильно
+useEffect(() =&gt; {
+  const loadData = async () =&gt; {
+    const data = await fetch('/api');
+    setData(await data.json());
+  };
+  loadData();
+}, []);
+</code></pre>
+<h2 id="_5">Основные паттерны</h2>
+<h3 id="data-fetching-cleanup">Data Fetching с cleanup</h3>
+<pre><code class="language-jsx">function UserProfile({ userId }) {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() =&gt; {
+    let cancelled = false;
+
+    const fetchUser = async () =&gt; {
+      setLoading(true);
+      try {
+        const response = await fetch(`/api/users/${userId}`);
+        const userData = await response.json();
+        if (!cancelled) setUser(userData);
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    };
+
+    if (userId) fetchUser();
+    return () =&gt; { cancelled = true; };
+  }, [userId]);
+
+  return loading ? &lt;div&gt;Loading...&lt;/div&gt; : &lt;div&gt;{user?.name}&lt;/div&gt;;
+}
+</code></pre>
+<h3 id="abortcontroller">AbortController для отмены запросов</h3>
+<pre><code class="language-jsx">useEffect(() =&gt; {
+  const controller = new AbortController();
+
+  fetch('/api/data', { signal: controller.signal })
+    .then(r =&gt; r.json())
+    .then(setData)
+    .catch(err =&gt; err.name !== 'AbortError' &amp;&amp; setError(err));
+
+  return () =&gt; controller.abort();
+}, []);
+</code></pre>
+<h3 id="websocket-subscriptions">WebSocket subscriptions</h3>
+<pre><code class="language-jsx">useEffect(() =&gt; {
+  const ws = new WebSocket(`ws://localhost:8080/chat/${roomId}`);
+
+  ws.onmessage = (event) =&gt; {
+    const message = JSON.parse(event.data);
+    setMessages(prev =&gt; [...prev, message]);
+  };
+
+  return () =&gt; {
+    if (ws.readyState === WebSocket.OPEN) {
+      ws.close();
+    }
+  };
+}, [roomId]);
+</code></pre>
+<h3 id="event-listeners">Event Listeners</h3>
+<pre><code class="language-jsx">useEffect(() =&gt; {
+  const handleKeyDown = (e) =&gt; {
+    if (e.key === 'Escape') setModalOpen(false);
+  };
+
+  document.addEventListener('keydown', handleKeyDown);
+  return () =&gt; document.removeEventListener('keydown', handleKeyDown);
+}, []);
+</code></pre>
+<h2 id="custom-hooks">Custom Hooks</h2>
+<h3 id="usedebounce">useDebounce</h3>
+<pre><code class="language-jsx">function useDebounce(value, delay) {
+  const [debouncedValue, setDebouncedValue] = useState(value);
+
+  useEffect(() =&gt; {
+    const handler = setTimeout(() =&gt; setDebouncedValue(value), delay);
+    return () =&gt; clearTimeout(handler);
+  }, [value, delay]);
+
+  return debouncedValue;
+}
+</code></pre>
+<h3 id="useapi">useAPI</h3>
+<pre><code class="language-jsx">function useAPI(url) {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  useEffect(() =&gt; {
+    if (!url) return;
+
+    let cancelled = false;
+    const controller = new AbortController();
+
+    const fetchData = async () =&gt; {
+      setLoading(true);
+      setError(null);
+
+      try {
+        const response = await fetch(url, { signal: controller.signal });
+        const result = await response.json();
+        if (!cancelled) setData(result);
+      } catch (err) {
+        if (!cancelled &amp;&amp; err.name !== 'AbortError') {
+          setError(err.message);
+        }
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    };
+
+    fetchData();
+    return () =&gt; {
+      cancelled = true;
+      controller.abort();
+    };
+  }, [url]);
+
+  return { data, loading, error };
+}
+</code></pre>
+<h3 id="uselocalstorage">useLocalStorage</h3>
+<pre><code class="language-jsx">function useLocalStorage(key, initialValue) {
+  const [value, setValue] = useState(() =&gt; {
+    try {
+      return JSON.parse(localStorage.getItem(key)) || initialValue;
+    } catch {
+      return initialValue;
+    }
+  });
+
+  useEffect(() =&gt; {
+    localStorage.setItem(key, JSON.stringify(value));
+  }, [key, value]);
+
+  return [value, setValue];
+}
+</code></pre>
+<h2 id="performance">Performance оптимизация</h2>
+<h3 id="_6">Мемоизация зависимостей</h3>
+<pre><code class="language-jsx">function Component({ filters, sortBy }) {
+  const [data, setData] = useState([]);
+
+  // Стабильная ссылка на объект
+  const queryParams = useMemo(() =&gt; ({
+    ...filters,
+    sortBy
+  }), [filters, sortBy]);
+
+  useEffect(() =&gt; {
+    fetchData(queryParams).then(setData);
+  }, [queryParams]);
+
+  return &lt;div&gt;{data.length} items&lt;/div&gt;;
+}
+</code></pre>
+<h2 id="_7">Тестирование</h2>
+<pre><code class="language-jsx">import { renderHook, waitFor } from '@testing-library/react';
+
+test('useAPI loads data', async () =&gt; {
+  global.fetch = jest.fn().mockResolvedValue({
+    ok: true,
+    json: () =&gt; Promise.resolve({ id: 1, name: 'Test' })
+  });
+
+  const { result } = renderHook(() =&gt; useAPI('/api/test'));
+
+  expect(result.current.loading).toBe(true);
+
+  await waitFor(() =&gt; {
+    expect(result.current.loading).toBe(false);
+    expect(result.current.data).toEqual({ id: 1, name: 'Test' });
+  });
+});
+</code></pre>
+<h2 id="useeffect">Альтернативы useEffect</h2>
+<pre><code class="language-jsx">// Для вычислений - useMemo вместо useEffect
+const expensiveValue = useMemo(() =&gt; 
+  computeExpensive(data), [data]
+);
+
+// Для событий - useCallback
+const handleClick = useCallback((id) =&gt; 
+  onItemClick(id), [onItemClick]
+);
+
+// Для внешних подписок - useSyncExternalStore
+const width = useSyncExternalStore(
+  (callback) =&gt; {
+    window.addEventListener('resize', callback);
+    return () =&gt; window.removeEventListener('resize', callback);
+  },
+  () =&gt; window.innerWidth
+);
+</code></pre>
+<h2 id="senior-rules">Senior Rules</h2>
+<ol>
+<li><strong>ESLint exhaustive-deps</strong> - всегда следуй правилу</li>
+<li><strong>Cleanup functions</strong> - предотвращай memory leaks</li>
+<li><strong>AbortController</strong> для отмены fetch запросов</li>
+<li><strong>Separate effects</strong> - один эффект = одна ответственность</li>
+<li><strong>Custom hooks</strong> для переиспользования логики</li>
+<li><strong>useMemo for objects</strong> в зависимостях</li>
+<li><strong>Race conditions</strong> - защищайся флагами cancelled</li>
+<li><strong>Conditional effects</strong> - проверяй условия внутри эффекта</li>
+</ol>
+<h2 id="anti-patterns">Anti-patterns</h2>
+<pre><code class="language-jsx">// ❌ Async useEffect
+useEffect(async () =&gt; { ... });
+
+// ❌ Мутация props/state
+useEffect(() =&gt; {
+  props.data.push(newItem); // Мутация!
+});
+
+// ❌ Эффекты без cleanup
+useEffect(() =&gt; {
+  setInterval(() =&gt; {}, 1000); // Leak!
+}, []);
+
+// ❌ Объекты в зависимостях без memo
+useEffect(() =&gt; {
+  fetchData({ filter: 'active' }); // Новый объект каждый рендер
+}, [{ filter: 'active' }]);
+</code></pre>
+<p><strong>Главное</strong>: useEffect для side effects только! Для вычислений используй useMemo, для событий - useCallback.</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../use-effect/" class="btn btn-neutral float-left" title="useEffect и Side Effects"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../use-effect_tts/" class="btn btn-neutral float-right" title="useEffect и Side Effects (TTS)">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../use-effect/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../use-effect_tts/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../..";</script>
+    <script src="../../../js/theme_extra.js"></script>
+    <script src="../../../js/theme.js"></script>
+      <script src="../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

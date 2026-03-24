@@ -686,6 +686,6 @@ const useAsyncWithCleanup = (asyncFn, deps) => {
 ## 🔗 Связанные темы
 
 - [Event Loop, Microtasks и Macrotasks](event-loop.md)
-- [useEffect и Side Effects](../react/use-effect.md)
-- [Конкурентный рендеринг React 18](../react/concurrent-rendering.md)
+- [useEffect и Side Effects](../re/use-effect.md)
+- [Конкурентный рендеринг React 18](../re/concurrent-rendering.md)
 - [Архитектура состояния приложения](../architecture/state-architecture.md)

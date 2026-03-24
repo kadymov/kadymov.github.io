@@ -112,5 +112,5 @@ function heavyTaskAsync(start = 0) {
 ## 🔗 Связанные темы
 
 - [Promises, Async/Await и Generators](async-programming.md)
-- [useEffect и Side Effects](../react/use-effect.md)
-- [Конкурентный рендеринг React 18](../react/concurrent-rendering.md)
+- [useEffect и Side Effects](../re/use-effect.md)
+- [Конкурентный рендеринг React 18](../re/concurrent-rendering.md)

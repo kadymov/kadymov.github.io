@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../../img/favicon.ico" />
+    <title>Оптимизация ререндеров в React - My Docs</title>
+    <link rel="stylesheet" href="../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "\u041e\u043f\u0442\u0438\u043c\u0438\u0437\u0430\u0446\u0438\u044f \u0440\u0435\u0440\u0435\u043d\u0434\u0435\u0440\u043e\u0432 \u0432 React";
+        var mkdocs_page_input_path = "questions/re/rerender-optimization.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../../.." class="icon icon-home"> My Docs
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../..">📚 Подготовка к собеседованию: JavaScript, React и архитектура</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Questions</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" >Architecture</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/ddd/">Domain-Driven Design (DDD) во Frontend</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/ddd_small/">Domain-Driven Design (DDD) во Frontend (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/ddd_tts/">Domain-Driven Design (DDD) во Frontend (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/microfrontends/">Микрофронтенды (Microfrontends)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/microfrontends_small/">Microfrontends - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/microfrontends_tts/">Микрофронтенды (Microfrontends) (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/offline-first/">Offline-first архитектура</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/offline-first_small/">Offline-First Архитектура (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/offline-first_tts/">Offline-first архитектура (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/resilient-frontend/">Устойчивая frontend архитектура</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/resilient-frontend_small/">Устойчивая Frontend Архитектура (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/resilient-frontend_tts/">Устойчивая frontend архитектура (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/state-management/">Архитектура управления состоянием</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/state-management_small/">State Management Architecture - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/state-management_tts/">Архитектура управления состоянием (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/websockets-realtime/">WebSockets и real-time коммуникация</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/websockets-realtime_small/">WebSockets и Real-time коммуникация (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/websockets-realtime_tts/">WebSockets и real-time коммуникация (TTS)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Javascript</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/async-programming/">Promises, Async/Await и Generators</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/async-programming_small/">Async Programming - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/async-programming_tts/">Promises, Async/Await и Generators (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/currying/">Currying в JavaScript</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/currying_small/">Currying - Шпаргалка (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/currying_tts/">Currying в JavaScript (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/event-loop/">Event Loop, Microtasks и Macrotasks</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/event-loop_small/">Event Loop - Шпаргалка (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/event-loop_tts/">Event Loop, Microtasks и Macrotasks (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/execution-model/">Модель выполнения JavaScript</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/execution-model_small/">JavaScript Execution Model - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/execution-model_tts/">Модель выполнения JavaScript (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/garbage-collection/">Garbage Collection и оптимизация памяти</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/garbage-collection_small/">Garbage Collection - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/garbage-collection_tts/">Garbage Collection и оптимизация памяти (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/scope-hoisting/">Let, Const, Var: Scope и Hoisting</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/scope-hoisting_small/">Let, Const, Var - Шпаргалка (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/scope-hoisting_tts/">Let, Const, Var: Scope и Hoisting (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/typing-comparison/">Сравнение типизации JS и Java</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/typing-comparison_small/">JS vs Java Typing + TypeScript - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/typing-comparison_tts/">Сравнение типизации JS и Java (TTS)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Performance</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../performance/optimization/">Оптимизация производительности frontend-приложений</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../performance/optimization_small/">Оптимизация производительности Frontend (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../performance/optimization_tts/">Оптимизация производительности frontend-приложений (TTS)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" >React</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../concurrent-rendering/">Конкурентный рендеринг React 18</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../concurrent-rendering_small/">React 18 Concurrent Rendering - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../concurrent-rendering_tts/">Конкурентный рендеринг React 18 (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../context-api/">Context API vs Redux</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../context-api_small/">Context API vs Redux - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../context-api_tts/">Context API vs Redux (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../hoc/">Higher-Order Components (HOC)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../hoc_small/">Higher-Order Components - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../hoc_tts/">Higher-Order Components (HOC) (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../reconciliation/">Reconciliation и Virtual DOM</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../reconciliation_small/">Reconciliation &amp; Virtual DOM - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../reconciliation_tts/">Reconciliation и Virtual DOM (TTS)</a>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" href="#">Оптимизация ререндеров в React</a>
+    <ul class="current">
+    <li class="toctree-l3"><a class="reference internal" href="#_1">📋 Вопрос</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_2">💡 Ответ</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#react_1">Основы ререндеринга в React</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#reactmemo-">React.memo - Мемоизация компонентов</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#usememo-">useMemo - Мемоизация значений</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#usecallback-">useCallback - Мемоизация функций</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#react-devtools-profiler">Диагностика с React DevTools Profiler</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#_12">Правильное использование ключей</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#_15">Селекторы контекста</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#usesyncexternalstore">useSyncExternalStore</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#_17">Виртуализация списков</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#_20">Лучшие практики и антипаттерны</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#senior-">Senior-советы</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#_23">Инструменты для отладки</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../rerender-optimization_small/">React Rerender Optimization - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../rerender-optimization_tts/">Оптимизация ререндеров в React (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../ssr-rsc/">SSR/SSG и React Server Components</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../ssr-rsc_small/">SSR/SSG &amp; React Server Components - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../ssr-rsc_tts/">SSR/SSG и React Server Components (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../use-effect/">useEffect и Side Effects</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../use-effect_small/">useEffect &amp; Side Effects - Senior Cheat Sheet</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../use-effect_tts/">useEffect и Side Effects (TTS)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Security</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../security/frontend-security/">Безопасность Frontend Приложений</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../security/frontend-security_small/">Frontend Security (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../security/frontend-security_tts/">Безопасность Frontend Приложений (TTS)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Testing</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../testing/strategies/">Стратегии тестирования frontend-приложений</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../testing/strategies_small/">Стратегии тестирования Frontend (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../testing/strategies_tts/">Стратегии тестирования frontend-приложений (TTS)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Typescript</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../typescript/advanced-types/">Продвинутые типы TypeScript</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../typescript/advanced-types_small/">Продвинутые типы TypeScript (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../typescript/advanced-types_tts/">Продвинутые типы TypeScript (TTS)</a>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../..">My Docs</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Questions</li>
+          <li class="breadcrumb-item">React</li>
+      <li class="breadcrumb-item active">Оптимизация ререндеров в React</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="react">Оптимизация ререндеров в React</h1>
+<h2 id="_1">📋 Вопрос</h2>
+<p>Оптимизация ререндеров в React: когда и как применять React.memo, useMemo, useCallback? Как диагностировать лишние ререндеры (React DevTools Profiler), выбирать ключи, использовать селекторы контекста/useSyncExternalStore и виртуализацию списков?</p>
+<h2 id="_2">💡 Ответ</h2>
+<p>Оптимизация ререндеров — ключевой аспект производительности React приложений. Понимание того, когда и как применять различные техники оптимизации, поможет создавать быстрые и отзывчивые пользовательские интерфейсы.</p>
+<h3 id="react_1">Основы ререндеринга в React</h3>
+<h4 id="_3">Когда происходят ререндеры</h4>
+<pre><code class="language-javascript">function Parent() {
+  const [count, setCount] = useState(0);
+  const [name, setName] = useState('John');
+
+  console.log('Parent renders');
+
+  return (
+    &lt;div&gt;
+      &lt;button onClick={() =&gt; setCount(c =&gt; c + 1)}&gt;
+        Count: {count}
+      &lt;/button&gt;
+      &lt;input 
+        value={name} 
+        onChange={(e) =&gt; setName(e.target.value)} 
+      /&gt;
+
+      {/* Child перерендерится при любом изменении в Parent */}
+      &lt;Child /&gt;
+      &lt;ExpensiveChild data={[1, 2, 3]} /&gt;
+    &lt;/div&gt;
+  );
+}
+
+function Child() {
+  console.log('Child renders'); // Рендерится при каждом изменении в Parent
+  return &lt;div&gt;I'm a child&lt;/div&gt;;
+}
+
+function ExpensiveChild({ data }) {
+  console.log('ExpensiveChild renders');
+
+  // Тяжелые вычисления при каждом рендере
+  const processedData = data.map(item =&gt; {
+    // Сложная обработка
+    return performExpensiveOperation(item);
+  });
+
+  return &lt;div&gt;{processedData.join(', ')}&lt;/div&gt;;
+}
+</code></pre>
+<h3 id="reactmemo-">React.memo - Мемоизация компонентов</h3>
+<h4 id="_4">Базовое использование</h4>
+<pre><code class="language-javascript">// Компонент без оптимизации
+function UserCard({ user }) {
+  console.log('UserCard renders for:', user.name);
+
+  return (
+    &lt;div className=&quot;user-card&quot;&gt;
+      &lt;img src={user.avatar} alt={user.name} /&gt;
+      &lt;h3&gt;{user.name}&lt;/h3&gt;
+      &lt;p&gt;{user.email}&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}
+
+// Оптимизированный компонент
+const MemoizedUserCard = React.memo(function UserCard({ user }) {
+  console.log('MemoizedUserCard renders for:', user.name);
+
+  return (
+    &lt;div className=&quot;user-card&quot;&gt;
+      &lt;img src={user.avatar} alt={user.name} /&gt;
+      &lt;h3&gt;{user.name}&lt;/h3&gt;
+      &lt;p&gt;{user.email}&lt;/p&gt;
+    &lt;/div&gt;
+  );
+});
+
+// Использование
+function UserList({ users, onUserClick }) {
+  const [filter, setFilter] = useState('');
+
+  return (
+    &lt;div&gt;
+      &lt;input 
+        value={filter}
+        onChange={(e) =&gt; setFilter(e.target.value)}
+        placeholder=&quot;Filter users...&quot;
+      /&gt;
+
+      {users.map(user =&gt; (
+        &lt;MemoizedUserCard
+          key={user.id}
+          user={user}
+          onClick={onUserClick} // ⚠️ Может вызывать ререндеры
+        /&gt;
+      ))}
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+<h4 id="_5">Кастомное сравнение</h4>
+<pre><code class="language-javascript">// Компонент с кастомной логикой сравнения
+const OptimizedUserCard = React.memo(function UserCard({ user, theme, onClick }) {
+  return (
+    &lt;div className={`user-card user-card--${theme}`}&gt;
+      &lt;h3&gt;{user.name}&lt;/h3&gt;
+      &lt;p&gt;{user.email}&lt;/p&gt;
+      &lt;button onClick={() =&gt; onClick(user.id)}&gt;
+        View Profile
+      &lt;/button&gt;
+    &lt;/div&gt;
+  );
+}, (prevProps, nextProps) =&gt; {
+  // Кастомная логика сравнения
+  return (
+    prevProps.user.id === nextProps.user.id &amp;&amp;
+    prevProps.user.name === nextProps.user.name &amp;&amp;
+    prevProps.user.email === nextProps.user.email &amp;&amp;
+    prevProps.theme === nextProps.theme &amp;&amp;
+    prevProps.onClick === nextProps.onClick
+  );
+});
+
+// Или более общий подход
+const deepCompareUserCard = React.memo(UserCard, (prevProps, nextProps) =&gt; {
+  // Глубокое сравнение только нужных полей
+  const userEqual = isEqual(prevProps.user, nextProps.user);
+  const themeEqual = prevProps.theme === nextProps.theme;
+  const handlerEqual = prevProps.onClick === nextProps.onClick;
+
+  return userEqual &amp;&amp; themeEqual &amp;&amp; handlerEqual;
+});
+</code></pre>
+<h3 id="usememo-">useMemo - Мемоизация значений</h3>
+<h4 id="_6">Дорогие вычисления</h4>
+<pre><code class="language-javascript">function ProductList({ products, filters, sortBy }) {
+  // ❌ Плохо: вычисления при каждом рендере
+  const filteredProducts = products
+    .filter(product =&gt; {
+      return Object.entries(filters).every(([key, value]) =&gt; {
+        if (!value) return true;
+        return product[key].toLowerCase().includes(value.toLowerCase());
+      });
+    })
+    .sort((a, b) =&gt; {
+      if (sortBy === 'price') return a.price - b.price;
+      if (sortBy === 'name') return a.name.localeCompare(b.name);
+      return 0;
+    });
+
+  return (
+    &lt;div&gt;
+      {filteredProducts.map(product =&gt; (
+        &lt;ProductCard key={product.id} product={product} /&gt;
+      ))}
+    &lt;/div&gt;
+  );
+}
+
+// ✅ Хорошо: мемоизированные вычисления
+function OptimizedProductList({ products, filters, sortBy }) {
+  const filteredAndSortedProducts = useMemo(() =&gt; {
+    console.log('Recalculating filtered products');
+
+    return products
+      .filter(product =&gt; {
+        return Object.entries(filters).every(([key, value]) =&gt; {
+          if (!value) return true;
+          return product[key].toLowerCase().includes(value.toLowerCase());
+        });
+      })
+      .sort((a, b) =&gt; {
+        if (sortBy === 'price') return a.price - b.price;
+        if (sortBy === 'name') return a.name.localeCompare(b.name);
+        return 0;
+      });
+  }, [products, filters, sortBy]);
+
+  // Отдельная мемоизация для статистики
+  const statistics = useMemo(() =&gt; {
+    console.log('Recalculating statistics');
+
+    return {
+      total: filteredAndSortedProducts.length,
+      averagePrice: filteredAndSortedProducts.reduce((sum, p) =&gt; sum + p.price, 0) / filteredAndSortedProducts.length,
+      categories: [...new Set(filteredAndSortedProducts.map(p =&gt; p.category))]
+    };
+  }, [filteredAndSortedProducts]);
+
+  return (
+    &lt;div&gt;
+      &lt;div className=&quot;statistics&quot;&gt;
+        &lt;p&gt;Total: {statistics.total}&lt;/p&gt;
+        &lt;p&gt;Average Price: ${statistics.averagePrice.toFixed(2)}&lt;/p&gt;
+        &lt;p&gt;Categories: {statistics.categories.join(', ')}&lt;/p&gt;
+      &lt;/div&gt;
+
+      {filteredAndSortedProducts.map(product =&gt; (
+        &lt;ProductCard key={product.id} product={product} /&gt;
+      ))}
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+<h4 id="_7">Мемоизация объектов и массивов</h4>
+<pre><code class="language-javascript">function ComponentWithObjects({ items, config }) {
+  // ❌ Плохо: новый объект при каждом рендере
+  const tableConfig = {
+    sortable: true,
+    filterable: true,
+    pageSize: config.pageSize || 10
+  };
+
+  // ❌ Плохо: новый массив при каждом рендере
+  const processedItems = items.map(item =&gt; ({
+    ...item,
+    displayName: `${item.firstName} ${item.lastName}`
+  }));
+
+  return &lt;DataTable config={tableConfig} items={processedItems} /&gt;;
+}
+
+// ✅ Хорошо: мемоизированные объекты
+function OptimizedComponentWithObjects({ items, config }) {
+  const tableConfig = useMemo(() =&gt; ({
+    sortable: true,
+    filterable: true,
+    pageSize: config.pageSize || 10
+  }), [config.pageSize]);
+
+  const processedItems = useMemo(() =&gt; 
+    items.map(item =&gt; ({
+      ...item,
+      displayName: `${item.firstName} ${item.lastName}`
+    })), 
+    [items]
+  );
+
+  return &lt;DataTable config={tableConfig} items={processedItems} /&gt;;
+}
+</code></pre>
+<h3 id="usecallback-">useCallback - Мемоизация функций</h3>
+<h4 id="_8">Стабильные ссылки на функции</h4>
+<pre><code class="language-javascript">function TodoList({ todos, onToggle, onDelete }) {
+  const [filter, setFilter] = useState('all');
+
+  // ❌ Плохо: новые функции при каждом рендере
+  const handleToggle = (id) =&gt; {
+    onToggle(id);
+  };
+
+  const handleDelete = (id) =&gt; {
+    onDelete(id);
+  };
+
+  const filteredTodos = todos.filter(todo =&gt; {
+    if (filter === 'active') return !todo.completed;
+    if (filter === 'completed') return todo.completed;
+    return true;
+  });
+
+  return (
+    &lt;div&gt;
+      &lt;FilterButtons current={filter} onChange={setFilter} /&gt;
+
+      {filteredTodos.map(todo =&gt; (
+        &lt;TodoItem
+          key={todo.id}
+          todo={todo}
+          onToggle={handleToggle}    // Новая функция каждый раз
+          onDelete={handleDelete}    // Новая функция каждый раз
+        /&gt;
+      ))}
+    &lt;/div&gt;
+  );
+}
+
+// ✅ Хорошо: мемоизированные функции
+function OptimizedTodoList({ todos, onToggle, onDelete }) {
+  const [filter, setFilter] = useState('all');
+
+  const handleToggle = useCallback((id) =&gt; {
+    onToggle(id);
+  }, [onToggle]);
+
+  const handleDelete = useCallback((id) =&gt; {
+    onDelete(id);
+  }, [onDelete]);
+
+  const filteredTodos = useMemo(() =&gt; {
+    return todos.filter(todo =&gt; {
+      if (filter === 'active') return !todo.completed;
+      if (filter === 'completed') return todo.completed;
+      return true;
+    });
+  }, [todos, filter]);
+
+  return (
+    &lt;div&gt;
+      &lt;FilterButtons current={filter} onChange={setFilter} /&gt;
+
+      {filteredTodos.map(todo =&gt; (
+        &lt;MemoizedTodoItem
+          key={todo.id}
+          todo={todo}
+          onToggle={handleToggle}
+          onDelete={handleDelete}
+        /&gt;
+      ))}
+    &lt;/div&gt;
+  );
+}
+
+const MemoizedTodoItem = React.memo(TodoItem);
+</code></pre>
+<h4 id="_9">Сложные обработчики событий</h4>
+<pre><code class="language-javascript">function FormComponent({ initialData, onSubmit }) {
+  const [formData, setFormData] = useState(initialData);
+  const [errors, setErrors] = useState({});
+
+  // Мемоизированная функция валидации
+  const validateField = useCallback((name, value) =&gt; {
+    const validators = {
+      email: (val) =&gt; /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val) || 'Invalid email',
+      password: (val) =&gt; val.length &gt;= 8 || 'Password must be at least 8 characters',
+      confirmPassword: (val) =&gt; val === formData.password || 'Passwords do not match'
+    };
+
+    const validator = validators[name];
+    return validator ? validator(value) === true ? null : validator(value) : null;
+  }, [formData.password]);
+
+  const handleFieldChange = useCallback((name, value) =&gt; {
+    setFormData(prev =&gt; ({ ...prev, [name]: value }));
+
+    // Валидация на лету
+    const error = validateField(name, value);
+    setErrors(prev =&gt; ({ ...prev, [name]: error }));
+  }, [validateField]);
+
+  const handleSubmit = useCallback((e) =&gt; {
+    e.preventDefault();
+
+    // Валидация всех полей
+    const newErrors = {};
+    Object.entries(formData).forEach(([name, value]) =&gt; {
+      const error = validateField(name, value);
+      if (error) newErrors[name] = error;
+    });
+
+    if (Object.keys(newErrors).length === 0) {
+      onSubmit(formData);
+    } else {
+      setErrors(newErrors);
+    }
+  }, [formData, validateField, onSubmit]);
+
+  return (
+    &lt;form onSubmit={handleSubmit}&gt;
+      &lt;FormField
+        name=&quot;email&quot;
+        value={formData.email}
+        error={errors.email}
+        onChange={handleFieldChange}
+      /&gt;
+      &lt;FormField
+        name=&quot;password&quot;
+        type=&quot;password&quot;
+        value={formData.password}
+        error={errors.password}
+        onChange={handleFieldChange}
+      /&gt;
+      &lt;FormField
+        name=&quot;confirmPassword&quot;
+        type=&quot;password&quot;
+        value={formData.confirmPassword}
+        error={errors.confirmPassword}
+        onChange={handleFieldChange}
+      /&gt;
+
+      &lt;button type=&quot;submit&quot;&gt;Submit&lt;/button&gt;
+    &lt;/form&gt;
+  );
+}
+
+const FormField = React.memo(function FormField({ name, value, error, onChange, ...props }) {
+  return (
+    &lt;div&gt;
+      &lt;input
+        {...props}
+        value={value}
+        onChange={(e) =&gt; onChange(name, e.target.value)}
+      /&gt;
+      {error &amp;&amp; &lt;span className=&quot;error&quot;&gt;{error}&lt;/span&gt;}
+    &lt;/div&gt;
+  );
+});
+</code></pre>
+<h3 id="react-devtools-profiler">Диагностика с React DevTools Profiler</h3>
+<h4 id="_10">Настройка профилирования</h4>
+<pre><code class="language-javascript">import { Profiler } from 'react';
+
+function App() {
+  const handleRender = (id, phase, actualDuration, baseDuration, startTime, commitTime) =&gt; {
+    console.log('Profiler data:', {
+      id,                    // Идентификатор Profiler
+      phase,                 // &quot;mount&quot; или &quot;update&quot;
+      actualDuration,        // Время, потраченное на рендер
+      baseDuration,          // Время без оптимизаций
+      startTime,             // Когда начался рендер
+      commitTime,            // Когда изменения были применены
+      interactions: new Set() // Взаимодействия, вызвавшие рендер
+    });
+  };
+
+  return (
+    &lt;div&gt;
+      &lt;Profiler id=&quot;Navigation&quot; onRender={handleRender}&gt;
+        &lt;Navigation /&gt;
+      &lt;/Profiler&gt;
+
+      &lt;Profiler id=&quot;MainContent&quot; onRender={handleRender}&gt;
+        &lt;MainContent /&gt;
+      &lt;/Profiler&gt;
+
+      &lt;Profiler id=&quot;Sidebar&quot; onRender={handleRender}&gt;
+        &lt;Sidebar /&gt;
+      &lt;/Profiler&gt;
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+<h4 id="_11">Создание хука для профилирования</h4>
+<pre><code class="language-javascript">function useRenderTracker(componentName) {
+  const renderCount = useRef(0);
+  const lastRenderTime = useRef(Date.now());
+
+  renderCount.current += 1;
+
+  useEffect(() =&gt; {
+    const now = Date.now();
+    const timeSinceLastRender = now - lastRenderTime.current;
+
+    console.log(`${componentName} render #${renderCount.current}`, {
+      timeSinceLastRender,
+      timestamp: new Date().toISOString()
+    });
+
+    lastRenderTime.current = now;
+  });
+
+  return renderCount.current;
+}
+
+// Использование
+function MyComponent({ data }) {
+  const renderCount = useRenderTracker('MyComponent');
+
+  return (
+    &lt;div&gt;
+      &lt;span&gt;Render count: {renderCount}&lt;/span&gt;
+      &lt;div&gt;{JSON.stringify(data)}&lt;/div&gt;
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+<h3 id="_12">Правильное использование ключей</h3>
+<h4 id="_13">Проблемы с неправильными ключами</h4>
+<pre><code class="language-javascript">// ❌ Плохо: индекс как ключ
+function BadTodoList({ todos }) {
+  return (
+    &lt;ul&gt;
+      {todos.map((todo, index) =&gt; (
+        &lt;TodoItem
+          key={index}           // Проблема при реорганизации списка
+          todo={todo}
+        /&gt;
+      ))}
+    &lt;/ul&gt;
+  );
+}
+
+// При добавлении элемента в начало списка:
+// [todo1, todo2, todo3] -&gt; [newTodo, todo1, todo2, todo3]
+// React думает:
+// - key=0: todo1 -&gt; newTodo (изменился)
+// - key=1: todo2 -&gt; todo1 (изменился)  
+// - key=2: todo3 -&gt; todo2 (изменился)
+// - key=3: undefined -&gt; todo3 (новый)
+// Результат: 3 обновления + 1 вставка вместо 1 вставки
+
+// ✅ Хорошо: стабильные уникальные ключи
+function GoodTodoList({ todos }) {
+  return (
+    &lt;ul&gt;
+      {todos.map(todo =&gt; (
+        &lt;TodoItem
+          key={todo.id}         // Стабильный уникальный ключ
+          todo={todo}
+        /&gt;
+      ))}
+    &lt;/ul&gt;
+  );
+}
+</code></pre>
+<h4 id="_14">Составные ключи</h4>
+<pre><code class="language-javascript">function CommentsList({ posts }) {
+  return (
+    &lt;div&gt;
+      {posts.map(post =&gt; (
+        &lt;div key={post.id}&gt;
+          &lt;h3&gt;{post.title}&lt;/h3&gt;
+
+          {post.comments.map(comment =&gt; (
+            &lt;Comment
+              key={`${post.id}-${comment.id}`} // Составной ключ
+              comment={comment}
+            /&gt;
+          ))}
+        &lt;/div&gt;
+      ))}
+    &lt;/div&gt;
+  );
+}
+
+// Для динамически создаваемых элементов
+function DynamicForm({ fields }) {
+  return (
+    &lt;form&gt;
+      {fields.map((field, index) =&gt; (
+        &lt;FormField
+          key={field.id || `field-${field.type}-${index}`}
+          field={field}
+        /&gt;
+      ))}
+    &lt;/form&gt;
+  );
+}
+</code></pre>
+<h3 id="_15">Селекторы контекста</h3>
+<h4 id="context">Проблема с Context</h4>
+<pre><code class="language-javascript">// ❌ Проблема: все consumers ререндерятся
+const AppContext = createContext();
+
+function AppProvider({ children }) {
+  const [user, setUser] = useState(null);
+  const [theme, setTheme] = useState('light');
+  const [notifications, setNotifications] = useState([]);
+
+  const value = { user, setUser, theme, setTheme, notifications, setNotifications };
+
+  return (
+    &lt;AppContext.Provider value={value}&gt;
+      {children}
+    &lt;/AppContext.Provider&gt;
+  );
+}
+
+function UserDisplay() {
+  const { user } = useContext(AppContext); // Ререндерится при любом изменении
+  return &lt;div&gt;{user?.name}&lt;/div&gt;;
+}
+
+function ThemeToggle() {
+  const { theme, setTheme } = useContext(AppContext); // Ререндерится при изменении user
+  return &lt;button onClick={() =&gt; setTheme(theme === 'light' ? 'dark' : 'light')}&gt;Toggle&lt;/button&gt;;
+}
+</code></pre>
+<h4 id="_16">Решение: Разделенные контексты</h4>
+<pre><code class="language-javascript">// ✅ Решение: отдельные контексты
+const UserContext = createContext();
+const ThemeContext = createContext();
+const NotificationsContext = createContext();
+
+function UserProvider({ children }) {
+  const [user, setUser] = useState(null);
+  const value = useMemo(() =&gt; ({ user, setUser }), [user]);
+
+  return (
+    &lt;UserContext.Provider value={value}&gt;
+      {children}
+    &lt;/UserContext.Provider&gt;
+  );
+}
+
+function ThemeProvider({ children }) {
+  const [theme, setTheme] = useState('light');
+  const value = useMemo(() =&gt; ({ theme, setTheme }), [theme]);
+
+  return (
+    &lt;ThemeContext.Provider value={value}&gt;
+      {children}
+    &lt;/ThemeContext.Provider&gt;
+  );
+}
+
+// Теперь компоненты ререндерятся только при изменении нужных данных
+function UserDisplay() {
+  const { user } = useContext(UserContext); // Только при изменении user
+  return &lt;div&gt;{user?.name}&lt;/div&gt;;
+}
+
+function ThemeToggle() {
+  const { theme, setTheme } = useContext(ThemeContext); // Только при изменении theme
+  return &lt;button onClick={() =&gt; setTheme(theme === 'light' ? 'dark' : 'light')}&gt;Toggle&lt;/button&gt;;
+}
+</code></pre>
+<h3 id="usesyncexternalstore">useSyncExternalStore</h3>
+<h4 id="store">Интеграция с внешними store</h4>
+<pre><code class="language-javascript">// External store (например, Zustand store)
+const useStore = create((set) =&gt; ({
+  count: 0,
+  user: null,
+  increment: () =&gt; set((state) =&gt; ({ count: state.count + 1 })),
+  setUser: (user) =&gt; set({ user })
+}));
+
+// Селектор для подписки только на нужные части состояния
+function useCount() {
+  return useSyncExternalStore(
+    useStore.subscribe,
+    () =&gt; useStore.getState().count,
+    () =&gt; 0 // Server-side значение
+  );
+}
+
+function useUser() {
+  return useSyncExternalStore(
+    useStore.subscribe,
+    () =&gt; useStore.getState().user,
+    () =&gt; null
+  );
+}
+
+// Компоненты ререндерятся только при изменении своих данных
+function Counter() {
+  const count = useCount(); // Только при изменении count
+  const increment = useStore(state =&gt; state.increment);
+
+  return (
+    &lt;button onClick={increment}&gt;
+      Count: {count}
+    &lt;/button&gt;
+  );
+}
+
+function UserProfile() {
+  const user = useUser(); // Только при изменении user
+
+  return &lt;div&gt;{user?.name || 'Anonymous'}&lt;/div&gt;;
+}
+</code></pre>
+<h3 id="_17">Виртуализация списков</h3>
+<h4 id="_18">Проблема больших списков</h4>
+<pre><code class="language-javascript">// ❌ Проблема: рендер всех элементов
+function HugeList({ items }) {
+  return (
+    &lt;div className=&quot;list&quot;&gt;
+      {items.map(item =&gt; (
+        &lt;div key={item.id} className=&quot;list-item&quot;&gt;
+          &lt;h3&gt;{item.title}&lt;/h3&gt;
+          &lt;p&gt;{item.description}&lt;/p&gt;
+          &lt;img src={item.thumbnail} alt={item.title} /&gt;
+        &lt;/div&gt;
+      ))}
+    &lt;/div&gt;
+  );
+}
+
+// При 10,000 элементов - серьезные проблемы с производительностью
+</code></pre>
+<h4 id="react-window">Решение: react-window</h4>
+<pre><code class="language-javascript">import { FixedSizeList as List } from 'react-window';
+
+// ✅ Виртуализированный список
+function VirtualizedList({ items }) {
+  const Row = ({ index, style }) =&gt; (
+    &lt;div style={style} className=&quot;list-item&quot;&gt;
+      &lt;h3&gt;{items[index].title}&lt;/h3&gt;
+      &lt;p&gt;{items[index].description}&lt;/p&gt;
+      &lt;img src={items[index].thumbnail} alt={items[index].title} /&gt;
+    &lt;/div&gt;
+  );
+
+  return (
+    &lt;List
+      height={600}        // Высота видимой области
+      itemCount={items.length}
+      itemSize={120}      // Высота каждого элемента
+      width=&quot;100%&quot;
+    &gt;
+      {Row}
+    &lt;/List&gt;
+  );
+}
+
+// Для элементов разной высоты
+import { VariableSizeList as VariableList } from 'react-window';
+
+function VariableHeightList({ items }) {
+  const getItemSize = (index) =&gt; {
+    // Вычисляем высоту на основе содержимого
+    const item = items[index];
+    const baseHeight = 80;
+    const descriptionHeight = item.description.length &gt; 100 ? 40 : 20;
+    return baseHeight + descriptionHeight;
+  };
+
+  const Row = ({ index, style }) =&gt; (
+    &lt;div style={style} className=&quot;list-item&quot;&gt;
+      &lt;h3&gt;{items[index].title}&lt;/h3&gt;
+      &lt;p&gt;{items[index].description}&lt;/p&gt;
+    &lt;/div&gt;
+  );
+
+  return (
+    &lt;VariableList
+      height={600}
+      itemCount={items.length}
+      itemSize={getItemSize}
+      width=&quot;100%&quot;
+    &gt;
+      {Row}
+    &lt;/VariableList&gt;
+  );
+}
+</code></pre>
+<h4 id="_19">Кастомная виртуализация</h4>
+<pre><code class="language-javascript">function useVirtualization({ itemCount, itemHeight, containerHeight }) {
+  const [scrollTop, setScrollTop] = useState(0);
+
+  const startIndex = Math.floor(scrollTop / itemHeight);
+  const endIndex = Math.min(
+    itemCount - 1,
+    Math.floor((scrollTop + containerHeight) / itemHeight)
+  );
+
+  const visibleItems = [];
+  for (let i = startIndex; i &lt;= endIndex; i++) {
+    visibleItems.push(i);
+  }
+
+  const totalHeight = itemCount * itemHeight;
+  const offsetY = startIndex * itemHeight;
+
+  return {
+    startIndex,
+    endIndex,
+    visibleItems,
+    totalHeight,
+    offsetY,
+    setScrollTop
+  };
+}
+
+function CustomVirtualList({ items, itemHeight = 50 }) {
+  const containerRef = useRef();
+  const [containerHeight, setContainerHeight] = useState(400);
+
+  const {
+    visibleItems,
+    totalHeight,
+    offsetY,
+    setScrollTop
+  } = useVirtualization({
+    itemCount: items.length,
+    itemHeight,
+    containerHeight
+  });
+
+  const handleScroll = (e) =&gt; {
+    setScrollTop(e.target.scrollTop);
+  };
+
+  return (
+    &lt;div
+      ref={containerRef}
+      className=&quot;virtual-list&quot;
+      style={{ height: containerHeight, overflow: 'auto' }}
+      onScroll={handleScroll}
+    &gt;
+      &lt;div style={{ height: totalHeight, position: 'relative' }}&gt;
+        &lt;div style={{ transform: `translateY(${offsetY}px)` }}&gt;
+          {visibleItems.map(index =&gt; (
+            &lt;div
+              key={items[index].id}
+              style={{ height: itemHeight }}
+              className=&quot;list-item&quot;
+            &gt;
+              {items[index].title}
+            &lt;/div&gt;
+          ))}
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+<h3 id="_20">Лучшие практики и антипаттерны</h3>
+<h4 id="_21">Когда НЕ использовать оптимизации</h4>
+<pre><code class="language-javascript">// ❌ Избыточная мемоизация
+function OverOptimized({ name, age }) {
+  // Не нужно мемоизировать примитивные вычисления
+  const greeting = useMemo(() =&gt; `Hello, ${name}!`, [name]);
+
+  // Не нужно мемоизировать простые функции
+  const handleClick = useCallback(() =&gt; {
+    console.log('clicked');
+  }, []);
+
+  return (
+    &lt;div onClick={handleClick}&gt;
+      {greeting} You are {age} years old.
+    &lt;/div&gt;
+  );
+}
+
+// ✅ Оптимизация только где нужно
+function WellOptimized({ users, onUserSelect }) {
+  // Мемоизируем тяжелые вычисления
+  const sortedUsers = useMemo(() =&gt; {
+    return users.sort((a, b) =&gt; a.lastName.localeCompare(b.lastName));
+  }, [users]);
+
+  // Мемоизируем функции, передаваемые в memo компоненты
+  const handleUserSelect = useCallback((userId) =&gt; {
+    onUserSelect(userId);
+  }, [onUserSelect]);
+
+  return (
+    &lt;div&gt;
+      {sortedUsers.map(user =&gt; (
+        &lt;MemoizedUserCard
+          key={user.id}
+          user={user}
+          onSelect={handleUserSelect}
+        /&gt;
+      ))}
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+<h4 id="_22">Измерение производительности</h4>
+<pre><code class="language-javascript">function PerformanceMonitor({ children }) {
+  const renderCount = useRef(0);
+  const lastRenderTime = useRef(performance.now());
+
+  const onRenderCallback = useCallback((id, phase, actualDuration) =&gt; {
+    renderCount.current += 1;
+    const now = performance.now();
+
+    console.log(`Render #${renderCount.current}:`, {
+      component: id,
+      phase,
+      duration: actualDuration,
+      timeSinceLastRender: now - lastRenderTime.current
+    });
+
+    lastRenderTime.current = now;
+
+    // Предупреждение о медленных рендерах
+    if (actualDuration &gt; 16) { // &gt; 1 frame at 60fps
+      console.warn(`Slow render detected: ${actualDuration}ms`);
+    }
+  }, []);
+
+  return (
+    &lt;Profiler id=&quot;PerformanceMonitor&quot; onRender={onRenderCallback}&gt;
+      {children}
+    &lt;/Profiler&gt;
+  );
+}
+</code></pre>
+<h3 id="senior-">Senior-советы</h3>
+<ol>
+<li><strong>Профилируйте сначала</strong> - используйте React DevTools Profiler для выявления реальных проблем</li>
+<li><strong>React.memo для "листовых" компонентов</strong> - особенно в списках и таблицах</li>
+<li><strong>useMemo для тяжелых вычислений</strong> - фильтрация, сортировка, трансформация данных</li>
+<li><strong>useCallback для стабильных обработчиков</strong> - особенно передаваемых в memo компоненты</li>
+<li><strong>Стабильные ключи критичны</strong> - никогда не используйте индекс для динамических списков</li>
+<li><strong>Разделяйте контексты</strong> - по ответственности и частоте изменений</li>
+<li><strong>Виртуализация для больших списков</strong> - react-window или кастомное решение</li>
+<li><strong>Измеряйте результат</strong> - оптимизация без измерений может навредить</li>
+</ol>
+<h3 id="_23">Инструменты для отладки</h3>
+<p>```javascript
+// Хук для отслеживания изменений props
+function useWhyDidYouUpdate(name, props) {
+  const previous = useRef();</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../reconciliation_tts/" class="btn btn-neutral float-left" title="Reconciliation и Virtual DOM (TTS)"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../rerender-optimization_small/" class="btn btn-neutral float-right" title="React Rerender Optimization - Senior Cheat Sheet (small)">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../reconciliation_tts/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../rerender-optimization_small/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../..";</script>
+    <script src="../../../js/theme_extra.js"></script>
+    <script src="../../../js/theme.js"></script>
+      <script src="../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

@@ -46,25 +46,25 @@
 ### ⚛️ React (7 вопросов)
 
 1. **Reconciliation и Virtual DOM**  
-   📖 [Полная версия](questions/react/reconciliation.md) | 🎯 [Компактная](questions/react/reconciliation_small.md) | 🎧 [TTS](questions/react/reconciliation_tts.md)
+   📖 [Полная версия](questions/re/reconciliation.md) | 🎯 [Компактная](questions/re/reconciliation_small.md) | 🎧 [TTS](questions/re/reconciliation_tts.md)
 
 2. **Context API vs Redux**  
-   📖 [Полная версия](questions/react/context-api.md) | 🎯 [Компактная](questions/react/context-api_small.md) | 🎧 [TTS](questions/react/context-api_tts.md)
+   📖 [Полная версия](questions/re/context-api.md) | 🎯 [Компактная](questions/re/context-api_small.md) | 🎧 [TTS](questions/re/context-api_tts.md)
 
 3. **Higher-Order Components (HOC)**  
-   📖 [Полная версия](questions/react/hoc.md) | 🎯 [Компактная](questions/react/hoc_small.md) | 🎧 [TTS](questions/react/hoc_tts.md)
+   📖 [Полная версия](questions/re/hoc.md) | 🎯 [Компактная](questions/re/hoc_small.md) | 🎧 [TTS](questions/re/hoc_tts.md)
 
 4. **useEffect и Side Effects**  
-   📖 [Полная версия](questions/react/use-effect.md) | 🎯 [Компактная](questions/react/use-effect_small.md) | 🎧 [TTS](questions/react/use-effect_tts.md)
+   📖 [Полная версия](questions/re/use-effect.md) | 🎯 [Компактная](questions/re/use-effect_small.md) | 🎧 [TTS](questions/re/use-effect_tts.md)
 
 5. **Конкурентный рендеринг React 18**  
-   📖 [Полная версия](questions/react/concurrent-rendering.md) | 🎯 [Компактная](questions/react/concurrent-rendering_small.md) | 🎧 [TTS](questions/react/concurrent-rendering_tts.md)
+   📖 [Полная версия](questions/re/concurrent-rendering.md) | 🎯 [Компактная](questions/re/concurrent-rendering_small.md) | 🎧 [TTS](questions/re/concurrent-rendering_tts.md)
 
 6. **Оптимизация ререндеров**  
-   📖 [Полная версия](questions/react/rerender-optimization.md) | 🎯 [Компактная](questions/react/rerender-optimization_small.md) | 🎧 [TTS](questions/react/rerender-optimization_tts.md)
+   📖 [Полная версия](questions/re/rerender-optimization.md) | 🎯 [Компактная](questions/re/rerender-optimization_small.md) | 🎧 [TTS](questions/re/rerender-optimization_tts.md)
 
 7. **SSR/SSG и React Server Components**  
-   📖 [Полная версия](questions/react/ssr-rsc.md) | 🎯 [Компактная](questions/react/ssr-rsc_small.md) | 🎧 [TTS](questions/react/ssr-rsc_tts.md)
+   📖 [Полная версия](questions/re/ssr-rsc.md) | 🎯 [Компактная](questions/re/ssr-rsc_small.md) | 🎧 [TTS](questions/re/ssr-rsc_tts.md)
 
 ### 🏗️ Архитектура (6 вопросов)
 

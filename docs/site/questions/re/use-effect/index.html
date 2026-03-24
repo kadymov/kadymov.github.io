@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../../img/favicon.ico" />
+    <title>useEffect и Side Effects - My Docs</title>
+    <link rel="stylesheet" href="../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "useEffect \u0438 Side Effects";
+        var mkdocs_page_input_path = "questions/re/use-effect.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../../.." class="icon icon-home"> My Docs
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../..">📚 Подготовка к собеседованию: JavaScript, React и архитектура</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Questions</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" >Architecture</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/ddd/">Domain-Driven Design (DDD) во Frontend</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/ddd_small/">Domain-Driven Design (DDD) во Frontend (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/ddd_tts/">Domain-Driven Design (DDD) во Frontend (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/microfrontends/">Микрофронтенды (Microfrontends)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/microfrontends_small/">Microfrontends - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/microfrontends_tts/">Микрофронтенды (Microfrontends) (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/offline-first/">Offline-first архитектура</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/offline-first_small/">Offline-First Архитектура (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/offline-first_tts/">Offline-first архитектура (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/resilient-frontend/">Устойчивая frontend архитектура</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/resilient-frontend_small/">Устойчивая Frontend Архитектура (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/resilient-frontend_tts/">Устойчивая frontend архитектура (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/state-management/">Архитектура управления состоянием</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/state-management_small/">State Management Architecture - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/state-management_tts/">Архитектура управления состоянием (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/websockets-realtime/">WebSockets и real-time коммуникация</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/websockets-realtime_small/">WebSockets и Real-time коммуникация (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../architecture/websockets-realtime_tts/">WebSockets и real-time коммуникация (TTS)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Javascript</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/async-programming/">Promises, Async/Await и Generators</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/async-programming_small/">Async Programming - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/async-programming_tts/">Promises, Async/Await и Generators (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/currying/">Currying в JavaScript</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/currying_small/">Currying - Шпаргалка (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/currying_tts/">Currying в JavaScript (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/event-loop/">Event Loop, Microtasks и Macrotasks</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/event-loop_small/">Event Loop - Шпаргалка (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/event-loop_tts/">Event Loop, Microtasks и Macrotasks (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/execution-model/">Модель выполнения JavaScript</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/execution-model_small/">JavaScript Execution Model - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/execution-model_tts/">Модель выполнения JavaScript (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/garbage-collection/">Garbage Collection и оптимизация памяти</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/garbage-collection_small/">Garbage Collection - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/garbage-collection_tts/">Garbage Collection и оптимизация памяти (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/scope-hoisting/">Let, Const, Var: Scope и Hoisting</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/scope-hoisting_small/">Let, Const, Var - Шпаргалка (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/scope-hoisting_tts/">Let, Const, Var: Scope и Hoisting (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/typing-comparison/">Сравнение типизации JS и Java</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/typing-comparison_small/">JS vs Java Typing + TypeScript - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../javascript/typing-comparison_tts/">Сравнение типизации JS и Java (TTS)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Performance</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../performance/optimization/">Оптимизация производительности frontend-приложений</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../performance/optimization_small/">Оптимизация производительности Frontend (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../performance/optimization_tts/">Оптимизация производительности frontend-приложений (TTS)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" >React</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../concurrent-rendering/">Конкурентный рендеринг React 18</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../concurrent-rendering_small/">React 18 Concurrent Rendering - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../concurrent-rendering_tts/">Конкурентный рендеринг React 18 (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../context-api/">Context API vs Redux</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../context-api_small/">Context API vs Redux - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../context-api_tts/">Context API vs Redux (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../hoc/">Higher-Order Components (HOC)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../hoc_small/">Higher-Order Components - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../hoc_tts/">Higher-Order Components (HOC) (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../reconciliation/">Reconciliation и Virtual DOM</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../reconciliation_small/">Reconciliation &amp; Virtual DOM - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../reconciliation_tts/">Reconciliation и Virtual DOM (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../rerender-optimization/">Оптимизация ререндеров в React</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../rerender-optimization_small/">React Rerender Optimization - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../rerender-optimization_tts/">Оптимизация ререндеров в React (TTS)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../ssr-rsc/">SSR/SSG и React Server Components</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../ssr-rsc_small/">SSR/SSG &amp; React Server Components - Senior Cheat Sheet (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../ssr-rsc_tts/">SSR/SSG и React Server Components (TTS)</a>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" href="#">useEffect и Side Effects</a>
+    <ul class="current">
+    <li class="toctree-l3"><a class="reference internal" href="#_1">📋 Вопрос</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_2">💡 Ответ</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#useeffect">Основы useEffect</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#useeffect_1">Жизненный цикл с useEffect</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#_4">Типичные сценарии использования</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#_5">Распространенные ошибки</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#_6">Продвинутые паттерны</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#custom-hooks-useeffect">Custom Hooks с useEffect</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#useeffect_2">Тестирование useEffect</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#_8">Оптимизация производительности</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#senior-">Senior-советы</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#useeffect_3">Альтернативы useEffect</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_10">🔗 Связанные темы</a>
+    </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../use-effect_small/">useEffect &amp; Side Effects - Senior Cheat Sheet</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../use-effect_tts/">useEffect и Side Effects (TTS)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Security</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../security/frontend-security/">Безопасность Frontend Приложений</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../security/frontend-security_small/">Frontend Security (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../security/frontend-security_tts/">Безопасность Frontend Приложений (TTS)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Testing</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../testing/strategies/">Стратегии тестирования frontend-приложений</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../testing/strategies_small/">Стратегии тестирования Frontend (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../testing/strategies_tts/">Стратегии тестирования frontend-приложений (TTS)</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Typescript</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../typescript/advanced-types/">Продвинутые типы TypeScript</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../typescript/advanced-types_small/">Продвинутые типы TypeScript (small)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../typescript/advanced-types_tts/">Продвинутые типы TypeScript (TTS)</a>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../..">My Docs</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Questions</li>
+          <li class="breadcrumb-item">React</li>
+      <li class="breadcrumb-item active">useEffect и Side Effects</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="useeffect-side-effects">useEffect и Side Effects</h1>
+<h2 id="_1">📋 Вопрос</h2>
+<p>Как обрабатывать side effects в React с помощью useEffect, и какие распространенные ошибки возникают при его использовании?</p>
+<h2 id="_2">💡 Ответ</h2>
+<p>useEffect — это React Hook для выполнения побочных эффектов (side effects) в функциональных компонентах. Он объединяет функциональность componentDidMount, componentDidUpdate и componentWillUnmount из классовых компонентов.</p>
+<h3 id="useeffect">Основы useEffect</h3>
+<h4 id="_3">Базовый синтаксис</h4>
+<pre><code class="language-javascript">import React, { useState, useEffect } from 'react';
+
+function MyComponent() {
+  const [count, setCount] = useState(0);
+
+  // Эффект без зависимостей - выполняется после каждого рендера
+  useEffect(() =&gt; {
+    document.title = `Count: ${count}`;
+  });
+
+  // Эффект с зависимостями - выполняется только при изменении count
+  useEffect(() =&gt; {
+    console.log('Count changed:', count);
+  }, [count]);
+
+  // Эффект с пустым массивом зависимостей - выполняется только при монтировании
+  useEffect(() =&gt; {
+    console.log('Component mounted');
+  }, []);
+
+  return (
+    &lt;div&gt;
+      &lt;p&gt;Count: {count}&lt;/p&gt;
+      &lt;button onClick={() =&gt; setCount(count + 1)}&gt;
+        Increment
+      &lt;/button&gt;
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+<h4 id="cleanup">Cleanup функции</h4>
+<pre><code class="language-javascript">function TimerComponent() {
+  const [seconds, setSeconds] = useState(0);
+
+  useEffect(() =&gt; {
+    // Setup
+    const interval = setInterval(() =&gt; {
+      setSeconds(prev =&gt; prev + 1);
+    }, 1000);
+
+    // Cleanup функция
+    return () =&gt; {
+      clearInterval(interval);
+    };
+  }, []); // Пустой массив - эффект выполняется только при монтировании
+
+  return &lt;div&gt;Timer: {seconds}s&lt;/div&gt;;
+}
+</code></pre>
+<h3 id="useeffect_1">Жизненный цикл с useEffect</h3>
+<h4 id="componentdidmount">Монтирование (componentDidMount)</h4>
+<pre><code class="language-javascript">function ComponentDidMount() {
+  const [data, setData] = useState(null);
+
+  useEffect(() =&gt; {
+    // Выполняется только при монтировании
+    console.log('Component mounted');
+
+    // Загрузка данных
+    fetchData().then(setData);
+
+    // Cleanup при размонтировании
+    return () =&gt; {
+      console.log('Component will unmount');
+    };
+  }, []); // Пустой массив зависимостей
+
+  return &lt;div&gt;{data ? JSON.stringify(data) : 'Loading...'}&lt;/div&gt;;
+}
+</code></pre>
+<h4 id="componentdidupdate">Обновление (componentDidUpdate)</h4>
+<pre><code class="language-javascript">function ComponentDidUpdate({ userId }) {
+  const [user, setUser] = useState(null);
+
+  useEffect(() =&gt; {
+    // Выполняется при изменении userId
+    console.log('User ID changed:', userId);
+
+    if (userId) {
+      fetchUser(userId).then(setUser);
+    }
+  }, [userId]); // Эффект зависит от userId
+
+  return user ? &lt;div&gt;User: {user.name}&lt;/div&gt; : &lt;div&gt;No user&lt;/div&gt;;
+}
+</code></pre>
+<h4 id="componentwillunmount">Размонтирование (componentWillUnmount)</h4>
+<pre><code class="language-javascript">function EventListenerComponent() {
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+  useEffect(() =&gt; {
+    const handleResize = () =&gt; {
+      setWindowWidth(window.innerWidth);
+    };
+
+    // Добавление event listener
+    window.addEventListener('resize', handleResize);
+
+    // Cleanup - удаление listener при размонтировании
+    return () =&gt; {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []); // Эффект выполняется только при монтировании
+
+  return &lt;div&gt;Window width: {windowWidth}px&lt;/div&gt;;
+}
+</code></pre>
+<h3 id="_4">Типичные сценарии использования</h3>
+<h4 id="1">1. Загрузка данных</h4>
+<pre><code class="language-javascript">function UserProfile({ userId }) {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  useEffect(() =&gt; {
+    let isCancelled = false;
+
+    const fetchUser = async () =&gt; {
+      try {
+        setLoading(true);
+        setError(null);
+
+        const response = await fetch(`/api/users/${userId}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch user');
+        }
+
+        const userData = await response.json();
+
+        // Проверяем, не был ли компонент размонтирован
+        if (!isCancelled) {
+          setUser(userData);
+        }
+      } catch (err) {
+        if (!isCancelled) {
+          setError(err.message);
+        }
+      } finally {
+        if (!isCancelled) {
+          setLoading(false);
+        }
+      }
+    };
+
+    if (userId) {
+      fetchUser();
+    }
+
+    // Cleanup
+    return () =&gt; {
+      isCancelled = true;
+    };
+  }, [userId]);
+
+  if (loading) return &lt;div&gt;Loading...&lt;/div&gt;;
+  if (error) return &lt;div&gt;Error: {error}&lt;/div&gt;;
+  if (!user) return &lt;div&gt;No user found&lt;/div&gt;;
+
+  return (
+    &lt;div&gt;
+      &lt;h1&gt;{user.name}&lt;/h1&gt;
+      &lt;p&gt;{user.email}&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+<h4 id="2-subscriptions-websocket">2. Subscriptions и WebSocket</h4>
+<pre><code class="language-javascript">function ChatComponent({ roomId }) {
+  const [messages, setMessages] = useState([]);
+  const [socket, setSocket] = useState(null);
+
+  useEffect(() =&gt; {
+    // Создание WebSocket соединения
+    const ws = new WebSocket(`ws://localhost:8080/chat/${roomId}`);
+    setSocket(ws);
+
+    // Обработчики событий
+    ws.onopen = () =&gt; {
+      console.log('Connected to chat');
+    };
+
+    ws.onmessage = (event) =&gt; {
+      const message = JSON.parse(event.data);
+      setMessages(prev =&gt; [...prev, message]);
+    };
+
+    ws.onerror = (error) =&gt; {
+      console.error('WebSocket error:', error);
+    };
+
+    // Cleanup
+    return () =&gt; {
+      if (ws.readyState === WebSocket.OPEN) {
+        ws.close();
+      }
+    };
+  }, [roomId]);
+
+  const sendMessage = (text) =&gt; {
+    if (socket &amp;&amp; socket.readyState === WebSocket.OPEN) {
+      socket.send(JSON.stringify({ text, timestamp: Date.now() }));
+    }
+  };
+
+  return (
+    &lt;div&gt;
+      &lt;div&gt;
+        {messages.map((msg, index) =&gt; (
+          &lt;div key={index}&gt;{msg.text}&lt;/div&gt;
+        ))}
+      &lt;/div&gt;
+      &lt;input 
+        onKeyPress={(e) =&gt; {
+          if (e.key === 'Enter') {
+            sendMessage(e.target.value);
+            e.target.value = '';
+          }
+        }}
+      /&gt;
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+<h4 id="3">3. Локальное хранилище</h4>
+<pre><code class="language-javascript">function useLocalStorage(key, initialValue) {
+  const [storedValue, setStoredValue] = useState(() =&gt; {
+    try {
+      const item = window.localStorage.getItem(key);
+      return item ? JSON.parse(item) : initialValue;
+    } catch (error) {
+      console.error('Error reading from localStorage:', error);
+      return initialValue;
+    }
+  });
+
+  const setValue = (value) =&gt; {
+    try {
+      setStoredValue(value);
+      window.localStorage.setItem(key, JSON.stringify(value));
+    } catch (error) {
+      console.error('Error writing to localStorage:', error);
+    }
+  };
+
+  // Синхронизация с localStorage при изменениях в других вкладках
+  useEffect(() =&gt; {
+    const handleStorageChange = (e) =&gt; {
+      if (e.key === key &amp;&amp; e.newValue !== null) {
+        setStoredValue(JSON.parse(e.newValue));
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+
+    return () =&gt; {
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, [key]);
+
+  return [storedValue, setValue];
+}
+
+// Использование
+function SettingsComponent() {
+  const [theme, setTheme] = useLocalStorage('theme', 'light');
+
+  return (
+    &lt;div&gt;
+      &lt;p&gt;Current theme: {theme}&lt;/p&gt;
+      &lt;button onClick={() =&gt; setTheme(theme === 'light' ? 'dark' : 'light')}&gt;
+        Toggle Theme
+      &lt;/button&gt;
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+<h3 id="_5">Распространенные ошибки</h3>
+<h4 id="1_1">1. Бесконечные циклы</h4>
+<pre><code class="language-javascript">// ❌ Плохо: бесконечный цикл
+function BadExample() {
+  const [count, setCount] = useState(0);
+  const [data, setData] = useState([]);
+
+  useEffect(() =&gt; {
+    // Каждый рендер создает новый массив, что вызывает новый эффект
+    setData([1, 2, 3]);
+  }, [data]); // data меняется каждый раз!
+
+  return &lt;div&gt;{count}&lt;/div&gt;;
+}
+
+// ✅ Хорошо: правильные зависимости
+function GoodExample() {
+  const [count, setCount] = useState(0);
+  const [data, setData] = useState([]);
+
+  useEffect(() =&gt; {
+    // Выполняется только при монтировании
+    setData([1, 2, 3]);
+  }, []); // Пустой массив зависимостей
+
+  return &lt;div&gt;{count}&lt;/div&gt;;
+}
+</code></pre>
+<h4 id="2-cleanup">2. Забытый cleanup</h4>
+<pre><code class="language-javascript">// ❌ Плохо: memory leak
+function BadTimer() {
+  const [time, setTime] = useState(Date.now());
+
+  useEffect(() =&gt; {
+    setInterval(() =&gt; {
+      setTime(Date.now());
+    }, 1000);
+    // Нет cleanup - интервал продолжает работать после размонтирования!
+  }, []);
+
+  return &lt;div&gt;{new Date(time).toLocaleTimeString()}&lt;/div&gt;;
+}
+
+// ✅ Хорошо: правильный cleanup
+function GoodTimer() {
+  const [time, setTime] = useState(Date.now());
+
+  useEffect(() =&gt; {
+    const interval = setInterval(() =&gt; {
+      setTime(Date.now());
+    }, 1000);
+
+    // Cleanup
+    return () =&gt; clearInterval(interval);
+  }, []);
+
+  return &lt;div&gt;{new Date(time).toLocaleTimeString()}&lt;/div&gt;;
+}
+</code></pre>
+<h4 id="3_1">3. Неправильные зависимости</h4>
+<pre><code class="language-javascript">// ❌ Плохо: missing dependencies
+function BadDependencies({ userId }) {
+  const [user, setUser] = useState(null);
+
+  useEffect(() =&gt; {
+    fetchUser(userId).then(setUser);
+  }, []); // userId отсутствует в зависимостях!
+
+  return user ? &lt;div&gt;{user.name}&lt;/div&gt; : &lt;div&gt;Loading...&lt;/div&gt;;
+}
+
+// ✅ Хорошо: все зависимости указаны
+function GoodDependencies({ userId }) {
+  const [user, setUser] = useState(null);
+
+  useEffect(() =&gt; {
+    if (userId) {
+      fetchUser(userId).then(setUser);
+    }
+  }, [userId]); // userId в зависимостях
+
+  return user ? &lt;div&gt;{user.name}&lt;/div&gt; : &lt;div&gt;Loading...&lt;/div&gt;;
+}
+</code></pre>
+<h4 id="4-async-useeffect">4. Async функции в useEffect</h4>
+<pre><code class="language-javascript">// ❌ Плохо: async функция напрямую в useEffect
+function BadAsync() {
+  const [data, setData] = useState(null);
+
+  useEffect(async () =&gt; {
+    // Это вызовет предупреждение!
+    const result = await fetchData();
+    setData(result);
+  }, []);
+
+  return &lt;div&gt;{data}&lt;/div&gt;;
+}
+
+// ✅ Хорошо: async функция внутри эффекта
+function GoodAsync() {
+  const [data, setData] = useState(null);
+
+  useEffect(() =&gt; {
+    const loadData = async () =&gt; {
+      try {
+        const result = await fetchData();
+        setData(result);
+      } catch (error) {
+        console.error('Error loading data:', error);
+      }
+    };
+
+    loadData();
+  }, []);
+
+  return &lt;div&gt;{data}&lt;/div&gt;;
+}
+</code></pre>
+<h3 id="_6">Продвинутые паттерны</h3>
+<h4 id="1_2">1. Отмена запросов</h4>
+<pre><code class="language-javascript">function DataComponent({ url }) {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  useEffect(() =&gt; {
+    const abortController = new AbortController();
+
+    const fetchData = async () =&gt; {
+      try {
+        setLoading(true);
+        setError(null);
+
+        const response = await fetch(url, {
+          signal: abortController.signal
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const result = await response.json();
+        setData(result);
+      } catch (err) {
+        if (err.name !== 'AbortError') {
+          setError(err.message);
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+
+    // Cleanup - отмена запроса
+    return () =&gt; {
+      abortController.abort();
+    };
+  }, [url]);
+
+  if (loading) return &lt;div&gt;Loading...&lt;/div&gt;;
+  if (error) return &lt;div&gt;Error: {error}&lt;/div&gt;;
+  return &lt;div&gt;{JSON.stringify(data)}&lt;/div&gt;;
+}
+</code></pre>
+<h4 id="2-debounced">2. Debounced эффекты</h4>
+<pre><code class="language-javascript">function useDebounce(value, delay) {
+  const [debouncedValue, setDebouncedValue] = useState(value);
+
+  useEffect(() =&gt; {
+    const handler = setTimeout(() =&gt; {
+      setDebouncedValue(value);
+    }, delay);
+
+    return () =&gt; {
+      clearTimeout(handler);
+    };
+  }, [value, delay]);
+
+  return debouncedValue;
+}
+
+function SearchComponent() {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [results, setResults] = useState([]);
+  const debouncedSearchTerm = useDebounce(searchTerm, 500);
+
+  useEffect(() =&gt; {
+    if (debouncedSearchTerm) {
+      searchAPI(debouncedSearchTerm).then(setResults);
+    } else {
+      setResults([]);
+    }
+  }, [debouncedSearchTerm]);
+
+  return (
+    &lt;div&gt;
+      &lt;input
+        value={searchTerm}
+        onChange={(e) =&gt; setSearchTerm(e.target.value)}
+        placeholder=&quot;Search...&quot;
+      /&gt;
+      &lt;ul&gt;
+        {results.map(result =&gt; (
+          &lt;li key={result.id}&gt;{result.title}&lt;/li&gt;
+        ))}
+      &lt;/ul&gt;
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+<h4 id="3_2">3. Условные эффекты</h4>
+<pre><code class="language-javascript">function ConditionalEffect({ shouldFetch, userId }) {
+  const [data, setData] = useState(null);
+
+  useEffect(() =&gt; {
+    // Эффект выполняется только при соблюдении условий
+    if (shouldFetch &amp;&amp; userId) {
+      let isCancelled = false;
+
+      fetchUserData(userId).then(result =&gt; {
+        if (!isCancelled) {
+          setData(result);
+        }
+      });
+
+      return () =&gt; {
+        isCancelled = true;
+      };
+    }
+  }, [shouldFetch, userId]);
+
+  return data ? &lt;div&gt;{data.name}&lt;/div&gt; : &lt;div&gt;No data&lt;/div&gt;;
+}
+</code></pre>
+<h3 id="custom-hooks-useeffect">Custom Hooks с useEffect</h3>
+<h4 id="_7">Переиспользуемая логика</h4>
+<pre><code class="language-javascript">// Hook для работы с API
+function useAPI(url) {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  useEffect(() =&gt; {
+    if (!url) return;
+
+    let isCancelled = false;
+    const abortController = new AbortController();
+
+    const fetchData = async () =&gt; {
+      try {
+        setLoading(true);
+        setError(null);
+
+        const response = await fetch(url, {
+          signal: abortController.signal
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const result = await response.json();
+
+        if (!isCancelled) {
+          setData(result);
+        }
+      } catch (err) {
+        if (!isCancelled &amp;&amp; err.name !== 'AbortError') {
+          setError(err.message);
+        }
+      } finally {
+        if (!isCancelled) {
+          setLoading(false);
+        }
+      }
+    };
+
+    fetchData();
+
+    return () =&gt; {
+      isCancelled = true;
+      abortController.abort();
+    };
+  }, [url]);
+
+  const refetch = useCallback(() =&gt; {
+    if (url) {
+      // Trigger re-fetch by updating a dependency
+      setData(null);
+      setError(null);
+    }
+  }, [url]);
+
+  return { data, loading, error, refetch };
+}
+
+// Hook для отслеживания видимости элемента
+function useIntersectionObserver(targetRef, options = {}) {
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() =&gt; {
+    const observer = new IntersectionObserver(([entry]) =&gt; {
+      setIsVisible(entry.isIntersecting);
+    }, options);
+
+    const currentTarget = targetRef.current;
+    if (currentTarget) {
+      observer.observe(currentTarget);
+    }
+
+    return () =&gt; {
+      if (currentTarget) {
+        observer.unobserve(currentTarget);
+      }
+    };
+  }, [targetRef, options]);
+
+  return isVisible;
+}
+
+// Использование custom hooks
+function ProductList() {
+  const { data: products, loading, error, refetch } = useAPI('/api/products');
+  const targetRef = useRef();
+  const isVisible = useIntersectionObserver(targetRef, { threshold: 0.1 });
+
+  useEffect(() =&gt; {
+    if (isVisible) {
+      console.log('Product list is visible');
+    }
+  }, [isVisible]);
+
+  if (loading) return &lt;div&gt;Loading products...&lt;/div&gt;;
+  if (error) return &lt;div&gt;Error: {error}&lt;/div&gt;;
+
+  return (
+    &lt;div ref={targetRef}&gt;
+      &lt;button onClick={refetch}&gt;Refresh&lt;/button&gt;
+      {products?.map(product =&gt; (
+        &lt;div key={product.id}&gt;{product.name}&lt;/div&gt;
+      ))}
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+<h3 id="useeffect_2">Тестирование useEffect</h3>
+<pre><code class="language-javascript">import { renderHook, act } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
+
+// Тестирование custom hook
+test('useAPI hook fetches data correctly', async () =&gt; {
+  const mockData = { id: 1, name: 'Test' };
+
+  global.fetch = jest.fn().mockResolvedValue({
+    ok: true,
+    json: () =&gt; Promise.resolve(mockData)
+  });
+
+  const { result } = renderHook(() =&gt; useAPI('/api/test'));
+
+  expect(result.current.loading).toBe(true);
+  expect(result.current.data).toBe(null);
+
+  await waitFor(() =&gt; {
+    expect(result.current.loading).toBe(false);
+    expect(result.current.data).toEqual(mockData);
+  });
+});
+
+// Тестирование компонента с useEffect
+test('component loads data on mount', async () =&gt; {
+  global.fetch = jest.fn().mockResolvedValue({
+    ok: true,
+    json: () =&gt; Promise.resolve({ name: 'John Doe' })
+  });
+
+  render(&lt;UserProfile userId=&quot;123&quot; /&gt;);
+
+  expect(screen.getByText('Loading...')).toBeInTheDocument();
+
+  await waitFor(() =&gt; {
+    expect(screen.getByText('John Doe')).toBeInTheDocument();
+  });
+
+  expect(fetch).toHaveBeenCalledWith('/api/users/123');
+});
+</code></pre>
+<h3 id="_8">Оптимизация производительности</h3>
+<h4 id="_9">Мемоизация зависимостей</h4>
+<pre><code class="language-javascript">function OptimizedComponent({ filters, sortBy }) {
+  const [data, setData] = useState([]);
+
+  // Мемоизируем объект параметров
+  const queryParams = useMemo(() =&gt; ({
+    ...filters,
+    sortBy
+  }), [filters, sortBy]);
+
+  useEffect(() =&gt; {
+    fetchData(queryParams).then(setData);
+  }, [queryParams]); // Стабильная ссылка благодаря useMemo
+
+  return &lt;div&gt;{data.length} items&lt;/div&gt;;
+}
+</code></pre>
+<h3 id="senior-">Senior-советы</h3>
+<ol>
+<li><strong>Всегда указывайте зависимости</strong> - используйте ESLint правило exhaustive-deps</li>
+<li><strong>Используйте cleanup функции</strong> для предотвращения memory leaks</li>
+<li><strong>Избегайте async функций</strong> напрямую в useEffect</li>
+<li><strong>Отменяйте запросы</strong> с помощью AbortController</li>
+<li><strong>Мемоизируйте объекты</strong> в зависимостях с useMemo</li>
+<li><strong>Разделяйте эффекты</strong> по ответственности</li>
+<li><strong>Тестируйте асинхронную логику</strong> с proper mocking</li>
+</ol>
+<h3 id="useeffect_3">Альтернативы useEffect</h3>
+<p>В некоторых случаях useEffect можно заменить другими подходами:</p>
+<pre><code class="language-javascript">// Вместо useEffect для вычислений используйте useMemo
+const expensiveValue = useMemo(() =&gt; {
+  return computeExpensiveValue(props.data);
+}, [props.data]);
+
+// Вместо useEffect для обработчиков событий используйте useCallback
+const handleClick = useCallback((id) =&gt; {
+  onItemClick(id);
+}, [onItemClick]);
+
+// Для синхронизации с внешними библиотеками используйте useSyncExternalStore
+const width = useSyncExternalStore(
+  (callback) =&gt; {
+    window.addEventListener('resize', callback);
+    return () =&gt; window.removeEventListener('resize', callback);
+  },
+  () =&gt; window.innerWidth
+);
+</code></pre>
+<h2 id="_10">🔗 Связанные темы</h2>
+<ul>
+<li><a href="../context-api/">Context API vs Redux</a></li>
+<li><a href="../concurrent-rendering/">Конкурентный рендеринг React 18</a></li>
+<li><a href="../../javascript/async-programming/">Promises, Async/Await и Generators</a></li>
+<li><a href="../../javascript/garbage-collection/">Garbage Collection и оптимизация памяти</a></li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../ssr-rsc_tts/" class="btn btn-neutral float-left" title="SSR/SSG и React Server Components (TTS)"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../use-effect_small/" class="btn btn-neutral float-right" title="useEffect &amp; Side Effects - Senior Cheat Sheet">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../ssr-rsc_tts/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../use-effect_small/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../..";</script>
+    <script src="../../../js/theme_extra.js"></script>
+    <script src="../../../js/theme.js"></script>
+      <script src="../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

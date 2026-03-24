@@ -549,5 +549,5 @@ function useDataFetching(url) {
 
 - [Event Loop, Microtasks и Macrotasks](event-loop.md)
 - [Let, Const, Var: Scope и Hoisting](scope-hoisting.md)
-- [Оптимизация ререндеров](../react/rerender-optimization.md)
+- [Оптимизация ререндеров](../re/rerender-optimization.md)
 - [Веб-производительность и Core Web Vitals](../performance/web-performance.md)
