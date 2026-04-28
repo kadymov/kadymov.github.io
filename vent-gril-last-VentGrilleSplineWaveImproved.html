@@ -488,7 +488,7 @@
             const persControls = new OrbitControls(persCamera, renderer.domElement);
             persControls.target = camCenter; // rotate around center of parts
             // persControls.enablePan = false;
-            // persControls.enableDamping = true;
+            persControls.enableDamping = true;
             persControls.update();
             const orthControls = new OrbitControls(orthCamera, renderer.domElement);
             orthControls.target = camCenter; // rotate around center of parts
