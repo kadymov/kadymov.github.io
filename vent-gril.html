@@ -202,7 +202,7 @@
 
             let cameraType = data.camera.type;
             const persCamera = new THREE.PerspectiveCamera(
-                70, aspectRatio, 1, 100000);
+                60, aspectRatio, 1, 100000);
             initCam(persCamera);
             const orthCamera = new THREE.OrthographicCamera(
                 -aspectRatio * viewSize / 2, aspectRatio * viewSize / 2,
