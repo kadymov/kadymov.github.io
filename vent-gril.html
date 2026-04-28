@@ -648,7 +648,13 @@
                 }
             }
 
-            document.querySelector('.lil-gui')?.classList?.add('closed')
+            document.querySelector('.lil-gui')?.classList?.add('closed');
+
+            document.addEventListener('touchmove', function (e) {
+                if (window.scrollY === 0) {
+                    e.preventDefault();
+                }
+            }, { passive: false });
         </script>
     </body>
 </html>
