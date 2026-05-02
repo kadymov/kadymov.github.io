@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>🎲 Генератор задач по Event Loop</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    background: linear-gradient(135deg, #0f0f1e 0%, #1a1a2e 100%);
+    color: #e0e0e0;
+    min-height: 100vh;
+    padding: 20px;
+  }
+  .container { max-width: 1000px; margin: 0 auto; }
+
+  h1 {
+    text-align: center;
+    color: #ffd166;
+    margin-bottom: 10px;
+    font-size: 2em;
+  }
+  .subtitle {
+    text-align: center;
+    color: #a0a0b0;
+    margin-bottom: 25px;
+    font-style: italic;
+  }
+
+  .controls {
+    background: #2d2d44;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    align-items: center;
+    justify-content: center;
+  }
+  .control-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .control-group label {
+    color: #c0c0d0;
+    font-size: 0.9em;
+  }
+  select, input[type="number"] {
+    background: #1e1e2e;
+    color: #e0e0e0;
+    border: 1px solid #3d3d5c;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 0.95em;
+  }
+  input[type="number"] { width: 70px; }
+
+  button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.95em;
+    font-weight: bold;
+    transition: all 0.2s;
+  }
+  button:hover { transform: translateY(-2px); }
+  .btn-generate { background: #ab47bc; color: white; }
+  .btn-run { background: #06d6a0; color: #1e1e2e; }
+  .btn-show { background: #ffd166; color: #1e1e2e; }
+  .btn-copy { background: #3d3d5c; color: #e0e0e0; }
+
+  .card {
+    background: #2d2d44;
+    border-radius: 16px;
+    padding: 30px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    margin-bottom: 20px;
+    border-top: 4px solid #ab47bc;
+  }
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .complexity-badge {
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 0.85em;
+    font-weight: bold;
+  }
+  .c-1 { background: #06d6a0; color: #1e1e2e; }
+  .c-2 { background: #ffd166; color: #1e1e2e; }
+  .c-3 { background: #ff9f43; color: #1e1e2e; }
+  .c-4 { background: #ef476f; color: white; }
+  .c-5 { background: #8b0000; color: white; }
+
+  .question {
+    color: #ffd166;
+    font-size: 1.15em;
+    margin-bottom: 15px;
+    line-height: 1.5;
+  }
+
+  pre {
+    background: #1e1e2e;
+    padding: 15px;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 15px 0;
+    border-left: 4px solid #ab47bc;
+    position: relative;
+  }
+  code {
+    font-family: 'Consolas', 'Monaco', monospace;
+    color: #e0e0e0;
+    font-size: 0.95em;
+    line-height: 1.6;
+    white-space: pre;
+  }
+
+  .buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 15px;
+  }
+
+  .output-section {
+    margin-top: 20px;
+  }
+  .output-label {
+    color: #a0a0b0;
+    font-size: 0.85em;
+    margin-bottom: 5px;
+  }
+  .output {
+    background: #1e1e2e;
+    border: 2px dashed #555;
+    border-radius: 8px;
+    padding: 15px;
+    min-height: 80px;
+    font-family: 'Consolas', monospace;
+    font-size: 0.95em;
+    white-space: pre-wrap;
+  }
+  .output:empty::before {
+    content: '👉 Нажми "▶️ Запустить" чтобы увидеть результат';
+    color: #666;
+    font-style: italic;
+  }
+  .log-line { padding: 2px 0; color: #06d6a0; }
+  .log-num { color: #555; margin-right: 8px; }
+  .log-time { color: #888; font-size: 0.85em; margin-right: 8px; }
+
+  .predicted {
+    background: #1e1e2e;
+    border-left: 4px solid #ffd166;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 15px;
+    display: none;
+  }
+  .predicted.show { display: block; }
+  .predicted h4 { color: #ffd166; margin-bottom: 10px; }
+  .predicted-list {
+    font-family: 'Consolas', monospace;
+    color: #06d6a0;
+    padding-left: 10px;
+  }
+  .predicted-list div { padding: 2px 0; }
+
+  .info-panel {
+    background: #252540;
+    border-radius: 8px;
+    padding: 12px 15px;
+    margin-top: 15px;
+    font-size: 0.88em;
+    color: #a0a0b0;
+  }
+  .info-panel b { color: #ffd166; }
+
+  /* Синтаксис */
+  .keyword { color: #c792ea; }
+  .string { color: #c3e88d; }
+  .number { color: #f78c6c; }
+  .comment { color: #546e7a; font-style: italic; }
+  .func { color: #82aaff; }
+
+  .toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #06d6a0;
+    color: #1e1e2e;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    opacity: 0;
+    transition: opacity 0.3s;
+    z-index: 1000;
+  }
+  .toast.show { opacity: 1; }
+
+  .stats {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+  }
+  .stat {
+    background: #2d2d44;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.9em;
+  }
+  .stat b { color: #06d6a0; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>🎲 Генератор задач на Event Loop</h1>
+  <p class="subtitle">Бесконечные уникальные задачи — угадай порядок вывода и проверь себя</p>
+
+  <div class="stats">
+    <div class="stat">🎯 Сгенерировано: <b id="gen-count">0</b></div>
+    <div class="stat">✅ Правильно: <b id="correct-count">0</b></div>
+    <div class="stat">❌ Ошибок: <b id="wrong-count">0</b></div>
+  </div>
+
+  <div class="controls">
+    <div class="control-group">
+      <label>Сложность:</label>
+      <select id="complexity">
+        <option value="1">🟢 1 — Базовый</option>
+        <option value="2">🟡 2 — Средний</option>
+        <option value="3" selected>🟠 3 — Продвинутый</option>
+        <option value="4">🔴 4 — Сложный</option>
+        <option value="5">💀 5 — Ад</option>
+      </select>
+    </div>
+    <div class="control-group">
+      <label>Операций:</label>
+      <input type="number" id="op-count" min="3" max="12" value="6">
+    </div>
+    <button class="btn-generate" onclick="generateTask()">🎲 Сгенерировать задачу</button>
+  </div>
+
+  <div id="task-container"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ===== Состояние =====
+let genCount = 0;
+let correctCount = 0;
+let wrongCount = 0;
+let currentTask = null;
+
+// ===== Генератор задач =====
+// Каждая операция — это объект с кодом и симулятором результата
+// symbols — массив меток, которые будут выведены в console.log
+
+const LABELS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P'];
+
+/**
+ * Типы операций, которые может генерировать генератор:
+ * - sync: обычный console.log — выполняется сразу
+ * - setTimeout: макротаска
+ * - promiseThen: микротаска (Promise.resolve().then)
+ * - queueMicrotask: микротаска
+ * - promiseExecutor: new Promise (синхронный executor + then)
+ * - asyncAwait: async функция с await
+ * - nestedMicrotask: микротаска внутри микротаски
+ * - chainedThen: цепочка .then().then()
+ */
+
+function randInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function pick(arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+
+function generateOperation(label, complexity, usedLabels) {
+  // Набор типов в зависимости от сложности
+  const typesByComplexity = {
+    1: ['sync', 'setTimeout', 'promiseThen'],
+    2: ['sync', 'setTimeout', 'promiseThen', 'queueMicrotask', 'promiseExecutor'],
+    3: ['sync', 'setTimeout', 'promiseThen', 'queueMicrotask', 'promiseExecutor', 'chainedThen'],
+    4: ['setTimeout', 'promiseThen', 'queueMicrotask', 'promiseExecutor', 'chainedThen', 'asyncAwait', 'nestedMicrotask'],
+    5: ['promiseThen', 'chainedThen', 'asyncAwait', 'nestedMicrotask', 'promiseExecutor', 'queueMicrotask', 'setTimeout']
+  };
+
+  const types = typesByComplexity[complexity] || typesByComplexity[3];
+  const type = pick(types);
+
+  switch (type) {
+    case 'sync':
+      return {
+        type,
+        code: `console.log('${label}');`,
+        // Список событий: { phase, microPriority?, label }
+        events: [{ phase: 'sync', label }]
+      };
+
+    case 'setTimeout':
+      return {
+        type,
+        code: `setTimeout(() => console.log('${label}'), 0);`,
+        events: [{ phase: 'macro', label, registered: 'sync' }]
+      };
+
+    case 'promiseThen':
+      return {
+        type,
+        code: `Promise.resolve().then(() => console.log('${label}'));`,
+        events: [{ phase: 'micro', label, registered: 'sync' }]
+      };
+
+    case 'queueMicrotask':
+      return {
+        type,
+        code: `queueMicrotask(() => console.log('${label}'));`,
+        events: [{ phase: 'micro', label, registered: 'sync' }]
+      };
+
+    case 'promiseExecutor': {
+      const syncLabel = label;
+      const thenLabel = usedLabels.next();
+      return {
+        type,
+        code: `new Promise((resolve) => {\n  console.log('${syncLabel}');\n  resolve();\n}).then(() => console.log('${thenLabel}'));`,
+        events: [
+          { phase: 'sync', label: syncLabel },
+          { phase: 'micro', label: thenLabel, registered: 'sync' }
+        ]
+      };
+    }
+
+    case 'chainedThen': {
+      const l1 = label;
+      const l2 = usedLabels.next();
+      const l3 = usedLabels.next();
+      return {
+        type,
+        code: `Promise.resolve()\n  .then(() => console.log('${l1}'))\n  .then(() => console.log('${l2}'))\n  .then(() => console.log('${l3}'));`,
+        events: [
+          { phase: 'micro', label: l1, chainDepth: 1 },
+          { phase: 'micro', label: l2, chainDepth: 2 },
+          { phase: 'micro', label: l3, chainDepth: 3 }
+        ]
+      };
+    }
+
+    case 'nestedMicrotask': {
+      const outer = label;
+      const inner = usedLabels.next();
+      return {
+        type,
+        code: `Promise.resolve().then(() => {\n  console.log('${outer}');\n  Promise.resolve().then(() => console.log('${inner}'));\n});`,
+        events: [
+          { phase: 'micro', label: outer, chainDepth: 1 },
+          { phase: 'micro', label: inner, chainDepth: 2, nested: true }
+        ]
+      };
+    }
+
+    case 'asyncAwait': {
+      const before = label;
+      const after = usedLabels.next();
+      return {
+        type,
+        code: `(async () => {\n  console.log('${before}');\n  await Promise.resolve();\n  console.log('${after}');\n})();`,
+        events: [
+          { phase: 'sync', label: before },
+          { phase: 'micro', label: after, chainDepth: 1 }
+        ]
+      };
+    }
+  }
+}
+
+function createLabelIterator() {
+  let idx = 0;
+  return {
+    next() {
+      return LABELS[idx++ % LABELS.length];
+    }
+  };
+}
+
+function generateTask() {
+  const complexity = parseInt(document.getElementById('complexity').value);
+  const opCount = parseInt(document.getElementById('op-count').value);
+
+  const labelIter = createLabelIterator();
+  const operations = [];
+  const allEvents = [];
+
+  for (let i = 0; i < opCount; i++) {
+    const mainLabel = labelIter.next();
+    const op = generateOperation(mainLabel, complexity, labelIter);
+    operations.push(op);
+
+    // Запоминаем порядок регистрации
+    op.events.forEach(ev => {
+      allEvents.push({
+        ...ev,
+        operationIndex: i
+      });
+    });
+  }
+
+  // Склеиваем код
+  const fullCode = operations.map(op => op.code).join('\n');
+
+  // Вычисляем ожидаемый порядок вывода
+  const expectedOrder = simulateEventLoop(allEvents);
+
+  currentTask = {
+    code: fullCode,
+    expected: expectedOrder,
+    complexity
+  };
+
+  genCount++;
+  renderTask(currentTask);
+  updateStats();
+}
+
+/**
+ * Симулятор Event Loop для предсказания порядка вывода.
+ *
+ * Правила:
+ * 1. Сначала выполняются все sync события в порядке операций
+ * 2. После sync — все микротаски (по глубине chain)
+ * 3. Микротаски могут создавать новые микротаски — они тоже выполнятся до макротасок
+ * 4. Затем макротаски в порядке регистрации
+ */
+function simulateEventLoop(events) {
+  const result = [];
+
+  // 1. Синхронные события в порядке операций
+  const syncEvents = events.filter(e => e.phase === 'sync');
+  syncEvents.sort((a, b) => a.operationIndex - b.operationIndex);
+  syncEvents.forEach(e => result.push(e.label));
+
+  // 2. Микротаски:
+  //    - обрабатываем по "тикам" (каждый тик = одна глубина chain)
+  //    - тик 1: все микротаски с chainDepth=1 или без chainDepth
+  //    - тик 2: все микротаски с chainDepth=2
+  //    и т.д.
+  const microEvents = events.filter(e => e.phase === 'micro');
+
+  // Группируем по operationIndex для сохранения порядка регистрации
+  // Внутри одной "глубины" микротаски выполняются в порядке регистрации
+  const maxDepth = Math.max(...microEvents.map(e => e.chainDepth || 1), 0);
+
+  for (let depth = 1; depth <= maxDepth; depth++) {
+    const atThisDepth = microEvents
+      .filter(e => (e.chainDepth || 1) === depth)
+      .sort((a, b) => a.operationIndex - b.operationIndex);
+    atThisDepth.forEach(e => result.push(e.label));
+  }
+
+  // 3. Макротаски — в порядке регистрации (operationIndex)
+  const macroEvents = events
+    .filter(e => e.phase === 'macro')
+    .sort((a, b) => a.operationIndex - b.operationIndex);
+  macroEvents.forEach(e => result.push(e.label));
+
+  return result;
+}
+
+// ===== Подсветка синтаксиса =====
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
+function highlightCode(code) {
+  code = escapeHtml(code);
+  return code.replace(
+    /(\/\/[^\n]*)|('[^']*'|"[^"]*"|`[^`]*`)|\b(async|await|function|const|let|var|return|new|throw|try|catch|if|else|while|for)\b|\b(console|Promise|setTimeout|queueMicrotask|Date|Error)\b|\b(\d+)\b/g,
+    (match, comment, string, keyword, func, number) => {
+      if (comment) return `<span class="comment">${comment}</span>`;
+      if (string)  return `<span class="string">${string}</span>`;
+      if (keyword) return `<span class="keyword">${keyword}</span>`;
+      if (func)    return `<span class="func">${func}</span>`;
+      if (number)  return `<span class="number">${number}</span>`;
+      return match;
+    }
+  );
+}
+
+// ===== Рендер =====
+function renderTask(task) {
+  const complexityLabels = {
+    1: '🟢 Базовый',
+    2: '🟡 Средний',
+    3: '🟠 Продвинутый',
+    4: '🔴 Сложный',
+    5: '💀 Ад'
+  };
+
+  document.getElementById('task-container').innerHTML = `
+    <div class="card">
+      <div class="card-header">
+        <span style="color:#a0a0b0;">Задача #${genCount}</span>
+        <span class="complexity-badge c-${task.complexity}">${complexityLabels[task.complexity]}</span>
+      </div>
+      <div class="question">❓ В каком порядке будут выведены буквы в консоль?</div>
+      <pre><code>${highlightCode(task.code)}</code></pre>
+
+      <div class="info-panel">
+        💡 <b>Подсказка:</b> сначала идёт синхронный код, затем все микротаски (включая вложенные), затем макротаски (setTimeout).
+      </div>
+
+      <div class="buttons">
+        <button class="btn-run" onclick="runCode()">▶️ Запустить</button>
+        <button class="btn-show" onclick="showPredicted()">👁️ Показать ответ</button>
+        <button class="btn-copy" onclick="copyCode()">📋 Копировать код</button>
+      </div>
+
+      <div class="output-section">
+        <div class="output-label">🖥️ Реальный вывод браузера:</div>
+        <div class="output" id="output"></div>
+      </div>
+
+      <div class="predicted" id="predicted">
+        <h4>✅ Ожидаемый порядок (по правилам Event Loop):</h4>
+        <div class="predicted-list" id="predicted-list"></div>
+        <div class="info-panel" style="margin-top:10px;">
+          <b>Правило:</b> sync → microtasks → macrotasks. Микротаски опустошаются ПОЛНОСТЬЮ перед переходом к макротаскам (даже если микротаска создаёт новую микротаску).
+        </div>
+        <div class="buttons">
+          <button class="btn-run" onclick="markAnswer(true)">✅ Я угадал</button>
+          <button class="btn-copy" onclick="markAnswer(false)" style="background:#ef476f;color:white;">❌ Я ошибся</button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+// ===== Запуск кода =====
+function runCode() {
+  if (!currentTask) return;
+
+  const output = document.getElementById('output');
+  output.innerHTML = '';
+  let lineNum = 1;
+
+  const originalLog = console.log;
+  const startTime = performance.now();
+
+  console.log = function(...args) {
+    const elapsed = (performance.now() - startTime).toFixed(1);
+    const text = args.map(a =>
+      typeof a === 'object' ? JSON.stringify(a) : String(a)
+    ).join(' ');
+
+    const line = document.createElement('div');
+    line.className = 'log-line';
+    line.innerHTML =
+      `<span class="log-num">${String(lineNum++).padStart(2, '0')}.</span>` +
+      `<span class="log-time">[+${elapsed}мс]</span>` +
+      `${escapeHtml(text)}`;
+    output.appendChild(line);
+
+    originalLog.apply(console, args);
+  };
+
+  try {
+    const fn = new Function(currentTask.code);
+    fn();
+    setTimeout(() => {
+      console.log = originalLog;
+      if (output.children.length === 0) {
+        output.innerHTML = '<span style="color:#888;">(нет вывода)</span>';
+      }
+    }, 500);
+  } catch (e) {
+    output.innerHTML = `<div style="color:#ef476f;">❌ Ошибка: ${escapeHtml(e.message)}</div>`;
+    console.log = originalLog;
+  }
+}
+
+function showPredicted() {
+  if (!currentTask) return;
+  const predicted = document.getElementById('predicted');
+  const list = document.getElementById('predicted-list');
+  list.innerHTML = currentTask.expected
+    .map((label, i) => `<div>${String(i + 1).padStart(2, '0')}. <b>${label}</b></div>`)
+    .join('');
+  predicted.classList.add('show');
+}
+
+function copyCode() {
+  if (!currentTask) return;
+  navigator.clipboard.writeText(currentTask.code)
+    .then(() => showToast('📋 Код скопирован!'))
+    .catch(() => showToast('❌ Ошибка копирования'));
+}
+
+function markAnswer(correct) {
+  if (correct) {
+    correctCount++;
+    showToast('🎉 Отлично! Продолжай!');
+  } else {
+    wrongCount++;
+    showToast('💪 Не сдавайся — попробуй следующую!');
+  }
+  updateStats();
+  setTimeout(() => generateTask(), 800);
+}
+
+function updateStats() {
+  document.getElementById('gen-count').textContent = genCount;
+  document.getElementById('correct-count').textContent = correctCount;
+  document.getElementById('wrong-count').textContent = wrongCount;
+}
+
+function showToast(text) {
+  const toast = document.getElementById('toast');
+  toast.textContent = text;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2000);
+}
+
+// Горячие клавиши
+// Горячие клавиши
+document.addEventListener('keydown', (e) => {
+  // Игнорируем если фокус в input/select
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+
+  if (e.key === 'g' || e.key === 'G') generateTask();
+  if (e.key === 'r' || e.key === 'R') runCode();
+  if (e.key === 's' || e.key === 'S') showPredicted();
+  if (e.key === 'c' || e.key === 'C') copyCode();
+});
+
+// Стартовая задача
+generateTask();
+</script>
+</body>
+</html>

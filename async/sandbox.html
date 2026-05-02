@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Event Loop Playground — Senior Frontend Prep</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #1e1e2e;
+    color: #cdd6f4;
+    padding: 20px;
+    line-height: 1.5;
+  }
+  h1 { color: #89b4fa; margin-bottom: 10px; }
+  h2 { color: #f9e2af; margin: 15px 0 10px; font-size: 18px; }
+  h3 { color: #a6e3a1; margin-top: 10px; font-size: 15px; }
+  .container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 20px;
+  }
+  .panel {
+    background: #313244;
+    border-radius: 8px;
+    padding: 15px;
+  }
+  .theory {
+    grid-column: 1 / -1;
+    background: #181825;
+    border-left: 4px solid #89b4fa;
+  }
+  .theory p { margin: 8px 0; }
+  .theory code {
+    background: #45475a;
+    padding: 2px 6px;
+    border-radius: 3px;
+    color: #f5c2e7;
+    font-family: 'Fira Code', Consolas, monospace;
+  }
+  .presets {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .presets button {
+    background: #45475a;
+    color: #cdd6f4;
+    border: 1px solid #585b70;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.2s;
+  }
+  .presets button:hover {
+    background: #585b70;
+    border-color: #89b4fa;
+  }
+  textarea {
+    width: 100%;
+    min-height: 280px;
+    background: #11111b;
+    color: #cdd6f4;
+    border: 1px solid #45475a;
+    border-radius: 4px;
+    padding: 10px;
+    font-family: 'Fira Code', Consolas, monospace;
+    font-size: 13px;
+    resize: vertical;
+  }
+  .controls {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+  }
+  .controls button {
+    background: #89b4fa;
+    color: #1e1e2e;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.2s;
+  }
+  .controls button:hover { background: #74a0e8; }
+  .controls button.clear { background: #f38ba8; }
+  .controls button.danger { background: #fab387; }
+  #output {
+    background: #11111b;
+    border: 1px solid #45475a;
+    border-radius: 4px;
+    padding: 10px;
+    min-height: 280px;
+    max-height: 400px;
+    overflow-y: auto;
+    font-family: 'Fira Code', Consolas, monospace;
+    font-size: 13px;
+    white-space: pre-wrap;
+  }
+  .log-entry { padding: 2px 0; display: flex; gap: 8px; }
+  .log-time { color: #6c7086; min-width: 60px; }
+  .log-sync { color: #a6e3a1; }
+  .log-micro { color: #f9e2af; }
+  .log-macro { color: #89b4fa; }
+  .log-raf { color: #cba6f7; }
+  .log-render { color: #f5c2e7; }
+  .log-error { color: #f38ba8; }
+  .log-info { color: #94e2d5; }
+
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 8px;
+    font-size: 11px;
+  }
+  .legend span::before {
+    content: "■ ";
+    font-size: 14px;
+  }
+  .visual-area {
+    grid-column: 1 / -1;
+    background: #313244;
+    border-radius: 8px;
+    padding: 15px;
+  }
+  .box {
+    width: 60px;
+    height: 60px;
+    background: #89b4fa;
+    border-radius: 6px;
+    display: inline-block;
+    margin: 5px;
+    transition: transform 0.1s;
+  }
+  #visual-demo {
+    min-height: 80px;
+    padding: 10px;
+    background: #11111b;
+    border-radius: 4px;
+    margin-top: 10px;
+  }
+  .task-list {
+    list-style: none;
+    padding: 0;
+  }
+  .task-list li {
+    padding: 6px 10px;
+    margin: 4px 0;
+    background: #45475a;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+    border-left: 3px solid transparent;
+  }
+  .task-list li:hover {
+    background: #585b70;
+    border-left-color: #89b4fa;
+  }
+  .task-list li.active {
+    border-left-color: #a6e3a1;
+    background: #585b70;
+  }
+  details { margin: 8px 0; }
+  summary {
+    cursor: pointer;
+    color: #89b4fa;
+    font-weight: bold;
+    padding: 5px 0;
+  }
+  .hint {
+    background: #181825;
+    padding: 10px;
+    border-radius: 4px;
+    margin-top: 8px;
+    font-size: 13px;
+    border-left: 3px solid #f9e2af;
+  }
+</style>
+</head>
+<body>
+
+<h1>🎯 Event Loop Playground</h1>
+<p style="color:#a6adc8">Подготовка к Senior Frontend: асинхронный код, циклы в браузере, рендеринг</p>
+
+<div class="theory panel">
+  <h2>📚 Краткая теория</h2>
+
+  <details open>
+    <summary>Event Loop — как это работает</summary>
+    <p><strong>Call Stack</strong> → выполняет синхронный код.</p>
+    <p><strong>Web APIs</strong> → <code>setTimeout</code>, <code>fetch</code>, DOM events обрабатываются браузером.</p>
+    <p><strong>Microtask Queue</strong> (высокий приоритет): <code>Promise.then</code>, <code>queueMicrotask</code>, <code>MutationObserver</code>.</p>
+    <p><strong>Macrotask Queue</strong>: <code>setTimeout</code>, <code>setInterval</code>, <code>setImmediate</code> (Node), I/O, UI events, <code>MessageChannel</code>.</p>
+    <p><strong>Правило</strong>: после каждой макрозадачи Event Loop <em>полностью</em> опустошает очередь микрозадач, затем может произойти рендер, затем следующая макрозадача.</p>
+  </details>
+
+  <details>
+    <summary>Рендеринг (Rendering Pipeline)</summary>
+    <p><strong>JS → Style → Layout → Paint → Composite</strong></p>
+    <p>Рендер происходит <strong>между макрозадачами</strong>, обычно ~60fps (каждые 16.6ms), если браузер успевает.</p>
+    <p><code>requestAnimationFrame(cb)</code> — колбэк выполнится <strong>перед следующим paint</strong>. Идеально для анимаций.</p>
+    <p><code>requestIdleCallback(cb)</code> — когда браузер свободен.</p>
+    <p>Синхронный цикл блокирует UI: рендер не произойдёт, пока стек не очистится!</p>
+  </details>
+
+  <details>
+    <summary>Порядок: sync → microtasks → render → macrotask</summary>
+    <p>1. Выполнение текущей задачи (sync code).</p>
+    <p>2. Выполнение ВСЕХ микрозадач.</p>
+    <p>3. Возможный рендер (rAF → Style → Layout → Paint).</p>
+    <p>4. Одна макрозадача → goto 2.</p>
+    <p style="color:#f38ba8">⚠ Бесконечное добавление микрозадач заблокирует рендер!</p>
+  </details>
+</div>
+
+<div class="container">
+
+  <div class="panel">
+    <h2>💻 Редактор кода</h2>
+    <h3>Готовые примеры для изучения:</h3>
+    <ul class="task-list" id="presets-list"></ul>
+    <textarea id="code" spellcheck="false"></textarea>
+    <div class="controls">
+      <button onclick="runCode()">▶ Запустить</button>
+      <button onclick="clearOutput()" class="clear">Очистить лог</button>
+      <button onclick="resetVisual()" class="danger">Сбросить визуал</button>
+    </div>
+    <div class="hint">
+      Доступные функции: <code>log(msg, type)</code> где type: 'sync', 'micro', 'macro', 'raf', 'render', 'info'.<br>
+      Также: <code>addBox()</code>, <code>moveBoxes()</code>, <code>heavyWork(ms)</code>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>📋 Лог выполнения</h2>
+    <div id="output"></div>
+    <div class="legend">
+      <span class="log-sync">sync</span>
+      <span class="log-micro">microtask</span>
+      <span class="log-macro">macrotask</span>
+      <span class="log-raf">rAF</span>
+      <span class="log-render">render</span>
+      <span class="log-info">info</span>
+    </div>
+  </div>
+
+  <div class="visual-area">
+    <h2>🎨 Визуальная область (для наблюдения рендеринга)</h2>
+    <p style="font-size:13px;color:#a6adc8">Используй <code>addBox()</code>, <code>moveBoxes()</code>, <code>heavyWork(ms)</code> чтобы увидеть, как блокировка главного потока мешает отрисовке.</p>
+    <div id="visual-demo"></div>
+  </div>
+
+</div>
+
+<script>
+// ====== Helpers exposed to user code ======
+const output = document.getElementById('output');
+const visual = document.getElementById('visual-demo');
+let startTime = 0;
+
+function log(msg, type = 'info') {
+  const t = (performance.now() - startTime).toFixed(1);
+  const div = document.createElement('div');
+  div.className = 'log-entry';
+  div.innerHTML = `<span class="log-time">${t}ms</span><span class="log-${type}">${String(msg)}</span>`;
+  output.appendChild(div);
+  output.scrollTop = output.scrollHeight;
+}
+
+function clearOutput() { output.innerHTML = ''; }
+function resetVisual() { visual.innerHTML = ''; }
+
+function addBox() {
+  const box = document.createElement('div');
+  box.className = 'box';
+  box.style.background = `hsl(${Math.random()*360}, 70%, 60%)`;
+  visual.appendChild(box);
+  return box;
+}
+
+function moveBoxes() {
+  [...visual.querySelectorAll('.box')].forEach(b => {
+    b.style.transform = `translateX(${Math.random()*100}px)`;
+  });
+}
+
+function heavyWork(ms = 500) {
+  const end = performance.now() + ms;
+  while (performance.now() < end) { /* block */ }
+  log(`heavyWork завершил блокировку ${ms}ms`, 'info');
+}
+
+// Track rendering
+let frameCount = 0;
+function trackRender() {
+  requestAnimationFrame(() => {
+    frameCount++;
+    log(`🖼 render frame #${frameCount}`, 'render');
+    if (tracking) trackRender();
+  });
+}
+let tracking = false;
+function startRenderTracking() {
+  if (tracking) return;
+  tracking = true;
+  trackRender();
+}
+function stopRenderTracking() { tracking = false; }
+
+// ====== Presets ======
+const presets = [
+  {
+    name: "1. Базовый порядок: sync / micro / macro",
+    code: `log('1: sync start', 'sync');
+
+setTimeout(() => log('2: setTimeout (macro)', 'macro'), 0);
+
+Promise.resolve().then(() => log('3: promise.then (micro)', 'micro'));
+
+queueMicrotask(() => log('4: queueMicrotask (micro)', 'micro'));
+
+log('5: sync end', 'sync');
+
+// Ожидаем: 1, 5, 3, 4, 2`
+  },
+  {
+    name: "2. Микрозадачи внутри микрозадач",
+    code: `log('start', 'sync');
+
+Promise.resolve().then(() => {
+  log('micro 1', 'micro');
+  Promise.resolve().then(() => log('micro 1.1 (nested)', 'micro'));
+});
+
+Promise.resolve().then(() => log('micro 2', 'micro'));
+
+setTimeout(() => log('macro', 'macro'), 0);
+
+log('end', 'sync');
+
+// Все вложенные микрозадачи выполнятся ДО макрозадачи`
+  },
+  {
+    name: "3. setTimeout(0) vs Promise",
+    code: `setTimeout(() => log('timeout 1', 'macro'), 0);
+setTimeout(() => log('timeout 2', 'macro'), 0);
+
+Promise.resolve().then(() => {
+  log('promise 1', 'micro');
+  return Promise.resolve();
+}).then(() => log('promise 2 (after chain)', 'micro'));
+
+// Между двумя macro успеют все micro`
+  },
+  {
+    name: "4. async/await — это Promise под капотом",
+    code: `async function foo() {
+  log('foo: before await', 'sync');
+  await null; // эквивалент Promise.resolve().then
+  log('foo: after await (micro)', 'micro');
+}
+
+log('script start', 'sync');
+foo();
+log('script end', 'sync');
+
+setTimeout(() => log('timeout', 'macro'), 0);`
+  },
+  {
+    name: "5. Блокировка главного потока (синхронный цикл)",
+    code: `// Этот пример покажет, что синхронный цикл блокирует рендер
+resetVisual();
+for (let i = 0; i < 5; i++) addBox();
+
+log('начинаем блокировку 2 сек', 'sync');
+
+// Попробуем подвинуть боксы — но ничего не отрисуется до конца!
+moveBoxes();
+
+heavyWork(2000);
+
+log('блокировка закончилась — ТОЛЬКО сейчас произойдёт рендер', 'sync');`
+  },
+  {
+    name: "6. requestAnimationFrame — правильные анимации",
+    code: `resetVisual();
+const box = addBox();
+let x = 0;
+
+function animate() {
+  x += 2;
+  box.style.transform = \`translateX(\${x}px)\`;
+  log(\`rAF: x=\${x}\`, 'raf');
+  if (x < 200) requestAnimationFrame(animate);
+}
+
+requestAnimationFrame(animate);
+// rAF выполняется перед каждым paint (~60fps)`
+  },
+  {
+    name: "7. rAF vs setTimeout vs microtask — порядок",
+    code: `log('start', 'sync');
+
+setTimeout(() => log('setTimeout', 'macro'), 0);
+
+requestAnimationFrame(() => log('rAF', 'raf'));
+
+Promise.resolve().then(() => log('promise', 'micro'));
+
+queueMicrotask(() => log('queueMicrotask', 'micro'));
+
+log('end', 'sync');
+
+// Порядок: sync -> micro -> (возможно rAF+render) -> macro
+// rAF выполнится перед следующим paint, а не после каждого тика`
+  },
+  {
+    name: "8. Голодание рендера микрозадачами",
+    code: `log('Добавляем бесконечную цепочку микрозадач', 'sync');
+resetVisual();
+const box = addBox();
+
+let count = 0;
+function addMicro() {
+  if (count++ > 10000) return;
+  Promise.resolve().then(addMicro);
+}
+addMicro();
+
+// Пробуем подвинуть бокс
+box.style.transform = 'translateX(300px)';
+log('попытка сдвига бокса — НЕ отрисуется пока микрозадачи не закончатся', 'info');`
+  },
+  {
+    name: "9. Разбивка тяжёлой задачи через setTimeout",
+    code: `log('обрабатываем 5 чанков, НЕ блокируя UI', 'sync');
+resetVisual();
+
+let chunk = 0;
+function processChunk() {
+  heavyWork(200); // "тяжёлая" работа
+  addBox();
+  chunk++;
+  log(\`chunk \${chunk} готов — UI может отрисоваться\`, 'macro');
+  if (chunk < 5) setTimeout(processChunk, 0);
+  else log('все чанки обработаны', 'sync');
+}
+setTimeout(processChunk, 0);`
+  },
+  {
+    name: "10. MessageChannel — быстрые макрозадачи",
+    code: `log('start', 'sync');
+
+const ch = new MessageChannel();
+ch.port1.onmessage = () => log('MessageChannel (macro)', 'macro');
+ch.port2.postMessage('');
+
+setTimeout(() => log('setTimeout 0 (macro)', 'macro'), 0);
+
+Promise.resolve().then(() => log('promise (micro)', 'micro'));
+
+log('end', 'sync');
+
+// MessageChannel обычно быстрее setTimeout(0),
+// т.к. у setTimeout минимальный таймер clamping 4ms`
+  },
+  {
+    name: "11. Classic interview: for + setTimeout + var/let",
+    code: `log('var (всегда 3, 3, 3):', 'info');
+for (var i = 0; i < 3; i++) {
+  setTimeout(() => log('var i=' + i, 'macro'), 10);
+}
+
+setTimeout(() => {
+  log('let (0, 1, 2):', 'info');
+  for (let j = 0; j < 3; j++) {
+    setTimeout(() => log('let j=' + j, 'macro'), 10);
+  }
+}, 100);`
+  },
+  {
+    name: "12. Layout thrashing (принудительный reflow)",
+    code: `resetVisual();
+for (let i = 0; i < 20; i++) addBox();
+const boxes = document.querySelectorAll('#visual-demo .box');
+
+log('ПЛОХО: чтение + запись в цикле вызывает reflow каждый раз', 'info');
+const t1 = performance.now();
+boxes.forEach(b => {
+  const w = b.offsetWidth; // read (forces layout)
+  b.style.width = (w + 1) + 'px'; // write (invalidates)
+});
+log(\`плохой вариант: \${(performance.now()-t1).toFixed(2)}ms\`, 'info');
+
+log('ХОРОШО: сначала все reads, потом все writes', 'info');
+const t2 = performance.now();
+const widths = [...boxes].map(b => b.offsetWidth);
+boxes.forEach((b, i) => b.style.width = (widths[i] + 1) + 'px');
+log(\`хороший вариант: \${(performance.now()-t2).toFixed(2)}ms\`, 'info');`
+  }
+];
+
+// Render presets
+const list = document.getElementById('presets-list');
+const codeArea = document.getElementById('code');
+
+presets.forEach((p, i) => {
+  const li = document.createElement('li');
+  li.textContent = p.name;
+  li.onclick = () => {
+    document.querySelectorAll('.task-list li').forEach(el => el.classList.remove('active'));
+    li.classList.add('active');
+    codeArea.value = p.code;
+  };
+  list.appendChild(li);
+});
+
+// Load first preset
+list.firstChild.click();
+
+// ====== Run code ======
+function runCode() {
+  clearOutput();
+  startTime = performance.now();
+  const code = codeArea.value;
+  try {
+    // Use Function to execute in controlled scope
+    const fn = new Function('log', 'addBox', 'moveBoxes', 'heavyWork',
+      'resetVisual', 'clearOutput', 'performance',
+      `"use strict";\n${code}`);
+    fn(log, addBox, moveBoxes, heavyWork, resetVisual, clearOutput, performance);
+  } catch (e) {
+    log('ERROR: ' + e.message, 'error');
+  }
+}
+
+// Keyboard shortcut
+document.addEventListener('keydown', (e) => {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') runCode();
+});
+</script>
+
+</body>
+</html>

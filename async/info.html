@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Асинхронность в JS и рендеринг браузера</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    background: linear-gradient(135deg, #1e1e2e 0%, #2a2a40 100%);
+    color: #e0e0e0;
+    padding: 30px 20px;
+    line-height: 1.5;
+  }
+  h1 {
+    text-align: center;
+    color: #ffd166;
+    margin-bottom: 10px;
+    font-size: 2em;
+  }
+  .subtitle {
+    text-align: center;
+    color: #a0a0b0;
+    margin-bottom: 40px;
+    font-style: italic;
+  }
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  section {
+    background: #2d2d44;
+    border-radius: 16px;
+    padding: 30px;
+    margin-bottom: 40px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  }
+  h2 {
+    color: #06d6a0;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #06d6a0;
+    padding-bottom: 8px;
+  }
+  h3 {
+    color: #ffd166;
+    margin: 20px 0 10px;
+  }
+
+  /* Блок-схема Event Loop */
+  .event-loop {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+    margin-top: 20px;
+  }
+  .box {
+    background: #3d3d5c;
+    border: 2px solid #555;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    position: relative;
+    transition: transform 0.2s;
+  }
+  .box .icon {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+  }
+  .box .title {
+    font-weight: bold;
+    color: #fff;
+    margin-bottom: 8px;
+    font-size: 1.1em;
+  }
+  .box .desc {
+    font-size: 0.9em;
+    color: #c0c0d0;
+  }
+  .stack { border-color: #ef476f; }
+  .webapi { border-color: #118ab2; }
+  .queue { border-color: #ffd166; }
+  .microtask { border-color: #06d6a0; }
+  .loop { border-color: #ab47bc; }
+
+  /* Стрелки */
+  .flow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 30px 0;
+  }
+  .arrow {
+    font-size: 2em;
+    color: #06d6a0;
+    margin: 5px 0;
+  }
+  .arrow-row {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    margin: 10px 0;
+    color: #06d6a0;
+    font-size: 1.5em;
+  }
+
+  /* Шаги */
+  .steps {
+    counter-reset: step;
+    list-style: none;
+  }
+  .steps li {
+    counter-increment: step;
+    background: #3d3d5c;
+    margin: 10px 0;
+    padding: 15px 20px 15px 60px;
+    border-radius: 10px;
+    position: relative;
+    border-left: 4px solid #06d6a0;
+  }
+  .steps li::before {
+    content: counter(step);
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #06d6a0;
+    color: #1e1e2e;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+  }
+
+  /* Pipeline рендеринга */
+  .pipeline {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 20px 0;
+  }
+  .stage {
+    flex: 1;
+    min-width: 130px;
+    background: #3d3d5c;
+    padding: 15px 10px;
+    border-radius: 10px;
+    text-align: center;
+    border-top: 4px solid #ffd166;
+  }
+  .stage .stage-icon { font-size: 2em; }
+  .stage .stage-name { font-weight: bold; color: #ffd166; margin: 5px 0; }
+  .stage .stage-desc { font-size: 0.8em; color: #c0c0d0; }
+  .stage-arrow {
+    color: #ffd166;
+    font-size: 1.8em;
+    font-weight: bold;
+  }
+
+  /* Мнемоника */
+  .mnemonic {
+    background: linear-gradient(135deg, #ef476f 0%, #ffd166 100%);
+    color: #1e1e2e;
+    padding: 20px;
+    border-radius: 12px;
+    margin-top: 20px;
+    font-weight: bold;
+    text-align: center;
+    font-size: 1.1em;
+  }
+  .mnemonic span {
+    display: inline-block;
+    background: #1e1e2e;
+    color: #ffd166;
+    padding: 4px 10px;
+    border-radius: 6px;
+    margin: 4px;
+  }
+
+  /* Код */
+  code {
+    background: #1e1e2e;
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: #06d6a0;
+    font-family: 'Consolas', monospace;
+    font-size: 0.9em;
+  }
+
+  /* Приоритеты */
+  .priority {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 15px;
+  }
+  .priority-item {
+    display: flex;
+    align-items: center;
+    background: #3d3d5c;
+    padding: 12px 15px;
+    border-radius: 8px;
+    gap: 15px;
+  }
+  .priority-num {
+    background: #ef476f;
+    color: white;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    flex-shrink: 0;
+  }
+  .priority-item:nth-child(2) .priority-num { background: #ffd166; color: #1e1e2e; }
+  .priority-item:nth-child(3) .priority-num { background: #06d6a0; color: #1e1e2e; }
+  .priority-item:nth-child(4) .priority-num { background: #118ab2; }
+
+  @media (max-width: 768px) {
+    .event-loop { grid-template-columns: 1fr; }
+    .pipeline { flex-direction: column; }
+    .stage-arrow { transform: rotate(90deg); }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <h1>⚡ Асинхронность JS & 🎨 Рендеринг браузера</h1>
+  <p class="subtitle">Простая визуальная шпаргалка для запоминания</p>
+
+  <!-- ========== ЧАСТЬ 1: АСИНХРОНКА ========== -->
+  <section>
+    <h2>🔄 Часть 1. Как работают асинхронные функции</h2>
+
+    <h3>Главные участники процесса</h3>
+    <div class="event-loop">
+      <div class="box stack">
+        <div class="icon">📚</div>
+        <div class="title">Call Stack</div>
+        <div class="desc">Стек вызовов — здесь выполняется синхронный код (LIFO)</div>
+      </div>
+      <div class="box webapi">
+        <div class="icon">🌐</div>
+        <div class="title">Web APIs</div>
+        <div class="desc">setTimeout, fetch, DOM events — работают вне JS</div>
+      </div>
+      <div class="box loop">
+        <div class="icon">♻️</div>
+        <div class="title">Event Loop</div>
+        <div class="desc">Цикл, который связывает очереди со стеком</div>
+      </div>
+    </div>
+
+    <div class="event-loop" style="margin-top:20px; grid-template-columns: 1fr 1fr;">
+      <div class="box microtask">
+        <div class="icon">⚡</div>
+        <div class="title">Microtask Queue</div>
+        <div class="desc">Promise.then, queueMicrotask — <b>высокий приоритет</b></div>
+      </div>
+      <div class="box queue">
+        <div class="icon">📥</div>
+        <div class="title">Macrotask Queue</div>
+        <div class="desc">setTimeout, setInterval, события — <b>обычный приоритет</b></div>
+      </div>
+    </div>
+
+    <h3>📊 Блок-схема выполнения</h3>
+    <div class="flow">
+      <div class="box stack" style="width:60%;">
+        <div class="title">1️⃣ Синхронный код → Call Stack</div>
+        <div class="desc">Выполняется построчно сверху вниз</div>
+      </div>
+      <div class="arrow">⬇️</div>
+      <div class="box webapi" style="width:60%;">
+        <div class="title">2️⃣ Async-операции → Web API</div>
+        <div class="desc">setTimeout / fetch / Promise отправляются в браузер</div>
+      </div>
+      <div class="arrow">⬇️</div>
+      <div class="arrow-row">
+        <span>⬇️ Promise</span>
+        <span>⬇️ setTimeout</span>
+      </div>
+      <div style="display:flex; gap:20px; width:100%;">
+        <div class="box microtask" style="flex:1;">
+          <div class="title">3a️⃣ Microtask Queue</div>
+          <div class="desc">Promise.then, async/await</div>
+        </div>
+        <div class="box queue" style="flex:1;">
+          <div class="title">3b️⃣ Macrotask Queue</div>
+          <div class="desc">setTimeout, setInterval</div>
+        </div>
+      </div>
+      <div class="arrow">⬇️</div>
+      <div class="box loop" style="width:70%;">
+        <div class="title">4️⃣ Event Loop проверяет</div>
+        <div class="desc">Если Call Stack пуст → берёт задачу</div>
+      </div>
+      <div class="arrow">⬇️</div>
+      <div class="box stack" style="width:60%;">
+        <div class="title">5️⃣ Возврат в Call Stack → выполнение</div>
+      </div>
+    </div>
+
+    <h3>🏆 Порядок приоритетов (запомни!)</h3>
+    <div class="priority">
+      <div class="priority-item">
+        <div class="priority-num">1</div>
+        <div><b>Синхронный код</b> — всё, что в Call Stack прямо сейчас</div>
+      </div>
+      <div class="priority-item">
+        <div class="priority-num">2</div>
+        <div><b>Microtasks</b> — <code>Promise.then</code>, <code>queueMicrotask</code>, <code>await</code></div>
+      </div>
+      <div class="priority-item">
+        <div class="priority-num">3</div>
+        <div><b>Macrotasks</b> — <code>setTimeout</code>, <code>setInterval</code>, I/O, события</div>
+      </div>
+      <div class="priority-item">
+        <div class="priority-num">4</div>
+        <div><b>Render</b> — отрисовка кадра браузером (после микротасков)</div>
+      </div>
+    </div>
+
+    <div class="mnemonic">
+      💡 Запомни: <span>СИНХРОН</span> → <span>МИКРО</span> → <span>МАКРО</span> → <span>RENDER</span>
+    </div>
+  </section>
+
+  <!-- ========== ЧАСТЬ 2: РЕНДЕРИНГ ========== -->
+  <section>
+    <h2>🎨 Часть 2. Как работает рендеринг браузера</h2>
+
+    <h3>Pipeline отрисовки страницы (CRP)</h3>
+    <div class="pipeline">
+      <div class="stage">
+        <div class="stage-icon">📄</div>
+        <div class="stage-name">DOM</div>
+        <div class="stage-desc">Парсинг HTML → дерево узлов</div>
+      </div>
+      <div class="stage-arrow">→</div>
+      <div class="stage">
+        <div class="stage-icon">🎨</div>
+        <div class="stage-name">CSSOM</div>
+        <div class="stage-desc">Парсинг CSS → дерево стилей</div>
+      </div>
+      <div class="stage-arrow">→</div>
+      <div class="stage">
+        <div class="stage-icon">🌳</div>
+        <div class="stage-name">Render Tree</div>
+        <div class="stage-desc">DOM + CSSOM = что видно</div>
+      </div>
+      <div class="stage-arrow">→</div>
+      <div class="stage">
+        <div class="stage-icon">📐</div>
+        <div class="stage-name">Layout</div>
+        <div class="stage-desc">Расчёт размеров и координат</div>
+      </div>
+      <div class="stage-arrow">→</div>
+      <div class="stage">
+        <div class="stage-icon">🖌️</div>
+        <div class="stage-name">Paint</div>
+        <div class="stage-desc">Отрисовка пикселей по слоям</div>
+      </div>
+      <div class="stage-arrow">→</div>
+      <div class="stage">
+        <div class="stage-icon">🧩</div>
+        <div class="stage-name">Composite</div>
+        <div class="stage-desc">Сборка слоёв на экране</div>
+      </div>
+    </div>
+
+    <h3>📊 Блок-схема рендеринга</h3>
+    <div class="flow">
+      <div class="box" style="width:70%; border-color:#118ab2;">
+        <div class="title">1️⃣ Загрузка HTML/CSS/JS</div>
+        <div class="desc">Браузер получает ресурсы с сервера</div>
+      </div>
+      <div class="arrow">⬇️</div>
+      <div style="display:flex; gap:20px; width:100%;">
+        <div class="box" style="flex:1; border-color:#ef476f;">
+          <div class="title">📄 HTML → DOM</div>
+        </div>
+        <div class="box" style="flex:1; border-color:#ffd166;">
+          <div class="title">🎨 CSS → CSSOM</div>
+        </div>
+      </div>
+      <div class="arrow">⬇️</div>
+      <div class="box" style="width:70%; border-color:#06d6a0;">
+        <div class="title">2️⃣ Render Tree (видимые элементы)</div>
+        <div class="desc">display:none сюда НЕ попадает</div>
+      </div>
+      <div class="arrow">⬇️</div>
+      <div class="box" style="width:70%; border-color:#ab47bc;">
+        <div class="title">3️⃣ Layout / Reflow — геометрия</div>
+        <div class="desc">⚠️ Дорогая операция (изменение width, height, позиции)</div>
+      </div>
+      <div class="arrow">⬇️</div>
+      <div class="box" style="width:70%; border-color:#118ab2;">
+        <div class="title">4️⃣ Paint — заливка пикселей</div>
+        <div class="desc">Цвета, фоны, тени, границы</div>
+      </div>
+      <div class="arrow">⬇️</div>
+      <div class="box" style="width:70%; border-color:#06d6a0;">
+        <div class="title">5️⃣ Composite — собираем слои на GPU</div>
+        <div class="desc">✅ transform / opacity — самые быстрые анимации</div>
+      </div>
+    </div>
+
+    <h3>⚙️ Связь с Event Loop (важно!)</h3>
+    <ol class="steps">
+      <li>JS выполняет таск из очереди (макротаск)</li>
+      <li>После него выполняются <b>ВСЕ микротаски</b> (Promise)</li>
+      <li>Браузер решает: пора ли рендерить кадр? (~60 FPS = каждые 16мс)</li>
+      <li>Если да → вызывается <code>requestAnimationFrame</code></li>
+      <li>Затем: <b>Style → Layout → Paint → Composite</b></li>
+      <li>Кадр показан → начинается следующая итерация Event Loop</li>
+    </ol>
+
+    <div class="mnemonic">
+      💡 Pipeline: <span>DOM</span> + <span>CSSOM</span> → <span>RT</span> → <span>Layout</span> → <span>Paint</span> → <span>Composite</span>
+    </div>
+
+    <h3>🚀 Что вызывает что?</h3>
+    <div class="priority">
+      <div class="priority-item">
+        <div class="priority-num">🔴</div>
+        <div><b>width, height, top, font-size</b> → Layout + Paint + Composite (медленно)</div>
+      </div>
+      <div class="priority-item">
+        <div class="priority-num">🟡</div>
+        <div><b>color, background, visibility</b> → Paint + Composite (средне)</div>
+      </div>
+      <div class="priority-item">
+        <div class="priority-num">🟢</div>
+        <div><b>transform, opacity</b> → только Composite (быстро, GPU) ⚡</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== ИТОГ ========== -->
+  <section>
+    <h2>🧠 Финальная мнемоника</h2>
+    <div class="mnemonic" style="font-size:1.2em;">
+      "<span>СМ</span>отрит <span>МАК</span>лер на <span>РЕНДЕР</span>"<br>
+      <small style="font-weight:normal;">Sync → Microtasks → Macrotasks → Render</small>
+    </div>
+    <div class="mnemonic" style="background: linear-gradient(135deg, #06d6a0 0%, #118ab2 100%); color:white;">
+      Рендер: "<span>Дом</span> + <span>Стиль</span> = <span>Дерево</span>, <span>Размер</span>, <span>Краска</span>, <span>Слой</span>"
+    </div>
+  </section>
+
+</div>
+</body>
+</html>

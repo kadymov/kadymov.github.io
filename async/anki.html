@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Anki: Асинхронность JS — самопроверка</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    background: linear-gradient(135deg, #1e1e2e 0%, #2a2a40 100%);
+    color: #e0e0e0;
+    min-height: 100vh;
+    padding: 20px;
+  }
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  h1 {
+    text-align: center;
+    color: #ffd166;
+    margin-bottom: 10px;
+  }
+  .subtitle {
+    text-align: center;
+    color: #a0a0b0;
+    margin-bottom: 20px;
+    font-style: italic;
+  }
+  .stats {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  .stat {
+    background: #2d2d44;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.9em;
+  }
+  .stat b { color: #06d6a0; }
+
+  .card {
+    background: #2d2d44;
+    border-radius: 16px;
+    padding: 30px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    margin-bottom: 20px;
+    border-top: 4px solid #06d6a0;
+  }
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .card-num {
+    color: #a0a0b0;
+    font-size: 0.9em;
+  }
+  .difficulty {
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 0.8em;
+    font-weight: bold;
+  }
+  .easy { background: #06d6a0; color: #1e1e2e; }
+  .medium { background: #ffd166; color: #1e1e2e; }
+  .hard { background: #ef476f; color: white; }
+
+  .question {
+    color: #ffd166;
+    font-size: 1.1em;
+    margin-bottom: 15px;
+    line-height: 1.5;
+  }
+
+  pre {
+    background: #1e1e2e;
+    padding: 15px;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 15px 0;
+    border-left: 4px solid #06d6a0;
+    position: relative;
+  }
+  code {
+    font-family: 'Consolas', 'Monaco', monospace;
+    color: #e0e0e0;
+    font-size: 0.95em;
+    line-height: 1.5;
+  }
+  .hint {
+    color: #a0a0b0;
+    font-size: 0.9em;
+    font-style: italic;
+    margin: 10px 0;
+  }
+
+  .buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+  }
+  button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.95em;
+    font-weight: bold;
+    transition: all 0.2s;
+  }
+  button:hover { transform: translateY(-2px); }
+  .btn-run { background: #06d6a0; color: #1e1e2e; }
+  .btn-show { background: #ffd166; color: #1e1e2e; }
+  .btn-nav { background: #3d3d5c; color: #e0e0e0; }
+  .btn-nav:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+  .btn-good { background: #06d6a0; color: #1e1e2e; }
+  .btn-bad { background: #ef476f; color: white; }
+  .btn-reset { background: #ab47bc; color: white; }
+
+  .output {
+    background: #1e1e2e;
+    border: 2px dashed #555;
+    border-radius: 8px;
+    padding: 15px;
+    margin-top: 15px;
+    min-height: 60px;
+    font-family: 'Consolas', monospace;
+    font-size: 0.95em;
+    white-space: pre-wrap;
+    color: #06d6a0;
+  }
+  .output:empty::before {
+    content: '👉 Нажми "Запустить" чтобы увидеть реальный результат';
+    color: #666;
+    font-style: italic;
+  }
+  .output .log-line {
+    padding: 2px 0;
+  }
+  .output .log-num {
+    color: #555;
+    margin-right: 8px;
+  }
+
+  .answer {
+    background: #1e3a2e;
+    border-left: 4px solid #06d6a0;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 15px;
+    display: none;
+  }
+  .answer.show { display: block; }
+  .answer h4 {
+    color: #06d6a0;
+    margin-bottom: 10px;
+  }
+  .answer-explanation {
+    color: #c0c0d0;
+    line-height: 1.6;
+    margin-top: 10px;
+  }
+
+  .navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .progress {
+    flex: 1;
+    min-width: 200px;
+    background: #3d3d5c;
+    border-radius: 10px;
+    overflow: hidden;
+    height: 8px;
+  }
+  .progress-bar {
+    background: linear-gradient(90deg, #06d6a0, #ffd166);
+    height: 100%;
+    transition: width 0.3s;
+  }
+
+  .self-check {
+    margin-top: 20px;
+    padding: 15px;
+    background: #3d3d5c;
+    border-radius: 8px;
+    text-align: center;
+    display: none;
+  }
+  .self-check.show { display: block; }
+  .self-check p { margin-bottom: 10px; color: #ffd166; }
+
+  .filter-bar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .filter-btn {
+    padding: 6px 14px;
+    background: #3d3d5c;
+    color: #c0c0d0;
+    border-radius: 15px;
+    font-size: 0.85em;
+  }
+  .filter-btn.active { background: #06d6a0; color: #1e1e2e; }
+
+  .keyword { color: #c792ea; }
+  .string { color: #c3e88d; }
+  .number { color: #f78c6c; }
+  .comment { color: #546e7a; font-style: italic; }
+  .func { color: #82aaff; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>🧠 Anki: Асинхронность & Event Loop</h1>
+  <p class="subtitle">Угадай порядок вывода → проверь себя → запусти код</p>
+
+  <div class="stats">
+    <div class="stat">📊 Карточка: <b id="current-num">1</b> / <span id="total-num">0</span></div>
+    <div class="stat">✅ Знаю: <b id="known-count">0</b></div>
+    <div class="stat">🔄 Учу: <b id="learning-count">0</b></div>
+  </div>
+
+  <div class="filter-bar">
+    <button class="filter-btn active" data-filter="all">Все</button>
+    <button class="filter-btn" data-filter="easy">🟢 Лёгкие</button>
+    <button class="filter-btn" data-filter="medium">🟡 Средние</button>
+    <button class="filter-btn" data-filter="hard">🔴 Сложные</button>
+    <button class="filter-btn btn-reset" onclick="resetProgress()">♻️ Сброс</button>
+  </div>
+
+  <div class="progress">
+    <div class="progress-bar" id="progress-bar"></div>
+  </div>
+
+  <div id="card-container"></div>
+
+  <div class="navigation">
+    <button class="btn-nav" id="prev-btn" onclick="prevCard()">← Назад</button>
+    <button class="btn-nav" id="shuffle-btn" onclick="shuffleCards()">🔀 Перемешать</button>
+    <button class="btn-nav" id="next-btn" onclick="nextCard()">Вперёд →</button>
+  </div>
+</div>
+
+<script>
+const cards = [
+  {
+    difficulty: 'easy',
+    question: 'Что выведется в консоль и в каком порядке?',
+    code: `console.log('1');
+setTimeout(() => console.log('2'), 0);
+console.log('3');`,
+    answer: '1\n3\n2',
+    explanation: 'Синхронный код (1, 3) выполняется первым. setTimeout даже с задержкой 0 уходит в Macrotask Queue и ждёт, пока стек освободится. Поэтому 2 выводится последним.'
+  },
+  {
+    difficulty: 'easy',
+    question: 'Какой будет порядок вывода?',
+    code: `console.log('A');
+Promise.resolve().then(() => console.log('B'));
+console.log('C');`,
+    answer: 'A\nC\nB',
+    explanation: 'Сначала синхронный код (A, C). Затем Event Loop проверяет Microtask Queue — там Promise.then с выводом B. Микротаски выполняются после синхронного кода, но до макротасков.'
+  },
+  {
+    difficulty: 'medium',
+    question: 'Микротаски vs макротаски — что первее?',
+    code: `console.log('start');
+setTimeout(() => console.log('timeout'), 0);
+Promise.resolve().then(() => console.log('promise'));
+console.log('end');`,
+    answer: 'start\nend\ntimeout — НЕТ! Правильно:\nstart\nend\npromise\ntimeout',
+    explanation: 'Порядок: 1) синхронный код (start, end), 2) ВСЕ микротаски (promise), 3) макротаски (timeout). Микротаски ВСЕГДА имеют приоритет над макротасками.'
+  },
+  {
+    difficulty: 'medium',
+    question: 'Что произойдёт с этой цепочкой Promise?',
+    code: `Promise.resolve()
+  .then(() => console.log('1'))
+  .then(() => console.log('2'))
+  .then(() => console.log('3'));
+setTimeout(() => console.log('timeout'), 0);
+console.log('sync');`,
+    answer: 'sync\n1\n2\n3\ntimeout',
+    explanation: 'Сначала sync. Затем все микротаски выполняются ДО ЛЮБОГО макротаска: каждый .then создаёт новую микротаску, но все они выполнятся до setTimeout.'
+  },
+  {
+    difficulty: 'medium',
+    question: 'Async/await — это синтаксический сахар над Promise. Что выведется?',
+    code: `async function foo() {
+  console.log('1');
+  await Promise.resolve();
+  console.log('2');
+}
+foo();
+console.log('3');`,
+    answer: '1\n3\n2',
+    explanation: 'foo() начинает выполняться синхронно — выводит 1. На await функция приостанавливается, управление возвращается в основной код — выводит 3. После всех синхронных операций микротаска возобновляет foo и выводит 2.'
+  },
+  {
+    difficulty: 'hard',
+    question: 'Сложный микс async/await и setTimeout. Что в консоли?',
+    code: `console.log('1');
+setTimeout(() => console.log('2'), 0);
+async function async1() {
+  console.log('3');
+  await async2();
+  console.log('4');
+}
+async function async2() {
+  console.log('5');
+}
+async1();
+new Promise((resolve) => {
+  console.log('6');
+  resolve();
+}).then(() => console.log('7'));
+console.log('8');`,
+    answer: '1\n3\n5\n6\n8\n4\n7\n2',
+    explanation: '1) Синхронно: 1, затем async1 запускается → 3, async2 → 5, до await синхронно. 2) new Promise — конструктор синхронный → 6. 3) Затем 8. 4) Микротаски: продолжение async1 → 4, потом .then → 7. 5) Макротаска: 2.'
+  },
+  {
+    difficulty: 'easy',
+    question: 'Что вернёт обычная async-функция?',
+    code: `async function getValue() {
+  return 42;
+}
+const result = getValue();
+console.log(result);
+console.log(typeof result.then);`,
+    answer: 'Promise { 42 }\nfunction',
+    explanation: 'Async-функции ВСЕГДА возвращают Promise. Даже если внутри return простого значения — оно автоматически оборачивается в Promise.resolve(42).'
+  },
+  {
+    difficulty: 'medium',
+    question: 'Что будет выведено?',
+    code: `setTimeout(() => console.log('1'), 0);
+setTimeout(() => console.log('2'), 0);
+Promise.resolve().then(() => {
+  console.log('3');
+  Promise.resolve().then(() => console.log('4'));
+});
+console.log('5');`,
+    answer: '5\n3\n4\n1\n2',
+    explanation: 'Главное правило: Event Loop опустошает ВСЮ Microtask Queue перед взятием следующего макротаска. Даже микротаски, добавленные ВНУТРИ микротаски (4), выполнятся до setTimeout (1, 2).'
+  },
+  {
+    difficulty: 'hard',
+    question: 'Хитрый вопрос про порядок при множественных await',
+    code: `async function a() {
+  console.log('a-start');
+  await b();
+  console.log('a-end');
+}
+async function b() {
+  console.log('b-start');
+  await Promise.resolve();
+  console.log('b-end');
+}
+a();
+console.log('main');`,
+    answer: 'a-start\nb-start\nmain\nb-end\na-end',
+    explanation: 'a() → выводит a-start, вызывает b() → b-start, в b() стоит await → b приостанавливается, a тоже ждёт → выходим, выводим main. Затем микротаска возобновляет b → b-end. Затем микротаска возобновляет a → a-end.'
+  },
+  {
+    difficulty: 'medium',
+    question: 'Promise.all — когда выполнится then?',
+    code: `const p1 = new Promise(r => setTimeout(() => r('1'), 100));
+const p2 = new Promise(r => setTimeout(() => r('2'), 50));
+const p3 = new Promise(r => setTimeout(() => r('3'), 200));
+Promise.all([p1, p2, p3]).then(values => console.log(values));
+console.log('start');`,
+    answer: 'start\n["1", "2", "3"]  (через ~200мс)',
+    explanation: 'Promise.all ждёт ВСЕ промисы. Время выполнения = время самого медленного (200мс). Результаты в массиве идут в ПОРЯДКЕ переданных промисов, а не порядке завершения!'
+  },
+  {
+    difficulty: 'medium',
+    question: 'Promise.race vs Promise.all',
+    code: `const fast = new Promise(r => setTimeout(() => r('быстрый'), 50));
+const slow = new Promise(r => setTimeout(() => r('медленный'), 200));
+Promise.race([fast, slow]).then(v => console.log('race:', v));
+console.log('старт');`,
+    answer: 'старт\nrace: быстрый',
+    explanation: 'Promise.race завершается с результатом ПЕРВОГО завершившегося промиса (resolve или reject). Остальные промисы продолжают выполняться, но их результат игнорируется.'
+  },
+  {
+    difficulty: 'hard',
+    question: 'Что произойдёт при ошибке в async?',
+    code: `async function risky() {
+  throw new Error('упс');
+}
+risky()
+  .then(() => console.log('успех'))
+  .catch(e => console.log('поймано:', e.message));
+console.log('после вызова');`,
+    answer: 'после вызова\nпоймано: упс',
+    explanation: 'throw внутри async-функции превращается в отклонённый Promise (rejected). .catch() ловит эту ошибку. Вывод "после вызова" идёт раньше, потому что .then/.catch — это микротаски.'
+  },
+  {
+    difficulty: 'easy',
+    question: 'queueMicrotask vs setTimeout',
+    code: `setTimeout(() => console.log('timeout'), 0);
+queueMicrotask(() => console.log('microtask'));
+console.log('sync');`,
+    answer: 'sync\nmicrotask\ntimeout',
+    explanation: 'queueMicrotask добавляет задачу в Microtask Queue (как Promise.then). Микротаски всегда выполняются раньше макротасков (setTimeout).'
+  },
+  {
+    difficulty: 'hard',
+    question: 'Бесконечная микротаска — что произойдёт?',
+    code: `// НЕ ЗАПУСКАЙ это в реальном коде!
+// Только теория:
+setTimeout(() => console.log('никогда'), 0);
+function loop() {
+  Promise.resolve().then(loop);
+}
+loop();`,
+    answer: 'setTimeout НИКОГДА не выполнится — браузер зависнет',
+    explanation: 'Каждая микротаска создаёт новую микротаску. Event Loop НЕ может перейти к макротаскам, пока Microtask Queue не пуста. Это блокирует рендеринг и макротаски навсегда! ⚠️'
+  },
+  {
+    difficulty: 'medium',
+    question: 'Когда запускается код в .then()?',
+    code: `const p = new Promise((resolve) => {
+  console.log('исполнитель');
+  resolve('значение');
+  console.log('после resolve');
+});
+p.then(v => console.log('then:', v));
+console.log('конец');`,
+    answer: 'исполнитель\nпосле resolve\nконец\nthen: значение',
+    explanation: 'Конструктор Promise (executor) выполняется СИНХРОННО при создании. resolve() не прерывает функцию — она доходит до конца. .then() ВСЕГДА вызывается асинхронно (через микротаску).'
+  },
+  {
+    difficulty: 'medium',
+    question: 'Тонкость: await на не-Promise значении',
+    code: `async function test() {
+  console.log('1');
+  const x = await 42;
+  console.log('2', x);
+}
+test();
+console.log('3');`,
+    answer: '1\n3\n2 42',
+    explanation: 'await оборачивает любое значение в Promise.resolve(). Поэтому даже await 42 заставляет функцию приостановиться и продолжить через микротаску. Сначала 1 → выходим (3) → продолжаем (2 42).'
+  },
+  {
+    difficulty: 'hard',
+    question: 'Сложно: try/catch с async',
+    code: `async function fail() {
+  await Promise.reject('ошибка1');
+}
+async function main() {
+  try {
+    await fail();
+  } catch (e) {
+    console.log('поймал:', e);
+  }
+  console.log('продолжаем');
+}
+main();
+console.log('start');`,
+    answer: 'start\nпоймал: ошибка1\nпродолжаем',
+    explanation: 'await на отклонённом Promise бросает исключение в async-функции. try/catch может его поймать! Это огромное преимущество async/await перед обычными промисами.'
+  },
+  {
+    difficulty: 'easy',
+    question: 'Сколько раз выполнится then?',
+    code: `const p = Promise.resolve('значение');
+p.then(v => console.log('A:', v));
+p.then(v => console.log('B:', v));
+p.then(v => console.log('C:', v));`,
+    answer: 'A: значение\nB: значение\nC: значение',
+    explanation: 'Один и тот же Promise может иметь МНОГО подписчиков через .then(). Все они получат одно и то же значение и выполнятся в порядке регистрации.'
+  },
+  {
+    difficulty: 'hard',
+    question: 'Тест на знание: setTimeout с большой задержкой vs Promise',
+    code: `setTimeout(() => console.log('timeout'), 100);
+const start = Date.now();
+Promise.resolve().then(() => {
+  while (Date.now() - start < 200) {} // блокируем 200мс
+  console.log('promise done');
+});
+console.log('sync');`,
+    answer: 'sync\npromise done\ntimeout (хотя задержка была 100мс!)',
+    explanation: 'setTimeout(fn, 100) — это МИНИМАЛЬНАЯ задержка. Если поток занят (микротаской с while), таймер ждёт. Реальная задержка может быть больше указанной. Микротаски блокируют макротаски и рендер!'
+  },
+  {
+    difficulty: 'medium',
+    question: 'Что выведется при работе с Promise.allSettled?',
+    code: `const p1 = Promise.resolve('ок');
+const p2 = Promise.reject('ошибка');
+const p3 = Promise.resolve('тоже ок');
+Promise.allSettled([p1, p2, p3])
+  .then(results => results.forEach(r => console.log(r.status)));`,
+    answer: 'fulfilled\nrejected\nfulfilled',
+    explanation: 'allSettled ждёт ВСЕ промисы независимо от исхода (в отличие от all, который падает на первой ошибке). Возвращает массив объектов {status, value/reason}.'
+  },
+  {
+    difficulty: 'hard',
+    question: 'Финальный босс: всё вместе',
+    code: `console.log('1');
+setTimeout(() => console.log('2'), 0);
+Promise.resolve().then(() => {
+  console.log('3');
+  setTimeout(() => console.log('4'), 0);
+});
+new Promise(resolve => {
+  console.log('5');
+  resolve();
+}).then(() => console.log('6'));
+console.log('7');`,
+    answer: '1\n5\n7\n3\n6\n2\n4',
+    explanation: '1) Синхронно: 1, 5 (executor), 7. 2) Микротаски: 3 (внутри добавляет setTimeout в макроочередь), 6. 3) Макротаски: 2, потом 4 (так как 4 был добавлен позже).'
+  }
+];
+
+let currentIndex = 0;
+let filteredCards = [...cards];
+let knownIds = new Set(JSON.parse(localStorage.getItem('known') || '[]'));
+let learningIds = new Set(JSON.parse(localStorage.getItem('learning') || '[]'));
+
+function highlightCode(code) {
+  // Сначала экранируем HTML
+  code = code.replace(/&/g, '&amp;')
+             .replace(/</g, '&lt;')
+             .replace(/>/g, '&gt;');
+
+  // Единый regex с альтернативами — обрабатывает токены по приоритету
+  // Порядок важен: комментарии → строки → ключевые слова → функции → числа
+  return code.replace(
+    /(\/\/[^\n]*)|('[^']*'|"[^"]*"|`[^`]*`)|\b(async|await|function|const|let|var|return|new|throw|try|catch|if|else|while|for)\b|\b(console|Promise|setTimeout|queueMicrotask|Date|Error)\b|\b(\d+)\b/g,
+    (match, comment, string, keyword, func, number) => {
+      if (comment) return `<span class="comment">${comment}</span>`;
+      if (string)  return `<span class="string">${string}</span>`;
+      if (keyword) return `<span class="keyword">${keyword}</span>`;
+      if (func)    return `<span class="func">${func}</span>`;
+      if (number)  return `<span class="number">${number}</span>`;
+      return match;
+    }
+  );
+}
+
+function renderCard() {
+    if (filteredCards.length === 0) {
+    document.getElementById('card-container').innerHTML = `
+      <div class="card"><p style="text-align:center;">😢 Нет карточек для этого фильтра</p></div>
+    `;
+    return;
+  }
+
+  if (currentIndex >= filteredCards.length) currentIndex = 0;
+  if (currentIndex < 0) currentIndex = filteredCards.length - 1;
+
+  const card = filteredCards[currentIndex];
+  const cardId = cards.indexOf(card);
+  const diffClass = card.difficulty;
+  const diffLabel = { easy: '🟢 Легко', medium: '🟡 Средне', hard: '🔴 Сложно' }[card.difficulty];
+
+  document.getElementById('card-container').innerHTML = `
+    <div class="card">
+      <div class="card-header">
+        <span class="card-num">Карточка #${cardId + 1}</span>
+        <span class="difficulty ${diffClass}">${diffLabel}</span>
+      </div>
+      <div class="question">❓ ${card.question}</div>
+      <pre><code id="code-block">${highlightCode(card.code)}</code></pre>
+      <p class="hint">💭 Подумай о порядке: синхронный код → микротаски → макротаски</p>
+
+      <div class="buttons">
+        <button class="btn-run" onclick="runCode(${cardId})">▶️ Запустить код</button>
+        <button class="btn-show" onclick="toggleAnswer()">👁️ Показать ответ</button>
+      </div>
+
+      <div class="output" id="output"></div>
+
+      <div class="answer" id="answer">
+        <h4>✅ Правильный ответ:</h4>
+        <pre><code>${card.answer}</code></pre>
+        <div class="answer-explanation">
+          <b>📖 Объяснение:</b><br>${card.explanation}
+        </div>
+      </div>
+
+      <div class="self-check" id="self-check">
+        <p>Как ты справился?</p>
+        <div class="buttons" style="justify-content:center;">
+          <button class="btn-bad" onclick="markCard(${cardId}, 'learning')">🔄 Ещё учу</button>
+          <button class="btn-good" onclick="markCard(${cardId}, 'known')">✅ Знаю</button>
+        </div>
+      </div>
+    </div>
+  `;
+
+  document.getElementById('current-num').textContent = currentIndex + 1;
+  document.getElementById('total-num').textContent = filteredCards.length;
+  document.getElementById('progress-bar').style.width =
+    `${((currentIndex + 1) / filteredCards.length) * 100}%`;
+
+  updateStats();
+}
+
+function runCode(cardId) {
+  const card = cards[cardId];
+  const output = document.getElementById('output');
+  output.innerHTML = '';
+  let lineNum = 1;
+
+  // Перехват console.log для текущего исполнения
+  const originalLog = console.log;
+  const logs = [];
+  const startTime = Date.now();
+
+  console.log = function(...args) {
+    const elapsed = Date.now() - startTime;
+    const text = args.map(a => {
+      if (typeof a === 'object') {
+        try { return JSON.stringify(a); } catch { return String(a); }
+      }
+      return String(a);
+    }).join(' ');
+    logs.push({ text, elapsed });
+
+    const line = document.createElement('div');
+    line.className = 'log-line';
+    line.innerHTML = `<span class="log-num">${String(lineNum++).padStart(2, '0')}.</span><span style="color:#888;font-size:0.85em;">[+${elapsed}мс]</span> ${escapeHtml(text)}`;
+    output.appendChild(line);
+    originalLog.apply(console, args);
+  };
+
+  // Защита от бесконечных микротасок
+  if (card.code.includes('function loop()') && card.code.includes('Promise.resolve().then(loop)')) {
+    output.innerHTML = `<div style="color:#ef476f;">⚠️ Этот код заблокирует браузер!<br>Запуск отключён для безопасности.<br>Смотри объяснение ниже 👇</div>`;
+    console.log = originalLog;
+    return;
+  }
+
+  try {
+    // Выполняем код в изолированном контексте
+    const fn = new Function(card.code);
+    fn();
+
+    // Восстанавливаем console.log через достаточный промежуток
+    setTimeout(() => {
+      console.log = originalLog;
+      if (logs.length === 0) {
+        output.innerHTML = '<span style="color:#888;">(код не вывел ничего в console)</span>';
+      }
+    }, 1000);
+  } catch (e) {
+    output.innerHTML = `<div style="color:#ef476f;">❌ Ошибка: ${escapeHtml(e.message)}</div>`;
+    console.log = originalLog;
+  }
+}
+
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
+function toggleAnswer() {
+  document.getElementById('answer').classList.toggle('show');
+  document.getElementById('self-check').classList.toggle('show');
+}
+
+function markCard(cardId, status) {
+  if (status === 'known') {
+    knownIds.add(cardId);
+    learningIds.delete(cardId);
+  } else {
+    learningIds.add(cardId);
+    knownIds.delete(cardId);
+  }
+  localStorage.setItem('known', JSON.stringify([...knownIds]));
+  localStorage.setItem('learning', JSON.stringify([...learningIds]));
+  updateStats();
+
+  // Автоматически перейти к следующей карточке
+  setTimeout(() => nextCard(), 300);
+}
+
+function updateStats() {
+  document.getElementById('known-count').textContent = knownIds.size;
+  document.getElementById('learning-count').textContent = learningIds.size;
+}
+
+function nextCard() {
+  currentIndex++;
+  renderCard();
+}
+
+function prevCard() {
+  currentIndex--;
+  renderCard();
+}
+
+function shuffleCards() {
+  for (let i = filteredCards.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [filteredCards[i], filteredCards[j]] = [filteredCards[j], filteredCards[i]];
+  }
+  currentIndex = 0;
+  renderCard();
+}
+
+function resetProgress() {
+  if (confirm('Сбросить весь прогресс?')) {
+    knownIds.clear();
+    learningIds.clear();
+    localStorage.removeItem('known');
+    localStorage.removeItem('learning');
+    updateStats();
+  }
+}
+
+// Фильтры
+document.querySelectorAll('.filter-btn[data-filter]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn[data-filter]').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const filter = btn.dataset.filter;
+    if (filter === 'all') {
+      filteredCards = [...cards];
+    } else {
+      filteredCards = cards.filter(c => c.difficulty === filter);
+    }
+    currentIndex = 0;
+    renderCard();
+  });
+});
+
+// Навигация с клавиатуры
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowRight') nextCard();
+  if (e.key === 'ArrowLeft') prevCard();
+  if (e.key === ' ') {
+    e.preventDefault();
+    toggleAnswer();
+  }
+  if (e.key === 'Enter') {
+    const card = filteredCards[currentIndex];
+    runCode(cards.indexOf(card));
+  }
+});
+
+// Старт
+renderCard();
+</script>
+</body>
+</html>
