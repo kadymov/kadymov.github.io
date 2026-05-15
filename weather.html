@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Погода в Стамбуле</title>
+<style>
+  :root {
+    --bg: #f5ede0;
+    --card: #faf3e7;
+    --accent: #d9c9a8;
+    --text: #5a4a3a;
+    --muted: #8a7a66;
+    --soft: #ede0c8;
+    --highlight: #c9a87a;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 16px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  h1 {
+    font-size: 22px;
+    font-weight: 500;
+    margin: 8px 0 4px;
+    text-align: center;
+  }
+  .subtitle {
+    text-align: center;
+    color: var(--muted);
+    font-size: 13px;
+    margin-bottom: 24px;
+  }
+  .day {
+    background: var(--card);
+    border-radius: 14px;
+    padding: 14px 16px;
+    margin-bottom: 14px;
+    box-shadow: 0 1px 3px rgba(120, 100, 70, 0.08);
+    border: 1px solid transparent;
+    opacity: 0.6;
+  }
+  .day.highlight {
+    border: 1px dashed var(--highlight);
+    opacity: 1;
+  }
+  .day-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: var(--text);
+    text-transform: capitalize;
+  }
+  .periods {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .period {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--soft);
+    border-radius: 10px;
+    padding: 10px 12px;
+  }
+  .period-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .period-name {
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .period-desc {
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .period-prob {
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--text);
+  }
+  .loading, .error {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--muted);
+  }
+  @media (min-width: 500px) {
+    .periods { flex-direction: row; }
+    .period { flex: 1; flex-direction: column; align-items: flex-start; }
+    .period-prob { margin-top: 6px; }
+  }
+</style>
+</head>
+<body>
+  <h1>Стамбул</h1>
+  <div class="subtitle">прогноз осадков по дням</div>
+  <div id="app"><div class="loading">Загрузка…</div></div>
+
+<script>
+const URL = 'https://api.open-meteo.com/v1/forecast?latitude=41.0138&longitude=28.9550&hourly=temperature_2m,precipitation_probability,rain,showers,weather_code&timezone=Europe/Istanbul';
+
+const PERIODS = [
+  { name: 'Утро',  start: 6,  end: 12 },
+  { name: 'День',  start: 12, end: 18 },
+  { name: 'Вечер', start: 18, end: 24 },
+];
+
+const DAYS_RU = ['воскресенье','понедельник','вторник','среда','четверг','пятница','суббота'];
+const MONTHS_RU = ['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
+
+const HIGHLIGHT_START = '2026-05-23';
+const HIGHLIGHT_END   = '2026-05-27';
+
+function describeRain(mm, prob) {
+  if (mm < 0.1) {
+    if (prob >= 70) return 'возможен дождь';
+    if (prob >= 40) return 'дождь маловероятен';
+    if (prob >= 15) return 'почти без осадков';
+    return 'без осадков';
+  }
+  if (mm < 0.5) return 'морось';
+  if (mm < 2)   return 'слабый дождь';
+  if (mm < 5)   return 'умеренный дождь';
+  if (mm < 10)  return 'сильный дождь';
+  if (mm < 20)  return 'очень сильный дождь';
+  return 'ливень';
+}
+
+function formatDayTitle(dateStr) {
+  const d = new Date(dateStr + 'T00:00:00');
+  const today = new Date();
+  today.setHours(0,0,0,0);
+  const diff = Math.round((d - today) / 86400000);
+  let prefix = '';
+  if (diff === 0) prefix = 'Сегодня, ';
+  else if (diff === 1) prefix = 'Завтра, ';
+  else prefix = DAYS_RU[d.getDay()] + ', ';
+  return prefix + d.getDate() + ' ' + MONTHS_RU[d.getMonth()];
+}
+
+function isHighlighted(dateStr) {
+  return dateStr >= HIGHLIGHT_START && dateStr <= HIGHLIGHT_END;
+}
+
+async function load() {
+  try {
+    const res = await fetch(URL);
+    const data = await res.json();
+    render(data.hourly);
+  } catch (e) {
+    document.getElementById('app').innerHTML = '<div class="error">Не удалось загрузить данные</div>';
+  }
+}
+
+function render(hourly) {
+  const byDay = {};
+  for (let i = 0; i < hourly.time.length; i++) {
+    const t = hourly.time[i];
+    const [date, time] = t.split('T');
+    const hour = parseInt(time.split(':')[0], 10);
+    if (!byDay[date]) byDay[date] = [];
+    byDay[date].push({
+      hour,
+      prob: hourly.precipitation_probability[i] ?? 0,
+      rain: (hourly.rain[i] ?? 0) + (hourly.showers[i] ?? 0),
+    });
+  }
+
+  const days = Object.keys(byDay).sort().slice(0, 7);
+  const app = document.getElementById('app');
+  app.innerHTML = '';
+
+  days.forEach(date => {
+    const hours = byDay[date];
+    const dayEl = document.createElement('div');
+    dayEl.className = 'day' + (isHighlighted(date) ? ' highlight' : '');
+    dayEl.innerHTML = `<div class="day-title">${formatDayTitle(date)}</div>`;
+    const periodsEl = document.createElement('div');
+    periodsEl.className = 'periods';
+
+    PERIODS.forEach(p => {
+      const slice = hours.filter(h => h.hour >= p.start && h.hour < p.end);
+      if (slice.length === 0) return;
+      const maxProb = Math.max(...slice.map(h => h.prob));
+      const sumRain = slice.reduce((s, h) => s + h.rain, 0);
+      const desc = describeRain(sumRain, maxProb);
+      const rainStr = sumRain >= 0.1 ? ` · ${sumRain.toFixed(1)} мм` : '';
+
+      periodsEl.innerHTML += `
+        <div class="period">
+          <div class="period-info">
+            <div class="period-name">${p.name}</div>
+            <div class="period-desc">${desc}${rainStr}</div>
+          </div>
+          <div class="period-prob">${maxProb}%</div>
+        </div>
+      `;
+    });
+
+    dayEl.appendChild(periodsEl);
+    app.appendChild(dayEl);
+  });
+}
+
+load();
+</script>
+</body>
+</html>
