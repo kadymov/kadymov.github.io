@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Умный блокнот</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;600&amp;display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: auto; }
+  body {
+    font-family: 'Söhne', 'Segoe UI', -apple-system, sans-serif;
+    background: #f5f4ef;
+    color: #2d2d2a;
+    min-height: 100vh;
+  }
+  header {
+    padding: 14px 24px;
+    background: #faf9f5;
+    border-bottom: 1px solid #e8e6dc;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  header h1 { font-size: 16px; font-weight: 600; letter-spacing: -0.01em; }
+  header h1 .accent { color: #c96442; }
+  header .hint { font-size: 12px; color: #8a8778; }
+
+  .container {
+    display: flex;
+    align-items: stretch;
+    min-height: calc(100vh - 52px);
+  }
+  .editor-col, .result-col {
+    font-family: 'JetBrains Mono', 'SF Mono', 'Menlo', 'Consolas', monospace;
+    font-size: 15px;
+    line-height: 26px;
+    padding: 20px 24px;
+  }
+  .editor-col {
+    flex: 3;
+    background: #faf9f5;
+    border-right: 1px solid #e8e6dc;
+    position: relative;
+  }
+  .result-col {
+    flex: 1;
+    background: #f5f4ef;
+    min-width: 180px;
+    position: relative;
+  }
+
+  /* Стек редактора: подсветка строки, подсветка синтаксиса, textarea */
+  .editor-stack {
+    position: relative;
+    min-height: 100%;
+  }
+  .line-highlight {
+    position: absolute;
+    left: -24px; right: -24px;
+    height: 26px;
+    background: rgba(201, 100, 66, 0.08);
+    pointer-events: none;
+    transition: top 0.05s linear;
+    display: none;
+    z-index: 0;
+  }
+  .line-highlight.visible { display: block; }
+  .result-line-highlight {
+    position: absolute;
+    left: -24px; right: -24px;
+    height: 26px;
+    background: rgba(201, 100, 66, 0.08);
+    pointer-events: none;
+    transition: top 0.05s linear;
+    display: none;
+    z-index: 0;
+  }
+  .result-line-highlight.visible { display: block; }
+
+  .editor-stack pre.syntax,
+  .editor-stack textarea {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    white-space: pre;
+    word-wrap: normal;
+    overflow: hidden;
+    tab-size: 4;
+  }
+  .editor-stack pre.syntax {
+    pointer-events: none;
+    color: #2d2d2a;
+    z-index: 1;
+  }
+  .editor-stack textarea {
+    background: transparent;
+    color: transparent;
+    caret-color: #c96442;
+    resize: none;
+    outline: none;
+    z-index: 2;
+    min-height: 100%;
+  }
+  .editor-stack textarea::selection { background: rgba(201, 100, 66, 0.25); }
+
+  /* Токены подсветки */
+  .tok-num     { color: #2d2d2a; }
+  .tok-op      { color: #c96442; font-weight: 600; }
+  .tok-paren   { color: #8a8778; }
+  .tok-fn      { color: #7a5fbf; font-weight: 600; }
+  .tok-curr    { color: #2a7a4a; font-weight: 600; }
+  .tok-time    { color: #6a8a4a; font-weight: 600; }
+  .tok-date    { color: #6a8a4a; font-weight: 600; }
+  .tok-var-def { color: #1f6f9a; font-weight: 700; }
+  .tok-var-ref { color: #1f6f9a; font-style: italic; }
+  .tok-keyword { color: #c96442; font-weight: 700; text-transform: uppercase; }
+  .tok-percent { color: #c96442; }
+  .tok-comment { color: #b8b4a4; font-style: italic; }
+  .tok-text    { color: #6a665a; }
+  .tok-error   { color: #b03030; text-decoration: underline wavy; text-decoration-thickness: 1px; }
+
+  #results {
+    white-space: pre;
+    color: #c96442;
+    pointer-events: none;
+    font-weight: 500;
+    position: relative;
+    z-index: 1;
+  }
+
+  .result-container {
+    position: relative;
+  }
+
+  .result-line { display: block; min-height: 26px; }
+  .result-total {
+    color: #2d2d2a;
+    font-weight: 700;
+    border-top: 1px solid #d4d0c0;
+  }
+  .result-time { color: #6a8a4a; }
+  .result-empty { color: transparent; }
+
+  ::-webkit-scrollbar { width: 12px; height: 12px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #d4d0c0; border-radius: 6px; }
+  ::-webkit-scrollbar-thumb:hover { background: #b8b4a4; }
+</style>
+</head>
+<body>
+<header>
+  <h1><span class="accent">●</span> Умный блокнот</h1>
+  <span class="hint">переменные: <b>x = ...</b> · ИТОГ · валюты · время/даты · подсветка синтаксиса</span>
+</header>
+<div class="container">
+  <div class="editor-col">
+    <div class="editor-stack" id="stack">
+      <div class="line-highlight" id="lineHL"></div>
+      <pre class="syntax" id="syntax"></pre>
+      <textarea id="editor" spellcheck="false"></textarea>
+    </div>
+  </div>
+  <div class="result-col">
+    <div class="result-container">
+      <div class="result-line-highlight" id="resultHL"></div>
+      <div id="results"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* =========================
+   КОНСТАНТЫ
+   ========================= */
+
+const WORD_OPERATORS = {
+  'на': '*', 'по': '*', 'за': '*', 'умножить': '*', 'х': '*',
+  'per': '*', 'each': '*', 'every': '*',
+  'плюс': '+', 'и': '+', 'добавить': '+', 'plus': '+',
+  'минус': '-', 'вычесть': '-', 'minus': '-',
+  'разделить': '/', 'делить': '/', 'divided': '/',
+};
+
+const TOTAL_WORDS = /(^|\s)(итог|итого|сумма|всего|total|sum)(\s|:|$)/i;
+const TOTAL_WORD_RE = /\b(итог|итого|сумма|всего|total|sum)\b/i;
+
+const FUNCTIONS = {
+  sqrt: Math.sqrt, sin: Math.sin, cos: Math.cos, tan: Math.tan,
+  log: Math.log10, ln: Math.log, exp: Math.exp, abs: Math.abs,
+  floor: Math.floor, ceil: Math.ceil, round: Math.round,
+};
+const FN_NAMES = Object.keys(FUNCTIONS);
+
+const CURRENCY_MAP = {
+  '$': '$', 'usd': '$', 'dollar': '$', 'dollars': '$',
+  '€': '€', 'eur': '€', 'euro': '€', 'euros': '€',
+  '₽': '₽', 'rub': '₽', 'руб': '₽', 'рубль': '₽', 'рублей': '₽',
+  '£': '£', 'gbp': '£', 'pound': '£', 'pounds': '£',
+  '¥': '¥', 'jpy': '¥', 'cny': '¥', 'yen': '¥',
+  '₸': '₸', 'kzt': '₸', 'тенге': '₸',
+  '₴': '₴', 'uah': '₴', 'грн': '₴',
+};
+
+const TIME_UNITS = {
+  's':1,'sec':1,'secs':1,'second':1,'seconds':1,'с':1,'сек':1,'секунда':1,'секунды':1,'секунд':1,
+  'm':60,'min':60,'mins':60,'minute':60,'minutes':60,'м':60,'мин':60,'минута':60,'минуты':60,'минут':60,
+  'h':3600,'hr':3600,'hrs':3600,'hour':3600,'hours':3600,'ч':3600,'час':3600,'часа':3600,'часов':3600,
+  'd':86400,'day':86400,'days':86400,'д':86400,'дн':86400,'день':86400,'дня':86400,'дней':86400,'сутки':86400,'суток':86400,
+  'w':604800,'week':604800,'weeks':604800,'нед':604800,'неделя':604800,'недели':604800,'недель':604800,
+};
+
+/* =========================
+   ТИПЫ ЗНАЧЕНИЙ
+   ========================= */
+const T_DUR='dur',T_TIME='time',T_DATE='date';
+const isObjVal=v=>v&&typeof v==='object'&&v.__t;
+const isDur=v=>isObjVal(v)&&v.__t===T_DUR;
+const isTime=v=>isObjVal(v)&&v.__t===T_TIME;
+const isDate=v=>isObjVal(v)&&v.__t===T_DATE;
+const isNum=v=>typeof v==='number'&&isFinite(v);
+const mkDur=s=>({__t:T_DUR,s});
+const mkTime=(h,m,sec=0)=>({__t:T_TIME,s:((h*3600+m*60+sec)%86400+86400)%86400});
+const mkDate=d=>({__t:T_DATE,d:new Date(d.getTime())});
+
+/* =========================
+   ТОКЕНИЗАЦИЯ ДЛЯ ПОДСВЕТКИ
+   Возвращает массив {text, cls} для каждой строки.
+   Это отдельный, "сырой" токенизатор по позициям — нужен для рендера.
+   ========================= */
+
+function tokenizeForHighlight(line, varNames) {
+  // Регулярки в порядке приоритета
+  const patterns = [
+    { re: /^\/\/.*$|^#.*$/, cls: 'tok-comment' },
+    { re: /^\/\/.*|^#.*/, cls: 'tok-comment' }, // комментарии посреди — обрабатываются отдельно
+  ];
+
+  const out = [];
+  let i = 0;
+  const len = line.length;
+
+  // Сначала отсечём комментарий с конца строки (// или #), но не внутри слов URL и т.п.
+  // Для простоты: первый // или # вне кавычек
+  let commentStart = -1;
+  for (let k = 0; k < len; k++) {
+    if (line[k] === '/' && line[k+1] === '/') { commentStart = k; break; }
+    if (line[k] === '#') { commentStart = k; break; }
+  }
+  const body = commentStart >= 0 ? line.slice(0, commentStart) : line;
+  const comment = commentStart >= 0 ? line.slice(commentStart) : '';
+
+  // Определяем, является ли строка определением переменной (есть `=` вне сравнений)
+  // Имя переменной — слева от первого `=`, если это валидный идентификатор.
+  let varDefEnd = -1;
+  const eqMatch = body.match(/^(\s*)([\p{L}_][\p{L}\p{N}_]*)(\s*)=(?!=)/u);
+  if (eqMatch) {
+    varDefEnd = eqMatch[0].length;
+  }
+
+  // Ключевое слово ИТОГ
+  const totalMatch = body.match(TOTAL_WORD_RE);
+
+  // Идём по body
+  const tokens = [];
+  let p = 0;
+  const L = body.length;
+
+  // Если есть var-def, кладём префикс как спец-токены
+  if (varDefEnd > 0) {
+    // отступ
+    const lead = eqMatch[1];
+    const name = eqMatch[2];
+    const mid  = eqMatch[3];
+    if (lead) tokens.push({ text: lead, cls: '' });
+    tokens.push({ text: name, cls: 'tok-var-def' });
+    if (mid) tokens.push({ text: mid, cls: '' });
+    tokens.push({ text: '=', cls: 'tok-op' });
+    p = varDefEnd;
+  }
+
+  // Регэкспы для основного цикла (использую .sticky через lastIndex)
+  const R = {
+    ws:      /\s+/y,
+    date1:   /\d{4}-\d{1,2}-\d{1,2}/y,
+    date2:   /\d{1,2}\.\d{1,2}\.\d{4}/y,
+    time:    /\d{1,2}:\d{2}(?::\d{2})?\b/y,
+    numUnit: /(\d+(?:\.\d+)?|\d+,\d+)\s*([\p{L}]+)/uy,
+    num:     /\d+(?:\.\d+)?|\d+,\d+/y,
+    percent: /%/y,
+    op2:     /\*\*/y,
+    op:      /[+\-*/^]/y,
+    paren:   /[()]/y,
+    word:    /[\p{L}_][\p{L}\p{N}_]*/uy,
+    curr:    /[$€₽£¥₸₴]/y,
+    other:   /[^\s\w\p{L}]/uy,
+  };
+
+  while (p < L) {
+    let matched = false;
+
+    // Пробелы
+    R.ws.lastIndex = p;
+    let m = R.ws.exec(body);
+    if (m && m.index === p) { tokens.push({ text: m[0], cls: '' }); p += m[0].length; continue; }
+
+    // Дата YYYY-MM-DD
+    R.date1.lastIndex = p;
+    m = R.date1.exec(body);
+    if (m && m.index === p) { tokens.push({ text: m[0], cls: 'tok-date' }); p += m[0].length; continue; }
+
+    // Дата DD.MM.YYYY
+    R.date2.lastIndex = p;
+    m = R.date2.exec(body);
+    if (m && m.index === p) { tokens.push({ text: m[0], cls: 'tok-date' }); p += m[0].length; continue; }
+
+    // Время
+    R.time.lastIndex = p;
+    m = R.time.exec(body);
+    if (m && m.index === p) { tokens.push({ text: m[0], cls: 'tok-time' }); p += m[0].length; continue; }
+
+    // Ключевое слово ИТОГ
+    if (totalMatch) {
+      // ищем точное вхождение по позиции
+      const restLower = body.slice(p).toLowerCase();
+      const kwRe = /^(итог|итого|сумма|всего|total|sum)\b/i;
+      const km = restLower.match(kwRe);
+      if (km) {
+        tokens.push({ text: body.substr(p, km[0].length), cls: 'tok-keyword' });
+        p += km[0].length;
+        continue;
+      }
+    }
+
+    // Число + единица
+    R.numUnit.lastIndex = p;
+    m = R.numUnit.exec(body);
+    if (m && m.index === p) {
+      const numStr = m[1], unit = m[2];
+      const between = m[0].slice(numStr.length, m[0].length - unit.length);
+      const unitLower = unit.toLowerCase();
+      if (TIME_UNITS[unitLower]) {
+        tokens.push({ text: numStr, cls: 'tok-num' });
+        if (between) tokens.push({ text: between, cls: '' });
+        tokens.push({ text: unit, cls: 'tok-time' });
+        p += m[0].length;
+        continue;
+      }
+      if (CURRENCY_MAP[unitLower]) {
+        tokens.push({ text: numStr, cls: 'tok-num' });
+        if (between) tokens.push({ text: between, cls: '' });
+        tokens.push({ text: unit, cls: 'tok-curr' });
+        p += m[0].length;
+        continue;
+      }
+      // не спец-единица — только число
+      tokens.push({ text: numStr, cls: 'tok-num' });
+      p += numStr.length;
+      continue;
+    }
+
+    // Голое число
+    R.num.lastIndex = p;
+    m = R.num.exec(body);
+    if (m && m.index === p) { tokens.push({ text: m[0], cls: 'tok-num' }); p += m[0].length; continue; }
+
+    // Процент
+    R.percent.lastIndex = p;
+    m = R.percent.exec(body);
+    if (m && m.index === p) { tokens.push({ text: m[0], cls: 'tok-percent' }); p += m[0].length; continue; }
+
+    // **
+    R.op2.lastIndex = p;
+    m = R.op2.exec(body);
+    if (m && m.index === p) { tokens.push({ text: m[0], cls: 'tok-op' }); p += m[0].length; continue; }
+
+    // Оператор одиночный
+    R.op.lastIndex = p;
+    m = R.op.exec(body);
+    if (m && m.index === p) { tokens.push({ text: m[0], cls: 'tok-op' }); p += m[0].length; continue; }
+
+    // Скобки
+    R.paren.lastIndex = p;
+    m = R.paren.exec(body);
+    if (m && m.index === p) { tokens.push({ text: m[0], cls: 'tok-paren' }); p += m[0].length; continue; }
+
+    // Символ валюты
+    R.curr.lastIndex = p;
+    m = R.curr.exec(body);
+    if (m && m.index === p) { tokens.push({ text: m[0], cls: 'tok-curr' }); p += m[0].length; continue; }
+
+    // Слово
+    R.word.lastIndex = p;
+    m = R.word.exec(body);
+    if (m && m.index === p) {
+      const w = m[0];
+      const wl = w.toLowerCase();
+      let cls = 'tok-text';
+      if (FN_NAMES.includes(wl)) cls = 'tok-fn';
+      else if (CURRENCY_MAP[wl]) cls = 'tok-curr';
+      else if (TIME_UNITS[wl]) cls = 'tok-time';
+      else if (WORD_OPERATORS[wl]) cls = 'tok-op';
+      else if (varNames.has(w)) cls = 'tok-var-ref';
+      else if (wl === 'pi' || wl === 'e') cls = 'tok-num';
+      else if (wl === 'today' || wl === 'now' || wl === 'сегодня') cls = 'tok-date';
+      tokens.push({ text: w, cls });
+      p += w.length;
+      continue;
+    }
+
+    // Прочее
+    R.other.lastIndex = p;
+    m = R.other.exec(body);
+    if (m && m.index === p) { tokens.push({ text: m[0], cls: '' }); p += m[0].length; continue; }
+
+    // На всякий случай — символ
+    tokens.push({ text: body[p], cls: '' });
+    p++;
+  }
+
+  if (comment) tokens.push({ text: comment, cls: 'tok-comment' });
+  return tokens;
+}
+
+function renderHighlight(lines, varNames) {
+  const out = [];
+  for (const line of lines) {
+    const toks = tokenizeForHighlight(line, varNames);
+    let html = '';
+    for (const t of toks) {
+      const esc = escapeHtml(t.text);
+      if (t.cls) html += '<span class="' + t.cls + '">' + esc + '</span>';
+      else html += esc;
+    }
+    if (html === '') html = ' '; // чтобы пустая строка имела высоту
+    out.push(html);
+  }
+  // Добавляем финальный перенос, чтобы высота совпадала с textarea
+  return out.join('\n') + '\n';
+}
+
+/* =========================
+   ТОКЕНИЗАЦИЯ ДЛЯ ВЫЧИСЛЕНИЙ
+   ========================= */
+
+function tokenize(raw, variables) {
+  let s = raw.replace(/\/\/.*$/, '').replace(/#.*$/, '');
+  s = s.replace(/[$€₽£¥₸₴]/g, ' ');
+  s = s.replace(/(\d),(\d)/g, '$1.$2');
+  s = s.replace(/\^/g, '**');
+  s = s.replace(/(\d+(?:\.\d+)?)\s*%\s*(?:от|of)\s*/gi, '($1/100)*');
+  s = s.replace(/(\d+(?:\.\d+)?)\s*%/g, '($1/100)');
+  for (const [word, op] of Object.entries(WORD_OPERATORS)) {
+    const re = new RegExp('(^|[^\\p{L}])' + word + '(?=[^\\p{L}]|$)', 'giu');
+    s = s.replace(re, '$1 ' + op + ' ');
+  }
+
+  const tokens = [];
+  let i = 0;
+  const len = s.length;
+
+  const reDate1 = /(\d{4})-(\d{1,2})-(\d{1,2})/y;
+  const reDate2 = /(\d{1,2})\.(\d{1,2})\.(\d{4})/y;
+  const reTime  = /(\d{1,2}):(\d{2})(?::(\d{2}))?\b/y;
+  const reNumUnit = /(\d+(?:\.\d+)?)\s*([\p{L}]+)/uy;
+  const reNum   = /(\d+(?:\.\d+)?)/y;
+  const reFn    = /(sqrt|sin|cos|tan|log|ln|exp|abs|floor|ceil|round)\b/iy;
+  const reConst = /(pi|e)\b/iy;
+  const reToday = /(today|now|сегодня)\b/iy;
+  const reWord  = /[\p{L}_][\p{L}\p{N}_]*/uy;
+
+  while (i < len) {
+    const ch = s[i];
+    if (/\s/.test(ch)) { i++; continue; }
+    if (ch === '(') { tokens.push({ kind: 'lp' }); i++; continue; }
+    if (ch === ')') { tokens.push({ kind: 'rp' }); i++; continue; }
+    if (ch === '*' && s[i+1] === '*') { tokens.push({ kind: 'op', val: '**' }); i += 2; continue; }
+    if ('+-*/'.includes(ch)) { tokens.push({ kind: 'op', val: ch }); i++; continue; }
+
+    reDate1.lastIndex = i;
+    let m = reDate1.exec(s);
+    if (m && m.index === i) {
+      tokens.push({ kind: 'num', val: mkDate(new Date(+m[1], +m[2]-1, +m[3])) });
+      i += m[0].length; continue;
+    }
+    reDate2.lastIndex = i;
+    m = reDate2.exec(s);
+    if (m && m.index === i) {
+      tokens.push({ kind: 'num', val: mkDate(new Date(+m[3], +m[2]-1, +m[1])) });
+      i += m[0].length; continue;
+    }
+
+    reTime.lastIndex = i;
+    m = reTime.exec(s);
+    if (m && m.index === i) {
+            const h = +m[1], mi = +m[2], sec = m[3] ? +m[3] : 0;
+      if (h <= 23 && mi <= 59 && sec <= 59) {
+        tokens.push({ kind: 'num', val: mkTime(h, mi, sec) });
+      } else {
+        tokens.push({ kind: 'num', val: mkDur(h*3600 + mi*60 + sec) });
+      }
+      i += m[0].length;
+      continue;
+    }
+
+    reNumUnit.lastIndex = i;
+    m = reNumUnit.exec(s);
+    if (m && m.index === i) {
+      const num = parseFloat(m[1]);
+      const unitRaw = m[2].toLowerCase();
+      if (TIME_UNITS[unitRaw]) {
+        tokens.push({ kind: 'num', val: mkDur(num * TIME_UNITS[unitRaw]) });
+        i += m[0].length;
+        continue;
+      }
+      tokens.push({ kind: 'num', val: num });
+      i += m[1].length;
+      continue;
+    }
+
+    reFn.lastIndex = i;
+    m = reFn.exec(s);
+    if (m && m.index === i) {
+      tokens.push({ kind: 'fn', val: m[1].toLowerCase() });
+      i += m[0].length; continue;
+    }
+
+    reConst.lastIndex = i;
+    m = reConst.exec(s);
+    if (m && m.index === i) {
+      const name = m[1].toLowerCase();
+      tokens.push({ kind: 'num', val: name === 'pi' ? Math.PI : Math.E });
+      i += m[0].length; continue;
+    }
+
+    reToday.lastIndex = i;
+    m = reToday.exec(s);
+    if (m && m.index === i) {
+      const now = new Date();
+      // today/сегодня — обнуляем время; now — текущее
+      if (m[1].toLowerCase() === 'now') {
+        tokens.push({ kind: 'num', val: mkDate(now) });
+      } else {
+        tokens.push({ kind: 'num', val: mkDate(new Date(now.getFullYear(), now.getMonth(), now.getDate())) });
+      }
+      i += m[0].length; continue;
+    }
+
+    reNum.lastIndex = i;
+    m = reNum.exec(s);
+    if (m && m.index === i) {
+      tokens.push({ kind: 'num', val: parseFloat(m[1]) });
+      i += m[0].length; continue;
+    }
+
+    // Слово — может быть переменной
+    reWord.lastIndex = i;
+    m = reWord.exec(s);
+    if (m && m.index === i) {
+      const w = m[0];
+      if (variables && Object.prototype.hasOwnProperty.call(variables, w)) {
+        tokens.push({ kind: 'num', val: variables[w] });
+      }
+      // иначе пропускаем (это просто текст)
+      i += m[0].length;
+      continue;
+    }
+
+    i++;
+  }
+
+  return tokens;
+}
+
+/* =========================
+   PARSER (Shunting-yard → RPN)
+   ========================= */
+
+const PREC = { '+': 1, '-': 1, '*': 2, '/': 2, '**': 3, 'u-': 4 };
+const RIGHT_ASSOC = { '**': true, 'u-': true };
+
+function toRPN(tokens) {
+  const out = [];
+  const stack = [];
+  let prevKind = null;
+
+  for (let i = 0; i < tokens.length; i++) {
+    const t = tokens[i];
+    if (t.kind === 'num') { out.push(t); prevKind = 'num'; }
+    else if (t.kind === 'fn') { stack.push(t); prevKind = 'fn'; }
+    else if (t.kind === 'op') {
+      let op = t.val;
+      if (op === '-' && (prevKind === null || prevKind === 'op' || prevKind === 'lp' || prevKind === 'fn')) {
+        op = 'u-';
+      } else if (op === '+' && (prevKind === null || prevKind === 'op' || prevKind === 'lp' || prevKind === 'fn')) {
+        prevKind = 'op'; continue;
+      }
+      while (stack.length) {
+        const top = stack[stack.length - 1];
+        if (top.kind === 'op' || top.kind === 'unary') {
+          const topOp = top.val;
+          if (RIGHT_ASSOC[op] ? PREC[topOp] > PREC[op] : PREC[topOp] >= PREC[op]) {
+            out.push(stack.pop());
+          } else break;
+        } else if (top.kind === 'fn') {
+          out.push(stack.pop());
+        } else break;
+      }
+      stack.push({ kind: op === 'u-' ? 'unary' : 'op', val: op });
+      prevKind = 'op';
+    }
+    else if (t.kind === 'lp') { stack.push(t); prevKind = 'lp'; }
+    else if (t.kind === 'rp') {
+      while (stack.length && stack[stack.length - 1].kind !== 'lp') out.push(stack.pop());
+      if (!stack.length) return null;
+      stack.pop();
+      if (stack.length && stack[stack.length - 1].kind === 'fn') out.push(stack.pop());
+      prevKind = 'rp';
+    }
+  }
+  while (stack.length) {
+    const top = stack.pop();
+    if (top.kind === 'lp' || top.kind === 'rp') return null;
+    out.push(top);
+  }
+  return out;
+}
+
+/* =========================
+   ОПЕРАЦИИ
+   ========================= */
+
+function addDays(date, days) {
+  const d = new Date(date.getTime());
+  d.setDate(d.getDate() + days);
+  return d;
+}
+
+function applyBinary(op, a, b) {
+  if (isNum(a) && isNum(b)) {
+    switch (op) {
+      case '+': return a + b;
+      case '-': return a - b;
+      case '*': return a * b;
+      case '/': return a / b;
+      case '**': return a ** b;
+    }
+  }
+  if (isDur(a) && isDur(b)) {
+    if (op === '+') return mkDur(a.s + b.s);
+    if (op === '-') return mkDur(a.s - b.s);
+    if (op === '/') return a.s / b.s;
+    return null;
+  }
+  if (isDur(a) && isNum(b)) {
+    if (op === '*') return mkDur(a.s * b);
+    if (op === '/') return mkDur(a.s / b);
+    return null;
+  }
+  if (isNum(a) && isDur(b)) {
+    if (op === '*') return mkDur(a * b.s);
+    return null;
+  }
+  if (isTime(a) && isDur(b)) {
+    if (op === '+') return mkTime(0, 0, a.s + b.s);
+    if (op === '-') return mkTime(0, 0, a.s - b.s);
+    return null;
+  }
+  if (isDur(a) && isTime(b) && op === '+') return mkTime(0, 0, a.s + b.s);
+  if (isTime(a) && isTime(b) && op === '-') return mkDur(a.s - b.s);
+  if (isTime(a) && isTime(b) && op === '+') return mkDur(a.s + b.s);
+  if (isDate(a) && isDur(b)) {
+    if (op === '+') return mkDate(new Date(a.d.getTime() + b.s * 1000));
+    if (op === '-') return mkDate(new Date(a.d.getTime() - b.s * 1000));
+    return null;
+  }
+  if (isDur(a) && isDate(b) && op === '+') return mkDate(new Date(b.d.getTime() + a.s * 1000));
+  if (isDate(a) && isNum(b)) {
+    if (op === '+') return mkDate(addDays(a.d, b));
+    if (op === '-') return mkDate(addDays(a.d, -b));
+    return null;
+  }
+  if (isNum(a) && isDate(b) && op === '+') return mkDate(addDays(b.d, a));
+  if (isDate(a) && isDate(b) && op === '-') return mkDur((a.d.getTime() - b.d.getTime()) / 1000);
+  return null;
+}
+
+function applyUnary(op, a) {
+  if (op === 'u-') {
+    if (isNum(a)) return -a;
+    if (isDur(a)) return mkDur(-a.s);
+    return null;
+  }
+  return null;
+}
+
+function applyFunction(fn, a) {
+  if (!isNum(a)) return null;
+  const f = FUNCTIONS[fn];
+  if (!f) return null;
+  const v = f(a);
+  if (typeof v !== 'number' || !isFinite(v)) return null;
+  return v;
+}
+
+function evalRPN(rpn) {
+  const st = [];
+  for (const t of rpn) {
+    if (t.kind === 'num') st.push(t.val);
+    else if (t.kind === 'op') {
+      if (st.length < 2) return null;
+      const b = st.pop(), a = st.pop();
+      const r = applyBinary(t.val, a, b);
+      if (r === null || r === undefined) return null;
+      st.push(r);
+    } else if (t.kind === 'unary') {
+      if (!st.length) return null;
+      const r = applyUnary(t.val, st.pop());
+      if (r === null) return null;
+      st.push(r);
+    } else if (t.kind === 'fn') {
+      if (!st.length) return null;
+      const r = applyFunction(t.val, st.pop());
+      if (r === null) return null;
+      st.push(r);
+    }
+  }
+  if (st.length !== 1) return null;
+  return st[0];
+}
+
+function evaluateExpression(expr, variables) {
+  const tokens = tokenize(expr, variables);
+  if (!tokens.length) return null;
+  if (!tokens.some(t => t.kind === 'num')) return null;
+
+  const numTokens = tokens.filter(t => t.kind === 'num');
+  const opTokens  = tokens.filter(t => t.kind === 'op' || t.kind === 'fn');
+  if (numTokens.length === 1 && opTokens.length === 0) return numTokens[0].val;
+
+  const rpn = toRPN(tokens);
+  if (!rpn) return null;
+  try { return evalRPN(rpn); } catch { return null; }
+}
+
+/* =========================
+   ПЕРЕМЕННЫЕ
+   ========================= */
+
+// Имя переменной. Запрещаем зарезервированные.
+const RESERVED = new Set([
+  ...FN_NAMES, 'pi', 'e', 'today', 'now', 'сегодня',
+  'итог','итого','сумма','всего','total','sum',
+  ...Object.keys(WORD_OPERATORS),
+  ...Object.keys(TIME_UNITS),
+  ...Object.keys(CURRENCY_MAP),
+]);
+
+function parseAssignment(line) {
+  // Убираем комментарий
+  const clean = line.replace(/\/\/.*$/, '').replace(/#.*$/, '');
+  const m = clean.match(/^\s*([\p{L}_][\p{L}\p{N}_]*)\s*=(?!=)\s*(.+)$/u);
+  if (!m) return null;
+  const name = m[1];
+  if (RESERVED.has(name.toLowerCase())) return null;
+  const expr = m[2];
+  return { name, expr };
+}
+
+/* =========================
+   ВАЛЮТА И ФОРМАТИРОВАНИЕ
+   ========================= */
+
+function detectCurrency(line) {
+  const symbols = ['$', '€', '₽', '£', '¥', '₸', '₴'];
+  for (const sym of symbols) if (line.includes(sym)) return sym;
+  const lower = line.toLowerCase();
+  const wordRe = /[\p{L}]+/gu;
+  let m;
+  while ((m = wordRe.exec(lower)) !== null) {
+    if (CURRENCY_MAP[m[0]]) return CURRENCY_MAP[m[0]];
+  }
+  return null;
+}
+
+function formatNumber(n) {
+  if (typeof n !== 'number' || !isFinite(n)) return '—';
+  const rounded = Math.round(n * 1e10) / 1e10;
+  if (Number.isInteger(rounded)) return rounded.toString();
+  let str = rounded.toString();
+  if (str.length > 12) str = rounded.toPrecision(8).replace(/\.?0+$/, '');
+  return str;
+}
+function formatWithCurrency(n, currency) {
+  const num = formatNumber(n);
+  if (!currency) return num;
+  if ('$€£¥'.includes(currency)) return currency + num;
+  return num + ' ' + currency;
+}
+const pad2 = n => n < 10 ? '0' + n : '' + n;
+
+function formatDuration(seconds) {
+  const sign = seconds < 0 ? '-' : '';
+  let s = Math.abs(seconds);
+  if (s < 60) return sign + formatNumber(s) + ' сек';
+  const days = Math.floor(s / 86400); s -= days * 86400;
+  const hours = Math.floor(s / 3600); s -= hours * 3600;
+  const minutes = Math.floor(s / 60); s -= minutes * 60;
+  const secs = Math.round(s * 1000) / 1000;
+  const parts = [];
+  if (days) parts.push(days + 'д');
+  if (hours) parts.push(hours + 'ч');
+  if (minutes) parts.push(minutes + 'мин');
+  if (secs) parts.push(formatNumber(secs) + 'с');
+  return sign + (parts.length ? parts.join(' ') : '0');
+}
+function formatTime(t) {
+  const total = Math.round(t.s);
+  const h = Math.floor(total / 3600) % 24;
+  const m = Math.floor((total % 3600) / 60);
+  const sec = total % 60;
+  if (sec) return `${pad2(h)}:${pad2(m)}:${pad2(sec)}`;
+  return `${pad2(h)}:${pad2(m)}`;
+}
+function formatDate(d) {
+  const date = d.d;
+  return `${date.getFullYear()}-${pad2(date.getMonth()+1)}-${pad2(date.getDate())}`;
+}
+function formatValue(v, currency) {
+  if (isNum(v))  return formatWithCurrency(v, currency);
+  if (isDur(v))  return formatDuration(v.s);
+  if (isTime(v)) return formatTime(v);
+  if (isDate(v)) return formatDate(v);
+  return '—';
+}
+function valueClass(v) {
+  if (isDur(v) || isTime(v) || isDate(v)) return 'result-time';
+  return '';
+}
+
+/* =========================
+   ИТОГ
+   ========================= */
+
+function isBlank(line) { return !line || !line.trim(); }
+function isTotalLine(line) {
+  const clean = line.replace(/\/\/.*$/, '').replace(/#.*$/, '');
+  if (!TOTAL_WORDS.test(clean)) return false;
+  const withoutWord = clean.replace(/\b(итог|итого|сумма|всего|total|sum)\b/gi, ' ');
+  return !/\d/.test(withoutWord) || !/[+\-*/]/.test(withoutWord);
+}
+function sumValues(values) {
+  const groups = { num: [], dur: [] };
+  for (const v of values) {
+    if (isNum(v)) groups.num.push(v);
+    else if (isDur(v)) groups.dur.push(v);
+  }
+  if (!groups.num.length && !groups.dur.length) return null;
+  if (groups.dur.length > groups.num.length) {
+    return mkDur(groups.dur.reduce((a, x) => a + x.s, 0));
+  }
+  if (groups.num.length) return groups.num.reduce((a, x) => a + x, 0);
+  return mkDur(groups.dur.reduce((a, x) => a + x.s, 0));
+}
+
+/* =========================
+   ГЛАВНЫЙ ЦИКЛ
+   ========================= */
+
+function escapeHtml(s) {
+  return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function update() {
+  const text = editor.value;
+  const lines = text.split('\n');
+  const lineKinds = [];
+  const lineValues = [];
+  const lineCurrencies = [];
+  const out = [];
+  const variables = {}; // имя → значение
+  const varNames = new Set();
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+
+    if (isBlank(line)) {
+      lineKinds.push('none');
+      lineValues.push(null);
+      lineCurrencies.push(null);
+      out.push('<span class="result-line result-empty">·</span>');
+      continue;
+    }
+
+    // ИТОГ
+    if (isTotalLine(line)) {
+      const valuesAbove = [];
+      const currencyCount = {};
+      for (let j = i - 1; j >= 0; j--) {
+        if (lineKinds[j] === 'total') break;
+        if ((lineKinds[j] === 'number' || lineKinds[j] === 'assign') && lineValues[j] !== null) {
+          valuesAbove.push(lineValues[j]);
+          const c = lineCurrencies[j];
+          if (c) currencyCount[c] = (currencyCount[c] || 0) + 1;
+        }
+      }
+      const sum = sumValues(valuesAbove);
+      if (sum !== null) {
+        let topCur = null, topN = 0;
+        for (const [c, n] of Object.entries(currencyCount)) if (n > topN) { topN = n; topCur = c; }
+        const ownCur = detectCurrency(line);
+        const cur = ownCur || topCur;
+        lineKinds.push('total');
+        lineValues.push(sum);
+        lineCurrencies.push(cur);
+        const cls = ('result-line result-total ' + valueClass(sum)).trim();
+        out.push('<span class="' + cls + '">' + escapeHtml(formatValue(sum, cur)) + '</span>');
+      } else {
+        lineKinds.push('none');
+        lineValues.push(null);
+        lineCurrencies.push(null);
+        out.push('<span class="result-line result-empty">·</span>');
+      }
+      continue;
+    }
+
+    // Присваивание
+    const assign = parseAssignment(line);
+    if (assign) {
+      const value = evaluateExpression(assign.expr, variables);
+      if (value !== null && value !== undefined) {
+        variables[assign.name] = value;
+        varNames.add(assign.name);
+        const cur = isNum(value) ? detectCurrency(line) : null;
+        lineKinds.push('assign');
+        lineValues.push(value);
+        lineCurrencies.push(cur);
+        const cls = ('result-line ' + valueClass(value)).trim();
+        out.push('<span class="' + cls + '">' +
+          escapeHtml(assign.name + ' = ' + formatValue(value, cur)) + '</span>');
+      } else {
+        lineKinds.push('none');
+        lineValues.push(null);
+        lineCurrencies.push(null);
+        out.push('<span class="result-line result-empty">·</span>');
+      }
+      continue;
+    }
+
+    // Обычное выражение
+    const value = evaluateExpression(line, variables);
+    if (value === null || value === undefined) {
+      lineKinds.push('none');
+      lineValues.push(null);
+      lineCurrencies.push(null);
+      out.push('<span class="result-line result-empty">·</span>');
+    } else {
+      const cur = isNum(value) ? detectCurrency(line) : null;
+      lineKinds.push('number');
+      lineValues.push(value);
+      lineCurrencies.push(cur);
+      const cls = ('result-line ' + valueClass(value)).trim();
+      out.push('<span class="' + cls + '">' + escapeHtml(formatValue(value, cur)) + '</span>');
+    }
+  }
+
+  // Подсветка синтаксиса (с учётом собранных имён переменных)
+  syntaxEl.innerHTML = renderHighlight(lines, varNames);
+
+  // Результаты
+  results.innerHTML = out.join('');
+}
+
+/* =========================
+   UI: подсветка активной строки, синхронизация
+   ========================= */
+
+const editor   = document.getElementById('editor');
+const syntaxEl = document.getElementById('syntax');
+const results  = document.getElementById('results');
+const lineHL   = document.getElementById('lineHL');
+const resultHL = document.getElementById('resultHL');
+const stack    = document.getElementById('stack');
+
+const LINE_HEIGHT = 26;
+const EDITOR_PAD_TOP = 20; // padding .editor-col
+const RESULT_PAD_TOP = 20;
+
+function getCaretLine() {
+  const pos = editor.selectionStart;
+  const before = editor.value.substring(0, pos);
+  return before.split('\n').length - 1;
+}
+
+function updateActiveLine() {
+  const lineIdx = getCaretLine();
+  const isFocused = document.activeElement === editor;
+
+  if (isFocused) {
+    lineHL.style.top   = (lineIdx * LINE_HEIGHT) + 'px';
+    resultHL.style.top = (lineIdx * LINE_HEIGHT) + 'px';
+    lineHL.classList.add('visible');
+    resultHL.classList.add('visible');
+  } else {
+    lineHL.classList.remove('visible');
+    resultHL.classList.remove('visible');
+  }
+}
+
+function autoResize() {
+  editor.style.height = 'auto';
+  editor.style.height = (editor.scrollHeight + 2) + 'px';
+  syntaxEl.style.height = editor.style.height;
+  // высота стека = высоте textarea, чтобы подсветка строки могла позиционироваться абсолютно
+  stack.style.minHeight = editor.style.height;
+}
+
+function onChange() {
+  autoResize();
+  update();
+  updateActiveLine();
+  saveState();
+}
+
+editor.addEventListener('input', onChange);
+editor.addEventListener('keyup', updateActiveLine);
+editor.addEventListener('click', updateActiveLine);
+editor.addEventListener('focus', updateActiveLine);
+editor.addEventListener('blur', updateActiveLine);
+editor.addEventListener('select', updateActiveLine);
+document.addEventListener('selectionchange', () => {
+  if (document.activeElement === editor) updateActiveLine();
+});
+
+editor.addEventListener('keydown', (e) => {
+  if (e.key === 'Tab') {
+    e.preventDefault();
+    // execCommand сохраняет операцию в нативной истории undo/redo
+    document.execCommand('insertText', false, '\t');
+    // onChange сработает автоматически через событие 'input'
+  }
+});
+
+window.addEventListener('resize', autoResize);
+
+function saveState() {
+  try { localStorage.setItem('smart-notepad', editor.value); } catch {}
+}
+function loadState() {
+  try { const v = localStorage.getItem('smart-notepad'); if (v !== null) return v; } catch {}
+  return null;
+}
+
+const saved = loadState();
+editor.value = saved !== null ? saved : `// ─── Финансы фрилансера: январь 2024 ───
+
+# Ставка и норма
+ставка = 3500 руб
+часов_в_день = 7ч
+рабочих_дней = 22
+
+# Доход по проектам
+проект_A = ставка * часов_в_день * 12     // 12 дней
+проект_B = 180000 руб                     // фикс
+консультации = 5000 руб * 6               // 6 часовых
+доход = проект_A + проект_B + консультации
+
+# Расходы
+аренда_офиса = 18000 руб
+интернет = 1200 руб
+подписки = 49$ + 20$ + 10$                // софт
+налог_УСН = 6% от доход
+расходы = аренда_офиса + интернет + подписки + налог_УСН
+
+# Прибыль
+прибыль = доход - расходы
+рентабельность = прибыль / доход * 100   // в процентах
+
+# Отложить
+подушка = 20% от прибыль
+инвестиции = 15% от прибыль
+свободно = прибыль - подушка - инвестиции
+
+# ─── Контрольные суммы ───
+доход
+расходы
+прибыль
+ИТОГ                                     // здесь будет сумма трёх строк выше
+
+# ─── Время до отпуска ───
+сегодня = today
+отпуск = 2024-06-15
+осталось = отпуск - сегодня
+
+рабочих_часов_до_отпуска = часов_в_день * рабочих_дней * 5  // 5 месяцев
+заработаю_до_отпуска = ставка * рабочих_часов_до_отпуска
+
+# ─── Тайминг рабочего дня ───
+начало = 09:30
+обед = 1ч 15мин
+работа_до_обеда = 3ч 30мин
+работа_после = 4ч
+конец = начало + работа_до_обеда + обед + работа_после`;
+
+autoResize();
+update();
+updateActiveLine();
+</script>
+</body>
+</html>
