@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Nipple Knokout</title>
+<style>
+  html, body {
+    margin: 0; padding: 0;
+    background: #111;
+    width: 100%; height: 100%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: monospace;
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+  canvas {
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+    touch-action: none;
+  }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/phaser@3.80.1/dist/phaser.min.js"></script>
+</head>
+<body>
+<script>
+// ===== Размеры =====
+const FRAME_W = 70;
+const FRAME_H = 84;
+const GAME_W  = 70;
+const GAME_H  = 120;
+
+const SPRITE_Y = GAME_H / 2;
+
+// геометрия HP-полос
+const BAR_X    = 3;
+const BAR_W    = GAME_W - 6;
+const BAR_H    = 4;
+const BAR_TOP_Y    = 3;
+const BAR_BOTTOM_Y = GAME_H - 7;
+const BAR_ALPHA = 0.55;
+
+const STAGES = [
+  [0, 1],
+  [1, 2],
+  [2, 4],
+  [4, 5],
+];
+
+const FPS = 2;
+
+const PLAYER_DAMAGE = 3;
+const ENEMY_DAMAGE  = 7;
+const ENEMY_DELAY   = 350;
+const REGEN_PER_SEC = 12;
+const END_DELAY     = 2000;
+
+const MUSIC_VOLUME  = 0.5;
+
+// ===== Логотип (floating-анимация) =====
+const LOGO_AMPLITUDE = 5;     // на сколько px поднимается/опускается
+const LOGO_SPEED     = 1500;  // длительность одного движения (мс)
+
+// ===== Шейдер волны (ретро-искажение) =====
+const WaveFragShader = `
+precision mediump float;
+uniform float uTime;
+uniform vec2  uResolution;
+uniform sampler2D uMainSampler;
+varying vec2 outTexCoord;
+
+void main() {
+  vec2 uv = outTexCoord;
+
+  uv.x += sin(uv.y * 18.0 + uTime * 3.0) * 0.012;
+  uv.y += sin(uv.x * 12.0 + uTime * 2.0) * 0.008;
+
+  float pixels = 70.0;
+  uv = floor(uv * pixels) / pixels;
+
+  gl_FragColor = texture2D(uMainSampler, uv);
+}
+`;
+
+class WavePipeline extends Phaser.Renderer.WebGL.Pipelines.PostFXPipeline {
+  constructor(game) {
+    super({
+      game,
+      fragShader: WaveFragShader
+    });
+    this._t = 0;
+  }
+  onPreRender() {
+    this._t += 0.016;
+    this.set1f('uTime', this._t);
+  }
+}
+
+const STATE = { START: 'start', PLAYING: 'playing', END: 'end' };
+
+class MainScene extends Phaser.Scene {
+  constructor() { super('main'); }
+
+  preload() {
+    this.load.spritesheet('fighter', 'fighter.png', {
+      frameWidth: FRAME_W,
+      frameHeight: FRAME_H
+    });
+    this.load.image('ui_overlay', 'ui_overlay.png');
+    this.load.image('win',  'win.png');
+    this.load.image('lose', 'lose.png');
+    this.load.image('start', 'start.png');
+    this.load.image('logo', 'logo.png'); // логотип стартового экрана
+
+    this.load.audio('music', 'sound.mp3');
+  }
+
+  create() {
+    this.maxHp = 100;
+
+    this.usePost = this.renderer.type === Phaser.WEBGL;
+    if (this.usePost) {
+      this.renderer.pipelines.addPostPipeline('Wave', WavePipeline);
+    }
+
+    // 🎵 зацикленная музыка
+    this.music = this.sound.add('music', {
+      loop: true,
+      volume: MUSIC_VOLUME
+    });
+
+    this.startMusic = () => {
+      if (this.sound.locked) {
+        this.sound.once(Phaser.Sound.Events.UNLOCKED, () => {
+          if (!this.music.isPlaying) this.music.play();
+        });
+      } else if (!this.music.isPlaying) {
+        this.music.play();
+      }
+    };
+
+    // --- игровые слои ---
+    this.fighter = this.add.sprite(GAME_W / 2, SPRITE_Y, 'fighter', 0).setDepth(1);
+    this.ui      = this.add.image(GAME_W / 2, GAME_H / 2, 'ui_overlay').setDepth(2);
+    this.hud     = this.add.graphics().setDepth(3);
+    this.endScreen = this.add.image(GAME_W / 2, GAME_H / 2, 'win').setDepth(4).setVisible(false);
+
+    // --- стартовый экран с волновым шейдером ---
+    this.startScreen = this.add.image(GAME_W / 2, GAME_H / 2, 'start').setDepth(5);
+    if (this.usePost) {
+      this.startScreen.setPostPipeline('Wave');
+    }
+
+    // --- ЛОГОТИП: поверх волны, БЕЗ шейдера, по центру, высота 84px ---
+    this.logoBaseY = GAME_H / 2;
+    this.logo = this.add.image(GAME_W / 2, this.logoBaseY, 'logo')
+      .setDepth(6); // выше startScreen -> не искажается волной
+
+    // плавная анимация вверх-вниз (yoyo + бесконечный повтор)
+    this.logoTween = this.tweens.add({
+      targets: this.logo,
+      y: this.logoBaseY - LOGO_AMPLITUDE,
+      duration: LOGO_SPEED,
+      ease: 'Sine.easeInOut',
+      yoyo: true,
+      repeat: -1
+    });
+
+    // управление
+    this.input.keyboard.on('keydown-SPACE', () => this.handleInput());
+    this.input.on('pointerdown', () => this.handleInput());
+
+    // таймеры
+    this.enemyTimer = this.time.addEvent({
+      delay: ENEMY_DELAY, loop: true, callback: () => this.enemyHit()
+    });
+    this.animTimer = this.time.addEvent({
+      delay: 1000 / FPS, loop: true, callback: () => this.tickAnim()
+    });
+
+    this.goToStart();
+  }
+
+  handleInput() {
+    this.startMusic();
+
+    if (this.state === STATE.START) {
+      this.startGame();
+    } else if (this.state === STATE.PLAYING) {
+      this.playerHit();
+    } else if (this.state === STATE.END) {
+      if (this.canRestart) this.goToStart();
+    }
+  }
+
+  goToStart() {
+    this.state = STATE.START;
+    this.gameOver = true;
+    this.enemyTimer.paused = true;
+
+    this.startScreen.setVisible(true);
+    this.logo.setVisible(true);          // показываем логотип
+    if (this.logoTween) this.logoTween.resume();
+    this.endScreen.setVisible(false);
+
+    this.fighter.setVisible(false);
+    this.ui.setVisible(false);
+    this.hud.setVisible(false);
+  }
+
+  startGame() {
+    this.state = STATE.PLAYING;
+    this.playerHp = this.maxHp;
+    this.enemyHp  = this.maxHp;
+    this.gameOver = false;
+    this.canRestart = false;
+    this.animToggle = 0;
+
+    this.startScreen.setVisible(false);
+    this.logo.setVisible(false);         // скрываем логотип
+    if (this.logoTween) this.logoTween.pause();
+    this.endScreen.setVisible(false);
+
+    this.fighter.setVisible(true);
+    this.ui.setVisible(true);
+    this.hud.setVisible(true);
+
+    this.enemyTimer.paused = false;
+    this.drawHud();
+    this.tickAnim();
+  }
+
+  update(time, delta) {
+    if (this.state !== STATE.PLAYING) return;
+    const regen = REGEN_PER_SEC * (delta / 1000);
+    this.playerHp = Math.min(this.maxHp, this.playerHp + regen);
+    this.enemyHp  = Math.min(this.maxHp, this.enemyHp  + regen);
+    this.drawHud();
+  }
+
+  playerHit() {
+    this.enemyHp = Math.max(0, this.enemyHp - PLAYER_DAMAGE);
+    this.checkEnd();
+  }
+
+  enemyHit() {
+    if (this.state !== STATE.PLAYING) return;
+    this.playerHp = Math.max(0, this.playerHp - ENEMY_DAMAGE);
+    this.checkEnd();
+  }
+
+  getStage() {
+    const ratio = this.enemyHp / this.maxHp;
+    let idx = Math.floor((1 - ratio) * STAGES.length);
+    return Phaser.Math.Clamp(idx, 0, STAGES.length - 1);
+  }
+
+  tickAnim() {
+    if (this.state !== STATE.PLAYING) return;
+    const stage = STAGES[this.getStage()];
+    this.animToggle = 1 - this.animToggle;
+    this.fighter.setFrame(stage[this.animToggle]);
+  }
+
+  drawHud() {
+    const g = this.hud;
+    g.clear();
+
+    g.fillStyle(0x000000, BAR_ALPHA * 0.6);
+    g.fillRect(BAR_X, BAR_TOP_Y, BAR_W, BAR_H);
+    g.fillRect(BAR_X, BAR_BOTTOM_Y, BAR_W, BAR_H);
+
+    g.fillStyle(0xff3b3b, BAR_ALPHA);
+    g.fillRect(BAR_X, BAR_TOP_Y, BAR_W * (this.enemyHp / this.maxHp), BAR_H);
+
+    g.fillStyle(0x3bff5e, BAR_ALPHA);
+    g.fillRect(BAR_X, BAR_BOTTOM_Y, BAR_W * (this.playerHp / this.maxHp), BAR_H);
+  }
+
+  checkEnd() {
+    if (this.enemyHp <= 0) {
+      this.endGame('win');
+    } else if (this.playerHp <= 0) {
+      this.endGame('lose');
+    }
+  }
+
+  endGame(result) {
+    this.state = STATE.END;
+    this.gameOver = true;
+    this.canRestart = false;
+    this.enemyTimer.paused = true;
+
+    this.endScreen.setTexture(result).setVisible(true);
+
+    this.time.delayedCall(END_DELAY, () => {
+      this.canRestart = true;
+      this.goToStart();
+    });
+  }
+}
+
+const config = {
+  type: Phaser.AUTO,
+  parent: document.body,
+  width: GAME_W,
+  height: GAME_H,
+  pixelArt: true,
+  backgroundColor: '#222',
+  scene: MainScene,
+  scale: {
+    mode: Phaser.Scale.FIT,
+    autoCenter: Phaser.Scale.CENTER_BOTH,
+  }
+};
+
+new Phaser.Game(config);
+</script>
+</body>
+</html>
