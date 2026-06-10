@@ -27,10 +27,19 @@ iframe {
 /* кнопка */
 .night-btn {
   position: fixed;
-  top: 15px;
+  top: 5px;
   right: 15px;
   padding: 15px 17px;
   font-size: 16px;
+  cursor: pointer;
+}
+
+.timer-btn {
+  position: fixed;
+  top: 5px;
+  right: 100px;
+  padding: 10px 12px;
+  font-size: 14px;
   cursor: pointer;
 }
 </style>
@@ -38,6 +47,7 @@ iframe {
 <body>
 
 <button class="night-btn" id="nightToggle">🌙</button>
+<button class="timer-btn" id="timerToggle">⏱ 30 мин</button>
 
 <select id="streamSelect">
   <option value="">-- Выбери стрим --</option>
@@ -85,6 +95,7 @@ select.addEventListener('change', () => {
     return;
   }
 
+  player.style.display = "block"; // вернуть плеер
   player.src = getEmbed(url);
 });
 
@@ -94,6 +105,38 @@ nightBtn.addEventListener('click', () => {
 
   player.style.opacity = night ? "0.3" : "1";
   nightBtn.textContent = night ? "☀️" : "🌙";
+});
+
+// ------
+
+const timerBtn = document.getElementById('timerToggle');
+
+let timer = null;
+let timerActive = false;
+
+timerBtn.addEventListener('click', () => {
+
+  // если таймер уже работает → выключаем
+  if (timerActive) {
+    clearTimeout(timer);
+    timerActive = false;
+    timerBtn.textContent = "⏱ 30 мин";
+    return;
+  }
+
+  // включаем таймер на 30 минут
+  timerActive = true;
+  timerBtn.textContent = "❌ Отмена";
+
+  timer = setTimeout(() => {
+    // выключаем плеер
+    player.src = "";
+    player.style.display = "none";
+
+    timerActive = false;
+    timerBtn.textContent = "⏱ 30 мин";
+
+  }, 30 * 60 * 1000); // 30 минут
 });
 </script>
 
