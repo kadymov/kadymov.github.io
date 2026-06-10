@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>TV Streams</title>
+<style>
+body {
+  font-family: Arial;
+  background: #111;
+  color: #fff;
+  text-align: center;
+}
+select {
+  padding: 10px;
+  font-size: 16px;
+  margin: 20px;
+}
+iframe {
+  width: 80%;
+  height: 500px;
+  border: none;
+  background: #000;
+}
+</style>
+</head>
+<body>
+
+<h1>📺 ТВ стримы</h1>
+
+<select id="streamSelect">
+  <option value="">-- Выбери стрим --</option>
+  <option value="https://live.vkvideo.ru/app/embed/grislytoe">Южный парк</option>
+  <option value="https://goodgame.ru/player?199417">Футурама</option>
+  <option value="https://live.vkvideo.ru/app/embed/play4fun">Гриффины</option>
+  <option value="https://live.vkvideo.ru/app/embed/wfliq">Симпсоны (VK)</option>
+  <option value="https://vkvideo.ru/video-183785346_456239246">Симпсоны (видео)</option>
+  <option value="https://ok.ru/video/10377449447030">Марвел</option>
+</select>
+
+<div>
+  <iframe id="player"></iframe>
+</div>
+
+<script>
+const select = document.getElementById('streamSelect');
+const player = document.getElementById('player');
+
+function getEmbed(url) {
+  // VK video обычный → конвертим
+  if (url.includes("vkvideo.ru/video")) {
+    const match = url.match(/video-?\d+_(\d+)/);
+    if (match) {
+      return "https://vk.com/video_ext.php?oid=-183785346&id=" + match[1];
+    }
+  }
+
+  // OK.ru → embed
+  if (url.includes("ok.ru/video/")) {
+    const id = url.split("/video/")[1];
+    return "https://ok.ru/videoembed/" + id;
+  }
+
+  // Остальное уже embed
+  return url;
+}
+
+select.addEventListener('change', () => {
+  const url = select.value;
+
+  if (!url) {
+    player.src = "";
+    return;
+  }
+
+  const embedUrl = getEmbed(url);
+  player.src = embedUrl;
+});
+</script>
+
+</body>
+</html>
