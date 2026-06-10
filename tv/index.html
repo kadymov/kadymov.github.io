@@ -6,7 +6,7 @@
 <style>
 body {
   font-family: Arial;
-  background: #111;
+  background: #000;
   color: #fff;
   text-align: center;
 }
@@ -16,16 +16,28 @@ select {
   margin: 20px;
 }
 iframe {
-  width: 80%;
+  width: 100%;
   height: 500px;
   border: none;
   background: #000;
+  transition: opacity 0.3s;
+  overflow: hidden;
+}
+
+/* кнопка */
+.night-btn {
+  position: fixed;
+  top: 15px;
+  right: 15px;
+  padding: 10px 12px;
+  font-size: 16px;
+  cursor: pointer;
 }
 </style>
 </head>
 <body>
 
-<h1>📺 ТВ стримы</h1>
+<button class="night-btn" id="nightToggle">🌙</button>
 
 <select id="streamSelect">
   <option value="">-- Выбери стрим --</option>
@@ -38,15 +50,18 @@ iframe {
 </select>
 
 <div>
-  <iframe id="player"></iframe>
+  <iframe id="player" scrolling="no"></iframe>
 </div>
 
 <script>
 const select = document.getElementById('streamSelect');
 const player = document.getElementById('player');
+const nightBtn = document.getElementById('nightToggle');
 
+let night = false;
+
+// --- выбор стрима ---
 function getEmbed(url) {
-  // VK video обычный → конвертим
   if (url.includes("vkvideo.ru/video")) {
     const match = url.match(/video-?\d+_(\d+)/);
     if (match) {
@@ -54,13 +69,11 @@ function getEmbed(url) {
     }
   }
 
-  // OK.ru → embed
   if (url.includes("ok.ru/video/")) {
     const id = url.split("/video/")[1];
     return "https://ok.ru/videoembed/" + id;
   }
 
-  // Остальное уже embed
   return url;
 }
 
@@ -72,8 +85,15 @@ select.addEventListener('change', () => {
     return;
   }
 
-  const embedUrl = getEmbed(url);
-  player.src = embedUrl;
+  player.src = getEmbed(url);
+});
+
+// --- ночной режим (opacity) ---
+nightBtn.addEventListener('click', () => {
+  night = !night;
+
+  player.style.opacity = night ? "0.3" : "1";
+  nightBtn.textContent = night ? "☀️" : "🌙";
 });
 </script>
 
