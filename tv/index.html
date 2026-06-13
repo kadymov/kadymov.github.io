@@ -5,140 +5,257 @@
 <title>TV Streams</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
+:root {
+  --bg: #0a0a0f;
+  --panel: #16161f;
+  --panel-hover: #22222e;
+  --accent: #6c5ce7;
+  --accent-hover: #8174ec;
+  --text: #f5f5f7;
+  --border: #2a2a38;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;            /* без скролла */
+}
+
 body {
-  font-family: Arial;
-  background: #000;
-  color: #fff;
-  text-align: center;
+  font-family: "Segoe UI", Roboto, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
 }
+
+/* ---------- Панель управления ---------- */
+.bar {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  background: var(--panel);
+  border-bottom: 1px solid var(--border);
+}
+
 select {
-  padding: 10px;
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 10px 12px;
   font-size: 16px;
-  margin: 5px;
+  color: var(--text);
+  background: var(--panel-hover);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  cursor: pointer;
+  outline: none;
 }
-iframe {
-  width: 100%;
-  height: 500px;
-  border: none;
+select:focus-visible {
+  box-shadow: 0 0 0 3px var(--accent-hover);
+}
+
+button.icon-btn {
+  flex: 0 0 auto;
+  background: var(--panel-hover);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background .2s, border-color .2s, transform .1s;
+}
+button.icon-btn:hover,
+button.icon-btn:focus-visible {
+  background: var(--accent);
+  border-color: var(--accent-hover);
+  outline: none;
+}
+button.icon-btn:active { transform: scale(.94); }
+button.icon-btn.active {
+  background: #c0392b;
+  border-color: #e74c3c;
+}
+
+/* ---------- Плеер ---------- */
+.player-wrap {
+  flex: 1 1 auto;
+  position: relative;
   background: #000;
-  transition: opacity 0.3s;
-  overflow: hidden;
+  min-height: 0;
 }
-
-/* кнопка */
-.night-btn {
-  position: fixed;
-  top: 10px;
-  right: 15px;
-  padding: 15px 17px;
-  font-size: 16px;
-  cursor: pointer;
+.player-wrap iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  transition: opacity .3s;
 }
+.placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: #9a9aa8;
+  font-size: 18px;
+}
+.placeholder .big { font-size: 54px; }
 
-.timer-btn {
-  position: fixed;
+.timer-badge {
+  position: absolute;
   top: 10px;
-  left: 15px;
-  padding: 15px 17px;
-  font-size: 16px;
-  cursor: pointer;
+  right: 12px;
+  background: rgba(0,0,0,.6);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 5px 10px;
+  font-size: 13px;
+  display: none;
 }
 </style>
 </head>
 <body>
 
-<button class="night-btn" id="nightToggle">🌙</button>
-<button class="timer-btn" id="timerToggle">⏱</button>
+<div class="bar">
+  <select id="streamSelect">
+    <option value="">📺 Выбери канал</option>
+    <option value="https://live.vkvideo.ru/app/embed/grislytoe">Южный парк</option>
+    <option value="https://goodgame.ru/player?199417">Футурама</option>
+    <option value="https://live.vkvideo.ru/app/embed/play4fun">Гриффины</option>
+    <option value="https://live.vkvideo.ru/app/embed/wfliq">Симпсоны (VK)</option>
+    <option value="https://vkvideo.ru/video-183785346_456239246">Симпсоны (видео)</option>
+    <option value="https://ok.ru/video/10377449447030">Марвел</option>
+    <option value="https://ok.ru/video/10377449447030">Netflix</option>
+    <option value="https://ok.ru/video/10922030997052">Гоблин</option>
+    <option value="https://ok.ru/video/14019744177775">Ski-Fi</option>
+    <option value="https://ok.ru/video/9998886575697">Видеокасета</option>
+    <option value="https://live.vkvideo.ru/app/embed/timetomovie">О, Кино </option>
+  </select>
 
-<select id="streamSelect">
-  <option value="">Выбери стрим</option>
-  <option value="https://live.vkvideo.ru/app/embed/grislytoe">Южный парк</option>
-  <option value="https://goodgame.ru/player?199417">Футурама</option>
-  <option value="https://live.vkvideo.ru/app/embed/play4fun">Гриффины</option>
-  <option value="https://live.vkvideo.ru/app/embed/wfliq">Симпсоны (VK)</option>
-  <option value="https://vkvideo.ru/video-183785346_456239246">Симпсоны (видео)</option>
-  <option value="https://ok.ru/video/10377449447030">Марвел</option>
-</select>
+  <button class="icon-btn" id="timerToggle" title="Таймер сна 30 мин">⏱</button>
+  <button class="icon-btn" id="nightToggle" title="Ночной режим">🌙</button>
+  <button class="icon-btn" id="fullscreenToggle" title="На весь экран">⛶</button>
+</div>
 
-<div>
-  <iframe id="player" scrolling="no"></iframe>
+<div class="player-wrap">
+  <div class="placeholder" id="placeholder">
+    <div class="big">📡</div>
+    <div>Выберите канал сверху</div>
+  </div>
+  <iframe id="player" allowfullscreen scrolling="no"></iframe>
+  <div class="timer-badge" id="timerBadge"></div>
 </div>
 
 <script>
-const select = document.getElementById('streamSelect');
-const player = document.getElementById('player');
-const nightBtn = document.getElementById('nightToggle');
+const select      = document.getElementById('streamSelect');
+const player      = document.getElementById('player');
+const placeholder = document.getElementById('placeholder');
+const nightBtn    = document.getElementById('nightToggle');
+const timerBtn    = document.getElementById('timerToggle');
+const fsBtn       = document.getElementById('fullscreenToggle');
+const timerBadge  = document.getElementById('timerBadge');
 
-let night = false;
-
-// --- выбор стрима ---
+/* ---------- Преобразование ссылок ---------- */
 function getEmbed(url) {
   if (url.includes("vkvideo.ru/video")) {
     const match = url.match(/video-?\d+_(\d+)/);
-    if (match) {
-      return "https://vk.com/video_ext.php?oid=-183785346&id=" + match[1];
-    }
+    if (match) return "https://vk.com/video_ext.php?oid=-183785346&id=" + match[1];
   }
-
   if (url.includes("ok.ru/video/")) {
     const id = url.split("/video/")[1];
     return "https://ok.ru/videoembed/" + id;
   }
-
   return url;
 }
 
+/* ---------- Выбор стрима ---------- */
 select.addEventListener('change', () => {
   const url = select.value;
-
   if (!url) {
     player.src = "";
+    player.style.display = "none";
+    placeholder.style.display = "flex";
     return;
   }
-
-  player.style.display = "block"; // вернуть плеер
+  placeholder.style.display = "none";
+  player.style.display = "block";
   player.src = getEmbed(url);
 });
 
-// --- ночной режим (opacity) ---
+/* ---------- Ночной режим ---------- */
+let night = false;
 nightBtn.addEventListener('click', () => {
   night = !night;
-
   player.style.opacity = night ? "0.3" : "1";
+  nightBtn.classList.toggle('active', night);
   nightBtn.textContent = night ? "☀️" : "🌙";
 });
 
-// ------
+/* ---------- Полный экран ---------- */
+fsBtn.addEventListener('click', () => {
+  const wrap = document.querySelector('.player-wrap');
+  if (!document.fullscreenElement) wrap.requestFullscreen?.();
+  else document.exitFullscreen?.();
+});
 
-const timerBtn = document.getElementById('timerToggle');
-
-let timer = null;
-let timerActive = false;
+/* ---------- Таймер сна ---------- */
+let timer = null, countdown = null, timerActive = false;
+const TIMER_MIN = 30;
 
 timerBtn.addEventListener('click', () => {
+  if (timerActive) { stopTimer(); return; }
+  startTimer(TIMER_MIN);
+});
 
-  // если таймер уже работает → выключаем
-  if (timerActive) {
-    clearTimeout(timer);
-    timerActive = false;
-    timerBtn.textContent = "⏱ 30 мин";
-    return;
-  }
-
-  // включаем таймер на 30 минут
+function startTimer(minutes) {
   timerActive = true;
-  timerBtn.textContent = "❌ Отмена";
+  timerBtn.classList.add('active');
+  timerBtn.textContent = "❌";
+  timerBadge.style.display = "block";
+
+  let secondsLeft = minutes * 60;
+  updateBadge(secondsLeft);
+
+  countdown = setInterval(() => {
+    secondsLeft--;
+    updateBadge(secondsLeft);
+    if (secondsLeft <= 0) clearInterval(countdown);
+  }, 1000);
 
   timer = setTimeout(() => {
-    // выключаем плеер
     player.src = "";
     player.style.display = "none";
+    placeholder.style.display = "flex";
+    select.value = "";
+    stopTimer();
+  }, minutes * 60 * 1000);
+}
 
-    timerActive = false;
-    timerBtn.textContent = "⏱ 30 мин";
+function stopTimer() {
+  clearTimeout(timer);
+  clearInterval(countdown);
+  timerActive = false;
+  timerBtn.classList.remove('active');
+  timerBtn.textContent = "⏱";
+  timerBadge.style.display = "none";
+}
 
-  }, 30 * 60 * 1000); // 30 минут
-});
+function updateBadge(sec) {
+  const m = Math.floor(sec / 60);
+  const s = sec % 60;
+  timerBadge.textContent = `⏳ ${m}:${s.toString().padStart(2,'0')}`;
+}
 </script>
 
 </body>
