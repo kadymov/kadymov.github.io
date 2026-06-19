@@ -16,7 +16,6 @@ body {
   transition: opacity 0.3s;
 }
 
-
 select {
   padding: 10px;
   font-size: 16px;
@@ -64,7 +63,7 @@ iframe {
     <option value="https://live.vkvideo.ru/app/embed/wfliq">Симпсоны (VK)</option>
     <option value="https://vkvideo.ru/video-183785346_456239246">Симпсоны (видео)</option>
     <option value="https://ok.ru/video/10377449447030">Марвел</option>
-    <option value="https://ok.ru/video/10377449447030">Netflix</option>
+    <option value="https://ok.ru/video/10378624835190">Netflix</option>
     <option value="https://ok.ru/video/10922030997052">Гоблин</option>
     <option value="https://ok.ru/video/14019744177775">Ski-Fi</option>
     <option value="https://ok.ru/video/9998886575697">Видеокасета</option>
@@ -117,7 +116,7 @@ select.addEventListener('change', () => {
 nightBtn.addEventListener('click', () => {
   night = !night;
 
-  container.style.opacity = night ? "0.1" : "1";
+  container.style.opacity = night ? "0.2" : "1";
   nightBtn.textContent = night ? "☀️" : "🌙";
 });
 
