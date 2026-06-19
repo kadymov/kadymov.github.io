@@ -11,6 +11,12 @@ body {
   color: #fff;
   text-align: center;
 }
+
+.container {
+  transition: opacity 0.3s;
+}
+
+
 select {
   padding: 10px;
   font-size: 16px;
@@ -21,7 +27,6 @@ iframe {
   height: 500px;
   border: none;
   background: #000;
-  transition: opacity 0.3s;
   overflow: hidden;
 }
 
@@ -47,32 +52,35 @@ iframe {
 </head>
 <body>
 
-<button class="night-btn" id="nightToggle">🌙</button>
-<button class="timer-btn" id="timerToggle">⏱</button>
-
-<select id="streamSelect">
-  <option value="">📺 Выбери канал</option>
-  <option value="https://live.vkvideo.ru/app/embed/grislytoe">Южный парк</option>
-  <option value="https://goodgame.ru/player?199417">Футурама</option>
-  <option value="https://live.vkvideo.ru/app/embed/play4fun">Гриффины</option>
-  <option value="https://live.vkvideo.ru/app/embed/wfliq">Симпсоны (VK)</option>
-  <option value="https://vkvideo.ru/video-183785346_456239246">Симпсоны (видео)</option>
-  <option value="https://ok.ru/video/10377449447030">Марвел</option>
-  <option value="https://ok.ru/video/10377449447030">Netflix</option>
-  <option value="https://ok.ru/video/10922030997052">Гоблин</option>
-  <option value="https://ok.ru/video/14019744177775">Ski-Fi</option>
-  <option value="https://ok.ru/video/9998886575697">Видеокасета</option>
-  <option value="https://live.vkvideo.ru/app/embed/timetomovie">О, Кино </option>
-</select>
-
-<div>
-  <iframe id="player" scrolling="no"></iframe>
+<div class="container" id="container">
+  <button class="night-btn" id="nightToggle">🌙</button>
+  <button class="timer-btn" id="timerToggle">⏱</button>
+  
+  <select id="streamSelect">
+    <option value="">📺 Выбери канал</option>
+    <option value="https://live.vkvideo.ru/app/embed/grislytoe">Южный парк</option>
+    <option value="https://goodgame.ru/player?199417">Футурама</option>
+    <option value="https://live.vkvideo.ru/app/embed/play4fun">Гриффины</option>
+    <option value="https://live.vkvideo.ru/app/embed/wfliq">Симпсоны (VK)</option>
+    <option value="https://vkvideo.ru/video-183785346_456239246">Симпсоны (видео)</option>
+    <option value="https://ok.ru/video/10377449447030">Марвел</option>
+    <option value="https://ok.ru/video/10377449447030">Netflix</option>
+    <option value="https://ok.ru/video/10922030997052">Гоблин</option>
+    <option value="https://ok.ru/video/14019744177775">Ski-Fi</option>
+    <option value="https://ok.ru/video/9998886575697">Видеокасета</option>
+    <option value="https://live.vkvideo.ru/app/embed/timetomovie">О, Кино </option>
+  </select>
+  
+  <div>
+    <iframe id="player" scrolling="no"></iframe>
+  </div>
 </div>
 
 <script>
 const select = document.getElementById('streamSelect');
 const player = document.getElementById('player');
 const nightBtn = document.getElementById('nightToggle');
+const container = document.getElementById('container');
 
 let night = false;
 
@@ -109,7 +117,7 @@ select.addEventListener('change', () => {
 nightBtn.addEventListener('click', () => {
   night = !night;
 
-  player.style.opacity = night ? "0.3" : "1";
+  container.style.opacity = night ? "0.1" : "1";
   nightBtn.textContent = night ? "☀️" : "🌙";
 });
 
