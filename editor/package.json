@@ -1,0 +1,9 @@
+{
+  "name": "smart-editor",
+  "version": "2.0.0",
+  "description": "Умный блокнот — калькулятор-блокнот с переменными, валютами, временем и датами",
+  "private": true,
+  "scripts": {
+    "test": "node --test"
+  }
+}

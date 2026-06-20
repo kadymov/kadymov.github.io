@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Умный блокнот</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;600&amp;display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: auto; }
+  body {
+    font-family: 'Söhne', 'Segoe UI', -apple-system, sans-serif;
+    background: #f5f4ef;
+    color: #2d2d2a;
+    min-height: 100vh;
+  }
+  header {
+    padding: 14px 24px;
+    background: #faf9f5;
+    border-bottom: 1px solid #e8e6dc;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  header h1 { font-size: 16px; font-weight: 600; letter-spacing: -0.01em; }
+  header h1 .accent { color: #c96442; }
+  header .hint { font-size: 12px; color: #8a8778; }
+
+  .container {
+    display: flex;
+    align-items: stretch;
+    min-height: calc(100vh - 52px);
+  }
+  .editor-col, .result-col {
+    font-family: 'JetBrains Mono', 'SF Mono', 'Menlo', 'Consolas', monospace;
+    font-size: 15px;
+    line-height: 26px;
+    padding: 20px 24px;
+  }
+  .editor-col {
+    flex: 3;
+    background: #faf9f5;
+    border-right: 1px solid #e8e6dc;
+    position: relative;
+  }
+  .result-col {
+    flex: 1;
+    background: #f5f4ef;
+    min-width: 180px;
+    position: relative;
+  }
+
+  .editor-stack {
+    position: relative;
+    min-height: 100%;
+  }
+
+  /* Объединённый стиль подсветки активной строки */
+  .line-hl {
+    position: absolute;
+    left: -24px; right: -24px;
+    height: 26px;
+    background: rgba(201, 100, 66, 0.08);
+    pointer-events: none;
+    transition: top 0.05s linear;
+    display: none;
+    z-index: 0;
+  }
+  .line-hl.visible { display: block; }
+
+  .editor-stack pre.syntax,
+  .editor-stack textarea {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    white-space: pre;
+    word-wrap: normal;
+    overflow: hidden;
+    tab-size: 4;
+  }
+  .editor-stack pre.syntax {
+    pointer-events: none;
+    color: #2d2d2a;
+    z-index: 1;
+  }
+  .editor-stack textarea {
+    background: transparent;
+    color: transparent;
+    caret-color: #c96442;
+    resize: none;
+    outline: none;
+    z-index: 2;
+    min-height: 100%;
+  }
+  .editor-stack textarea::selection { background: rgba(201, 100, 66, 0.25); }
+
+  /* Токены подсветки */
+  .tok-num     { color: #2d2d2a; }
+  .tok-op      { color: #c96442; font-weight: 600; }
+  .tok-paren   { color: #8a8778; }
+  .tok-fn      { color: #7a5fbf; font-weight: 600; }
+  .tok-curr    { color: #2a7a4a; font-weight: 600; }
+  .tok-time    { color: #6a8a4a; font-weight: 600; }
+  .tok-date    { color: #6a8a4a; font-weight: 600; }
+  .tok-var-def { color: #1f6f9a; font-weight: 700; }
+  .tok-var-ref { color: #1f6f9a; font-style: italic; }
+  .tok-keyword { color: #c96442; font-weight: 700; text-transform: uppercase; }
+  .tok-percent { color: #c96442; }
+  .tok-comment { color: #b8b4a4; font-style: italic; }
+  .tok-text    { color: #6a665a; }
+  .tok-error   { color: #b03030; text-decoration: underline wavy; text-decoration-thickness: 1px; }
+
+  #results {
+    white-space: pre;
+    color: #c96442;
+    pointer-events: none;
+    font-weight: 500;
+    position: relative;
+    z-index: 1;
+  }
+
+  .result-container { position: relative; }
+  .result-line { display: block; min-height: 26px; }
+  .result-total {
+    color: #2d2d2a;
+    font-weight: 700;
+    border-top: 1px solid #d4d0c0;
+  }
+  .result-time  { color: #6a8a4a; }
+  .result-empty { color: transparent; }
+  .result-err   { color: #b03030; font-weight: 500; }
+
+  ::-webkit-scrollbar { width: 12px; height: 12px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #d4d0c0; border-radius: 6px; }
+  ::-webkit-scrollbar-thumb:hover { background: #b8b4a4; }
+</style>
+</head>
+<body>
+<header>
+  <h1><span class="accent">●</span> Умный блокнот</h1>
+  <span class="hint">переменные: <b>x = ...</b> · ИТОГ · валюты · время/даты · подсветка синтаксиса</span>
+</header>
+<div class="container">
+  <div class="editor-col">
+    <div class="editor-stack" id="stack">
+      <div class="line-hl" id="lineHL"></div>
+      <pre class="syntax" id="syntax"></pre>
+      <textarea id="editor" spellcheck="false"></textarea>
+    </div>
+  </div>
+  <div class="result-col">
+    <div class="result-container">
+      <div class="line-hl" id="resultHL"></div>
+      <div id="results"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Логика разделена на два файла:
+     engine.js — вычислительное ядро («умные» функции), покрыто юнит-тестами
+     app.js    — UI-слой (DOM, события, сохранение) -->
+<script src="engine.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
