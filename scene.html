@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Foggy Industrial Zone — Three.js</title>
+<style>
+  html,body{margin:0;height:100%;overflow:hidden;background:#5a6460;}
+  #info{position:fixed;left:12px;bottom:10px;font:12px/1.4 monospace;color:#9aa49e;
+        user-select:none;text-shadow:0 1px 2px #000;}
+</style>
+</head>
+<body>
+<div id="info">drag = look · scroll = zoom · the Zone</div>
+<script type="importmap">
+{ "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+}}
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+// ---------- atmosphere ----------
+const FOG = 0x707a74;          // muted grey-green haze
+const renderer = new THREE.WebGLRenderer({ antialias:true });
+renderer.setSize(innerWidth, innerHeight);
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+document.body.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(FOG);
+scene.fog = new THREE.Fog(FOG, 28, 150);
+
+// ---------- camera: low, looking up (matching the shot) ----------
+const camera = new THREE.PerspectiveCamera(46, innerWidth/innerHeight, 0.1, 1000);
+camera.position.set(3, 1.2, 38);
+camera.lookAt(7, 26, -10);
+
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.target.set(7, 24, -10);
+controls.enableDamping = true;
+controls.maxPolarAngle = Math.PI*0.62;
+controls.update();
+
+// ---------- lighting: flat, overcast ----------
+const hemi = new THREE.HemisphereLight(0x9aa39c, 0x3a3f3a, 0.9);
+scene.add(hemi);
+const sun = new THREE.DirectionalLight(0xb8bdb4, 0.55);
+sun.position.set(-30, 60, 20);
+sun.castShadow = true;
+sun.shadow.mapSize.set(2048,2048);
+sun.shadow.camera.near = 1; sun.shadow.camera.far = 200;
+sun.shadow.camera.left=-80; sun.shadow.camera.right=80;
+sun.shadow.camera.top=120; sun.shadow.camera.bottom=-20;
+scene.add(sun);
+scene.add(new THREE.AmbientLight(0x555a54, 0.4));
+
+// ---------- materials ----------
+const concrete = new THREE.MeshStandardMaterial({ color:0x575c57, roughness:0.95, metalness:0.05 });
+const concreteDark = new THREE.MeshStandardMaterial({ color:0x474c48, roughness:0.95 });
+const steel = new THREE.MeshStandardMaterial({ color:0x3b3f3d, roughness:0.8, metalness:0.4 });
+const cableMat = new THREE.LineBasicMaterial({ color:0x2c302e });
+
+// ---------- ground ----------
+const ground = new THREE.Mesh(
+  new THREE.PlaneGeometry(600,600),
+  new THREE.MeshStandardMaterial({ color:0x4a4f49, roughness:1 })
+);
+ground.rotation.x = -Math.PI/2;
+ground.receiveShadow = true;
+scene.add(ground);
+
+// =================================================================
+//  WATER TOWER  (central object — concrete tank on tall stilts)
+// =================================================================
+const tower = new THREE.Group();
+tower.position.set(6, 0, -10);
+
+// four tall legs splayed slightly
+const legH = 16, legR = 0.55, splay = 3.2;
+const legGeo = new THREE.CylinderGeometry(legR*0.8, legR, legH, 8);
+[[-1,-1],[1,-1],[-1,1],[1,1]].forEach(([sx,sz])=>{
+  const leg = new THREE.Mesh(legGeo, concrete);
+  leg.position.set(sx*splay, legH/2, sz*splay);
+  leg.castShadow = true; leg.receiveShadow = true;
+  tower.add(leg);
+});
+
+// thin cross-bracing between legs (kept minimal, big structural only)
+function brace(x1,z1,x2,z2,y){
+  const a = new THREE.Vector3(x1,y,z1), b = new THREE.Vector3(x2,y,z2);
+  const len = a.distanceTo(b);
+  const m = new THREE.Mesh(new THREE.BoxGeometry(0.12,0.12,len), steel);
+  m.position.copy(a).lerp(b,0.5);
+  m.lookAt(b);
+  m.castShadow = true;
+  tower.add(m);
+}
+[6,11].forEach(y=>{
+  brace(-splay,-splay, splay,-splay, y);
+  brace( splay,-splay, splay, splay, y);
+  brace( splay, splay,-splay, splay, y);
+  brace(-splay, splay,-splay,-splay, y);
+});
+
+// the tank: large boxy body
+const tank = new THREE.Mesh(new THREE.BoxGeometry(8.4, 9, 8), concrete);
+tank.position.y = legH + 4.5;
+tank.castShadow = true; tank.receiveShadow = true;
+tower.add(tank);
+
+// stepped lower lip of the tank (slightly wider skirt)
+const skirt = new THREE.Mesh(new THREE.BoxGeometry(8.8, 1.4, 8.4), concreteDark);
+skirt.position.y = legH + 0.7;
+skirt.castShadow = true;
+tower.add(skirt);
+
+// smaller box on top (machine housing)
+const housing = new THREE.Mesh(new THREE.BoxGeometry(3.8, 3.2, 4.2), concreteDark);
+housing.position.set(-1.2, legH + 10.6, 0);
+housing.castShadow = true;
+tower.add(housing);
+
+// little roof cap on the housing
+const cap = new THREE.Mesh(new THREE.BoxGeometry(4.2, 0.5, 4.6), steel);
+cap.position.set(-1.2, legH + 12.4, 0);
+tower.add(cap);
+
+scene.add(tower);
+
+// =================================================================
+//  LATTICE CRANE / DERRICK  (left side, leaning triangular tower)
+// =================================================================
+function latticeBeam(a, b, r=0.08){
+  const len = a.distanceTo(b);
+  const m = new THREE.Mesh(new THREE.CylinderGeometry(r,r,len,5), steel);
+  m.position.copy(a).clone().lerp(b,0.5);
+  m.position.copy(a).lerp(b,0.5);
+  m.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),
+      b.clone().sub(a).normalize());
+  m.castShadow = true;
+  return m;
+}
+
+// Build a tapering lattice mast along a direction with rungs & diagonals
+function lattice(group, base, top, baseW, topW, segs){
+  const dir = top.clone().sub(base);
+  const up = dir.clone().normalize();
+  // perpendicular axes
+  const side = new THREE.Vector3(1,0,0).cross(up).normalize();
+  if(side.length()<0.1) side.set(0,0,1);
+  const fwd = up.clone().cross(side).normalize();
+  const ring = (t)=>{
+    const c = base.clone().lerp(top,t);
+    const w = baseW + (topW-baseW)*t;
+    return [
+      c.clone().addScaledVector(side, w).addScaledVector(fwd, w),
+      c.clone().addScaledVector(side,-w).addScaledVector(fwd, w),
+      c.clone().addScaledVector(side,-w).addScaledVector(fwd,-w),
+      c.clone().addScaledVector(side, w).addScaledVector(fwd,-w),
+    ];
+  };
+  let prev = ring(0);
+  for(let i=1;i<=segs;i++){
+    const cur = ring(i/segs);
+    for(let k=0;k<4;k++){
+      group.add(latticeBeam(prev[k], cur[k]));          // verticals
+      group.add(latticeBeam(cur[k], cur[(k+1)%4],0.05)); // horizontal rungs
+      group.add(latticeBeam(prev[k], cur[(k+1)%4],0.04));// diagonals
+    }
+    prev = cur;
+  }
+}
+
+const crane = new THREE.Group();
+// tall mast leaning, on the left edge of frame (like the reference derrick)
+lattice(crane,
+  new THREE.Vector3(-15, 0, 18),
+  new THREE.Vector3(-18, 46, 4),
+  1.3, 0.4, 18);
+// the angled jib/arm reaching up-left at the very top
+lattice(crane,
+  new THREE.Vector3(-18, 46, 4),
+  new THREE.Vector3(-27, 53, 2),
+  0.4, 0.25, 6);
+scene.add(crane);
+
+// =================================================================
+//  POWER-LINE PYLONS  (mid-ground lattice towers)
+// =================================================================
+function pylon(x,z,h,w,rot){
+  const g = new THREE.Group();
+  lattice(g, new THREE.Vector3(0,0,0), new THREE.Vector3(0,h,0), w, w*0.45, Math.round(h/2.5));
+  // a couple of cross-arms near the top
+  [h*0.78, h*0.93].forEach((ay,i)=>{
+    const armW = w*2.4*(1-i*0.3);
+    const arm = new THREE.Mesh(new THREE.BoxGeometry(armW,0.18,0.18), steel);
+    arm.position.set(0,ay,0); arm.castShadow=true;
+    g.add(arm);
+  });
+  g.position.set(x,0,z);
+  g.rotation.y = rot;
+  scene.add(g);
+  return g;
+}
+const p1 = pylon(-18, -22, 22, 1.6, 0.3);
+const p2 = pylon( 22, -20, 20, 1.5, -0.4);
+const p3 = pylon( 40, -34, 24, 1.7, 0.2);
+
+// =================================================================
+//  CABLES  (sagging wires criss-crossing the sky)
+// =================================================================
+function cable(a, b, sag){
+  const pts=[];
+  const N=24;
+  for(let i=0;i<=N;i++){
+    const t=i/N;
+    const p=a.clone().lerp(b,t);
+    p.y -= Math.sin(Math.PI*t)*sag;
+    pts.push(p);
+  }
+  const geo=new THREE.BufferGeometry().setFromPoints(pts);
+  scene.add(new THREE.Line(geo, cableMat));
+}
+// crane → tower-ish, pylons interlinked, plus stray sky-spanning wires
+cable(new THREE.Vector3(-22,40,2), new THREE.Vector3(22,17,-20), 7);
+cable(new THREE.Vector3(-22,36,2), new THREE.Vector3(-18,18,-22), 5);
+cable(new THREE.Vector3(-18,18,-22), new THREE.Vector3(22,16,-20), 6);
+cable(new THREE.Vector3(22,18,-20), new THREE.Vector3(40,22,-34), 5);
+cable(new THREE.Vector3(-30,49,0), new THREE.Vector3(45,30,-40), 9);
+cable(new THREE.Vector3(-21,30,8), new THREE.Vector3(50,8,-30), 6);
+cable(new THREE.Vector3(-20,20,10), new THREE.Vector3(40,10,-34), 5);
+
+// =================================================================
+//  FENCE POSTS + RUBBLE  (foreground)
+// =================================================================
+const fence = new THREE.Group();
+for(let i=0;i<9;i++){
+  const post = new THREE.Mesh(new THREE.BoxGeometry(0.3,5,0.3), concreteDark);
+  post.position.set(-14 + i*3.4, 2.5, 30 - i*0.6);
+  post.rotation.z = (Math.random()-0.5)*0.06;
+  post.castShadow = true;
+  fence.add(post);
+}
+scene.add(fence);
+
+// scattered concrete rubble / blocks bottom of frame
+const rubble = new THREE.Group();
+for(let i=0;i<26;i++){
+  const s = 0.5 + Math.random()*1.6;
+  const b = new THREE.Mesh(
+    new THREE.BoxGeometry(s, s*0.6, s*1.2),
+    Math.random()>0.5?concrete:concreteDark);
+  b.position.set(-18+Math.random()*30, s*0.3, 24+Math.random()*10);
+  b.rotation.y = Math.random()*Math.PI;
+  b.castShadow=true; b.receiveShadow=true;
+  rubble.add(b);
+}
+// a low broken wall slab on the left foreground
+const slab = new THREE.Mesh(new THREE.BoxGeometry(10,3,1.4), concreteDark);
+slab.position.set(-12,1.5,26);
+slab.rotation.y=0.15; slab.castShadow=true;
+rubble.add(slab);
+scene.add(rubble);
+
+// =================================================================
+//  BIRDS  (3 specks near the tower top)
+// =================================================================
+const birds=[];
+const birdMat=new THREE.MeshBasicMaterial({color:0x222523});
+for(let i=0;i<3;i++){
+  const b=new THREE.Mesh(new THREE.SphereGeometry(0.18,6,4),birdMat);
+  b.position.set(9.5+i*0.9, 35.5+i*0.5, -9);
+  birds.push(b); scene.add(b);
+}
+
+// ---------- resize ----------
+addEventListener('resize',()=>{
+  camera.aspect=innerWidth/innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth,innerHeight);
+});
+
+// ---------- loop ----------
+let t=0;
+function animate(){
+  requestAnimationFrame(animate);
+  t+=0.005;
+  birds.forEach((b,i)=>{ b.position.x += Math.sin(t+i)*0.004; b.position.y += Math.cos(t*1.3+i)*0.003; });
+  controls.update();
+  renderer.render(scene,camera);
+}
+animate();
+</script>
+</body>
+</html>
