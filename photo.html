@@ -101,23 +101,45 @@
     }
 
     // Цикл отрисовки
-    function draw() {
-      ctx.save();
-      // Зеркалим как селфи (по желанию — можно убрать)
-      ctx.translate(canvas.width, 0);
-      ctx.scale(-1, 1);
-      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-      ctx.restore();
+    // Цикл отрисовки
+function draw() {
+  ctx.save();
+  // Зеркалим как селфи (по желанию — можно убрать)
+  ctx.translate(canvas.width, 0);
+  ctx.scale(-1, 1);
+  ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+  ctx.restore();
 
-      // Накладываем фото
-      if (overlayImg) {
-        ctx.globalAlpha = opacity;
-        ctx.drawImage(overlayImg, 0, 0, canvas.width, canvas.height);
-        ctx.globalAlpha = 1.0;
-      }
+  // Накладываем фото с сохранением пропорций
+  if (overlayImg) {
+    ctx.globalAlpha = opacity;
 
-      requestAnimationFrame(draw);
+    // Вычисляем размеры с сохранением соотношения сторон (вписываем)
+    const imgRatio = overlayImg.width / overlayImg.height;
+    const canvasRatio = canvas.width / canvas.height;
+
+    let drawWidth, drawHeight, offsetX, offsetY;
+
+    if (imgRatio > canvasRatio) {
+      // Фото шире — подгоняем по ширине
+      drawWidth = canvas.width;
+      drawHeight = canvas.width / imgRatio;
+    } else {
+      // Фото выше — подгоняем по высоте
+      drawHeight = canvas.height;
+      drawWidth = canvas.height * imgRatio;
     }
+
+    // Центрируем
+    offsetX = (canvas.width - drawWidth) / 2;
+    offsetY = (canvas.height - drawHeight) / 2;
+
+    ctx.drawImage(overlayImg, offsetX, offsetY, drawWidth, drawHeight);
+    ctx.globalAlpha = 1.0;
+  }
+
+  requestAnimationFrame(draw);
+}
 
     // Загрузка прикрепленного фото
     fileInput.addEventListener('change', (e) => {
