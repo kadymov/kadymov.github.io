@@ -1,0 +1,1254 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alexander Kadymov — Senior Software Engineer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+      :root {
+        --fog: #707a74;
+        --ink: #e8ece8;
+        --muted: #aab2ac;
+        --line: rgba(232, 236, 232, .14);
+        --accent: #c7d0c6;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html,
+      body {
+        height: 100%;
+      }
+
+      body {
+        font-family: 'Inter', system-ui, sans-serif;
+        color: var(--ink);
+        background: var(--fog);
+        overflow-x: hidden;
+      }
+
+      /* ---- 3D background ---- */
+      #bg {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+      }
+
+      /* legibility overlays: top for nav, bottom for hero/footer + a soft vignette */
+      #scrim {
+        position: fixed;
+        inset: 0;
+        z-index: 1;
+        pointer-events: none;
+        background:
+          radial-gradient(120% 90% at 70% 35%, transparent 40%, rgba(28, 32, 30, .45) 100%),
+          linear-gradient(to bottom, rgba(20, 24, 22, .55) 0%, transparent 22%, transparent 55%, rgba(16, 20, 18, .85) 100%);
+      }
+
+      .content {
+        position: relative;
+        z-index: 2;
+      }
+
+      /* ---- nav ---- */
+      nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 5;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 22px clamp(20px, 5vw, 64px);
+        transition: background .3s, border-color .3s, padding .3s;
+        border-bottom: 1px solid transparent;
+      }
+
+      nav.scrolled {
+        background: rgba(13, 16, 14, .66);
+        border-bottom-color: var(--line);
+        padding-top: 15px;
+        padding-bottom: 15px;
+      }
+
+      .brand {
+        font-family: 'Space Grotesk', sans-serif;
+        font-weight: 700;
+        letter-spacing: .32em;
+        font-size: 15px;
+        text-transform: uppercase;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .brand .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--accent);
+        box-shadow: 0 0 14px 2px rgba(199, 208, 198, .6);
+      }
+
+      .links {
+        display: flex;
+        gap: 34px;
+        font-size: 13.5px;
+        letter-spacing: .04em;
+      }
+
+      .links a {
+        color: var(--muted);
+        text-decoration: none;
+        transition: color .2s;
+      }
+
+      .links a:hover {
+        color: var(--ink);
+      }
+
+      .nav-cta {
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 13px;
+        font-weight: 500;
+        letter-spacing: .06em;
+        color: var(--ink);
+        text-decoration: none;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        padding: 9px 18px;
+        backdrop-filter: blur(6px);
+        background: rgba(255, 255, 255, .04);
+        transition: .2s;
+      }
+
+      .nav-cta:hover {
+        background: rgba(255, 255, 255, .1);
+        border-color: rgba(232, 236, 232, .3);
+      }
+
+      /* company logos in the experience list */
+      .co-logo {
+        align-items: center;
+      }
+
+      .co-logo svg {
+        width: 42px;
+        height: 42px;
+        display: block;
+        border-radius: 11px;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, .35);
+      }
+
+      .co-link {
+        display: block;
+        margin-top: 8px;
+        font-size: 12px;
+        letter-spacing: .04em;
+        color: var(--muted);
+        text-decoration: none;
+        border-bottom: 1px solid transparent;
+        transition: .2s;
+      }
+
+      .co-link:hover {
+        color: var(--ink);
+        border-bottom-color: var(--accent);
+      }
+
+      /* working anchor nav: smooth + offset clear of the fixed bar */
+      html {
+        scroll-behavior: smooth;
+      }
+
+      section,
+      #contact {
+        scroll-margin-top: 84px;
+      }
+
+      /* ---- hero ---- */
+      .hero {
+        position: relative;
+        z-index: 2;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        padding: 0 clamp(20px, 5vw, 64px) clamp(56px, 10vh, 120px);
+      }
+
+      /* giant 
+                <dev/> watermark behind the hero — instant "developer" read */
+      .hero-mark {
+        position: absolute;
+        z-index: -1;
+        right: clamp(-24px, -1vw, 0px);
+        top: 25%;
+        transform: translateY(-50%);
+        font-family: 'JetBrains Mono', ui-monospace, monospace;
+        font-weight: 500;
+        font-size: clamp(108px, 24vw, 360px);
+        line-height: .8;
+        letter-spacing: -.03em;
+        color: rgba(232, 236, 232, .06);
+        white-space: nowrap;
+        user-select: none;
+        pointer-events: none;
+      }
+
+      .hero-mark .b {
+        color: rgba(199, 208, 198, .11);
+      }
+
+      .eyebrow {
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 12.5px;
+        font-weight: 500;
+        letter-spacing: .36em;
+        text-transform: uppercase;
+        color: var(--accent);
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 26px;
+      }
+
+      .eyebrow::before {
+        content: "";
+        width: 46px;
+        height: 1px;
+        background: var(--accent);
+        opacity: .7;
+      }
+
+      h1 {
+        font-family: 'Space Grotesk', sans-serif;
+        font-weight: 600;
+        font-size: clamp(44px, 8vw, 104px);
+        line-height: .98;
+        letter-spacing: -.02em;
+        max-width: 14ch;
+        text-shadow: 0 2px 40px rgba(0, 0, 0, .4);
+      }
+
+      h1 .faint {
+        color: var(--muted);
+      }
+
+      .sub {
+        margin-top: 26px;
+        max-width: 46ch;
+        font-size: clamp(15px, 1.5vw, 18px);
+        line-height: 1.6;
+        color: var(--muted);
+      }
+
+      .actions {
+        display: flex;
+        gap: 16px;
+        margin-top: 40px;
+        flex-wrap: wrap;
+      }
+
+      .btn {
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 14.5px;
+        font-weight: 500;
+        letter-spacing: .02em;
+        text-decoration: none;
+        border-radius: 999px;
+        padding: 14px 30px;
+        transition: .2s;
+        cursor: pointer;
+        border: 1px solid transparent;
+      }
+
+      .btn.primary {
+        background: var(--ink);
+        color: #1b201d;
+      }
+
+      .btn.primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, .35);
+      }
+
+      .btn.ghost {
+        color: var(--ink);
+        border-color: var(--line);
+        backdrop-filter: blur(6px);
+        background: rgba(255, 255, 255, .04);
+      }
+
+      .btn.ghost:hover {
+        background: rgba(255, 255, 255, .1);
+        border-color: rgba(232, 236, 232, .3);
+      }
+
+      /* hero stat strip */
+      .stats {
+        display: flex;
+        flex-wrap: wrap;
+        gap: clamp(20px, 4vw, 56px);
+        margin-top: 48px;
+      }
+
+      .stat .n {
+        font-family: 'Space Grotesk', sans-serif;
+        font-weight: 600;
+        font-size: clamp(24px, 3vw, 34px);
+        letter-spacing: -.01em;
+      }
+
+      .stat .l {
+        font-size: 12px;
+        letter-spacing: .14em;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-top: 6px;
+      }
+
+      /* scroll cue */
+      .cue {
+        position: absolute;
+        left: 50%;
+        bottom: 26px;
+        transform: translateX(-50%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 11px;
+        letter-spacing: .22em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      .cue .bar {
+        width: 1px;
+        height: 30px;
+        background: linear-gradient(var(--accent), transparent);
+        animation: pulse 2.4s ease-in-out infinite;
+        transform-origin: top;
+      }
+
+      @keyframes pulse {
+
+        0%,
+        100% {
+          transform: scaleY(.5);
+          opacity: .5
+        }
+
+        50% {
+          transform: scaleY(1);
+          opacity: 1
+        }
+      }
+
+      /* ---- the content sheet rising over the scene ---- */
+      /* content sits OVER the live 3D scene — no solid slab */
+      .surface {
+        position: relative;
+        z-index: 2;
+      }
+
+      .container {
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 0 clamp(20px, 5vw, 64px);
+      }
+
+      section {
+        padding: clamp(72px, 12vh, 150px) 0;
+      }
+
+      /* readable text directly over the moving scene */
+      .sec-title,
+      .lead,
+      #contact h2,
+      h1 {
+        text-shadow: 0 2px 30px rgba(0, 0, 0, .6);
+      }
+
+      .sec-eyebrow {
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 12px;
+        font-weight: 500;
+        letter-spacing: .32em;
+        text-transform: uppercase;
+        color: var(--accent);
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 30px;
+      }
+
+      .sec-eyebrow::before {
+        content: "";
+        width: 30px;
+        height: 1px;
+        background: var(--accent);
+        opacity: .7;
+      }
+
+      .sec-title {
+        font-family: 'Space Grotesk', sans-serif;
+        font-weight: 600;
+        font-size: clamp(28px, 4vw, 46px);
+        line-height: 1.05;
+        letter-spacing: -.02em;
+      }
+
+      /* about */
+      .about-grid {
+        display: grid;
+        grid-template-columns: 1.4fr .8fr;
+        gap: clamp(32px, 5vw, 72px);
+        align-items: start;
+      }
+
+      .about-grid.one-col {
+        grid-template-columns: 1fr;
+        max-width: 62ch;
+      }
+
+      .lead {
+        font-size: clamp(18px, 2vw, 23px);
+        line-height: 1.55;
+      }
+
+      .lead .faint {
+        color: var(--muted);
+      }
+
+      /* expertise cards (glass over the scene) */
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 18px;
+      }
+
+      .card {
+        background: rgba(12, 15, 13, .62);
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        padding: 28px 26px;
+        transition: .25s;
+      }
+
+      .card:hover {
+        background: rgba(16, 20, 18, .78);
+        border-color: rgba(232, 236, 232, .3);
+        transform: translateY(-3px);
+      }
+
+      .card .idx {
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 12px;
+        color: var(--accent);
+        letter-spacing: .12em;
+      }
+
+      .card h3 {
+        font-family: 'Space Grotesk', sans-serif;
+        font-weight: 600;
+        font-size: 19px;
+        margin: 14px 0 10px;
+      }
+
+      .card p {
+        font-size: 14.5px;
+        line-height: 1.6;
+        color: var(--muted);
+      }
+
+      /* experience — separate glass rows, scene visible between them */
+      .xp {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+
+      .job {
+        display: grid;
+        grid-template-columns: 200px 1fr;
+        gap: 32px;
+        padding: 26px 30px;
+        border-radius: 18px;
+        transition: .2s;
+        background: rgba(12, 15, 13, .6);
+        border: 1px solid var(--line);
+      }
+
+      .job:hover {
+        background: rgba(16, 20, 18, .76);
+        border-color: rgba(232, 236, 232, .22);
+      }
+
+      .job-meta .co {
+        font-family: 'Space Grotesk', sans-serif;
+        font-weight: 600;
+        font-size: 19px;
+      }
+
+      .job-meta .when {
+        font-size: 12.5px;
+        letter-spacing: .06em;
+        color: var(--muted);
+        margin-top: 6px;
+      }
+
+      .job-body .role {
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 15px;
+        font-weight: 500;
+        color: var(--accent);
+        margin-bottom: 10px;
+      }
+
+      .job-body p {
+        font-size: 15px;
+        line-height: 1.62;
+        color: var(--muted);
+        max-width: 62ch;
+      }
+
+      .tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 16px;
+      }
+
+      .tag {
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 11.5px;
+        letter-spacing: .04em;
+        color: var(--muted);
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        padding: 5px 12px;
+      }
+
+      /* minor roles — compact row, tech tags only */
+      .minor-jobs {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
+      }
+
+      .minor {
+        background: rgba(12, 15, 13, .6);
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        padding: 22px 24px;
+        transition: .2s;
+      }
+
+      .minor:hover {
+        background: rgba(16, 20, 18, .76);
+        border-color: rgba(232, 236, 232, .22);
+      }
+
+      .minor .co {
+        font-family: 'Space Grotesk', sans-serif;
+        font-weight: 600;
+        font-size: 18px;
+      }
+
+      .minor .when {
+        font-size: 12px;
+        letter-spacing: .06em;
+        color: var(--muted);
+        margin-top: 5px;
+      }
+
+      .minor .tags {
+        margin-top: 14px;
+      }
+
+      /* contact — back over the scene */
+      #contact {
+        position: relative;
+        z-index: 2;
+        text-align: center;
+        border: none;
+        padding: clamp(90px, 16vh, 180px) 0;
+      }
+
+      #contact .sec-eyebrow {
+        justify-content: center;
+      }
+
+      #contact .sec-eyebrow::before {
+        display: none;
+      }
+
+      #contact h2 {
+        font-family: 'Space Grotesk', sans-serif;
+        font-weight: 600;
+        font-size: clamp(34px, 6vw, 72px);
+        line-height: 1.02;
+        letter-spacing: -.02em;
+      }
+
+      #contact .sub {
+        margin: 24px auto 0;
+        text-align: center;
+      }
+
+      .socials {
+        display: flex;
+        gap: 14px;
+        justify-content: center;
+        margin-top: 18px;
+        flex-wrap: wrap;
+      }
+
+      .socials a {
+        color: var(--muted);
+        text-decoration: none;
+        font-size: 14px;
+        border-bottom: 1px solid transparent;
+        transition: .2s;
+      }
+
+      .socials a:hover {
+        color: var(--ink);
+        border-bottom-color: var(--accent);
+      }
+
+      /* footer */
+      footer {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+        flex-wrap: wrap;
+        padding: 26px clamp(20px, 5vw, 64px);
+        border-top: 1px solid var(--line);
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 11.5px;
+        letter-spacing: .16em;
+        text-transform: uppercase;
+        color: var(--muted);
+        background: rgba(10, 12, 11, .72);
+      }
+
+      @media(max-width:880px) {
+        .about-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .cards {
+          grid-template-columns: 1fr 1fr;
+        }
+
+        .job {
+          grid-template-columns: 1fr;
+          gap: 14px;
+        }
+
+        .minor-jobs {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+
+      @media(max-width:560px) {
+        .links {
+          display: none;
+        }
+
+        .cards {
+          grid-template-columns: 1fr;
+        }
+
+        .minor-jobs {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="bg"></canvas>
+    <div id="scrim"></div>
+    <nav id="nav">
+      <div class="brand">
+        <span class="dot"></span>
+        <span>A. Kadymov</span>
+      </div>
+      <div class="links">
+        <a href="#about">About</a>
+        <a href="#expertise">Expertise</a>
+        <a href="#experience">Experience</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </nav>
+    <header class="hero">
+      <div class="hero-mark" aria-hidden="true">
+        &lt;dev/&gt;
+      </div>
+      <div class="eyebrow">Senior Software Engineer · Frontend to AI</div>
+      <h1>I build the front end of <span class="faint">complex systems.</span>
+      </h1>
+      <p class="sub"> Twelve years building large-scale software — strongest on the front end, but ranging well beyond it: real-time graphics, simulations, ML tooling, the server side and native desktop. The last three years: deep in AI&nbsp;/&nbsp;LLM. </p>
+      <div class="stats">
+        <div class="stat">
+          <div class="n">12 yrs</div>
+          <div class="l">Experience</div>
+        </div>
+        <div class="stat">
+          <div class="n">3 yrs</div>
+          <div class="l">Into AI / LLM</div>
+        </div>
+      </div>
+      <div class="cue">
+        <span>Scroll</span>
+        <span class="bar"></span>
+      </div>
+    </header>
+    <main class="surface">
+      <!-- ABOUT -->
+      <section id="about">
+        <div class="container">
+          <div class="sec-eyebrow">About</div>
+          <div class="about-grid one-col">
+            <p class="lead"> Senior software engineer with a home base in <b>React</b> &amp; <b>TypeScript</b> and the architecture of large client-side applications — but my work runs well beyond it. <span class="faint">Across real-time graphics, simulations, machine-learning tooling, the server side and native desktop — and the last three years going deep on AI&nbsp;/&nbsp;LLM.</span>
+            </p>
+          </div>
+        </div>
+      </section>
+      <!-- EXPERTISE -->
+      <section id="expertise">
+        <div class="container">
+          <div class="sec-eyebrow">What I do</div>
+          <h2 class="sec-title">A broad surface area.</h2>
+          <div class="cards" style="margin-top:44px;">
+            <div class="card">
+              <div class="idx">01</div>
+              <h3>Frontend Architecture</h3>
+              <p>React &amp; TypeScript at scale — large feed systems, design systems, SSR, and incremental migrations off legacy stacks without freezing the product.</p>
+            </div>
+            <div class="card">
+              <div class="idx">02</div>
+              <h3>Graphics &amp; 3D</h3>
+              <p>Canvas, SVG, WebGL &amp; three.js — software 3D graphics and scenes. DAG editors, interactive charts and diagrams, viewport segmentation, quadtree hit-testing and per-zoom LOD.</p>
+            </div>
+            <div class="card">
+              <div class="idx">03</div>
+              <h3>ML &amp; Data Tooling</h3>
+              <p>Visual editors for ML / data pipelines on a universal compute platform — node graphs, routing and configuration UIs.</p>
+            </div>
+            <div class="card">
+              <div class="idx">04</div>
+              <h3>SmartTV, Desktop &amp; Legacy</h3>
+              <p>Apps for Tizen, webOS and Apple&nbsp;TV — custom focus-navigation engines and deep performance work on constrained hardware. Native desktop in Delphi and C#, plus ActionScript 3 and Flash-era interactives.</p>
+            </div>
+            <div class="card">
+              <div class="idx">05</div>
+              <h3>Backend &amp; Simulations</h3>
+              <p>Java (Graal SSR) and Node.js. Physics simulators, parsers, converters and authoring tools for learning systems.</p>
+            </div>
+            <div class="card">
+              <div class="idx">06</div>
+              <h3>AI / LLM</h3>
+              <p>Three years into local inference, MCP and LLM tooling — and teaching it: a lecture series on neural nets &amp; LLMs to 30+ engineers.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- EXPERIENCE -->
+      <section id="experience">
+        <div class="container">
+          <div class="sec-eyebrow">Experience · 12 years</div>
+          <h2 class="sec-title">Where I've built.</h2>
+          <div class="xp" style="margin-top:30px;">
+            <div class="job">
+              <div class="job-meta">
+                <div class="co co-logo" aria-label="VK">
+                  <svg viewBox="0 0 48 48" role="img" aria-label="VK">
+                    <rect width="48" height="48" rx="11" fill="#07F" />
+                    <text x="24" y="32" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-weight="700" font-size="22" fill="#fff">VK</text>
+                  </svg>
+                  <a class="co-link" href="https://vk.com" target="_blank" rel="noopener">vk.com</a>
+                </div>
+                <div class="when">Nov 2022 — Dec 2025</div>
+              </div>
+              <div class="job-body">
+                <div class="role">Frontend Developer · Odnoklassniki portal</div>
+                <p>Core team (7 devs) of the OK mobile web. Owned the release process, monitoring and incident response, including DoS/DDoS detection and mitigation. Ran an internal lecture series on neural nets &amp; LLMs.</p>
+                <div class="tags">
+                  <span class="tag">React</span>
+                  <span class="tag">TypeScript</span>
+                  <span class="tag">Java/Graal SSR</span>
+                  <span class="tag">Jest</span>
+                  <span class="tag">Storybook</span>
+                  <span class="tag">Grafana</span>
+                </div>
+              </div>
+            </div>
+            <div class="job">
+              <div class="job-meta">
+                <div class="co co-logo" aria-label="Yandex">
+                  <svg viewBox="0 0 48 48" role="img" aria-label="Yandex">
+                    <rect width="48" height="48" rx="11" fill="#FC3F1D" />
+                    <svg x="11" y="8" width="26" height="32" viewBox="0 0 64 64">
+                      <path fill="#fff" d="M49.07 0c.524.405.262.88.095 1.333l-6.643 18.095-8.047 22.12a4.21 4.21 0 0 0-.262 1.429v19.81c0 1.2-.024 1.2-1.214 1.2-1.238 0-2.476-.048-3.714.024-.786.024-1.07-.238-1.048-1.024l.024-7.333V42.928c0-.5-.07-1.048-.262-1.524L14.976 7.333c-.095-.262-.238-.476-.357-.714v-.5c.38-.12.762-.3 1.143-.3l4.12-.024s1.357 0 1.81 1.286l9.7 27.31.405.976.333-1.095 1.905-6.976 8.5-26.31c.12-.333.405-.62.62-.93L49.07 0z" />
+                    </svg>
+                  </svg>
+                  <a class="co-link" href="https://yandex.com" target="_blank" rel="noopener">yandex.com</a>
+                </div>
+                <div class="when">May 2016 — Apr 2017</div>
+              </div>
+              <div class="job-body">
+                <div class="role">Frontend Developer · Nirvana compute platform</div>
+                <p>Team of 3 on a universal compute platform — a visual editor for ML / data pipelines. Built the DAG editor (jsPlumb, Canvas, Polymer): drag-and-drop nodes, link routing and zoom. Optimized canvas rendering with viewport segmentation, quadtrees for hit-testing and per-zoom LOD.</p>
+                <div class="tags">
+                  <span class="tag">HTML Canvas</span>
+                  <span class="tag">jsPlumb</span>
+                  <span class="tag">Polymer</span>
+                  <span class="tag">Backbone</span>
+                  <span class="tag">Docker</span>
+                </div>
+              </div>
+            </div>
+            <div class="job">
+              <div class="job-meta">
+                <div class="co">SPB TV</div>
+                <div class="when">May 2017 — Apr 2021</div>
+              </div>
+              <div class="job-body">
+                <div class="role">Web Developer · Amediateka (SmartTV)</div>
+                <p>Built the Amediateka SmartTV app from scratch while maintaining SPB&nbsp;TV. Designed an adaptive focus-navigation engine working over arbitrary component trees, did deep performance optimization (virtual lists, device profiling), and built an on-device stats library remote-controlled from a PC as a team debugging tool.</p>
+                <div class="tags">
+                  <span class="tag">React</span>
+                  <span class="tag">Redux</span>
+                  <span class="tag">TypeScript</span>
+                  <span class="tag">Tizen</span>
+                  <span class="tag">webOS</span>
+                  <span class="tag">Apple TV</span>
+                </div>
+              </div>
+            </div>
+            <div class="job">
+              <div class="job-meta">
+                <div class="co">Competentum</div>
+                <div class="when">Apr 2014 — Sep 2015</div>
+              </div>
+              <div class="job-body">
+                <div class="role">Lead Frontend Developer</div>
+                <p>Led frontend for a distance-learning platform (team of 6). Built authoring editors, parsers/converters, physics simulators and interactive canvas/SVG charts; migrated Flash/ActionScript interactives. Wrote a JS-parsing script to auto-fix recurring legacy errors — in the pre-autofixer era.</p>
+                <div class="tags">
+                  <span class="tag">TypeScript</span>
+                  <span class="tag">AngularJS</span>
+                  <span class="tag">ActionScript</span>
+                  <span class="tag">Canvas/SVG</span>
+                </div>
+              </div>
+            </div>
+            <div class="minor-jobs">
+              <div class="minor">
+                <div class="co">AgroClub</div>
+                <div class="when">Jul 2021 — Jun 2022</div>
+                <div class="tags">
+                  <span class="tag">TypeScript</span>
+                  <span class="tag">Redux-Saga</span>
+                  <span class="tag">Styled-Components</span>
+                </div>
+              </div>
+              <div class="minor">
+                <div class="co">Gemini Systems</div>
+                <div class="when">Feb 2013 — Sep 2013</div>
+                <div class="tags">
+                  <span class="tag">JavaScript</span>
+                  <span class="tag">Java</span>
+                  <span class="tag">Portlets</span>
+                </div>
+              </div>
+              <div class="minor">
+                <div class="co">Status-Design</div>
+                <div class="when">May 2012 — Jan 2013</div>
+                <div class="tags">
+                  <span class="tag">PHP</span>
+                  <span class="tag">JavaScript</span>
+                  <span class="tag">Joomla</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <!-- CONTACT (back over the scene) -->
+    <section id="contact">
+      <div class="container">
+        <div class="sec-eyebrow">Contact</div>
+        <h2>Let's build something <br>
+          <span style="color:var(--muted)">that has to work.</span>
+        </h2>
+        <p class="sub">Open to senior engineering roles and interesting problems. The harder the system, the better.</p>
+        <div class="actions" style="justify-content:center;margin-top:34px;">
+          <a href="mailto:alkadymov@gmail.com" class="btn primary">Email me</a>
+          <a href="cv.pdf" class="btn ghost">Download CV</a>
+        </div>
+        <div class="socials">
+          <a href="https://github.com/kadymov">GitHub</a>
+          <!-- <a href="#">LinkedIn</a> -->
+          <a href="https://t.me/xand_r">Telegram</a>
+        </div>
+      </div>
+    </section>
+    <footer>
+      <span>Alexander Kadymov</span>
+      <span>Senior Software Engineer · © 2026</span>
+      <span>St. Petersburg · Remote</span>
+    </footer>
+    <script type="importmap"> { "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js"
+}}
+</script>
+    <script type="module">
+      import * as THREE from 'three';
+      const FOG = 0x707a74;
+      const canvas = document.getElementById('bg');
+      const renderer = new THREE.WebGLRenderer({
+        canvas,
+        antialias: true
+      });
+      renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+      renderer.setSize(innerWidth, innerHeight);
+      renderer.shadowMap.enabled = true;
+      renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+      const scene = new THREE.Scene();
+      scene.background = new THREE.Color(FOG);
+      scene.fog = new THREE.Fog(FOG, 20, 95);
+      // camera — low hero angle, no user controls (it's a background)
+      const camera = new THREE.PerspectiveCamera(48, innerWidth / innerHeight, 0.1, 1000);
+      const camBase = new THREE.Vector3(-16, 4, 42);
+      const lookTarget = new THREE.Vector3(3, 19, -14);
+      camera.position.copy(camBase);
+      camera.lookAt(lookTarget);
+      // lighting
+      scene.add(new THREE.HemisphereLight(0x9aa39c, 0x3a3f3a, 0.9));
+      const sun = new THREE.DirectionalLight(0xb8bdb4, 0.55);
+      sun.position.set(-30, 60, 20);
+      sun.castShadow = true;
+      sun.shadow.mapSize.set(2048, 2048);
+      sun.shadow.camera.near = 1;
+      sun.shadow.camera.far = 200;
+      sun.shadow.camera.left = -80;
+      sun.shadow.camera.right = 80;
+      sun.shadow.camera.top = 120;
+      sun.shadow.camera.bottom = -20;
+      scene.add(sun);
+      scene.add(new THREE.AmbientLight(0x555a54, 0.4));
+      // materials — weathered concrete in the same cold, foggy palette
+      const concrete = new THREE.MeshStandardMaterial({
+        color: 0x6a6e69,
+        roughness: 0.97,
+        metalness: 0.04
+      });
+      const concreteLite = new THREE.MeshStandardMaterial({
+        color: 0x787b76,
+        roughness: 0.96,
+        metalness: 0.04
+      });
+      const concreteDark = new THREE.MeshStandardMaterial({
+        color: 0x53574f,
+        roughness: 0.97,
+        metalness: 0.04
+      });
+      const windowMat = new THREE.MeshStandardMaterial({
+        color: 0x23211e,
+        roughness: 0.5,
+        metalness: 0.2
+      });
+      const warmMat = new THREE.MeshStandardMaterial({
+        color: 0x2a1c11,
+        emissive: 0xff7e34,
+        emissiveIntensity: 1.5
+      });
+      const steel = new THREE.MeshStandardMaterial({
+        color: 0x3b3f3d,
+        roughness: 0.8,
+        metalness: 0.4
+      });
+      const cableMat = new THREE.LineBasicMaterial({
+        color: 0x2c302e
+      });
+      const ground = new THREE.Mesh(new THREE.PlaneGeometry(600, 600), new THREE.MeshStandardMaterial({
+        color: 0x595d57,
+        roughness: 1
+      }));
+      ground.rotation.x = -Math.PI / 2;
+      ground.receiveShadow = true;
+      scene.add(ground);
+      // ---- water tower ----
+      const tower = new THREE.Group();
+      tower.position.set(6, 0, -10);
+      const legH = 16,
+        legR = 0.55,
+        splay = 3.2;
+      const legGeo = new THREE.CylinderGeometry(legR * 0.8, legR, legH, 8);
+      [
+        [-1, -1],
+        [1, -1],
+        [-1, 1],
+        [1, 1]
+      ].forEach(([sx, sz]) => {
+        const leg = new THREE.Mesh(legGeo, concrete);
+        leg.position.set(sx * splay, legH / 2, sz * splay);
+        leg.castShadow = true;
+        leg.receiveShadow = true;
+        tower.add(leg);
+      });
+
+      function brace(x1, z1, x2, z2, y) {
+        const a = new THREE.Vector3(x1, y, z1),
+          b = new THREE.Vector3(x2, y, z2);
+        const m = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.12, a.distanceTo(b)), steel);
+        m.position.copy(a).lerp(b, 0.5);
+        m.lookAt(b);
+        m.castShadow = true;
+        tower.add(m);
+      }
+      [6, 11].forEach(y => {
+        brace(-splay, -splay, splay, -splay, y);
+        brace(splay, -splay, splay, splay, y);
+        brace(splay, splay, -splay, splay, y);
+        brace(-splay, splay, -splay, -splay, y);
+      });
+      const tank = new THREE.Mesh(new THREE.BoxGeometry(8.4, 9, 8), concrete);
+      tank.position.y = legH + 4.5;
+      tank.castShadow = true;
+      tank.receiveShadow = true;
+      tower.add(tank);
+      const skirt = new THREE.Mesh(new THREE.BoxGeometry(8.8, 1.4, 8.4), concreteDark);
+      skirt.position.y = legH + 0.7;
+      skirt.castShadow = true;
+      tower.add(skirt);
+      const housing = new THREE.Mesh(new THREE.BoxGeometry(3.8, 3.2, 4.2), concreteDark);
+      housing.position.set(-1.2, legH + 10.6, 0);
+      housing.castShadow = true;
+      tower.add(housing);
+      const cap = new THREE.Mesh(new THREE.BoxGeometry(4.2, 0.5, 4.6), steel);
+      cap.position.set(-1.2, legH + 12.4, 0);
+      tower.add(cap);
+      scene.add(tower);
+      // ---- lattice helpers ----
+      function latticeBeam(a, b, r = 0.08) {
+        const m = new THREE.Mesh(new THREE.CylinderGeometry(r, r, a.distanceTo(b), 5), steel);
+        m.position.copy(a).lerp(b, 0.5);
+        m.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), b.clone().sub(a).normalize());
+        m.castShadow = true;
+        return m;
+      }
+
+      function lattice(group, base, top, baseW, topW, segs) {
+        const up = top.clone().sub(base).normalize();
+        let side = new THREE.Vector3(1, 0, 0).cross(up).normalize();
+        if (side.length() < 0.1) side.set(0, 0, 1);
+        const fwd = up.clone().cross(side).normalize();
+        const ring = (t) => {
+          const c = base.clone().lerp(top, t),
+            w = baseW + (topW - baseW) * t;
+          return [
+            c.clone().addScaledVector(side, w).addScaledVector(fwd, w),
+            c.clone().addScaledVector(side, -w).addScaledVector(fwd, w),
+            c.clone().addScaledVector(side, -w).addScaledVector(fwd, -w),
+            c.clone().addScaledVector(side, w).addScaledVector(fwd, -w),
+          ];
+        };
+        let prev = ring(0);
+        for (let i = 1; i <= segs; i++) {
+          const cur = ring(i / segs);
+          for (let k = 0; k < 4; k++) {
+            group.add(latticeBeam(prev[k], cur[k]));
+            group.add(latticeBeam(cur[k], cur[(k + 1) % 4], 0.05));
+            group.add(latticeBeam(prev[k], cur[(k + 1) % 4], 0.04));
+          }
+          prev = cur;
+        }
+      }
+      // ---- crane / derrick (left) ----
+      const crane = new THREE.Group();
+      lattice(crane, new THREE.Vector3(-15, 0, 18), new THREE.Vector3(-18, 46, 4), 1.3, 0.4, 18);
+      lattice(crane, new THREE.Vector3(-18, 46, 4), new THREE.Vector3(-27, 53, 2), 0.4, 0.25, 6);
+      scene.add(crane);
+      // ---- pylons ----
+      function pylon(x, z, h, w, rot) {
+        const g = new THREE.Group();
+        lattice(g, new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, h, 0), w, w * 0.45, Math.round(h / 2.5));
+        [h * 0.78, h * 0.93].forEach((ay, i) => {
+          const arm = new THREE.Mesh(new THREE.BoxGeometry(w * 2.4 * (1 - i * 0.3), 0.18, 0.18), steel);
+          arm.position.set(0, ay, 0);
+          arm.castShadow = true;
+          g.add(arm);
+        });
+        g.position.set(x, 0, z);
+        g.rotation.y = rot;
+        scene.add(g);
+      }
+      pylon(-18, -22, 22, 1.6, 0.3);
+      pylon(22, -20, 20, 1.5, -0.4);
+      pylon(40, -34, 24, 1.7, 0.2);
+      // ---- cables ----
+      function cable(a, b, sag) {
+        const pts = [];
+        const N = 24;
+        for (let i = 0; i <= N; i++) {
+          const t = i / N;
+          const p = a.clone().lerp(b, t);
+          p.y -= Math.sin(Math.PI * t) * sag;
+          pts.push(p);
+        }
+        scene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), cableMat));
+      }
+      // anchor points = tops of the actual structures, so wires terminate on towers
+      const craneTop = new THREE.Vector3(-18, 46, 4); // derrick mast apex
+      const jibTip = new THREE.Vector3(-27, 53, 2); // derrick jib tip
+      const p1Top = new THREE.Vector3(-18, 22, -22); // pylon 1 apex
+      const p2Top = new THREE.Vector3(22, 20, -20); // pylon 2 apex
+      const p3Top = new THREE.Vector3(40, 24, -34); // pylon 3 apex
+      cable(p1Top, p2Top, 4); // pylon → pylon
+      cable(p2Top, p3Top, 4); // pylon → pylon
+      cable(craneTop, p1Top, 5); // derrick → nearest pylon
+      cable(craneTop, p2Top, 7); // derrick → mid pylon (long span)
+      cable(jibTip, p3Top, 9); // jib → far pylon (sky-spanning)
+      cable(p1Top, p3Top, 6); // crossing span across all three
+      // ---- fence + rubble ----
+      const fence = new THREE.Group();
+      for (let i = 0; i < 9; i++) {
+        const post = new THREE.Mesh(new THREE.BoxGeometry(0.3, 5, 0.3), concreteDark);
+        post.position.set(-14 + i * 3.4, 2.5, 30 - i * 0.6);
+        post.rotation.z = (Math.random() - 0.5) * 0.06;
+        post.castShadow = true;
+        fence.add(post);
+      }
+      scene.add(fence);
+      const rubble = new THREE.Group();
+      for (let i = 0; i < 26; i++) {
+        const s = 0.5 + Math.random() * 1.6;
+        const b = new THREE.Mesh(new THREE.BoxGeometry(s, s * 0.6, s * 1.2), Math.random() > 0.5 ? concrete : concreteDark);
+        b.position.set(-18 + Math.random() * 30, s * 0.3, 24 + Math.random() * 10);
+        b.rotation.y = Math.random() * Math.PI;
+        b.castShadow = true;
+        b.receiveShadow = true;
+        rubble.add(b);
+      }
+      const slab = new THREE.Mesh(new THREE.BoxGeometry(10, 3, 1.4), concreteDark);
+      slab.position.set(-12, 1.5, 26);
+      slab.rotation.y = 0.15;
+      slab.castShadow = true;
+      rubble.add(slab);
+      scene.add(rubble);
+      // ---- interaction: subtle mouse parallax + scroll dolly ----
+      const mouse = {
+        x: 0,
+        y: 0
+      };
+      addEventListener('pointermove', e => {
+        mouse.x = (e.clientX / innerWidth - 0.5);
+        mouse.y = (e.clientY / innerHeight - 0.5);
+      });
+      let scrollFrac = 0;
+      const navEl = document.getElementById('nav');
+      addEventListener('scroll', () => {
+        const y = window.scrollY || document.documentElement.scrollTop;
+        const max = Math.max(document.body.scrollHeight - innerHeight, 1);
+        scrollFrac = Math.min(y / max, 1);
+        navEl.classList.toggle('scrolled', y > 40);
+      }, {
+        passive: true
+      });
+      addEventListener('resize', () => {
+        camera.aspect = innerWidth / innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(innerWidth, innerHeight);
+      });
+      const curLook = lookTarget.clone();
+      let t = 0;
+
+      function animate() {
+        requestAnimationFrame(animate);
+        t += 0.004;
+        const px = mouse.x * 3.2,
+          py = -mouse.y * 1.8;
+        // scroll drives a slow ascent + pull-back, so the backdrop evolves down the page
+        const tx = camBase.x + Math.sin(t) * 0.8 + px - scrollFrac * 6;
+        const ty = camBase.y + Math.sin(t * 0.7) * 0.5 + py + scrollFrac * 22;
+        const tz = camBase.z + scrollFrac * 14;
+        camera.position.x += (tx - camera.position.x) * 0.05;
+        camera.position.y += (ty - camera.position.y) * 0.05;
+        camera.position.z += (tz - camera.position.z) * 0.05;
+        // ease the look-at point a touch lower as we rise, keeping the tower framed
+        const lookY = lookTarget.y + scrollFrac * 6;
+        curLook.y += (lookY - curLook.y) * 0.05;
+        camera.lookAt(curLook.x, curLook.y, curLook.z);
+        renderer.render(scene, camera);
+      }
+      animate();
+    </script>
+    <script>
+      (function() {
+        // ---- working top menu: smooth scroll, offset clear of the fixed nav bar ----
+        document.querySelectorAll('nav a[href^="#"]').forEach(a => {
+          a.addEventListener('click', e => {
+            const target = document.querySelector(a.getAttribute('href'));
+            if (!target) return;
+            e.preventDefault();
+            const y = target.getBoundingClientRect().top + window.scrollY - 70;
+            window.scrollTo({
+              top: y,
+              behavior: 'smooth'
+            });
+          });
+        });
+        // ---- eased wheel scrolling for a smoother feel (pointer devices only) ----
+        const fine = matchMedia('(pointer: fine)').matches;
+        const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (fine && !reduce) {
+          let goal = window.scrollY;
+          let raf = null;
+          const maxY = () => document.documentElement.scrollHeight - innerHeight;
+
+          function step() {
+            const cur = window.scrollY;
+            const d = goal - cur;
+            if (Math.abs(d) < 0.5) {
+              window.scrollTo(0, goal);
+              raf = null;
+              return;
+            }
+            window.scrollTo(0, cur + d * 0.8); // lerp toward the goal
+            raf = requestAnimationFrame(step);
+          }
+          addEventListener('wheel', e => {
+            if (e.ctrlKey) return; // let pinch-zoom pass through
+            e.preventDefault();
+            if (raf === null) goal = window.scrollY; // resync after non-wheel scrolling
+            let dy = e.deltaY;
+            if (e.deltaMode === 1) dy *= 16; // lines → px
+            else if (e.deltaMode === 2) dy *= innerHeight; // pages → px
+            goal = Math.max(0, Math.min(maxY(), goal + dy));
+            if (raf === null) raf = requestAnimationFrame(step);
+          }, {
+            passive: false
+          });
+        }
+      })();
+    </script>
+  </body>
+</html>
