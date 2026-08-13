@@ -1,0 +1,751 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#0d1719">
+    <meta name="color-scheme" content="dark">
+    <meta name="description" content="Локальный дневник калорий для iPhone">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Ккал">
+    <title>Ккал — дневник калорий</title>
+    <style>
+:root {
+  --bg: #0d1719;
+  --surface: #142326;
+  --surface-soft: #1a2c2f;
+  --text: #f4f7ee;
+  --muted: #9cafaa;
+  --accent: #c9f276;
+  --accent-deep: #99bf4d;
+  --teal: #5ec4c8;
+  --danger: #ff6b63;
+  --line: rgba(225, 242, 235, 0.12);
+  --shadow: 0 18px 55px rgba(0, 0, 0, 0.25);
+  --radius: 24px;
+  font-family: ui-rounded, "SF Pro Rounded", "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: var(--text);
+  background: var(--bg);
+  font-synthesis: none;
+}
+
+* { box-sizing: border-box; }
+
+html {
+  min-height: 100%;
+  background: var(--bg);
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  min-height: 100dvh;
+  margin: 0;
+  background:
+    radial-gradient(circle at 100% 0%, rgba(94, 196, 200, 0.13), transparent 34rem),
+    var(--bg);
+  color: var(--text);
+  -webkit-tap-highlight-color: transparent;
+}
+
+button, input { font: inherit; }
+button { color: inherit; }
+
+.app-shell {
+  width: min(100%, 560px);
+  min-height: 100dvh;
+  margin: 0 auto;
+  padding: max(18px, env(safe-area-inset-top)) 18px calc(106px + env(safe-area-inset-bottom));
+}
+
+.topbar {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.eyebrow {
+  margin: 0 0 4px;
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 750;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+h1, h2, p { margin-top: 0; }
+h1 { margin-bottom: 0; font-size: 2.25rem; line-height: 1; letter-spacing: -0.055em; }
+h2 { margin-bottom: 0; font-size: 1.32rem; line-height: 1.15; letter-spacing: -0.025em; }
+
+.today-chip {
+  min-height: 34px;
+  padding: 8px 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.035);
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.screen { animation: screen-in 220ms ease-out; }
+.screen[hidden] { display: none; }
+
+@keyframes screen-in {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: none; }
+}
+
+.card,
+.summary-card {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: linear-gradient(145deg, rgba(255,255,255,0.038), transparent 58%), var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.summary-card {
+  display: grid;
+  grid-template-columns: 152px 1fr;
+  align-items: center;
+  gap: 20px;
+  min-height: 204px;
+  padding: 24px;
+  overflow: hidden;
+}
+
+.progress-ring {
+  --progress: 0deg;
+  --ring-color: var(--accent);
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 150px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: conic-gradient(var(--ring-color) var(--progress), rgba(255,255,255,0.08) 0);
+}
+
+.progress-ring::after {
+  position: absolute;
+  width: calc(100% - 18px);
+  aspect-ratio: 1;
+  border-radius: inherit;
+  background: var(--surface);
+  content: "";
+}
+
+.progress-ring__center { position: relative; z-index: 1; text-align: center; }
+.progress-ring__center strong { display: block; font-size: 2.25rem; line-height: 1; letter-spacing: -0.06em; }
+.progress-ring__center span { display: block; margin-top: 8px; color: var(--muted); font-size: 0.78rem; }
+.progress-ring__center b { color: inherit; }
+
+.status-label { margin-bottom: 6px; color: var(--muted); font-size: 0.85rem; font-weight: 700; }
+.status-value { margin-bottom: 4px; line-height: 1; }
+.status-value strong { font-size: clamp(2rem, 10vw, 3.1rem); letter-spacing: -0.06em; }
+.status-value span { color: var(--muted); font-weight: 650; }
+.status-hint { margin-bottom: 0; color: var(--muted); font-size: 0.78rem; line-height: 1.4; }
+
+.summary-card.is-over { border-color: rgba(255, 107, 99, 0.38); }
+.summary-card.is-over .status-label,
+.summary-card.is-over .status-value strong { color: var(--danger); }
+
+.entry-form, .limit-form { margin-top: 16px; padding: 22px; }
+.entry-form .section-heading { margin-bottom: 20px; }
+
+.field { display: block; margin-bottom: 16px; }
+.field > span:first-child { display: flex; justify-content: space-between; margin-bottom: 8px; color: var(--muted); font-size: 0.8rem; font-weight: 700; }
+.field small { color: #738985; font-size: inherit; font-weight: 600; }
+
+input {
+  width: 100%;
+  min-height: 52px;
+  padding: 0 15px;
+  border: 1px solid var(--line);
+  border-radius: 15px;
+  outline: none;
+  background: rgba(4, 12, 13, 0.36);
+  color: var(--text);
+  font-size: 1rem;
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+
+input::placeholder { color: #627672; }
+input:focus { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(94, 196, 200, 0.13); }
+
+.input-with-unit { position: relative; display: block; }
+.input-with-unit input { padding-right: 62px; }
+.input-with-unit > span { position: absolute; top: 50%; right: 15px; transform: translateY(-50%); color: var(--muted); font-size: 0.78rem; font-weight: 700; pointer-events: none; }
+.field--kcal input { min-height: 62px; font-size: 1.55rem; font-weight: 800; letter-spacing: -0.03em; }
+
+.form-error { min-height: 18px; margin: -5px 0 10px; color: var(--danger); font-size: 0.78rem; }
+
+.primary-button,
+.secondary-button {
+  width: 100%;
+  min-height: 54px;
+  border: 0;
+  border-radius: 16px;
+  cursor: pointer;
+  font-weight: 800;
+  transition: transform 120ms ease, filter 120ms ease;
+}
+
+.primary-button { background: var(--accent); color: #162108; }
+.secondary-button { border: 1px solid rgba(201, 242, 118, 0.26); background: rgba(201, 242, 118, 0.1); color: var(--accent); }
+.primary-button:active, .secondary-button:active { transform: scale(0.985); }
+
+.entries-section { margin-top: 30px; }
+.section-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; }
+.entry-count { color: var(--muted); font-size: 0.78rem; }
+.entries-list { display: grid; gap: 10px; margin-top: 14px; }
+
+.entry-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 74px;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: rgba(20, 35, 38, 0.72);
+}
+
+.entry-marker { width: 9px; height: 9px; flex: 0 0 auto; border-radius: 50%; background: var(--teal); box-shadow: 0 0 0 5px rgba(94,196,200,0.1); }
+.entry-copy { min-width: 0; flex: 1; }
+.entry-name { overflow: hidden; margin: 0 0 3px; font-size: 0.92rem; font-weight: 750; text-overflow: ellipsis; white-space: nowrap; }
+.entry-time { margin: 0; color: var(--muted); font-size: 0.72rem; }
+.entry-kcal { font-size: 1.05rem; font-weight: 850; white-space: nowrap; }
+.entry-kcal small { color: var(--muted); font-size: 0.68rem; font-weight: 650; }
+
+.empty-state { padding: 28px 20px; border: 1px dashed var(--line); border-radius: 18px; color: var(--muted); text-align: center; }
+.empty-state strong { display: block; margin-bottom: 5px; color: var(--text); font-size: 0.92rem; }
+.empty-state p { margin: 0; font-size: 0.78rem; line-height: 1.45; }
+
+.month-intro { margin: 2px 2px 20px; }
+.month-intro h2 { margin-bottom: 8px; font-size: 1.7rem; }
+.month-intro > p:last-child { margin-bottom: 0; color: var(--muted); font-size: 0.88rem; }
+.chart-card { padding: 18px 12px 12px; }
+.chart-legend { display: flex; flex-wrap: wrap; gap: 12px; padding: 0 8px 14px; color: var(--muted); font-size: 0.68rem; }
+.chart-legend span { display: flex; align-items: center; gap: 6px; }
+.legend-dot { width: 7px; height: 7px; border-radius: 50%; }
+.legend-dot--normal { background: var(--teal); }
+.legend-dot--over { background: var(--danger); }
+.chart-wrap { position: relative; height: 330px; }
+.chart-fallback { display: grid; place-items: center; height: 100%; margin: 0; padding: 30px; color: var(--muted); text-align: center; line-height: 1.5; }
+.chart-fallback[hidden] { display: none; }
+
+.limit-form { display: grid; gap: 18px; }
+.limit-form > div > p:last-child { margin: 7px 0 0; color: var(--muted); font-size: 0.78rem; }
+.limit-form .field, .limit-form .form-error { margin: 0; }
+.field--limit input { font-size: 1.25rem; font-weight: 800; }
+
+.bottom-nav {
+  position: fixed;
+  z-index: 10;
+  right: 12px;
+  bottom: max(10px, env(safe-area-inset-bottom));
+  left: 12px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  width: min(calc(100% - 24px), 536px);
+  min-height: 68px;
+  margin: 0 auto;
+  padding: 6px;
+  border: 1px solid rgba(255,255,255,0.13);
+  border-radius: 22px;
+  background: rgba(20, 35, 38, 0.9);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.42);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+}
+
+.nav-button { display: flex; align-items: center; justify-content: center; gap: 9px; border: 0; border-radius: 17px; background: transparent; color: var(--muted); font-size: 0.78rem; font-weight: 800; cursor: pointer; }
+.nav-button.is-active { background: var(--accent); color: #162108; }
+.nav-icon { position: relative; display: inline-block; width: 19px; height: 19px; }
+.nav-icon--today { border: 2px solid currentColor; border-radius: 50%; }
+.nav-icon--today::before { position: absolute; top: 3px; left: 7px; width: 2px; height: 6px; border-radius: 2px; background: currentColor; transform-origin: bottom; transform: rotate(35deg); content: ""; }
+.nav-icon--chart { display: flex; align-items: flex-end; justify-content: space-between; padding: 2px; }
+.nav-icon--chart i { width: 3px; border-radius: 3px; background: currentColor; }
+.nav-icon--chart i:nth-child(1) { height: 8px; }
+.nav-icon--chart i:nth-child(2) { height: 14px; }
+.nav-icon--chart i:nth-child(3) { height: 11px; }
+
+.visually-hidden { position: absolute !important; width: 1px !important; height: 1px !important; padding: 0 !important; margin: -1px !important; overflow: hidden !important; clip: rect(0 0 0 0) !important; white-space: nowrap !important; border: 0 !important; }
+
+@media (max-width: 390px) {
+  .app-shell { padding-inline: 14px; }
+  .summary-card { grid-template-columns: 126px 1fr; gap: 16px; padding: 19px; }
+  .progress-ring { width: 126px; }
+  .progress-ring__center strong { font-size: 1.9rem; }
+  .status-value strong { font-size: 2rem; }
+}
+
+@media (min-width: 700px) {
+  .app-shell { padding-top: 30px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+    </style>
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Личный дневник</p>
+          <h1>Ккал</h1>
+        </div>
+        <div class="today-chip" id="today-label" aria-label="Сегодняшняя дата"></div>
+      </header>
+
+      <main>
+        <section class="screen is-active" id="today-screen" data-screen="today" aria-labelledby="today-heading">
+          <h2 class="visually-hidden" id="today-heading">Калории за сегодня</h2>
+
+          <article class="summary-card" id="summary-card">
+            <div class="progress-ring" id="progress-ring" aria-hidden="true">
+              <div class="progress-ring__center">
+                <strong id="today-total">0</strong>
+                <span>из <b id="today-limit">1600</b></span>
+              </div>
+            </div>
+            <div class="summary-copy">
+              <p class="status-label" id="status-label">Можно ещё</p>
+              <p class="status-value"><strong id="status-value">1600</strong> <span>ккал</span></p>
+              <p class="status-hint" id="status-hint">до дневного лимита</p>
+            </div>
+          </article>
+
+          <form class="entry-form card" id="entry-form" novalidate>
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Новая запись</p>
+                <h2>Что съели?</h2>
+              </div>
+            </div>
+            <label class="field field--kcal">
+              <span>Калории</span>
+              <span class="input-with-unit">
+                <input id="kcal-input" name="kcal" type="text" inputmode="numeric" pattern="[0-9]*" autocomplete="off" placeholder="350" aria-describedby="entry-error" required>
+                <span>ккал</span>
+              </span>
+            </label>
+            <label class="field">
+              <span>Название <small>необязательно</small></span>
+              <input id="name-input" name="name" type="text" autocomplete="off" maxlength="80" placeholder="Например, завтрак">
+            </label>
+            <p class="form-error" id="entry-error" role="alert" aria-live="polite"></p>
+            <button class="primary-button" type="submit">Добавить</button>
+          </form>
+
+          <section class="entries-section" aria-labelledby="entries-heading">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">История дня</p>
+                <h2 id="entries-heading">Сегодня</h2>
+              </div>
+              <span class="entry-count" id="entry-count">0 записей</span>
+            </div>
+            <div class="entries-list" id="entries-list"></div>
+          </section>
+        </section>
+
+        <section class="screen" id="month-screen" data-screen="month" aria-labelledby="month-heading" hidden>
+          <div class="month-intro">
+            <p class="eyebrow">Динамика</p>
+            <h2 id="month-heading">Последние 30 дней</h2>
+            <p>Каждый столбец — сумма калорий за день.</p>
+          </div>
+
+          <article class="chart-card card">
+            <div class="chart-legend" aria-hidden="true">
+              <span><i class="legend-dot legend-dot--normal"></i>В пределах лимита</span>
+              <span><i class="legend-dot legend-dot--over"></i>Превышение</span>
+            </div>
+            <div class="chart-wrap" id="chart-wrap">
+              <canvas id="month-chart" aria-label="График калорий за последние 30 дней" role="img"></canvas>
+              <p class="chart-fallback" id="chart-fallback" hidden>Для первого построения графика подключитесь к интернету. Записи продолжат сохраняться.</p>
+            </div>
+          </article>
+
+          <form class="limit-form card" id="limit-form" novalidate>
+            <div>
+              <p class="eyebrow">Настройка</p>
+              <h2>Дневной лимит</h2>
+              <p>Применяется ко всем дням на графике.</p>
+            </div>
+            <label class="field field--limit">
+              <span class="visually-hidden">Лимит калорий</span>
+              <span class="input-with-unit">
+                <input id="limit-input" name="limit" type="text" inputmode="numeric" pattern="[0-9]*" autocomplete="off" aria-describedby="limit-error" required>
+                <span>ккал</span>
+              </span>
+            </label>
+            <p class="form-error" id="limit-error" role="alert" aria-live="polite"></p>
+            <button class="secondary-button" type="submit">Сохранить лимит</button>
+          </form>
+        </section>
+      </main>
+
+      <nav class="bottom-nav" aria-label="Разделы приложения">
+        <button class="nav-button is-active" type="button" data-target="today" aria-current="page">
+          <span class="nav-icon nav-icon--today" aria-hidden="true"></span>
+          <span>Сегодня</span>
+        </button>
+        <button class="nav-button" type="button" data-target="month">
+          <span class="nav-icon nav-icon--chart" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span>30 дней</span>
+        </button>
+      </nav>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1/dist/chart.umd.min.js"></script>
+    <script>
+(function (root, factory) {
+  const api = factory();
+  if (typeof module === "object" && module.exports) module.exports = api;
+  root.CalorieCore = api;
+})(typeof globalThis !== "undefined" ? globalThis : this, function () {
+  "use strict";
+
+  const DEFAULT_LIMIT = 1600;
+
+  function isPositiveInteger(value) {
+    return typeof value === "number" && Number.isSafeInteger(value) && value > 0;
+  }
+
+  function dateKey(date) {
+    const value = date instanceof Date ? date : new Date(date);
+    const year = value.getFullYear();
+    const month = String(value.getMonth() + 1).padStart(2, "0");
+    const day = String(value.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  }
+
+  function normalizeEntry(candidate) {
+    if (!candidate || typeof candidate !== "object") return null;
+    if (!isPositiveInteger(candidate.kcal)) return null;
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(candidate.date || "")) return null;
+    const createdAt = new Date(candidate.createdAt);
+    if (Number.isNaN(createdAt.getTime())) return null;
+    return {
+      id: typeof candidate.id === "string" && candidate.id ? candidate.id : `${createdAt.getTime()}`,
+      date: candidate.date,
+      kcal: candidate.kcal,
+      name: typeof candidate.name === "string" ? candidate.name.trim().slice(0, 80) : "",
+      createdAt: createdAt.toISOString(),
+    };
+  }
+
+  function normalizeState(candidate) {
+    const source = candidate && typeof candidate === "object" ? candidate : {};
+    const entries = Array.isArray(source.entries) ? source.entries.map(normalizeEntry).filter(Boolean) : [];
+    return {
+      version: 1,
+      limitKcal: isPositiveInteger(source.limitKcal) ? source.limitKcal : DEFAULT_LIMIT,
+      entries,
+    };
+  }
+
+  function lastDays(count, endDate) {
+    const total = Number.isSafeInteger(count) && count > 0 ? count : 30;
+    const end = endDate instanceof Date ? endDate : new Date(endDate || Date.now());
+    const cursor = new Date(end.getFullYear(), end.getMonth(), end.getDate(), 12);
+    const days = [];
+    for (let offset = total - 1; offset >= 0; offset -= 1) {
+      const date = new Date(cursor);
+      date.setDate(cursor.getDate() - offset);
+      days.push({ date, key: dateKey(date) });
+    }
+    return days;
+  }
+
+  function totalsForDays(entries, days) {
+    const totals = new Map(days.map((day) => [day.key, 0]));
+    entries.forEach((entry) => {
+      if (totals.has(entry.date)) totals.set(entry.date, totals.get(entry.date) + entry.kcal);
+    });
+    return days.map((day) => totals.get(day.key));
+  }
+
+  return { DEFAULT_LIMIT, isPositiveInteger, dateKey, normalizeState, lastDays, totalsForDays };
+});
+
+(function () {
+  "use strict";
+
+  const STORAGE_KEY = "calorie-counter:v1";
+  const CHART_COLORS = { normal: "#5ec4c8", over: "#ff6b63", limit: "#c9f276", grid: "rgba(225,242,235,0.09)", text: "#9cafaa" };
+  const core = window.CalorieCore;
+  let state = loadState();
+  let chart = null;
+  let midnightTimer = null;
+
+  const elements = {
+    todayLabel: document.querySelector("#today-label"),
+    summaryCard: document.querySelector("#summary-card"),
+    progressRing: document.querySelector("#progress-ring"),
+    todayTotal: document.querySelector("#today-total"),
+    todayLimit: document.querySelector("#today-limit"),
+    statusLabel: document.querySelector("#status-label"),
+    statusValue: document.querySelector("#status-value"),
+    statusHint: document.querySelector("#status-hint"),
+    entryForm: document.querySelector("#entry-form"),
+    kcalInput: document.querySelector("#kcal-input"),
+    nameInput: document.querySelector("#name-input"),
+    entryError: document.querySelector("#entry-error"),
+    entryCount: document.querySelector("#entry-count"),
+    entriesList: document.querySelector("#entries-list"),
+    limitForm: document.querySelector("#limit-form"),
+    limitInput: document.querySelector("#limit-input"),
+    limitError: document.querySelector("#limit-error"),
+    chartCanvas: document.querySelector("#month-chart"),
+    chartFallback: document.querySelector("#chart-fallback"),
+  };
+
+  function loadState() {
+    try {
+      return core.normalizeState(JSON.parse(localStorage.getItem(STORAGE_KEY)));
+    } catch (_error) {
+      return core.normalizeState(null);
+    }
+  }
+
+  function saveState() {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (_error) { /* The UI remains usable for this session. */ }
+  }
+
+  function createId() {
+    if (window.crypto && typeof window.crypto.randomUUID === "function") return window.crypto.randomUUID();
+    return `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+  }
+
+  function parsePositiveInteger(raw) {
+    const value = String(raw).trim();
+    if (!/^[1-9]\d*$/.test(value)) return null;
+    const number = Number(value);
+    return core.isPositiveInteger(number) ? number : null;
+  }
+
+  function pluralizeEntries(count) {
+    const mod10 = count % 10;
+    const mod100 = count % 100;
+    if (mod10 === 1 && mod100 !== 11) return `${count} запись`;
+    if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) return `${count} записи`;
+    return `${count} записей`;
+  }
+
+  function formatKcal(value) {
+    return new Intl.NumberFormat("ru-RU").format(value);
+  }
+
+  function renderToday() {
+    const now = new Date();
+    const todayKey = core.dateKey(now);
+    const todayEntries = state.entries
+      .filter((entry) => entry.date === todayKey)
+      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    const total = todayEntries.reduce((sum, entry) => sum + entry.kcal, 0);
+    const over = total > state.limitKcal;
+    const difference = Math.abs(state.limitKcal - total);
+    const progress = Math.min(total / state.limitKcal, 1) * 360;
+
+    elements.todayLabel.textContent = new Intl.DateTimeFormat("ru-RU", { day: "numeric", month: "short" }).format(now);
+    elements.todayTotal.textContent = formatKcal(total);
+    elements.todayLimit.textContent = formatKcal(state.limitKcal);
+    elements.statusLabel.textContent = over ? "Лимит превышен" : total === state.limitKcal ? "Точно по плану" : "Можно ещё";
+    elements.statusValue.textContent = formatKcal(difference);
+    elements.statusHint.textContent = over ? "сверх дневного лимита" : total === state.limitKcal ? "лимит выбран полностью" : "до дневного лимита";
+    elements.summaryCard.classList.toggle("is-over", over);
+    elements.progressRing.style.setProperty("--progress", `${progress}deg`);
+    elements.progressRing.style.setProperty("--ring-color", over ? "var(--danger)" : "var(--accent)");
+    elements.entryCount.textContent = pluralizeEntries(todayEntries.length);
+    renderEntries(todayEntries);
+  }
+
+  function renderEntries(entries) {
+    elements.entriesList.replaceChildren();
+    if (!entries.length) {
+      const empty = document.createElement("div");
+      empty.className = "empty-state";
+      const title = document.createElement("strong");
+      title.textContent = "Записей пока нет";
+      const text = document.createElement("p");
+      text.textContent = "Добавьте калории — первая запись появится здесь.";
+      empty.append(title, text);
+      elements.entriesList.append(empty);
+      return;
+    }
+
+    entries.forEach((entry) => {
+      const item = document.createElement("article");
+      item.className = "entry-item";
+      const marker = document.createElement("span");
+      marker.className = "entry-marker";
+      marker.setAttribute("aria-hidden", "true");
+      const copy = document.createElement("div");
+      copy.className = "entry-copy";
+      const name = document.createElement("p");
+      name.className = "entry-name";
+      name.textContent = entry.name || "Без названия";
+      const time = document.createElement("p");
+      time.className = "entry-time";
+      time.textContent = new Intl.DateTimeFormat("ru-RU", { hour: "2-digit", minute: "2-digit" }).format(new Date(entry.createdAt));
+      const kcal = document.createElement("div");
+      kcal.className = "entry-kcal";
+      kcal.append(document.createTextNode(formatKcal(entry.kcal) + " "));
+      const unit = document.createElement("small");
+      unit.textContent = "ккал";
+      kcal.append(unit);
+      copy.append(name, time);
+      item.append(marker, copy, kcal);
+      elements.entriesList.append(item);
+    });
+  }
+
+  function renderChart() {
+    elements.limitInput.value = state.limitKcal;
+    if (typeof window.Chart !== "function") {
+      elements.chartCanvas.hidden = true;
+      elements.chartFallback.hidden = false;
+      return;
+    }
+
+    elements.chartCanvas.hidden = false;
+    elements.chartFallback.hidden = true;
+    const days = core.lastDays(30, new Date());
+    const totals = core.totalsForDays(state.entries, days);
+    const labels = days.map(({ date }) => new Intl.DateTimeFormat("ru-RU", { day: "numeric", month: "short" }).format(date));
+    const backgrounds = totals.map((total) => total > state.limitKcal ? CHART_COLORS.over : CHART_COLORS.normal);
+
+    if (chart) chart.destroy();
+    chart = new window.Chart(elements.chartCanvas, {
+      type: "bar",
+      data: {
+        labels,
+        datasets: [
+          {
+            label: "Калории",
+            data: totals,
+            backgroundColor: backgrounds,
+            borderRadius: 6,
+            borderSkipped: false,
+            maxBarThickness: 16,
+          },
+          {
+            type: "line",
+            label: "Лимит",
+            data: days.map(() => state.limitKcal),
+            borderColor: CHART_COLORS.limit,
+            borderWidth: 1.5,
+            borderDash: [6, 5],
+            pointRadius: 0,
+            tension: 0,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? false : { duration: 450 },
+        interaction: { mode: "index", intersect: false },
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            backgroundColor: "#f4f7ee",
+            titleColor: "#0d1719",
+            bodyColor: "#0d1719",
+            padding: 12,
+            cornerRadius: 10,
+            callbacks: { label: (context) => `${context.dataset.label}: ${formatKcal(context.parsed.y)} ккал` },
+          },
+        },
+        scales: {
+          x: {
+            grid: { display: false },
+            border: { display: false },
+            ticks: { color: CHART_COLORS.text, maxRotation: 0, autoSkip: true, maxTicksLimit: 6, font: { size: 10 } },
+          },
+          y: {
+            beginAtZero: true,
+            grid: { color: CHART_COLORS.grid },
+            border: { display: false },
+            ticks: { color: CHART_COLORS.text, maxTicksLimit: 5, font: { size: 10 }, callback: (value) => value >= 1000 ? `${value / 1000}к` : value },
+          },
+        },
+      },
+    });
+  }
+
+  function switchScreen(target) {
+    document.querySelectorAll(".screen").forEach((screen) => { screen.hidden = screen.dataset.screen !== target; });
+    document.querySelectorAll(".nav-button").forEach((button) => {
+      const active = button.dataset.target === target;
+      button.classList.toggle("is-active", active);
+      if (active) button.setAttribute("aria-current", "page"); else button.removeAttribute("aria-current");
+    });
+    if (target === "month") renderChart(); else renderToday();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  elements.entryForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const kcal = parsePositiveInteger(elements.kcalInput.value);
+    if (!kcal) {
+      elements.entryError.textContent = "Введите целое количество калорий больше нуля.";
+      elements.kcalInput.setAttribute("aria-invalid", "true");
+      elements.kcalInput.focus();
+      return;
+    }
+    elements.entryError.textContent = "";
+    elements.kcalInput.removeAttribute("aria-invalid");
+    const now = new Date();
+    state.entries.push({ id: createId(), date: core.dateKey(now), kcal, name: elements.nameInput.value.trim().slice(0, 80), createdAt: now.toISOString() });
+    saveState();
+    elements.entryForm.reset();
+    renderToday();
+    elements.kcalInput.focus();
+  });
+
+  elements.limitForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const limit = parsePositiveInteger(elements.limitInput.value);
+    if (!limit) {
+      elements.limitError.textContent = "Введите целый лимит больше нуля.";
+      elements.limitInput.setAttribute("aria-invalid", "true");
+      elements.limitInput.focus();
+      return;
+    }
+    elements.limitError.textContent = "";
+    elements.limitInput.removeAttribute("aria-invalid");
+    state.limitKcal = limit;
+    saveState();
+    renderToday();
+    renderChart();
+  });
+
+  document.querySelectorAll(".nav-button").forEach((button) => button.addEventListener("click", () => switchScreen(button.dataset.target)));
+
+  function scheduleMidnightRefresh() {
+    window.clearTimeout(midnightTimer);
+    const now = new Date();
+    const next = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 0, 100);
+    midnightTimer = window.setTimeout(() => { renderToday(); if (!document.querySelector("#month-screen").hidden) renderChart(); scheduleMidnightRefresh(); }, next - now);
+  }
+
+  document.addEventListener("visibilitychange", () => { if (!document.hidden) { renderToday(); scheduleMidnightRefresh(); } });
+  window.addEventListener("focus", renderToday);
+
+  renderToday();
+  elements.limitInput.value = state.limitKcal;
+  scheduleMidnightRefresh();
+})();
+    </script>
+  </body>
+</html>
+
