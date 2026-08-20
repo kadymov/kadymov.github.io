@@ -221,6 +221,32 @@ input:focus { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(94, 196, 200
 .entry-kcal { font-size: 1.05rem; font-weight: 850; white-space: nowrap; }
 .entry-kcal small { color: var(--muted); font-size: 0.68rem; font-weight: 650; }
 
+.delete-button {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  flex: 0 0 auto;
+  padding: 0;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  font-family: Arial, sans-serif;
+  font-size: 1.65rem;
+  font-weight: 300;
+  line-height: 1;
+  transition: background 140ms ease, color 140ms ease, transform 120ms ease;
+}
+
+.delete-button:active { transform: scale(0.92); }
+.delete-button:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
+
+@media (hover: hover) {
+  .delete-button:hover { background: rgba(255, 107, 99, 0.1); color: var(--danger); }
+}
+
 .empty-state { padding: 28px 20px; border: 1px dashed var(--line); border-radius: 18px; color: var(--muted); text-align: center; }
 .empty-state strong { display: block; margin-bottom: 5px; color: var(--text); font-size: 0.92rem; }
 .empty-state p { margin: 0; font-size: 0.78rem; line-height: 1.45; }
@@ -283,6 +309,7 @@ input:focus { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(94, 196, 200
   .progress-ring { width: 126px; }
   .progress-ring__center strong { font-size: 1.9rem; }
   .status-value strong { font-size: 2rem; }
+  .entry-item { gap: 10px; padding-inline: 13px; }
 }
 
 @media (min-width: 700px) {
@@ -473,7 +500,15 @@ input:focus { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(94, 196, 200
     return days.map((day) => totals.get(day.key));
   }
 
-  return { DEFAULT_LIMIT, isPositiveInteger, dateKey, normalizeState, lastDays, totalsForDays };
+  function removeEntry(state, entryId) {
+    const normalized = normalizeState(state);
+    return {
+      ...normalized,
+      entries: normalized.entries.filter((entry) => entry.id !== entryId),
+    };
+  }
+
+  return { DEFAULT_LIMIT, isPositiveInteger, dateKey, normalizeState, lastDays, totalsForDays, removeEntry };
 });
 
 (function () {
@@ -602,8 +637,14 @@ input:focus { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(94, 196, 200
       const unit = document.createElement("small");
       unit.textContent = "ккал";
       kcal.append(unit);
+      const deleteButton = document.createElement("button");
+      deleteButton.className = "delete-button";
+      deleteButton.type = "button";
+      deleteButton.dataset.entryId = entry.id;
+      deleteButton.setAttribute("aria-label", `Удалить запись «${entry.name || "Без названия"}», ${entry.kcal} ккал`);
+      deleteButton.textContent = "×";
       copy.append(name, time);
-      item.append(marker, copy, kcal);
+      item.append(marker, copy, kcal, deleteButton);
       elements.entriesList.append(item);
     });
   }
@@ -731,6 +772,18 @@ input:focus { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(94, 196, 200
 
   document.querySelectorAll(".nav-button").forEach((button) => button.addEventListener("click", () => switchScreen(button.dataset.target)));
 
+  elements.entriesList.addEventListener("click", (event) => {
+    const button = event.target.closest(".delete-button");
+    if (!button) return;
+    const entry = state.entries.find((candidate) => candidate.id === button.dataset.entryId);
+    if (!entry) return;
+    const title = entry.name || "Без названия";
+    if (!window.confirm(`Удалить «${title}» — ${formatKcal(entry.kcal)} ккал?`)) return;
+    state = core.removeEntry(state, entry.id);
+    saveState();
+    renderToday();
+  });
+
   function scheduleMidnightRefresh() {
     window.clearTimeout(midnightTimer);
     const now = new Date();
@@ -748,4 +801,3 @@ input:focus { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(94, 196, 200
     </script>
   </body>
 </html>
-
