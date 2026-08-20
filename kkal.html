@@ -159,6 +159,7 @@ h2 { margin-bottom: 0; font-size: 1.32rem; line-height: 1.15; letter-spacing: -0
 .field { display: block; margin-bottom: 16px; }
 .field > span:first-child { display: flex; justify-content: space-between; margin-bottom: 8px; color: var(--muted); font-size: 0.8rem; font-weight: 700; }
 .field small { color: #738985; font-size: inherit; font-weight: 600; }
+.field-label { display: flex; justify-content: space-between; margin-bottom: 8px; color: var(--muted); font-size: 0.8rem; font-weight: 700; }
 
 input {
   width: 100%;
@@ -180,6 +181,43 @@ input:focus { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(94, 196, 200
 .input-with-unit input { padding-right: 62px; }
 .input-with-unit > span { position: absolute; top: 50%; right: 15px; transform: translateY(-50%); color: var(--muted); font-size: 0.78rem; font-weight: 700; pointer-events: none; }
 .field--kcal input { min-height: 62px; font-size: 1.55rem; font-weight: 800; letter-spacing: -0.03em; }
+
+.product-combobox { position: relative; }
+.product-hint { margin: 7px 2px 0; color: #738985; font-size: 0.7rem; line-height: 1.35; }
+.product-suggestions {
+  position: absolute;
+  z-index: 8;
+  top: calc(100% + 6px);
+  right: 0;
+  left: 0;
+  max-height: 254px;
+  overflow-y: auto;
+  padding: 6px;
+  border: 1px solid rgba(225, 242, 235, 0.16);
+  border-radius: 16px;
+  background: #1b2d30;
+  box-shadow: 0 18px 38px rgba(0, 0, 0, 0.42);
+}
+.product-suggestions[hidden] { display: none; }
+.product-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  width: 100%;
+  min-height: 48px;
+  padding: 9px 11px;
+  border: 0;
+  border-radius: 11px;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  text-align: left;
+}
+.product-option.is-active,
+.product-option:focus-visible { outline: none; background: rgba(94, 196, 200, 0.13); }
+.product-option__name { min-width: 0; overflow: hidden; font-size: 0.88rem; font-weight: 750; text-overflow: ellipsis; white-space: nowrap; }
+.product-option__kcal { flex: 0 0 auto; color: var(--accent); font-size: 0.76rem; font-weight: 800; }
 
 .form-error { min-height: 18px; margin: -5px 0 10px; color: var(--danger); font-size: 0.78rem; }
 
@@ -356,16 +394,20 @@ input:focus { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(94, 196, 200
                 <h2>Что съели?</h2>
               </div>
             </div>
+            <div class="field field--product">
+              <label class="field-label" for="name-input">Название <small>необязательно</small></label>
+              <div class="product-combobox">
+                <input id="name-input" name="name" type="text" autocomplete="off" maxlength="80" placeholder="Начните вводить название" role="combobox" aria-autocomplete="list" aria-haspopup="listbox" aria-expanded="false" aria-controls="product-suggestions" aria-describedby="product-hint">
+                <div class="product-suggestions" id="product-suggestions" role="listbox" aria-label="Сохранённые продукты" hidden></div>
+              </div>
+              <p class="product-hint" id="product-hint">Сохранённый продукт подставит последние ккал.</p>
+            </div>
             <label class="field field--kcal">
               <span>Калории</span>
               <span class="input-with-unit">
                 <input id="kcal-input" name="kcal" type="text" inputmode="numeric" pattern="[0-9]*" autocomplete="off" placeholder="350" aria-describedby="entry-error" required>
                 <span>ккал</span>
               </span>
-            </label>
-            <label class="field">
-              <span>Название <small>необязательно</small></span>
-              <input id="name-input" name="name" type="text" autocomplete="off" maxlength="80" placeholder="Например, завтрак">
             </label>
             <p class="form-error" id="entry-error" role="alert" aria-live="polite"></p>
             <button class="primary-button" type="submit">Добавить</button>
@@ -469,14 +511,65 @@ input:focus { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(94, 196, 200
     };
   }
 
+  function normalizeProductName(value) {
+    return typeof value === "string" ? value.trim().replace(/\s+/g, " ").slice(0, 80) : "";
+  }
+
+  function productKey(name) {
+    return normalizeProductName(name).toLocaleLowerCase("ru-RU");
+  }
+
+  function normalizeProduct(candidate) {
+    if (!candidate || typeof candidate !== "object") return null;
+    const name = normalizeProductName(candidate.name);
+    if (!name || !isPositiveInteger(candidate.kcal)) return null;
+    return { name, kcal: candidate.kcal };
+  }
+
+  function normalizeProducts(candidates) {
+    if (!Array.isArray(candidates)) return [];
+    const seen = new Set();
+    return candidates.map(normalizeProduct).filter((product) => {
+      if (!product) return false;
+      const key = productKey(product.name);
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+  }
+
   function normalizeState(candidate) {
     const source = candidate && typeof candidate === "object" ? candidate : {};
     const entries = Array.isArray(source.entries) ? source.entries.map(normalizeEntry).filter(Boolean) : [];
     return {
-      version: 1,
+      version: 2,
       limitKcal: isPositiveInteger(source.limitKcal) ? source.limitKcal : DEFAULT_LIMIT,
       entries,
+      products: normalizeProducts(source.products),
     };
+  }
+
+  function upsertProduct(products, name, kcal) {
+    const normalizedName = normalizeProductName(name);
+    if (!normalizedName || !isPositiveInteger(kcal)) return normalizeProducts(products);
+    const key = productKey(normalizedName);
+    return [
+      { name: normalizedName, kcal },
+      ...normalizeProducts(products).filter((product) => productKey(product.name) !== key),
+    ];
+  }
+
+  function searchProducts(products, query, limit) {
+    const normalized = normalizeProducts(products);
+    const needle = productKey(query);
+    const maximum = isPositiveInteger(limit) ? limit : 6;
+    if (!needle) return normalized.slice(0, maximum);
+    return normalized
+      .map((product, index) => ({ product, index, key: productKey(product.name) }))
+      .filter((item) => item.key.includes(needle))
+      .sort((left, right) => Number(right.key.startsWith(needle)) - Number(left.key.startsWith(needle)) || left.index - right.index)
+      .slice(0, maximum)
+      .map((item) => item.product);
   }
 
   function lastDays(count, endDate) {
@@ -508,7 +601,7 @@ input:focus { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(94, 196, 200
     };
   }
 
-  return { DEFAULT_LIMIT, isPositiveInteger, dateKey, normalizeState, lastDays, totalsForDays, removeEntry };
+  return { DEFAULT_LIMIT, isPositiveInteger, dateKey, normalizeProductName, normalizeState, upsertProduct, searchProducts, lastDays, totalsForDays, removeEntry };
 });
 
 (function () {
@@ -520,6 +613,8 @@ input:focus { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(94, 196, 200
   let state = loadState();
   let chart = null;
   let midnightTimer = null;
+  let visibleProducts = [];
+  let activeProductIndex = -1;
 
   const elements = {
     todayLabel: document.querySelector("#today-label"),
@@ -533,6 +628,7 @@ input:focus { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(94, 196, 200
     entryForm: document.querySelector("#entry-form"),
     kcalInput: document.querySelector("#kcal-input"),
     nameInput: document.querySelector("#name-input"),
+    productSuggestions: document.querySelector("#product-suggestions"),
     entryError: document.querySelector("#entry-error"),
     entryCount: document.querySelector("#entry-count"),
     entriesList: document.querySelector("#entries-list"),
@@ -577,6 +673,64 @@ input:focus { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(94, 196, 200
 
   function formatKcal(value) {
     return new Intl.NumberFormat("ru-RU").format(value);
+  }
+
+  function hideProductSuggestions() {
+    visibleProducts = [];
+    activeProductIndex = -1;
+    elements.productSuggestions.hidden = true;
+    elements.productSuggestions.replaceChildren();
+    elements.nameInput.setAttribute("aria-expanded", "false");
+    elements.nameInput.removeAttribute("aria-activedescendant");
+  }
+
+  function setActiveProduct(index) {
+    if (!visibleProducts.length) return;
+    activeProductIndex = (index + visibleProducts.length) % visibleProducts.length;
+    elements.productSuggestions.querySelectorAll(".product-option").forEach((option, optionIndex) => {
+      const active = optionIndex === activeProductIndex;
+      option.classList.toggle("is-active", active);
+      option.setAttribute("aria-selected", String(active));
+      if (active) elements.nameInput.setAttribute("aria-activedescendant", option.id);
+    });
+  }
+
+  function chooseProduct(product) {
+    elements.nameInput.value = product.name;
+    elements.kcalInput.value = product.kcal;
+    hideProductSuggestions();
+    elements.kcalInput.focus();
+    elements.kcalInput.select();
+  }
+
+  function renderProductSuggestions() {
+    visibleProducts = core.searchProducts(state.products, elements.nameInput.value, 6);
+    activeProductIndex = -1;
+    elements.productSuggestions.replaceChildren();
+    if (!visibleProducts.length) {
+      hideProductSuggestions();
+      return;
+    }
+
+    visibleProducts.forEach((product, index) => {
+      const option = document.createElement("button");
+      option.className = "product-option";
+      option.type = "button";
+      option.id = `product-option-${index}`;
+      option.setAttribute("role", "option");
+      option.setAttribute("aria-selected", "false");
+      option.dataset.productIndex = index;
+      const name = document.createElement("span");
+      name.className = "product-option__name";
+      name.textContent = product.name;
+      const kcal = document.createElement("span");
+      kcal.className = "product-option__kcal";
+      kcal.textContent = `${formatKcal(product.kcal)} ккал`;
+      option.append(name, kcal);
+      elements.productSuggestions.append(option);
+    });
+    elements.productSuggestions.hidden = false;
+    elements.nameInput.setAttribute("aria-expanded", "true");
   }
 
   function renderToday() {
@@ -746,11 +900,14 @@ input:focus { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(94, 196, 200
     elements.entryError.textContent = "";
     elements.kcalInput.removeAttribute("aria-invalid");
     const now = new Date();
-    state.entries.push({ id: createId(), date: core.dateKey(now), kcal, name: elements.nameInput.value.trim().slice(0, 80), createdAt: now.toISOString() });
+    const name = core.normalizeProductName(elements.nameInput.value);
+    state.entries.push({ id: createId(), date: core.dateKey(now), kcal, name, createdAt: now.toISOString() });
+    if (name) state.products = core.upsertProduct(state.products, name, kcal);
     saveState();
     elements.entryForm.reset();
+    hideProductSuggestions();
     renderToday();
-    elements.kcalInput.focus();
+    elements.nameInput.focus();
   });
 
   elements.limitForm.addEventListener("submit", (event) => {
@@ -771,6 +928,34 @@ input:focus { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(94, 196, 200
   });
 
   document.querySelectorAll(".nav-button").forEach((button) => button.addEventListener("click", () => switchScreen(button.dataset.target)));
+
+  elements.nameInput.addEventListener("focus", renderProductSuggestions);
+  elements.nameInput.addEventListener("input", renderProductSuggestions);
+  elements.nameInput.addEventListener("blur", () => window.setTimeout(hideProductSuggestions, 120));
+  elements.nameInput.addEventListener("keydown", (event) => {
+    if (event.key === "ArrowDown") {
+      event.preventDefault();
+      if (elements.productSuggestions.hidden) renderProductSuggestions();
+      setActiveProduct(activeProductIndex + 1);
+    } else if (event.key === "ArrowUp") {
+      event.preventDefault();
+      if (elements.productSuggestions.hidden) renderProductSuggestions();
+      setActiveProduct(activeProductIndex - 1);
+    } else if (event.key === "Enter" && activeProductIndex >= 0) {
+      event.preventDefault();
+      chooseProduct(visibleProducts[activeProductIndex]);
+    } else if (event.key === "Escape") {
+      hideProductSuggestions();
+    }
+  });
+
+  elements.productSuggestions.addEventListener("mousedown", (event) => event.preventDefault());
+  elements.productSuggestions.addEventListener("click", (event) => {
+    const option = event.target.closest(".product-option");
+    if (!option) return;
+    const product = visibleProducts[Number(option.dataset.productIndex)];
+    if (product) chooseProduct(product);
+  });
 
   elements.entriesList.addEventListener("click", (event) => {
     const button = event.target.closest(".delete-button");
