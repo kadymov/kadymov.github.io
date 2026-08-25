@@ -823,6 +823,7 @@ body.is-product-picker-open { overflow: hidden; }
   let chart = null;
   let midnightTimer = null;
   let visibleProducts = [];
+  let pickerInitialName = "";
 
   const elements = {
     todayLabel: document.querySelector("#today-label"),
@@ -962,9 +963,9 @@ body.is-product-picker-open { overflow: hidden; }
     if (restoreFocus) elements.nameInput.focus();
   }
 
-  function chooseProduct(product) {
+  function chooseProduct(product, preserveKcal = false) {
     elements.nameInput.value = core.normalizeProductName(product.name);
-    elements.kcalInput.value = core.isPositiveInteger(product.kcal) ? product.kcal : "";
+    if (!preserveKcal) elements.kcalInput.value = core.isPositiveInteger(product.kcal) ? product.kcal : "";
     updateProductTrigger();
     closeProductPicker(false);
     window.requestAnimationFrame(() => {
@@ -1002,7 +1003,7 @@ body.is-product-picker-open { overflow: hidden; }
     elements.productExportButton.disabled = state.products.length === 0;
     elements.productPickerList.replaceChildren();
 
-    if (query && !visibleProducts.length) {
+    if (query && query !== pickerInitialName) {
       const createButton = document.createElement("button");
       createButton.className = "product-create-option";
       createButton.type = "button";
@@ -1014,7 +1015,7 @@ body.is-product-picker-open { overflow: hidden; }
       name.textContent = `Использовать «${query}»`;
       const meta = document.createElement("span");
       meta.className = "product-option__meta";
-      meta.textContent = "Укажите ккал на экране записи";
+      meta.textContent = "Подставить это название и сохранить введённые ккал";
       copy.append(name, meta);
       createButton.append(copy);
       elements.productPickerList.append(createButton);
@@ -1037,7 +1038,8 @@ body.is-product-picker-open { overflow: hidden; }
   }
 
   function openProductPicker() {
-    elements.productSearchInput.value = "";
+    pickerInitialName = core.normalizeProductName(elements.nameInput.value);
+    elements.productSearchInput.value = pickerInitialName;
     setProductDataStatus("");
     elements.productPicker.hidden = false;
     document.body.classList.add("is-product-picker-open");
@@ -1268,7 +1270,7 @@ body.is-product-picker-open { overflow: hidden; }
   elements.productPickerList.addEventListener("click", (event) => {
     const createButton = event.target.closest(".product-create-option");
     if (createButton) {
-      chooseProduct({ name: createButton.dataset.createProduct, kcal: null });
+      chooseProduct({ name: createButton.dataset.createProduct, kcal: null }, true);
       return;
     }
     const option = event.target.closest(".product-option");
