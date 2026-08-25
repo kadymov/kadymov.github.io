@@ -486,6 +486,7 @@ body.is-product-picker-open { overflow: hidden; }
 .product-option__name { display: block; overflow: hidden; font-size: 0.98rem; font-weight: 760; text-overflow: ellipsis; white-space: nowrap; }
 .product-option__meta { display: block; margin-top: 4px; color: var(--muted); font-size: 0.7rem; }
 .product-option__kcal { flex: 0 0 auto; color: var(--accent); font-size: 0.88rem; font-weight: 820; }
+.product-results-label { margin: 9px 8px 3px; color: var(--teal); font-size: 0.68rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; }
 .product-create-option {
   min-height: 74px;
   margin-bottom: 5px;
@@ -728,6 +729,78 @@ body.is-product-picker-open { overflow: hidden; }
     return normalizeProductName(name).toLocaleLowerCase("ru-RU");
   }
 
+  function searchKey(name) {
+    const latinLookalikes = { a: "а", b: "в", c: "с", e: "е", h: "н", k: "к", m: "м", o: "о", p: "р", t: "т", x: "х", y: "у" };
+    return productKey(name)
+      .replace(/ё/g, "е")
+      .replace(/[abcehkmoptxy]/g, (letter) => latinLookalikes[letter])
+      .replace(/[^0-9а-я]+/g, " ")
+      .trim()
+      .replace(/\s+/g, " ");
+  }
+
+  function damerauLevenshtein(left, right) {
+    const rows = Array.from({ length: left.length + 1 }, () => new Uint16Array(right.length + 1));
+    for (let row = 0; row <= left.length; row += 1) rows[row][0] = row;
+    for (let column = 0; column <= right.length; column += 1) rows[0][column] = column;
+    for (let row = 1; row <= left.length; row += 1) {
+      for (let column = 1; column <= right.length; column += 1) {
+        const substitution = left[row - 1] === right[column - 1] ? 0 : 1;
+        rows[row][column] = Math.min(
+          rows[row - 1][column] + 1,
+          rows[row][column - 1] + 1,
+          rows[row - 1][column - 1] + substitution,
+        );
+        if (row > 1 && column > 1 && left[row - 1] === right[column - 2] && left[row - 2] === right[column - 1]) {
+          rows[row][column] = Math.min(rows[row][column], rows[row - 2][column - 2] + 1);
+        }
+      }
+    }
+    return rows[left.length][right.length];
+  }
+
+  function editSimilarity(left, right) {
+    const longest = Math.max(left.length, right.length);
+    return longest ? 1 - damerauLevenshtein(left, right) / longest : 1;
+  }
+
+  function ngramSimilarity(left, right) {
+    const size = Math.min(left.length, right.length) < 6 ? 2 : 3;
+    const makeGrams = (value) => {
+      const padded = ` ${value} `;
+      const grams = new Set();
+      for (let index = 0; index <= padded.length - size; index += 1) grams.add(padded.slice(index, index + size));
+      return grams;
+    };
+    const leftGrams = makeGrams(left);
+    const rightGrams = makeGrams(right);
+    let common = 0;
+    leftGrams.forEach((gram) => { if (rightGrams.has(gram)) common += 1; });
+    return leftGrams.size + rightGrams.size ? (2 * common) / (leftGrams.size + rightGrams.size) : 1;
+  }
+
+  function tokenSimilarity(needle, candidate) {
+    const needleTokens = needle.split(" ").filter(Boolean);
+    const candidateTokens = candidate.split(" ").filter(Boolean);
+    if (!needleTokens.length || !candidateTokens.length) return 0;
+    const matches = needleTokens.map((needleToken) => candidateTokens.reduce((best, candidateToken) => {
+      if (needleToken === candidateToken) return 1;
+      if (candidateToken.startsWith(needleToken) || needleToken.startsWith(candidateToken)) return Math.max(best, 0.9);
+      return Math.max(best, editSimilarity(needleToken, candidateToken));
+    }, 0));
+    const average = matches.reduce((sum, value) => sum + value, 0) / matches.length;
+    const coverage = matches.filter((value) => value >= 0.68).length / matches.length;
+    return average * 0.72 + coverage * 0.28;
+  }
+
+  function fuzzySimilarity(needle, candidate) {
+    const grams = ngramSimilarity(needle, candidate);
+    if (grams < 0.16) return grams * 0.25;
+    return tokenSimilarity(needle, candidate) * 0.55
+      + grams * 0.25
+      + editSimilarity(needle, candidate) * 0.2;
+  }
+
   function normalizeProduct(candidate) {
     if (!candidate || typeof candidate !== "object") return null;
     const name = normalizeProductName(candidate.name);
@@ -770,13 +843,22 @@ body.is-product-picker-open { overflow: hidden; }
 
   function searchProducts(products, query, limit) {
     const normalized = normalizeProducts(products);
-    const needle = productKey(query);
+    const needle = searchKey(query);
     const maximum = isPositiveInteger(limit) ? limit : 6;
     if (!needle) return normalized.slice(0, maximum);
+    const compactLength = needle.replace(/\s/g, "").length;
+    const threshold = compactLength < 4 ? 1.01 : compactLength < 7 ? 0.72 : compactLength < 12 ? 0.64 : 0.58;
     return normalized
-      .map((product, index) => ({ product, index, key: productKey(product.name) }))
-      .filter((item) => item.key.includes(needle))
-      .sort((left, right) => Number(right.key.startsWith(needle)) - Number(left.key.startsWith(needle)) || left.index - right.index)
+      .map((product, index) => {
+        const key = searchKey(product.name);
+        if (key === needle) return { product, index, tier: 4, score: 1 };
+        if (key.startsWith(needle)) return { product, index, tier: 3, score: needle.length / key.length };
+        if (key.includes(needle)) return { product, index, tier: 2, score: needle.length / key.length };
+        const score = compactLength >= 4 ? fuzzySimilarity(needle, key) : 0;
+        return { product, index, tier: 1, score };
+      })
+      .filter((item) => item.tier > 1 || item.score >= threshold)
+      .sort((left, right) => right.tier - left.tier || right.score - left.score || left.index - right.index)
       .slice(0, maximum)
       .map((item) => item.product);
   }
@@ -998,7 +1080,7 @@ body.is-product-picker-open { overflow: hidden; }
 
   function renderProductPicker() {
     const query = core.normalizeProductName(elements.productSearchInput.value);
-    visibleProducts = core.searchProducts(state.products, query, Math.max(state.products.length, 1));
+    visibleProducts = core.searchProducts(state.products, query, query ? 6 : Math.max(state.products.length, 1));
     elements.productPickerCount.textContent = state.products.length;
     elements.productExportButton.disabled = state.products.length === 0;
     elements.productPickerList.replaceChildren();
@@ -1019,6 +1101,14 @@ body.is-product-picker-open { overflow: hidden; }
       copy.append(name, meta);
       createButton.append(copy);
       elements.productPickerList.append(createButton);
+    }
+
+    if (query && visibleProducts.length) {
+      const resultsLabel = document.createElement("p");
+      resultsLabel.className = "product-results-label";
+      resultsLabel.setAttribute("role", "presentation");
+      resultsLabel.textContent = "Похожие продукты в базе";
+      elements.productPickerList.append(resultsLabel);
     }
 
     visibleProducts.forEach((product, index) => elements.productPickerList.append(createProductOption(product, index)));
