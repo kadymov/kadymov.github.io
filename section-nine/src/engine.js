@@ -7,6 +7,7 @@ import { freshDiscussions, validateDiscussions } from './evidence.js';
 import { freshCasework, validateCasework, CHECKS, canApprove } from './casework.js';
 
 import { freshHistory, validateHistory, rememberContext, rememberPlace, takeGreeting } from './greetings.js';
+import { freshReadState, validateReadState, messageKey, choiceKey, rememberRead } from './read-state.js';
 
 export const SAVE_VERSION = 6;
 export const FLAG_NAMES = ['briefed', 'batouAccess', 'testimony', 'military', 'memory', 'trace'];
@@ -25,6 +26,7 @@ export function freshState({ timeMode = 'realtime' } = {}) {
     discussions: freshDiscussions(),
     casework: freshCasework(),
     history: freshHistory(),
+    read: freshReadState(),
     journal: [{ title: '06:40 / Штаб 9-го отдела', text: 'Арамаки вызвал группу до начала смены. Получите вводную в его кабинете на 24-м этаже, через приёмную в северо-западном крыле. Вы — майор Мотоко Кусанаги.' }],
   };
 }
@@ -58,6 +60,7 @@ export function validateState(raw) {
     discussions: validateDiscussions(raw.discussions, raw.flags),
     casework,
     history: validateHistory(raw.history),
+    read: validateReadState(raw.read),
     journal: raw.journal.map(entry => ({ title: clean(entry.title).replace(/\n/g, ' '), text: clean(entry.text) })),
   };
 }
@@ -108,6 +111,30 @@ export class Game {
     const greeting = this.dialogue?.greeting;
     return result && greeting ? { ...result, text: greeting.replace ? greeting.text : `${greeting.text}\n\n${result.text}` } : result;
   }
+  get baseNode() {
+    const entity = ENTITIES.find(e => e.id === this.dialogue?.id);
+    return entity ? getNode(entity.story ?? entity.id, this.dialogue.node, this.state) : null;
+  }
+  markCurrentDialogue() {
+    const base = this.baseNode;
+    if (!base || !this.dialogue) return;
+    const greeting = this.dialogue.greeting;
+    const parts = greeting?.replace ? [greeting.text] : greeting ? [greeting.text, base.text] : [base.text];
+    const keys = parts.map(messageKey);
+    this.dialogue.parts = parts.map((text, index) => ({ text, read: this.state.read.messages.includes(keys[index]) }));
+    this.dialogue.read = keys.every(key => this.state.read.messages.includes(key));
+    for (const key of keys) rememberRead(this.state.read.messages, key);
+  }
+  isChoiceRead(index) {
+    const base = this.baseNode;
+    const choice = base?.options[index];
+    return Boolean(choice && this.state.read.choices.includes(choiceKey(this.dialogue.id, this.dialogue.node, base.text, choice)));
+  }
+  markChoiceRead(index) {
+    const base = this.baseNode;
+    const choice = base?.options[index];
+    if (choice) rememberRead(this.state.read.choices, choiceKey(this.dialogue.id, this.dialogue.node, base.text, choice));
+  }
   move(dx, dy) {
     if (this.mode !== 'map' || this.paused || Math.abs(dx) + Math.abs(dy) !== 1) return false;
     this.facing = { x: dx, y: dy };
@@ -134,6 +161,7 @@ export class Game {
     this.mode = 'dialogue';
     this.selected = 0;
     this.scroll = 0;
+    this.markCurrentDialogue();
     return true;
   }
   get interactionTarget() {
@@ -151,6 +179,7 @@ export class Game {
     if (this.mode !== 'dialogue') return false;
     const choice = this.currentNode?.options[index];
     if (!choice) return false;
+    this.markChoiceRead(index);
     const before = this.state.journal.length;
     const previousFloor = this.state.player.floor;
     this.dialogue.greeting = null;
@@ -165,7 +194,10 @@ export class Game {
       this.message = `Этаж ${this.state.player.floor}. ${roomInfo(this.state.player).description}`;
     }
     else if (choice.next === null) this.close();
-    else this.dialogue.node = choice.next;
+    else {
+      this.dialogue.node = choice.next;
+      this.markCurrentDialogue();
+    }
     if (this.state.life.inspected.length > observations) this.message = 'Наблюдение записано. [N] Посмотреть истории штаба';
     if (this.state.journal.length > before) this.message = `Журнал обновлён: ${this.state.journal.at(-1).title}`;
     return true;

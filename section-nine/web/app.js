@@ -1,7 +1,7 @@
 import { objective } from '../src/engine.js';
 import { adjacent, getEntity, entitiesFor, roomAt, FLOORS } from '../src/world.js';
 import { activityFor, nearbyActivities, recentAmbient } from '../src/life.js';
-import { journalSections, observationSections, endingSections } from '../src/presentation.js';
+import { journalSections, observationSections, endingSections, dialogueBlocks } from '../src/presentation.js';
 import { WorldClock } from '../src/world-clock.js';
 import { DirectionalHold } from './input.js';
 import { MobileStorage } from './storage.js';
@@ -152,10 +152,16 @@ function dialogueScreen() {
   const entity = getEntity(game.dialogue.id, game.state);
   const node = game.currentNode;
   const inner = reading(entity.name, entity.type === 'person' ? activityFor(entity.id, game.state) : entity.role);
-  const text = element('div', 'prose dialogue-text', node.text); inner.append(text);
+  const thread = element('div', 'dialogue-thread');
+  for (const block of dialogueBlocks(entity, game.dialogue.node, game.dialogue.parts ?? [{ text: node.text, read: game.dialogue.read }])) {
+    const panel = element('section', `dialogue-block ${block.kind}${block.read ? ' read' : ''}`);
+    panel.append(element('div', 'dialogue-label', block.label), element('div', 'dialogue-copy', block.text));
+    thread.append(panel);
+  }
+  inner.append(thread);
   inner.append(element('div', 'choice-caption', 'ВАШ ОТВЕТ'));
   const choices = element('div', 'choices');
-  node.options.forEach((option, index) => choices.append(button(option.label, () => act(() => session.choose(index)))));
+  node.options.forEach((option, index) => choices.append(button(option.label, () => act(() => session.choose(index)), game.isChoiceRead(index) ? 'read' : '')));
   inner.append(choices);
 }
 function menuScreen() {

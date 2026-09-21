@@ -78,6 +78,7 @@ export class MobileSession {
         if (saved.greeting && typeof saved.greeting.text === 'string' && saved.greeting.text.length <= 4000 && typeof saved.greeting.replace === 'boolean') {
           game.dialogue.greeting = { text: saved.greeting.text.replace(/[\x00-\x09\x0b-\x1f\x7f-\x9f]/g, ' '), replace: saved.greeting.replace };
         }
+        game.markCurrentDialogue();
       } catch { game.close(); session.scroll = 0; }
     }
     return session;

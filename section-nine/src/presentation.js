@@ -11,6 +11,32 @@ export const PALETTE = {
   teal: [112, 212, 191], orange: [238, 172, 109], purple: [190, 166, 245],
   blue: [113, 167, 203], white: [230, 238, 232], red: [230, 126, 126],
 };
+const SYSTEM_NODES = new Set(['observations', 'evidence', 'debate:arguments', 'debate:results', 'debate:revise']);
+function technicalParagraph(text) {
+  const first = text.split('\n', 1)[0].trim();
+  const letters = [...first].filter(character => /[A-Za-zА-Яа-яЁё]/.test(character));
+  return letters.length >= 4 && letters.every(character => character === character.toLocaleUpperCase('ru-RU'));
+}
+export function dialogueBlocks(entity, node, content) {
+  const forcedTechnical = entity.type !== 'person' && entity.type !== 'scenery' || SYSTEM_NODES.has(node);
+  const defaultKind = entity.type === 'person' ? 'speech' : entity.type === 'scenery' ? 'observation' : 'technical';
+  const sources = Array.isArray(content) ? content : [{ text: content, read: false }];
+  const parts = sources.flatMap(source => String(source.text).split(/\n{2,}/).filter(Boolean).map(part => ({
+    kind: forcedTechnical || technicalParagraph(part) ? 'technical' : defaultKind,
+    text: part,
+    read: source.read === true,
+  })));
+  const blocks = [];
+  for (const part of parts) {
+    const previous = blocks.at(-1);
+    if (previous?.kind === part.kind && previous.read === part.read) previous.text += `\n\n${part.text}`;
+    else blocks.push({ ...part });
+  }
+  return blocks.map(block => ({
+    ...block,
+    label: block.kind === 'speech' ? entity.name : block.kind === 'observation' ? 'Наблюдение' : 'Система / данные',
+  }));
+}
 const ROOM_COLORS = {
   corridor: [12, 22, 29], core: [21, 28, 38], office: [25, 30, 35],
   operations: [13, 32, 37], lab: [15, 26, 40], armory: [32, 29, 25],

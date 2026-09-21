@@ -1,5 +1,5 @@
-const VERSION = '692e176816b97ebd';
-const ASSETS = ["./","./icons/apple-touch-icon.png","./icons/icon-192.png","./icons/icon-512.png","./icons/icon.svg","./index.html","./manifest.webmanifest","./src/casework.js","./src/conversations.js","./src/details.js","./src/engine.js","./src/evidence.js","./src/greetings.js","./src/life.js","./src/presentation.js","./src/story.js","./src/world-clock.js","./src/world.js","./web/app.js","./web/input.js","./web/map.js","./web/session.js","./web/storage.js","./web/style.css"];
+const VERSION = '5295105589eeef07';
+const ASSETS = ["./","./icons/apple-touch-icon.png","./icons/icon-192.png","./icons/icon-512.png","./icons/icon.svg","./index.html","./manifest.webmanifest","./src/casework.js","./src/conversations.js","./src/details.js","./src/engine.js","./src/evidence.js","./src/greetings.js","./src/life.js","./src/presentation.js","./src/read-state.js","./src/story.js","./src/world-clock.js","./src/world.js","./web/app.js","./web/input.js","./web/map.js","./web/session.js","./web/storage.js","./web/style.css"];
 // Include scope in the cache name so two installations on one host stay separate.
 const PREFIX = `section-nine:${self.registration.scope}:`;
 const CACHE = PREFIX + VERSION;
