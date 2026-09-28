@@ -21,6 +21,8 @@
 @media(max-width:900px){.studio{padding:25px 22px}.core{grid-template-columns:minmax(0,1fr) 268px}.field-section{padding:21px 18px}.sound-section{padding:21px 16px}.knobs{column-gap:15px}.notes{max-width:165px}.keyboard-help{font-size:9px}.brand h1{font-size:29px}.status{display:none}.power{min-width:145px}.xy-note{display:none}.axis{font-size:8px}}
 @media(max-width:650px){.studio{padding:24px 14px 18px}.masthead{margin-bottom:21px;gap:12px}.brand{gap:10px}.mark{width:28px;height:28px;flex-shrink:0}.mark:before{inset:5px}.mark:after{width:18px;height:18px;left:11px;top:1px}.eyebrow{font-size:8px;letter-spacing:.11em}.brand h1{font-size:23px;letter-spacing:.12em;margin-top:6px}.power{font-size:10px;min-width:0;padding:10px 11px;gap:7px}.power svg{width:13px;height:13px}.core{display:block}.rail{height:38px;padding:0 16px;font-size:8px;letter-spacing:.08em}.rail .rail-detail{display:none}.field-section{padding:19px 16px 18px;border-right:0}.xy{height:264px}.xy-controls{gap:21px;margin-top:15px}.sound-section{border-top:1px solid var(--line);padding:17px 16px 15px}.sound-section .section-head{margin-bottom:15px}.knobs{grid-template-columns:repeat(3,minmax(0,1fr));gap:17px 11px}.knob-wrap{width:64px;height:64px}.knob{width:49px;height:49px}.knob:after{left:22px}.control label{font-size:10px}.performance{padding:17px 13px 15px}.performance-head{flex-wrap:wrap;gap:12px}.playing{width:100%;justify-content:space-between}.transport{width:100%;justify-content:space-between;gap:6px}.small-button{padding:8px 10px}.keyboard{height:117px}.key.white{height:111px}.key.black{height:68px}.key-label .shortcut{display:none}.key-label .note-name{font-size:8px}.key.black .note-name{display:none}.keyboard-help{line-height:1.7;display:block}.keyboard-help .computer-help{display:none}.keyboard-help .touch-help{display:block}.notes{max-width:180px;font-size:10px}.footer{font-size:8px;letter-spacing:.02em;padding-top:16px;gap:8px}.section-head{margin-bottom:13px}.readout{font-size:9px}.axis.left{left:9px}.axis.right{right:9px}.axis{font-size:8px}}
 .key.suggested:not(.active).white{background:linear-gradient(#d5e3d7,#a9c8b5);box-shadow:inset 0 -4px #5b8671}.key.suggested:not(.active).black{background:linear-gradient(#29483b,#426553);box-shadow:inset 0 -4px #183b2c}.key.suggested:after{content:"";position:absolute;left:50%;bottom:4px;transform:translateX(-50%);width:5px;height:5px;border-radius:50%;background:#226b4e}.key.black.suggested:after{background:#a2ddba}.note-guide{margin-top:10px;display:grid;gap:3px;font-size:10px;line-height:1.5;min-height:33px}.transition-hint{color:#a9cfb5}.key-tip{color:#b9bdaf}.keyboard-help{margin-top:7px}@media(max-width:650px){.note-guide{min-height:57px}}
+.harmony-control{width:218px;flex-shrink:0}.harmony-control label{display:block;font-size:11px;margin-bottom:5px}.harmony-control select{width:100%;font:11px var(--sans);color:var(--ink);background:#30362a;border:1px solid #626951;border-radius:4px;padding:7px 6px;min-height:33px}.harmony-control select:focus-visible{outline:2px solid var(--gold);outline-offset:3px}.harmony-help{margin:0;padding:0 25px 11px;background:#26291f;color:var(--muted);font-size:10px;line-height:1.5}.composition{gap:18px}.composition .macro{width:145px}@media(max-width:1050px){.composition{flex-wrap:wrap}.composition-toggle{flex-basis:100%;justify-content:space-between}.composition .macro{flex:1}}@media(max-width:650px){.harmony-control{width:100%}.harmony-help{padding:0 16px 12px}}
+@media(min-width:1051px) and (max-height:920px){.composition{padding-top:9px;padding-bottom:9px}.harmony-help{padding-bottom:6px}.studio{padding-bottom:12px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{transition:none!important;animation:none!important}}
 </style>
 </head>
@@ -31,7 +33,7 @@
     <div class="power-area"><div class="status" id="status"><span class="led"></span><span id="status-text">ЗВУК ВЫКЛЮЧЕН</span></div><button class="power" id="power" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M12 2v10M7 5a9 9 0 1 0 10 0"/></svg><span id="power-text">Включить звук</span></button></div>
   </header>
   <div class="instrument">
-    <div class="rail"><span><i class="screw" aria-hidden="true"></i>01 / ТЁМНАЯ МАТЕРИЯ</span><span class="rail-detail">МЕДЛЕННО. ГЛУБОКО. БЕСКОНЕЧНО.</span><span id="polyphony-label">8 ГОЛОСОВ · СТЕРЕО</span></div>
+    <div class="rail"><span><i class="screw" aria-hidden="true"></i>01 / ТЁМНАЯ МАТЕРИЯ</span><span class="rail-detail">МЕДЛЕННО. ГЛУБОКО. БЕСКОНЕЧНО.</span><span id="polyphony-label">24 ГОЛОСА · СТЕРЕО</span></div>
     <div class="core">
       <section class="field-section" aria-labelledby="field-title">
         <div class="section-head"><h2 class="section-title" id="field-title" style="margin:0"><span class="section-num">01</span>Поле звучания</h2><span class="readout" id="xy-readout">X 030 / Y 062</span></div>
@@ -39,31 +41,51 @@
           <canvas id="scope" aria-hidden="true"></canvas><span class="axis top">ПРОСТРАНСТВО</span><span class="axis bottom">БЛИЗОСТЬ</span><span class="axis left">ТЕМНОТА</span><span class="axis right">СВЕТ</span><div class="cross-h" id="cross-h"></div><div class="cross-v" id="cross-v"></div><div class="puck" id="puck"></div><span class="xy-note"><span class="dot"></span>ПЕРЕМЕЩАЙТЕ ТОЧКУ</span>
         </div></div>
         <div class="xy-controls"><div><label class="slider-label" for="brightness">Яркость <output id="brightness-value" for="brightness">467 Гц</output></label><input id="brightness" type="range" min="0" max="100" value="30" step="1"></div><div><label class="slider-label" for="space">Пространство <output id="space-value" for="space">62%</output></label><input id="space" type="range" min="0" max="100" value="62" step="1"></div></div>
-        <div class="drift-controls"><button class="small-button" id="drift" aria-pressed="false" title="Плавно менять яркость и пространство. Ручное управление отключает автодвижение."><span class="button-led"></span>Автодвижение</button><div class="drift-speed"><label class="slider-label" for="drift-period">Период · меньше — быстрее <output id="drift-period-value" for="drift-period">60 с</output></label><input id="drift-period" type="range" min="20" max="180" step="5" value="60" aria-valuetext="60 секунд" style="--fill:25%"></div></div>
+        <div class="drift-controls"><button class="small-button" id="drift" aria-pressed="true" title="Плавно менять яркость и пространство. Ручное управление отключает автодвижение."><span class="button-led"></span>Автодвижение</button><div class="drift-speed"><label class="slider-label" for="drift-period">Период · меньше — быстрее <output id="drift-period-value" for="drift-period">60 с</output></label><input id="drift-period" type="range" min="20" max="180" step="5" value="60" aria-valuetext="60 секунд" style="--fill:25%"></div></div>
       </section>
       <section class="sound-section" aria-labelledby="sound-title"><div class="section-head"><h2 class="section-title" id="sound-title" style="margin:0"><span class="section-num">02</span>Характер</h2><span class="readout">PAD / I</span></div><div class="knobs" id="knobs"></div></section>
     </div>
     <section class="composition" aria-label="Автокомпозиция">
-      <div class="composition-toggle"><button class="small-button" id="compose" aria-pressed="false"><span class="button-led"></span>Автокомпозиция</button><span class="readout" id="composition-status">ОДНА НОТА → МУЗЫКА</span></div>
-      <div class="macro"><label class="slider-label" for="density">Плотность <output id="density-value" for="density">35%</output></label><input id="density" type="range" min="0" max="100" step="1" value="35" style="--fill:35%" disabled></div>
-      <div class="macro"><label class="slider-label" for="variety">Разнообразие <output id="variety-value" for="variety">40%</output></label><input id="variety" type="range" min="0" max="100" step="1" value="40" style="--fill:40%" disabled></div>
+      <div class="composition-toggle"><button class="small-button" id="compose" aria-pressed="true"><span class="button-led"></span>Автокомпозиция</button><span class="readout" id="composition-status">ОДНА НОТА → МУЗЫКА</span></div>
+      <div class="harmony-control"><label for="harmony-mode">Лад / аккорд</label><select id="harmony-mode" aria-describedby="harmony-help"></select></div>
+      <div class="macro"><label class="slider-label" for="density">Плотность <output id="density-value" for="density">80%</output></label><input id="density" type="range" min="0" max="100" step="1" value="80" style="--fill:80%"></div>
+      <div class="macro"><label class="slider-label" for="variety">Разнообразие <output id="variety-value" for="variety">60%</output></label><input id="variety" type="range" min="0" max="100" step="1" value="60" style="--fill:60%"></div>
     </section>
+    <p class="harmony-help" id="harmony-help"></p>
     <section class="performance" aria-labelledby="performance-title">
-      <div class="performance-head"><div class="playing"><h2 class="section-title" id="performance-title" style="margin:0"><span class="section-num">03</span>Клавиши</h2><span class="notes" id="notes">Сыграйте первый аккорд</span></div><div class="transport"><div class="octave"><button id="octave-down" aria-label="На октаву ниже">−</button><span class="octave-label" id="octave-label">C2–C4</span><button id="octave-up" aria-label="На октаву выше">+</button></div><button class="small-button" id="hold" aria-pressed="false"><span class="button-led"></span>Удержание</button><button class="small-button" id="stop" title="Остановить все ноты и эффекты (Escape)"><span class="stop-symbol"></span>Стоп</button></div></div>
+      <div class="performance-head"><div class="playing"><h2 class="section-title" id="performance-title" style="margin:0"><span class="section-num">03</span>Клавиши</h2><span class="notes" id="notes">Нажмите одну ноту</span></div><div class="transport"><div class="octave"><button id="octave-down" aria-label="На октаву ниже">−</button><span class="octave-label" id="octave-label">C2–C4</span><button id="octave-up" aria-label="На октаву выше">+</button></div><button class="small-button" id="hold" aria-pressed="false" disabled><span class="button-led"></span>Удержание</button><button class="small-button" id="stop" title="Остановить все ноты и эффекты (Escape)"><span class="stop-symbol"></span>Стоп</button></div></div>
       <div class="keyboard" id="keyboard" role="group" aria-label="Музыкальная клавиатура, две октавы"></div>
       <div class="note-guide"><span class="transition-hint" id="transition-hint" role="status" aria-live="polite">Нажмите ноту — зелёным подсветятся подходящие клавиши.</span><span class="key-tip" id="key-tip">Наведите указатель на клавишу или выберите её, чтобы увидеть подсказку.</span></div>
-      <div class="keyboard-help"><span class="computer-help"><kbd>A</kbd>–<kbd>K</kbd> — ноты · <kbd>W E T Y U</kbd> — полутона · <kbd>Esc</kbd> — стоп</span><span class="touch-help" id="play-hint">Зафиксируйте аккорд кнопкой «Удержание» и меняйте его в поле.</span></div>
+      <div class="keyboard-help"><span class="computer-help"><kbd>A</kbd>–<kbd>K</kbd> — ноты · <kbd>W E T Y U</kbd> — полутона · <kbd>Esc</kbd> — стоп</span><span class="touch-help" id="play-hint">Одна нота задаёт аккорд. Музыка звучит до нажатия «Стоп».</span></div>
     </section>
   </div>
   <p class="error" id="error" role="alert"></p><p class="sr-only" id="announcement" role="status" aria-live="polite"></p>
-  <footer class="footer"><span>СИНТЕЗ ЗВУКА В РЕАЛЬНОМ ВРЕМЕНИ</span><span><span class="gold" id="voice-count">00 / 08</span> · NOCTURNE</span></footer>
+  <footer class="footer"><span>СИНТЕЗ ЗВУКА В РЕАЛЬНОМ ВРЕМЕНИ</span><span><span class="gold" id="voice-count">00 / 24</span> · NOCTURNE</span></footer>
 </main>
 <noscript><p style="padding:24px">Для работы синтезатора включите JavaScript в браузере.</p></noscript>
 <script id="audio-engine">
 'use strict';
 // All sound is synthesized here. No samples, network requests or external code.
-const DEFAULTS = Object.freeze({attack:2,release:8,detune:9,motion:30,echo:24,volume:25,brightness:30,space:62});
-const COMPOSITION_DEFAULTS = Object.freeze({density:35,variety:40});
+const DEFAULTS = Object.freeze({attack:2,release:8,detune:9,motion:30,echo:24,volume:60,brightness:30,space:62});
+const COMPOSITION_DEFAULTS = Object.freeze({density:80,variety:60,mode:'minor'});
+// Four upper chord tones keep every mode within the same pad voice budget.
+// Dorian and Lydian include their characteristic sixth and raised fourth.
+const HARMONIES = Object.freeze({
+  minor:{name:'Минор',mood:'тёмный',symbol:'m9',scale:[0,2,3,5,7,8,10],upper:[3,7,10,2],description:'Натуральный минор: мягкий минорный нонаккорд.'},
+  major:{name:'Мажор',mood:'светлый',symbol:'maj9',scale:[0,2,4,5,7,9,11],upper:[4,7,11,2],description:'Натуральный мажор: мажорный нонаккорд с большой септимой.'},
+  dorian:{name:'Дорийский',mood:'мягкий минор',symbol:'m6/9',scale:[0,2,3,5,7,9,10],upper:[3,7,9,2],description:'Минор с большой секстой: чуть светлее обычного минора.'},
+  lydian:{name:'Лидийский',mood:'воздушный',symbol:'maj7(♯11)',scale:[0,2,4,6,7,9,11],upper:[4,7,11,6],description:'Мажор с повышенной четвёртой ступенью: парящее, открытое звучание.'},
+  mixolydian:{name:'Миксолидийский',mood:'тёплый',symbol:'9',scale:[0,2,4,5,7,9,10],upper:[4,7,10,2],description:'Мажор с малой септимой: мягкая блюзовая окраска.'},
+  phrygian:{name:'Фригийский',mood:'напряжённый',symbol:'m7(♭9)',scale:[0,1,3,5,7,8,10],upper:[3,7,10,1],description:'Минор с пониженной второй ступенью: тёмное, более напряжённое звучание.'}
+});
+function chordDegrees(mode){const h=HARMONIES[mode];return [0,...h.upper.map(n=>h.scale.indexOf(n))];}
+function chordPitches(root,mode){return [0,...HARMONIES[mode].upper].map(n=>(root+n)%12);}
+function harmonicTransitions(root,mode){
+  const current=chordPitches(root,mode),choices=Array.from({length:11},(_,i)=>{
+    const next=(root+i+1)%12;return {root:next,common:chordPitches(next,mode).filter(n=>current.includes(n)).length};
+  });
+  const most=Math.max(...choices.map(c=>c.common));return choices.filter(c=>c.common===most);
+}
 const clamp = (n,a,b) => Math.min(b,Math.max(a,n));
 const cutoff = value => 180 * Math.pow(24,value/100);
 const smooth = (param,value,time,duration=.05) => param.setTargetAtTime(value,time,duration);
@@ -207,7 +229,7 @@ class NocturneEngine {
     if(role==='bass'){pan.connect(this.mix);const verb=c.createGain();verb.gain.value=.12;pan.connect(verb).connect(this.reverbTone);sends.push(verb);}
     else{pan.connect(this.input);this.filterDepth.connect(filter.detune);if(this.drift)this.drift.brightness.connect(filter.detune);}
     if(role==='melody'){const echo=c.createGain();echo.gain.value=.18;pan.connect(echo).connect(this.delayL);sends.push(echo);}
-    const v={id:++this.nextVoiceId,note,role,owner:options.owner,root:options.root,start:time,attack,peak,envelope,osc,gains,sends,filter,env,pan,releasing:false,stopping:false,end:Infinity};
+    const v={id:++this.nextVoiceId,note,role,owner:options.owner,root:options.root,mode:options.mode,start:time,attack,peak,envelope,osc,gains,sends,filter,env,pan,releasing:false,stopping:false,end:Infinity};
     this.all.add(v);osc[0].onended=()=>this.cleanup(v);
     if(Number.isFinite(options.duration))this.releaseVoice(v,time+options.duration,options.release??(role==='bass'?1.5:.7));
     this.onchange();return v;
@@ -256,12 +278,12 @@ function phraseRandom(seed,phrase,salt){let n=(seed^Math.imul(phrase+1,0x45d9f3b
 
 class AmbientComposer {
   constructor(engine,settings=COMPOSITION_DEFAULTS,options={}){
-    this.engine=engine;this.context=engine.context;this.settings={...settings};this.seed=options.seed??81731;this.onchange=options.onchange||(()=>{});this.onEvent=options.onEvent||(()=>{});
+    this.engine=engine;this.context=engine.context;this.settings={...COMPOSITION_DEFAULTS,...settings};this.mode=this.settings.mode;this.seed=options.seed??81731;this.onchange=options.onchange||(()=>{});this.onEvent=options.onEvent||(()=>{});
     this.realtime=options.realtime!==false;this.timer=null;this.running=false;this.root=null;this.selectedNote=null;this.pending=null;this.pads=new Map();this.origin=0;this.nextStep=0;this.lookahead=1.25;
     engine.voiceLimit=24;
   }
-  static voicing(root,previous=[]){
-    const pcs=[3,7,10,2].map(n=>(root+n)%12),candidates=pcs.map(pc=>Array.from({length:25},(_,i)=>i+48).filter(n=>n%12===pc));
+  static voicing(root,previous=[],mode='minor'){
+    const pcs=HARMONIES[mode].upper.map(n=>(root+n)%12),candidates=pcs.map(pc=>Array.from({length:25},(_,i)=>i+48).filter(n=>n%12===pc));
     let best=null,bestScore=Infinity;const target=previous.length===4?[...previous].sort((a,b)=>a-b):[51,58,62,67];
     for(const a of candidates[0])for(const b of candidates[1])for(const c of candidates[2])for(const d of candidates[3]){
       const notes=[a,b,c,d].sort((x,y)=>x-y);if(notes[3]-notes[0]>26||notes.some((n,i)=>i&&n-notes[i-1]<3))continue;
@@ -271,49 +293,53 @@ class AmbientComposer {
     }
     return best||pcs.map(pc=>48+pc).sort((a,b)=>a-b);
   }
-  static melodyPitch(root,degree,register=0){
+  static melodyPitch(root,degree,register=0,mode='minor'){
     // Keep the pluck in G3–C5, close to D4. Variation never adds an octave.
-    const pc=(root+[0,2,3,5,7,8,10][degree])%12,center=62+clamp(register,-2,2);
+    const pc=(root+HARMONIES[mode].scale[degree])%12,center=62+clamp(register,-2,2);
     return Array.from({length:18},(_,i)=>55+i).filter(n=>n%12===pc).reduce((a,b)=>Math.abs(a-center)<=Math.abs(b-center)?a:b);
   }
-  motif(phrase){
+  motif(phrase,mode=this.mode){
     const base=[{step:0,degree:4},{step:5,degree:6},{step:8,degree:1},{step:13,degree:2}];
     const random=salt=>phraseRandom(this.seed,phrase,salt),variety=this.settings.variety/100;
     if(variety===0||random(1)>=variety)return base;
     const result=base.map((event,i)=>{
       if(random(i+2)>variety)return {...event};
       const step=clamp(event.step+(random(i+10)>.5?1:-1),0,15);
-      const degrees=step%4===0?[0,2,4,6,1]:[0,1,2,3,4,5,6];
+      const degrees=step%4===0?chordDegrees(mode):[0,1,2,3,4,5,6];
       return {step,degree:degrees[Math.floor(random(i+20)*degrees.length)]};
     });
     if(random(40)<variety*.35)result.splice(1,1);
     else if(random(41)<variety*.45)result.push({step:15,degree:4});
     return result.filter((e,i,a)=>a.findIndex(other=>other.step===e.step)===i).sort((a,b)=>a.step-b.step);
   }
-  set(name,value){if((name==='density'||name==='variety')&&Number.isFinite(value))this.settings[name]=clamp(value,0,100);}
+  set(name,value){
+    if(name==='mode'&&Object.hasOwn(HARMONIES,value)&&value!==this.settings.mode){
+      this.settings.mode=value;if(this.running)this.requestRoot(this.selectedNote);else this.mode=value;
+    }else if((name==='density'||name==='variety')&&Number.isFinite(value))this.settings[name]=clamp(value,0,100);
+  }
   requestRoot(note){
     const root=((Math.round(note)%12)+12)%12,now=this.context.currentTime;this.selectedNote=note;
     if(!this.running){this.running=true;this.origin=now+.035;this.nextStep=0;this.commitHarmony(root,this.origin);if(this.realtime)this.timer=setInterval(()=>this.pump(),100);this.pump();return;}
     const beat=Math.max(0,Math.ceil(now+.025-this.origin)),at=this.origin+beat;
-    this.pending={root,at};
+    this.pending={root,mode:this.settings.mode,at};
     // Cancel only future notes, including events already submitted to Web Audio.
     // Tails that began before the boundary may finish their short crossfade.
     for(const v of [...this.engine.all])if(v.owner===this&&v.start>=at-1e-6)this.engine.cancelVoice(v);
     this.nextStep=Math.min(this.nextStep,beat*2);this.pump();this.onchange();
   }
-  commitHarmony(root,at){
-    const previous=[...this.pads.keys()],voicing=AmbientComposer.voicing(root,previous),next=new Map();
-    for(const note of voicing){const old=this.pads.get(note);if(old&&this.engine.all.has(old)&&!old.releasing)next.set(note,old);else next.set(note,this.engine.playVoice(note,'pad',at,{owner:this,root}));}
+  commitHarmony(root,at,mode=this.settings.mode){
+    const previous=[...this.pads.keys()],voicing=AmbientComposer.voicing(root,previous,mode),next=new Map();
+    for(const note of voicing){const old=this.pads.get(note);if(old&&this.engine.all.has(old)&&!old.releasing){Object.assign(old,{root,mode});next.set(note,old);}else next.set(note,this.engine.playVoice(note,'pad',at,{owner:this,root,mode}));}
     for(const [note,v]of this.pads)if(!next.has(note)&&this.engine.all.has(v))this.engine.releaseVoice(v,at,2);
-    if(this.root!==null&&this.root!==root)for(const v of this.engine.all)if(v.owner===this&&v.role!=='pad'&&v.root!==root&&v.start<at&&v.end>at+.8)this.engine.releaseVoice(v,at,.8);
-    this.pads=next;this.root=root;this.onEvent({type:'harmony',root,at,notes:voicing});this.onchange();
+    if(this.root!==null&&(this.root!==root||this.mode!==mode))for(const v of this.engine.all)if(v.owner===this&&v.role!=='pad'&&(v.root!==root||v.mode!==mode)&&v.start<at&&v.end>at+.8)this.engine.releaseVoice(v,at,.8);
+    this.pads=next;this.root=root;this.mode=mode;this.onEvent({type:'harmony',root,mode,at,notes:voicing});this.onchange();
   }
-  scheduleStep(step,at,root){
+  scheduleStep(step,at,root,mode=this.mode){
     const phrase=Math.floor(step/16),position=step%16,cycle=phrase%8,energy=.2+.8*Math.sin(Math.PI*cycle/7)**2,density=this.settings.density/100;
     const random=salt=>phraseRandom(this.seed,phrase,salt),strength=.4+.6*energy;
     const emit=(role,note,duration,velocity)=>{
       const when=at+(role==='melody'?random(100+position)*.016:0);
-      const v=this.engine.playVoice(note,role,when,{owner:this,root,duration,velocity});this.onEvent({type:'note',id:v?.id,role,note,root,at:when,step,phrase});
+      const v=this.engine.playVoice(note,role,when,{owner:this,root,mode,duration,velocity});this.onEvent({type:'note',id:v?.id,role,note,root,mode,at:when,step,phrase});
     };
     const bassPulse=position===0||position===8||(density>.55&&(position===4||position===12)&&random(60+position)<density*strength);
     if(step>=4&&(bassPulse||step===4)){
@@ -321,23 +347,23 @@ class AmbientComposer {
       emit('bass',36+root+(fifth?7:0),1.2,.76+.2*strength);
     }
     if(step<8)return;
-    const event=step===8?{step:8,degree:1}:this.motif(phrase).find(e=>e.step===position);if(!event)return;
+    const event=step===8?{step:8,degree:1}:this.motif(phrase,mode).find(e=>e.step===position);if(!event)return;
     const chance=.2+density*.8,gate=this.settings.variety===0?phraseRandom(this.seed,0,70+position):random(70+position);
     if(step!==8&&gate>chance*(.6+.4*energy))return;
-    const chordDegrees=[0,1,2,4,6];
-    const degree=position%4===0&&!chordDegrees.includes(event.degree)?chordDegrees.reduce((a,b)=>Math.abs(a-event.degree)<Math.abs(b-event.degree)?a:b):event.degree;
+    const stable=chordDegrees(mode);
+    const degree=position%4===0&&!stable.includes(event.degree)?stable.reduce((a,b)=>Math.abs(a-event.degree)<Math.abs(b-event.degree)?a:b):event.degree;
     const register=this.settings.variety>0?(random(90)-.5)*4*this.settings.variety/100:0;
-    emit('melody',AmbientComposer.melodyPitch(root,degree,register),2.3,.65+.25*strength);
+    emit('melody',AmbientComposer.melodyPitch(root,degree,register,mode),2.3,.65+.25*strength);
   }
   pump(){
     if(!this.running||this.engine.disposed)return;
     const now=this.context.currentTime;this.engine.prune();
-    if(this.pending&&now>=this.pending.at){const p=this.pending;this.pending=null;this.commitHarmony(p.root,Math.max(p.at,now+.003));}
+    if(this.pending&&now>=this.pending.at){const p=this.pending;this.pending=null;this.commitHarmony(p.root,Math.max(p.at,now+.003),p.mode);}
     // After a throttled timer, skip elapsed steps instead of firing a burst.
     this.nextStep=Math.max(this.nextStep,Math.ceil((now+.008-this.origin)*2));
     while(this.origin+this.nextStep*.5<now+this.lookahead){
-      const at=this.origin+this.nextStep*.5,root=this.pending&&at>=this.pending.at-1e-6?this.pending.root:this.root;
-      this.scheduleStep(this.nextStep,at,root);this.nextStep++;
+      const at=this.origin+this.nextStep*.5,harmony=this.pending&&at>=this.pending.at-1e-6?this.pending:this;
+      this.scheduleStep(this.nextStep,at,harmony.root,harmony.mode);this.nextStep++;
     }
     this.onchange();
   }
@@ -351,24 +377,32 @@ class AmbientComposer {
 <script id="interface">
 (() => {
   const $=id=>document.getElementById(id);
-  const settings={...DEFAULTS};let context=null,engine=null,powered=false,hold=false,octave=2,initializing=null,generation=0,driftEnabled=false,driftPeriod=60;
-  const compositionSettings={...COMPOSITION_DEFAULTS};let composer=null,compositionEnabled=false,compositionDriftWanted=false,latestCompositionIntent=0;
+  const settings={...DEFAULTS};let context=null,engine=null,powered=false,hold=false,octave=2,initializing=null,generation=0,driftEnabled=true,driftPeriod=60;
+  const compositionSettings={...COMPOSITION_DEFAULTS};let composer=null,compositionEnabled=true,compositionDriftWanted=true,latestCompositionIntent=0;
   const sources=new Map(),latched=new Set(),noteHolders=new Map(),keyButtons=new Map();
   const keyCodes=['KeyA','KeyW','KeyS','KeyE','KeyD','KeyF','KeyT','KeyG','KeyY','KeyH','KeyU','KeyJ','KeyK'];
   const noteNames=['C','C♯','D','D♯','E','F','F♯','G','G♯','A','A♯','B'];
   const russianNotes=['До','До♯ / Ре♭','Ре','Ре♯ / Ми♭','Ми','Фа','Фа♯ / Соль♭','Соль','Соль♯ / Ля♭','Ля','Ля♯ / Си♭','Си'];
   const noteName=n=>noteNames[n%12]+(Math.floor(n/12)-1);
   let lastNote=null,previewNote=null;
-  const manualIntervals={2:'нона',3:'малая терция',7:'квинта',10:'малая септима'};
+  const intervalNames={1:'малая нона',2:'нона',3:'малая терция',4:'большая терция',6:'повышенная ундецима',7:'квинта',9:'большая секста',10:'малая септима',11:'большая септима'};
+  const chordName=(root,mode=compositionSettings.mode)=>noteNames[root]+HARMONIES[mode].symbol;
+  let transitionCache={key:'',choices:[]};
+  function guideTransitions(root){
+    if(root===null)return [];
+    const key=root+':'+compositionSettings.mode;
+    if(transitionCache.key!==key)transitionCache={key,choices:harmonicTransitions(root,compositionSettings.mode)};
+    return transitionCache.choices;
+  }
   function guideRoot(){return compositionEnabled?(composer?.running?(composer.pending?.root??composer.root):null):(lastNote===null?null:lastNote%12);}
-  function suggested(note,root){return root!==null&&(compositionEnabled?[5,7].includes((note-root+12)%12):Object.hasOwn(manualIntervals,(note-root+12)%12));}
+  function suggested(note,root){return root!==null&&(compositionEnabled?guideTransitions(root).some(c=>c.root===note%12):HARMONIES[compositionSettings.mode].upper.includes((note-root+12)%12));}
   function describeNote(note,root){
     const name=russianNotes[note%12]+' ('+noteName(note)+')';
     if(compositionEnabled){
-      const chord=noteNames[note%12]+'m9';
-      return name+' · '+chord+(suggested(note,root)?' · плавный переход: 3 общие ноты с '+noteNames[root]+'m9':root===note%12?' · выбранная гармония':' · выбрать минорный нонаккорд');
+      const transition=guideTransitions(root).find(c=>c.root===note%12);
+      return name+' · '+chordName(note%12)+(transition?' · плавный переход: '+transition.common+' общие ноты с '+chordName(root):root===note%12?' · выбранная гармония':' · '+HARMONIES[compositionSettings.mode].name);
     }
-    return name+(suggested(note,root)?' · '+manualIntervals[(note-root+12)%12]+' в минорном аккорде от '+russianNotes[root]:' · сыграть ноту');
+    return name+(suggested(note,root)?' · '+intervalNames[(note-root+12)%12]+' в аккорде '+chordName(root):' · сыграть ноту');
   }
   function updateGuidance(){
     const root=guideRoot();
@@ -377,12 +411,19 @@ class AmbientComposer {
       const description=describeNote(note,root);if(button.title!==description){button.title=description;button.setAttribute('aria-label',description);}
     }
     const text=root===null?'Нажмите ноту — зелёным подсветятся подходящие клавиши.':compositionEnabled
-      ?noteNames[root]+'m9 → '+[5,7].map(d=>noteNames[(root+d)%12]+'m9').join(' или ')+' · зелёным — переходы с 3 общими нотами.'
-      :'От '+russianNotes[root]+': зелёные клавиши — ноты минорного нонаккорда. Янтарные — звучат.';
+      ?chordName(root)+' → '+guideTransitions(root).map(c=>chordName(c.root)).join(' или ')+' · зелёным — переходы с '+guideTransitions(root)[0].common+' общими нотами.'
+      :'От '+russianNotes[root]+': зелёным — ноты аккорда '+chordName(root)+'. Янтарные — звучат.';
     if($('transition-hint').textContent!==text)$('transition-hint').textContent=text;
     const note=previewNote??lastNote;
     $('key-tip').textContent=note===null?'Наведите указатель на клавишу или выберите её, чтобы увидеть подсказку.':describeNote(note,root);
+    $('harmony-help').textContent=HARMONIES[compositionSettings.mode].description+' '+(compositionEnabled?'Смена лада — на ближайшей доле.':'В ручном режиме лад меняет подсказки; аккорды и мелодию играет «Автокомпозиция».');
   }
+  for(const [id,h]of Object.entries(HARMONIES)){const option=document.createElement('option');option.value=id;option.textContent=h.name+' · '+h.mood;$('harmony-mode').append(option);}
+  $('harmony-mode').value=compositionSettings.mode;
+  $('harmony-mode').addEventListener('change',e=>{
+    const mode=e.target.value;if(!Object.hasOwn(HARMONIES,mode))return;
+    compositionSettings.mode=mode;if(composer)composer.set('mode',mode);refresh();
+  });
   const reduced=matchMedia('(prefers-reduced-motion: reduce)');
   const config=[{id:'attack',label:'Атака',min:.1,max:8,step:.1,format:v=>v.toFixed(1)+' с'},{id:'release',label:'Затухание',min:.5,max:16,step:.5,format:v=>v.toFixed(1)+' с'},{id:'detune',label:'Расстройка',min:0,max:30,step:1,format:v=>v+' ¢'},{id:'motion',label:'Движение',min:0,max:100,step:1,format:v=>v+'%'},{id:'echo',label:'Эхо',min:0,max:100,step:1,format:v=>v+'%'},{id:'volume',label:'Громкость',min:0,max:100,step:1,format:v=>v+'%'}];
   const fail=err=>{$('error').textContent='Не удалось включить звук. Нажмите «Включить звук» ещё раз или откройте файл в актуальном Chrome, Firefox или Safari.';console.error('NOCTURNE:',err);};
@@ -428,7 +469,7 @@ class AmbientComposer {
     const active=new Set(engine?[...engine.voices.keys()]:[]);
     for(const [note,button]of keyButtons){const pressed=compositionEnabled?composer?.running&&composer.selectedNote===note:active.has(note);button.classList.toggle('active',!!pressed);button.setAttribute('aria-pressed',String(!!pressed));}
     const notes=[...active].sort((a,b)=>a-b);
-    $('notes').textContent=compositionEnabled?(composer?.running&&composer.root!==null?noteNames[composer.root]+'m9'+(composer.pending?' → '+noteNames[composer.pending.root]+'m9':''):'Нажмите одну ноту'):notes.length?notes.map(noteName).join(' · '):'Сыграйте первый аккорд';
+    $('notes').textContent=compositionEnabled?(composer?.running&&composer.root!==null?chordName(composer.root,composer.mode)+(composer.pending?' → '+chordName(composer.pending.root,composer.pending.mode):''):'Нажмите одну ноту'):notes.length?notes.map(noteName).join(' · '):'Сыграйте первый аккорд';
     const count=engine?[...engine.all].filter(v=>!v.stopping&&v.start<=context.currentTime).length:0;$('voice-count').textContent=String(count).padStart(2,'0')+' / '+(compositionEnabled?'24':'08');
     $('composition-status').textContent=composer?.running?'ФРАЗА '+(Math.floor(Math.max(0,context.currentTime-composer.origin)/8)%8+1)+'/8 · 60 BPM':'ОДНА НОТА → МУЗЫКА';
     // Voice stealing also releases its latch, so a stolen key can be played again.
