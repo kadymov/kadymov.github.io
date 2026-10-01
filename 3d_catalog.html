@@ -1,0 +1,400 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4f6f9">
+  <meta name="description" content="25 моделей для печати на Bambu Lab A1 mini: полезные вещи, игры, инструменты, украшения и декор до двух часов. Фото и ссылки на MakerWorld.">
+  <title>Выбери модель · Печать для друзей</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%228%22%20fill%3D%22%232457e8%22/%3E%3Cpath%20d%3D%22M8%2011l8-4%208%204v10l-8%204-8-4zm0%200%208%204%208-4M16%2015v10%22%20fill%3D%22none%22%20stroke%3D%22white%22%20stroke-width%3D%222%22%20stroke-linejoin%3D%22round%22/%3E%3C/svg%3E">
+  <style>
+    :root { color-scheme: light; --paper: #f4f6f9; --ink: #172034; --secondary: #526075; --blue: #2457e8; --border: #dfe5ef; }
+    * { box-sizing: border-box; }
+    body { margin: 0; color: var(--ink); background: var(--paper); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; font-size: 1rem; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+    .wrap { width: min(100% - 40px, 1120px); margin: 0 auto; }
+    header { padding: 34px 0 28px; border-bottom: 1px solid var(--border); }
+    .eyebrow { margin: 0 0 8px; color: var(--secondary); font-size: .875rem; font-weight: 600; }
+    h1 { margin: 0; font-size: clamp(1.875rem, 5vw, 2.75rem); line-height: 1.14; letter-spacing: -.035em; font-weight: 750; }
+    .intro { margin: 12px 0 16px; color: var(--secondary); }
+    .specs { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+    .spec { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--border); padding: 6px 11px; border-radius: 999px; font-size: .875rem; background: #fff; }
+    .swatch { width: 13px; height: 13px; border-radius: 50%; background: #85888d; border: 1px solid #74777c; flex-shrink: 0; }
+    main { padding-top: 26px; }
+    section + section { margin-top: 38px; }
+    .section-title { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 16px; margin: 0 0 16px; }
+    h2 { margin: 0; font-size: 1.375rem; line-height: 1.3; letter-spacing: -.025em; font-weight: 700; }
+    .section-title > span { color: var(--secondary); font-size: .875rem; }
+    .grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 18px; }
+    .card { display: flex; flex-direction: column; min-width: 0; text-decoration: none; color: inherit; background: #fff; border: 1px solid var(--border); border-radius: 20px; overflow: hidden; box-shadow: 0 2px 7px #182b4a04; -webkit-tap-highlight-color: #2457e81a; transition: border-color .16s ease, box-shadow .16s ease; }
+    .card:focus-visible { outline: 3px solid var(--blue); outline-offset: 4px; }
+    .photo { position: relative; aspect-ratio: 4 / 3; background: #e9edf3; overflow: hidden; }
+    .photo img { display: block; position: relative; z-index: 1; width: 100%; height: 100%; object-fit: contain; background: #e9edf3; }
+    .photo-fallback { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 24px; text-align: center; color: var(--secondary); font-size: .875rem; }
+    .card-body { display: flex; flex-direction: column; flex: 1; padding: 18px; }
+    h3 { margin: 0; font-size: 1.125rem; line-height: 1.3; letter-spacing: -.018em; font-weight: 700; overflow-wrap: anywhere; }
+    .description { margin: 9px 0 0; color: var(--secondary); line-height: 1.45; }
+    .note { margin: 9px 0 16px; color: var(--secondary); font-size: .875rem; line-height: 1.4; }
+    .card-bottom { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 12px; margin-top: auto; padding-top: 14px; border-top: 1px solid #edf0f5; }
+    .duration { display: inline-flex; align-items: center; gap: 7px; color: var(--blue); font-size: 1.125rem; font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .duration svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+    .open-label { color: var(--secondary); font-size: .875rem; }
+    footer { margin-top: 34px; padding: 22px 0 32px; border-top: 1px solid var(--border); color: var(--secondary); font-size: .875rem; }
+    footer p { max-width: 750px; margin: 0; }
+    footer p + p { margin-top: 8px; }
+    footer a { color: var(--blue); text-underline-offset: 3px; }
+    @media (hover: hover) { .card:hover { border-color: #9fb5f2; box-shadow: 0 6px 20px #1536800d; } .card:hover .open-label { color: var(--blue); } }
+    @media (min-width: 600px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; } }
+    @media (min-width: 980px) { .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+    @media (max-width: 420px) { .wrap { width: calc(100% - 32px); } header { padding-top: 26px; padding-bottom: 23px; } .card-body { padding: 16px; } }
+    @media (prefers-reduced-motion: reduce) { .card { transition: none; } }
+  </style>
+</head>
+<body>
+  <header class="wrap">
+    <p class="eyebrow">Печать для друзей · 25 моделей</p>
+    <h1>Выбери модель</h1>
+    <p class="intro">До двух часов печати. Нажми на карточку, чтобы посмотреть модель на MakerWorld.</p>
+    <div class="specs" aria-label="Принтер и материал">
+      <span class="spec">A1 mini · 0,4 мм</span>
+      <span class="spec"><span class="swatch" aria-hidden="true"></span>Серый матовый PLA</span>
+    </div>
+  </header>
+  <main class="wrap">
+    <section aria-labelledby="useful">
+      <div class="section-title"><h2 id="useful">Полезные вещи</h2><span>7 моделей</span></div>
+      <div class="grid"><a class="card" href="https://makerworld.com/ru/models/1087279-small-smartphone-stand-print-in-place-design#profileId-1969996" target="_blank" rel="noopener noreferrer"
+        aria-label="Складная подставка для телефона. Печать: 46 мин. Открыть MakerWorld в новой вкладке.">
+        <div class="photo">
+          <img src="https://makerworld.bblmw.com/makerworld/model/US9ed59c39f449a5/design/6a7241fb022422f5.jpg?x-oss-process=image/resize,w_1000/format,webp" alt="Складная подставка для телефона" loading="eager" decoding="async" width="1000" height="750" fetchpriority="high">
+          <span class="photo-fallback" aria-hidden="true">Фото доступно на MakerWorld</span>
+        </div>
+        <div class="card-body">
+          <h3>Складная подставка для телефона</h3>
+          <p class="description">Раскладывается одним движением и помещается в карман.</p>
+          <p class="note">Для телефона с чехлом толщиной до 11,5 мм.</p>
+          <div class="card-bottom"><span class="duration"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3 2"/></svg>46 мин</span><span class="open-label">MakerWorld</span></div>
+        </div>
+      </a><a class="card" href="https://makerworld.com/ru/models/1101226-mini-bag-clip#profileId-1096527" target="_blank" rel="noopener noreferrer"
+        aria-label="Зажим для пакетов. Печать: 16 мин. Открыть MakerWorld в новой вкладке.">
+        <div class="photo">
+          <img src="https://makerworld.bblmw.com/makerworld/model/US554734a18c1446/design/2025-02-12_0d6396be8318c.jpg?x-oss-process=image/resize,w_400/format,webp" alt="Зажим для пакетов" loading="eager" decoding="async" width="1000" height="750">
+          <span class="photo-fallback" aria-hidden="true">Фото доступно на MakerWorld</span>
+        </div>
+        <div class="card-body">
+          <h3>Зажим для пакетов</h3>
+          <p class="description">Закрывает открытую пачку кофе, чипсов или других продуктов.</p>
+          <p class="note">Усиленная версия.</p>
+          <div class="card-bottom"><span class="duration"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3 2"/></svg>16 мин</span><span class="open-label">MakerWorld</span></div>
+        </div>
+      </a><a class="card" href="https://makerworld.com/ru/models/103266-organizer-box-parametric-storage-bin#profileId-110618" target="_blank" rel="noopener noreferrer"
+        aria-label="Органайзер для мелочей. Печать: ≈ 1 ч 18 мин. Открыть MakerWorld в новой вкладке.">
+        <div class="photo">
+          <img src="https://makerworld.bblmw.com/makerworld/model/US55bd02f8fba1a7/design/ddf824deba804336.jpg?x-oss-process=image/resize,w_1000/format,webp" alt="Органайзер для мелочей" loading="lazy" decoding="async" width="1000" height="750">
+          <span class="photo-fallback" aria-hidden="true">Фото доступно на MakerWorld</span>
+        </div>
+        <div class="card-body">
+          <h3>Органайзер для мелочей</h3>
+          <p class="description">Небольшая корзинка для флешек, монет, резинок и мелочей на столе.</p>
+          <p class="note">Выбран размер 6 × 6 × 6 см.</p>
+          <div class="card-bottom"><span class="duration"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3 2"/></svg>≈ 1 ч 18 мин</span><span class="open-label">MakerWorld</span></div>
+        </div>
+      </a><a class="card" href="https://makerworld.com/ru/models/3326319-leaf-wall-cable-organizer#profileId-3777530" target="_blank" rel="noopener noreferrer"
+        aria-label="Держатели кабеля «Лист». Печать: ≈ 1 ч 18 мин. Открыть MakerWorld в новой вкладке.">
+        <div class="photo">
+          <img src="https://makerworld.bblmw.com/makerworld/model/USdf99b7ce2ad7b5/design/974425caa7c37ad9.png?x-oss-process=image/resize,w_1000/format,webp" alt="Держатели кабеля «Лист»" loading="lazy" decoding="async" width="1000" height="750">
+          <span class="photo-fallback" aria-hidden="true">Фото доступно на MakerWorld</span>
+        </div>
+        <div class="card-body">
+          <h3>Держатели кабеля «Лист»</h3>
+          <p class="description">Проводят кабель по стене, превращая его в подобие веточки.</p>
+          <p class="note">Набор из 4 листьев. Нужен двусторонний скотч.</p>
+          <div class="card-bottom"><span class="duration"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3 2"/></svg>≈ 1 ч 18 мин</span><span class="open-label">MakerWorld</span></div>
+        </div>
+      </a><a class="card" href="https://makerworld.com/ru/models/30246-ratcheted-toothpaste-tube-squeezer#profileId-81827" target="_blank" rel="noopener noreferrer"
+        aria-label="Выжиматель тюбиков. Печать: ≈ 1 ч 18 мин. Открыть MakerWorld в новой вкладке.">
+        <div class="photo">
+          <img src="https://makerworld.bblmw.com/makerworld/model/US70602555aad0d1/design/2023-10-01_xx2dgkhdxv3i.jpg?x-oss-process=image/resize,w_1000/format,webp" alt="Выжиматель тюбиков" loading="lazy" decoding="async" width="1000" height="750">
+          <span class="photo-fallback" aria-hidden="true">Фото доступно на MakerWorld</span>
+        </div>
+        <div class="card-body">
+          <h3>Выжиматель тюбиков</h3>
+          <p class="description">Наматывает тюбик и помогает выдавить остатки зубной пасты.</p>
+          <p class="note">Нужно удалить поддержки и собрать механизм.</p>
+          <div class="card-bottom"><span class="duration"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3 2"/></svg>≈ 1 ч 18 мин</span><span class="open-label">MakerWorld</span></div>
+        </div>
+      </a><a class="card" href="https://makerworld.com/ru/models/231863-headphone-holder-modern-design#profileId-250543" target="_blank" rel="noopener noreferrer"
+        aria-label="Держатель наушников. Печать: ≈ 1 ч 48 мин. Открыть MakerWorld в новой вкладке.">
+        <div class="photo">
+          <img src="https://makerworld.bblmw.com/makerworld/model/US78331f0973f9fa/design/2024-11-30_ca596d0187f0b.png?x-oss-process=image/resize,w_1000/format,webp" alt="Держатель наушников" loading="lazy" decoding="async" width="1000" height="750">
+          <span class="photo-fallback" aria-hidden="true">Фото доступно на MakerWorld</span>
+        </div>
+        <div class="card-body">
+          <h3>Держатель наушников</h3>
+          <p class="description">Крепится к краю стола и освобождает место для других вещей.</p>
+          <p class="note">Для столешницы толщиной до 30 мм.</p>
+          <div class="card-bottom"><span class="duration"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3 2"/></svg>≈ 1 ч 48 мин</span><span class="open-label">MakerWorld</span></div>
+        </div>
+      </a><a class="card" href="https://makerworld.com/ru/models/13849-portable-cable-organizer-winder#profileId-13650" target="_blank" rel="noopener noreferrer"
+        aria-label="Катушка для кабеля. Печать: ≈ 1 ч 54 мин. Открыть MakerWorld в новой вкладке.">
+        <div class="photo">
+          <img src="https://makerworld.bblmw.com/makerworld/model/USb0aee2f62a8650/design/2023-08-29_2heg6p3b9yry.jpg?x-oss-process=image/resize,w_400/format,webp" alt="Катушка для кабеля" loading="lazy" decoding="async" width="1000" height="750">
+          <span class="photo-fallback" aria-hidden="true">Фото доступно на MakerWorld</span>
+        </div>
+        <div class="card-body">
+          <h3>Катушка для кабеля</h3>
+          <p class="description">Сматывает кабель вращением ручки. Удобно хранить и брать с собой.</p>
+          <p class="note">Средний размер. Почти весь лимит в 2 часа.</p>
+          <div class="card-bottom"><span class="duration"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3 2"/></svg>≈ 1 ч 54 мин</span><span class="open-label">MakerWorld</span></div>
+        </div>
+      </a></div>
+    </section>
+<section aria-labelledby="tools">
+      <div class="section-title"><h2 id="tools">Инструменты</h2><span>2 модели</span></div>
+      <div class="grid"><a class="card" href="https://makerworld.com/ru/models/3343083-super-loud-4-tone-whistle-thunderstorm-gale4#profileId-3798509" target="_blank" rel="noopener noreferrer"
+        aria-label="Четырёхтональный свисток. Печать: 56 мин. Открыть MakerWorld в новой вкладке.">
+        <div class="photo">
+          <img src="https://makerworld.bblmw.com/makerworld/model/USe028552874016f/design/d8b55389c9e16f31.png?x-oss-process=image/resize,w_1000/format,webp" alt="Четырёхтональный свисток" loading="lazy" decoding="async" width="1000" height="750">
+          <span class="photo-fallback" aria-hidden="true">Фото доступно на MakerWorld</span>
+        </div>
+        <div class="card-body">
+          <h3>Четырёхтональный свисток</h3>
+          <p class="description">Компактный свисток с четырьмя звуковыми камерами для прогулок и активных игр.</p>
+          <p class="note">Очень громкий — проверять на улице, вдали от ушей.</p>
+          <div class="card-bottom"><span class="duration"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3 2"/></svg>56 мин</span><span class="open-label">MakerWorld</span></div>
+        </div>
+      </a><a class="card" href="https://makerworld.com/ru/models/3362136-screw-measuring-tool-m2-m10-l-4-100mm-p-0-8-5-0mm#profileId-3822963" target="_blank" rel="noopener noreferrer"
+        aria-label="Измеритель винтов и резьбы. Печать: ≈ 1 ч 48 мин. Открыть MakerWorld в новой вкладке.">
+        <div class="photo">
+          <img src="https://makerworld.bblmw.com/makerworld/model/USc0b9fdda7a0e7d/design/cbd864bc949d8e77.jpg?x-oss-process=image/resize,w_1000/format,webp" alt="Измеритель винтов и резьбы" loading="lazy" decoding="async" width="1000" height="750">
+          <span class="photo-fallback" aria-hidden="true">Фото доступно на MakerWorld</span>
+        </div>
+        <div class="card-body">
+          <h3>Измеритель винтов и резьбы</h3>
+          <p class="description">Помогает разобраться в россыпи крепежа: определить размер, длину и шаг резьбы.</p>
+          <p class="note">Метрические винты M2–M10. Выбрана одноцветная версия.</p>
+          <div class="card-bottom"><span class="duration"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3 2"/></svg>≈ 1 ч 48 мин</span><span class="open-label">MakerWorld</span></div>
+        </div>
+      </a></div>
+    </section>
+<section aria-labelledby="fun">
+      <div class="section-title"><h2 id="fun">Игрушки и игры</h2><span>10 моделей</span></div>
+      <div class="grid"><a class="card" href="https://makerworld.com/ru/models/2416763-flexi-gecko#profileId-2650224" target="_blank" rel="noopener noreferrer"
+        aria-label="Гибкий геккон. Печать: 24 мин. Открыть MakerWorld в новой вкладке.">
+        <div class="photo">
+          <img src="https://makerworld.bblmw.com/makerworld/model/US5e645c5c7c2418/design/c812d18de0decb0a.jpg?x-oss-process=image/resize,w_1000/format,webp" alt="Гибкий геккон" loading="lazy" decoding="async" width="1000" height="750">
+          <span class="photo-fallback" aria-hidden="true">Фото доступно на MakerWorld</span>
+        </div>
+        <div class="card-body">
+          <h3>Гибкий геккон</h3>
+          <p class="description">Подвижная ящерица для игры или брелока на ключи.</p>
+          <p class="note">Для брелока понадобится кольцо.</p>
+          <div class="card-bottom"><span class="duration"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3 2"/></svg>24 мин</span><span class="open-label">MakerWorld</span></div>
+        </div>
+      </a><a class="card" href="https://makerworld.com/ru/models/1002706-lightweight-plane-glider-flies-really-well#profileId-985977" target="_blank" rel="noopener noreferrer"
+        aria-label="Самолёт-планер. Печать: 26 мин. Открыть MakerWorld в новой вкладке.">
+        <div class="photo">
+          <img src="https://makerworld.bblmw.com/makerworld/model/US7aa188fc4e28af/design/2025-01-17_44ed9b28a26e8.jpg?x-oss-process=image/resize,w_400/format,webp" alt="Самолёт-планер" loading="lazy" decoding="async" width="1000" height="750">
+          <span class="photo-fallback" aria-hidden="true">Фото доступно на MakerWorld</span>
+        </div>
+        <div class="card-body">
+          <h3>Самолёт-планер</h3>
+          <p class="description">Лёгкий планер: можно устроить соревнование по дальности полёта.</p>
+          <p class="note">Вариант для A1 mini, масштаб 95%.</p>
+          <div class="card-bottom"><span class="duration"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3 2"/></svg>26 мин</span><span class="open-label">MakerWorld</span></div>
+        </div>
+      </a><a class="card" href="https://makerworld.com/ru/models/3360573-mini-lama-fidget-micro-zoo#profileId-3820869" target="_blank" rel="noopener noreferrer"
+        aria-label="Мини-лама. Печать: 28 мин. Открыть MakerWorld в новой вкладке.">
+        <div class="photo">
+          <img src="https://makerworld.bblmw.com/makerworld/model/US5e1018aacb98b6/design/884abd1a3e80a91d.png?x-oss-process=image/resize,w_1000/format,webp" alt="Мини-лама" loading="lazy" decoding="async" width="1000" height="750">
+          <span class="photo-fallback" aria-hidden="true">Фото доступно на MakerWorld</span>
+        </div>
+        <div class="card-body">
+          <h3>Мини-лама</h3>
+          <p class="description">Крошечная фигурка для полки или рабочего стола.</p>
+          <p class="note">Одноцветная версия.</p>
+          <div class="card-bottom"><span class="duration"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3 2"/></svg>28 мин</span><span class="open-label">MakerWorld</span></div>
+        </div>
+      </a><a class="card" href="https://makerworld.com/ru/models/3366025-shy-little-ghost-cute-halloween-mini#profileId-3831368" target="_blank" rel="noopener noreferrer"
+        aria-label="Застенчивое привидение. Печать: ≈ 1 ч 6 мин. Открыть MakerWorld в новой вкладке.">
+        <div class="photo">
+          <img src="https://makerworld.bblmw.com/makerworld/model/US7118366413de67/design/f71d36a3cf962f45.png?x-oss-process=image/resize,w_1000/format,webp" alt="Застенчивое привидение" loading="lazy" decoding="async" width="1000" height="750">
+          <span class="photo-fallback" aria-hidden="true">Фото доступно на MakerWorld</span>
+        </div>
+        <div class="card-body">
+          <h3>Застенчивое привидение</h3>
+          <p class="description">Маленький призрак, который выглядывает из-под своего покрывала.</p>
+          <p class="note">Высота около 72 мм. Могут понадобиться поддержки.</p>
+          <div class="card-bottom"><span class="duration"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3 2"/></svg>≈ 1 ч 6 мин</span><span class="open-label">MakerWorld</span></div>
+        </div>
+      </a><a class="card" href="https://makerworld.com/ru/models/654785-planetary-gears-finger-fidget-spinners#profileId-590268" target="_blank" rel="noopener noreferrer"
+        aria-label="Планетарный спиннер. Печать: ≈ 1 ч 18 мин. Открыть MakerWorld в новой вкладке.">
+        <div class="photo">
+          <img src="https://makerworld.bblmw.com/makerworld/model/US3fa154f896830/design/2024-09-22_de7d140930a96.gif?x-oss-process=image/resize,w_400/format,jpeg" alt="Планетарный спиннер" loading="lazy" decoding="async" width="1000" height="750">
+          <span class="photo-fallback" aria-hidden="true">Фото доступно на MakerWorld</span>
+        </div>
+        <div class="card-body">
+          <h3>Планетарный спиннер</h3>
+          <p class="description">Надевается на палец и вращает маленькие шестерёнки.</p>
+          <p class="note">Один цвет, слой 0,24 мм. Без сборки.</p>
+          <div class="card-bottom"><span class="duration"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3 2"/></svg>≈ 1 ч 18 мин</span><span class="open-label">MakerWorld</span></div>
+        </div>
+      </a><a class="card" href="https://makerworld.com/ru/models/13859-cute-mini-octopus#profileId-13655" target="_blank" rel="noopener noreferrer"
+        aria-label="Мини-осьминог. Печать: ≈ 1 ч 24 мин. Открыть MakerWorld в новой вкладке.">
+        <div class="photo">
+          <img src="https://makerworld.bblmw.com/makerworld/model/US7275b0b14b2b1b/design/2023-08-16_b0qekzgmoxkm.jpg?x-oss-process=image/resize,w_400/format,webp" alt="Мини-осьминог" loading="lazy" decoding="async" width="1000" height="750">
+          <span class="photo-fallback" aria-hidden="true">Фото доступно на MakerWorld</span>
+        </div>
+        <div class="card-body">
+          <h3>Мини-осьминог</h3>
+          <p class="description">Милый осьминог с подвижными щупальцами.</p>
+          <p class="note">Без сборки и поддержек.</p>
+          <div class="card-bottom"><span class="duration"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3 2"/></svg>≈ 1 ч 24 мин</span><span class="open-label">MakerWorld</span></div>
+        </div>
+      </a><a class="card" href="https://makerworld.com/ru/models/65426-fidget-cube-toy-angled#profileId-68764" target="_blank" rel="noopener noreferrer"
+        aria-label="Кубик-антистресс с сотами. Печать: ≈ 1 ч 36 мин. Открыть MakerWorld в новой вкладке.">
+        <div class="photo">
+          <img src="https://makerworld.bblmw.com/makerworld/model/US9a6f7ab9cda059/design/2025-09-11_7ae60a50cbf4a8.png?x-oss-process=image/resize,w_400/format,webp" alt="Кубик-антистресс с сотами" loading="lazy" decoding="async" width="1000" height="750">
+          <span class="photo-fallback" aria-hidden="true">Фото доступно на MakerWorld</span>
+        </div>
+        <div class="card-body">
+          <h3>Кубик-антистресс с сотами</h3>
+          <p class="description">Складывается и разворачивается снова и снова. Приятная фактура сот.</p>
+          <p class="note">Без сборки и поддержек.</p>
+          <div class="card-bottom"><span class="duration"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3 2"/></svg>≈ 1 ч 36 мин</span><span class="open-label">MakerWorld</span></div>
+        </div>
+      </a><a class="card" href="https://makerworld.com/ru/models/620207-spiral-fidget-cone#profileId-544158" target="_blank" rel="noopener noreferrer"
+        aria-label="Спиральный конус. Печать: ≈ 1 ч 54 мин. Открыть MakerWorld в новой вкладке.">
+        <div class="photo">
+          <img src="https://makerworld.bblmw.com/makerworld/model/US1b9ba8276c8608/design/2024-09-02_a24ad4e88302e.jpg?x-oss-process=image/resize,w_400/format,webp" alt="Спиральный конус" loading="lazy" decoding="async" width="1000" height="750">
+          <span class="photo-fallback" aria-hidden="true">Фото доступно на MakerWorld</span>
+        </div>
+        <div class="card-body">
+          <h3>Спиральный конус</h3>
+          <p class="description">Необычная игрушка-антистресс с закрученной геометрией.</p>
+          <p class="note">Почти весь лимит в 2 часа.</p>
+          <div class="card-bottom"><span class="duration"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3 2"/></svg>≈ 1 ч 54 мин</span><span class="open-label">MakerWorld</span></div>
+        </div>
+      </a><a class="card" href="https://makerworld.com/ru/models/3171827-tick-tac-toe-game-pocket-size#profileId-3586180" target="_blank" rel="noopener noreferrer"
+        aria-label="Карманные крестики-нолики. Печать: ≈ 1 ч. Открыть MakerWorld в новой вкладке.">
+        <div class="photo">
+          <img src="https://makerworld.bblmw.com/makerworld/model/US80f4d92cc1219/design/9d179212b50ee104.png?x-oss-process=image/resize,w_1000/format,webp" alt="Карманные крестики-нолики" loading="lazy" decoding="async" width="1000" height="750">
+          <span class="photo-fallback" aria-hidden="true">Фото доступно на MakerWorld</span>
+        </div>
+        <div class="card-body">
+          <h3>Карманные крестики-нолики</h3>
+          <p class="description">Поле с фишками, отсеком для их хранения и счётчиками очков по бокам.</p>
+          <p class="note">Одноцветная версия. После печати нужна простая сборка.</p>
+          <div class="card-bottom"><span class="duration"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3 2"/></svg>≈ 1 ч</span><span class="open-label">MakerWorld</span></div>
+        </div>
+      </a><a class="card" href="https://makerworld.com/ru/models/2938577-pocket-puzzle-3x3-mini-sliding-puzzle#profileId-3305355" target="_blank" rel="noopener noreferrer"
+        aria-label="Карманная головоломка 3 × 3. Печать: 50 мин. Открыть MakerWorld в новой вкладке.">
+        <div class="photo">
+          <img src="https://makerworld.bblmw.com/makerworld/model/USaefc9235a12664/design/e7983baf68f62a3a.jpg?x-oss-process=image/resize,w_1000/format,webp" alt="Карманная головоломка 3 × 3" loading="lazy" decoding="async" width="1000" height="750">
+          <span class="photo-fallback" aria-hidden="true">Фото доступно на MakerWorld</span>
+        </div>
+        <div class="card-body">
+          <h3>Карманная головоломка 3 × 3</h3>
+          <p class="description">Сдвигай плитки, чтобы вернуть их в правильный порядок. Удобно взять в дорогу.</p>
+          <p class="note">Одноцветная версия с 8 подвижными плитками.</p>
+          <div class="card-bottom"><span class="duration"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3 2"/></svg>50 мин</span><span class="open-label">MakerWorld</span></div>
+        </div>
+      </a></div>
+    </section>
+<section aria-labelledby="learn">
+      <div class="section-title"><h2 id="learn">Наука и геометрия</h2><span>2 модели</span></div>
+      <div class="grid"><a class="card" href="https://makerworld.com/ru/models/3323524-fibonacci-gauge-golden-ratio-kit-card#profileId-3789144" target="_blank" rel="noopener noreferrer"
+        aria-label="Измеритель золотого сечения. Печать: 48 мин. Открыть MakerWorld в новой вкладке.">
+        <div class="photo">
+          <img src="https://makerworld.bblmw.com/makerworld/model/USed47d85e15f57d/design/0a85b8e42a959d28.png?x-oss-process=image/resize,w_1000/format,webp" alt="Измеритель золотого сечения" loading="lazy" decoding="async" width="1000" height="750">
+          <span class="photo-fallback" aria-hidden="true">Фото доступно на MakerWorld</span>
+        </div>
+        <div class="card-body">
+          <h3>Измеритель золотого сечения</h3>
+          <p class="description">Подвижный инструмент для поиска красивых пропорций в рисунках, фото и предметах.</p>
+          <p class="note">Собирается на напечатанных штифтах, без клея и винтов.</p>
+          <div class="card-bottom"><span class="duration"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3 2"/></svg>48 мин</span><span class="open-label">MakerWorld</span></div>
+        </div>
+      </a><a class="card" href="https://makerworld.com/ru/models/3233814-jitterbug-mechanism-foldable-polyhedron-fidget#profileId-3663104" target="_blank" rel="noopener noreferrer"
+        aria-label="Складной многогранник. Печать: 36 мин. Открыть MakerWorld в новой вкладке.">
+        <div class="photo">
+          <img src="https://makerworld.bblmw.com/makerworld/model/US12f64982e45c2/design/1caac9943b21505a.jpg?x-oss-process=image/resize,w_1000/format,webp" alt="Складной многогранник" loading="lazy" decoding="async" width="1000" height="750">
+          <span class="photo-fallback" aria-hidden="true">Фото доступно на MakerWorld</span>
+        </div>
+        <div class="card-body">
+          <h3>Складной многогранник</h3>
+          <p class="description">Геометрическая игрушка: раскрывается и превращается из октаэдра в другой многогранник.</p>
+          <p class="note">Нужна сборка мелких деталей. Версия с зазором 0,03 мм.</p>
+          <div class="card-bottom"><span class="duration"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3 2"/></svg>36 мин</span><span class="open-label">MakerWorld</span></div>
+        </div>
+      </a></div>
+    </section>
+<section aria-labelledby="accessories">
+      <div class="section-title"><h2 id="accessories">Украшения и аксессуары</h2><span>2 модели</span></div>
+      <div class="grid"><a class="card" href="https://makerworld.com/ru/models/3365398-butterfly-hair-comb-elegant-hair-accessory#profileId-3827063" target="_blank" rel="noopener noreferrer"
+        aria-label="Гребень-бабочка для волос. Печать: ≈ 1 ч 24 мин. Открыть MakerWorld в новой вкладке.">
+        <div class="photo">
+          <img src="https://makerworld.bblmw.com/makerworld/model/US8f8ba10e9b2c77/design/a2afdb707db96e07.png?x-oss-process=image/resize,w_1000/format,webp" alt="Гребень-бабочка для волос" loading="lazy" decoding="async" width="1000" height="750">
+          <span class="photo-fallback" aria-hidden="true">Фото доступно на MakerWorld</span>
+        </div>
+        <div class="card-body">
+          <h3>Гребень-бабочка для волос</h3>
+          <p class="description">Ажурное украшение, которое держит пучок или собранную причёску.</p>
+          <p class="note">Печатается одной деталью, без сборки.</p>
+          <div class="card-bottom"><span class="duration"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3 2"/></svg>≈ 1 ч 24 мин</span><span class="open-label">MakerWorld</span></div>
+        </div>
+      </a><a class="card" href="https://makerworld.com/ru/models/3341197-diamond-jewelry-box-ring-alliance-container#profileId-3795967" target="_blank" rel="noopener noreferrer"
+        aria-label="Шкатулка-бриллиант. Печать: 42 мин. Открыть MakerWorld в новой вкладке.">
+        <div class="photo">
+          <img src="https://makerworld.bblmw.com/makerworld/model/USb85bdb8add59a/design/eda42a45874b7896.jpeg?x-oss-process=image/resize,w_1000/format,webp" alt="Шкатулка-бриллиант" loading="lazy" decoding="async" width="1000" height="750">
+          <span class="photo-fallback" aria-hidden="true">Фото доступно на MakerWorld</span>
+        </div>
+        <div class="card-body">
+          <h3>Шкатулка-бриллиант</h3>
+          <p class="description">Миниатюрная коробочка с защёлкой для кольца, серёжек или других мелочей.</p>
+          <p class="note">После печати нужно убрать поддержки на защёлках.</p>
+          <div class="card-bottom"><span class="duration"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3 2"/></svg>42 мин</span><span class="open-label">MakerWorld</span></div>
+        </div>
+      </a></div>
+    </section>
+<section aria-labelledby="decor">
+      <div class="section-title"><h2 id="decor">Декор и музыка</h2><span>2 модели</span></div>
+      <div class="grid"><a class="card" href="https://makerworld.com/ru/models/92028-bird-ocarina#profileId-724197" target="_blank" rel="noopener noreferrer"
+        aria-label="Окарина-птичка. Печать: ≈ 1 ч 24 мин. Открыть MakerWorld в новой вкладке.">
+        <div class="photo">
+          <img src="https://makerworld.bblmw.com/makerworld/model/US994f6c5c4645b0/design/2024-11-14_b09c957f6ed26.jpg?x-oss-process=image/resize,w_1000/format,webp" alt="Окарина-птичка" loading="lazy" decoding="async" width="1000" height="750">
+          <span class="photo-fallback" aria-hidden="true">Фото доступно на MakerWorld</span>
+        </div>
+        <div class="card-body">
+          <h3>Окарина-птичка</h3>
+          <p class="description">Небольшой духовой инструмент в форме птицы. Можно поэкспериментировать со звуками.</p>
+          <p class="note">Без поддержек. Автор не обещает точную настройку нот.</p>
+          <div class="card-bottom"><span class="duration"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3 2"/></svg>≈ 1 ч 24 мин</span><span class="open-label">MakerWorld</span></div>
+        </div>
+      </a><a class="card" href="https://makerworld.com/ru/models/817434-deer-stag#profileId-773020" target="_blank" rel="noopener noreferrer"
+        aria-label="Ажурный олень. Печать: ≈ 1 ч. Открыть MakerWorld в новой вкладке.">
+        <div class="photo">
+          <img src="https://makerworld.bblmw.com/makerworld/model/USa03b3b49942fe/design/2024-11-26_42933b3e5d92c.png?x-oss-process=image/resize,w_1000/format,webp" alt="Ажурный олень" loading="lazy" decoding="async" width="1000" height="750">
+          <span class="photo-fallback" aria-hidden="true">Фото доступно на MakerWorld</span>
+        </div>
+        <div class="card-body">
+          <h3>Ажурный олень</h3>
+          <p class="description">Лёгкая скульптура с открытой геометрией для полки или рабочего стола.</p>
+          <p class="note">Компактная версия высотой 10 см, слой 0,28 мм.</p>
+          <div class="card-bottom"><span class="duration"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3 2"/></svg>≈ 1 ч</span><span class="open-label">MakerWorld</span></div>
+        </div>
+      </a></div>
+    </section>
+  </main>
+  <footer class="wrap">
+    <p>Время — ориентировочная оценка выбранного профиля MakerWorld для A1 mini, без гарантии с учётом подготовки и остывания. Перед печатью оно уточняется для PLA Matte.</p>
+    <p>Фото загружаются прямо с MakerWorld; цвета и размеры на них могут отличаться от выбранного варианта. Карточки открываются в новой вкладке.</p>
+  </footer>
+  <script>
+    document.querySelectorAll('.photo img').forEach(function (img) {
+      function showFallback() { img.hidden = true; img.style.display = 'none'; }
+      img.addEventListener('error', showFallback);
+      if (img.complete && !img.naturalWidth) showFallback();
+    });
+  </script>
+</body>
+</html>
