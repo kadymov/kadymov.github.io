@@ -1,0 +1,863 @@
+{
+  "initial": {
+    "profile": "phone",
+    "revision": 3,
+    "mode": "dlss",
+    "busy": false,
+    "engine": "idle",
+    "result": false,
+    "sceneReady": true,
+    "runs": 0,
+    "completed": 0,
+    "discarded": 0,
+    "lastError": null,
+    "weights": null,
+    "adapter": null,
+    "renderErrors": 0,
+    "contextLost": false,
+    "weightsLoads": 0,
+    "pipelineBuilds": 0,
+    "scene": {
+      "model": "Female hand / deep3dstudio",
+      "triangles": 8082,
+      "vertices": 4390,
+      "sourceTextureSizes": [
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          2048
+        ]
+      ],
+      "uploadedTextureSizes": [
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          2048
+        ]
+      ],
+      "roughnessRange": [
+        0.22352941176470587,
+        0.8588235294117648
+      ],
+      "heightMeters": 0.25
+    },
+    "resolution": 512,
+    "antialiasSamples": 4,
+    "sss": true,
+    "auto": false,
+    "intensity": 1,
+    "secureContext": true,
+    "viewport": {
+      "width": 1280,
+      "height": 720,
+      "scrollWidth": 1265
+    },
+    "webgpu": true,
+    "weightsMiB": null,
+    "activationMiB": null
+  },
+  "sss512": {
+    "profile": "phone",
+    "revision": 4,
+    "mode": "sss",
+    "busy": false,
+    "engine": "idle",
+    "result": true,
+    "sceneReady": true,
+    "runs": 1,
+    "completed": 1,
+    "discarded": 0,
+    "lastError": null,
+    "weights": null,
+    "adapter": null,
+    "renderErrors": 0,
+    "contextLost": false,
+    "weightsLoads": 0,
+    "pipelineBuilds": 0,
+    "lastComparison": {
+      "mode": "sss",
+      "revision": 4,
+      "width": 512,
+      "height": 512,
+      "meanAbsoluteRgbDifference": 0.1848322550455729,
+      "maxAbsoluteRgbDifference": 46,
+      "changedPixels": 44841,
+      "outputRange": [
+        19,
+        251
+      ]
+    },
+    "networkMilliseconds": null,
+    "totalMilliseconds": 43,
+    "scene": {
+      "model": "Female hand / deep3dstudio",
+      "triangles": 8082,
+      "vertices": 4390,
+      "sourceTextureSizes": [
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          2048
+        ]
+      ],
+      "uploadedTextureSizes": [
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          2048
+        ]
+      ],
+      "roughnessRange": [
+        0.22352941176470587,
+        0.8588235294117648
+      ],
+      "heightMeters": 0.25
+    },
+    "resolution": 512,
+    "antialiasSamples": 4,
+    "sss": true,
+    "auto": false,
+    "intensity": 1,
+    "secureContext": true,
+    "viewport": {
+      "width": 1280,
+      "height": 720,
+      "scrollWidth": 1265
+    },
+    "webgpu": true,
+    "weightsMiB": null,
+    "activationMiB": null
+  },
+  "sss320": {
+    "profile": "phone",
+    "revision": 5,
+    "mode": "sss",
+    "busy": false,
+    "engine": "idle",
+    "result": true,
+    "sceneReady": true,
+    "runs": 2,
+    "completed": 2,
+    "discarded": 0,
+    "lastError": null,
+    "weights": null,
+    "adapter": null,
+    "renderErrors": 0,
+    "contextLost": false,
+    "weightsLoads": 0,
+    "pipelineBuilds": 0,
+    "lastComparison": {
+      "mode": "sss",
+      "revision": 5,
+      "width": 320,
+      "height": 320,
+      "meanAbsoluteRgbDifference": 0.156279296875,
+      "maxAbsoluteRgbDifference": 33,
+      "changedPixels": 16178,
+      "outputRange": [
+        19,
+        240
+      ]
+    },
+    "networkMilliseconds": null,
+    "totalMilliseconds": 17.30000001192093,
+    "scene": {
+      "model": "Female hand / deep3dstudio",
+      "triangles": 8082,
+      "vertices": 4390,
+      "sourceTextureSizes": [
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          2048
+        ]
+      ],
+      "uploadedTextureSizes": [
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          2048
+        ]
+      ],
+      "roughnessRange": [
+        0.22352941176470587,
+        0.8588235294117648
+      ],
+      "heightMeters": 0.25
+    },
+    "resolution": 320,
+    "antialiasSamples": 4,
+    "sss": true,
+    "auto": false,
+    "intensity": 1,
+    "secureContext": true,
+    "viewport": {
+      "width": 1280,
+      "height": 720,
+      "scrollWidth": 1265
+    },
+    "webgpu": true,
+    "weightsMiB": null,
+    "activationMiB": null
+  },
+  "sss768": {
+    "profile": "phone",
+    "revision": 6,
+    "mode": "sss",
+    "busy": false,
+    "engine": "idle",
+    "result": true,
+    "sceneReady": true,
+    "runs": 3,
+    "completed": 3,
+    "discarded": 0,
+    "lastError": null,
+    "weights": null,
+    "adapter": null,
+    "renderErrors": 0,
+    "contextLost": false,
+    "weightsLoads": 0,
+    "pipelineBuilds": 0,
+    "lastComparison": {
+      "mode": "sss",
+      "revision": 6,
+      "width": 768,
+      "height": 768,
+      "meanAbsoluteRgbDifference": 0.2251716896339699,
+      "maxAbsoluteRgbDifference": 51,
+      "changedPixels": 107951,
+      "outputRange": [
+        19,
+        253
+      ]
+    },
+    "networkMilliseconds": null,
+    "totalMilliseconds": 62.90000003576279,
+    "scene": {
+      "model": "Female hand / deep3dstudio",
+      "triangles": 8082,
+      "vertices": 4390,
+      "sourceTextureSizes": [
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          2048
+        ]
+      ],
+      "uploadedTextureSizes": [
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          2048
+        ]
+      ],
+      "roughnessRange": [
+        0.22352941176470587,
+        0.8588235294117648
+      ],
+      "heightMeters": 0.25
+    },
+    "resolution": 768,
+    "antialiasSamples": 4,
+    "sss": true,
+    "auto": false,
+    "intensity": 1,
+    "secureContext": true,
+    "viewport": {
+      "width": 1280,
+      "height": 720,
+      "scrollWidth": 1265
+    },
+    "webgpu": true,
+    "weightsMiB": null,
+    "activationMiB": null
+  },
+  "dlss512": {
+    "profile": "phone",
+    "revision": 3,
+    "mode": "dlss",
+    "busy": false,
+    "engine": "ready",
+    "result": true,
+    "sceneReady": true,
+    "runs": 1,
+    "completed": 1,
+    "discarded": 0,
+    "lastError": null,
+    "weights": {
+      "blocks": 71,
+      "tensors": 153,
+      "source": {
+        "dll": "nvngx_dlssnr.dll",
+        "sha256": "e16bcf15e16e13f527491cdf7845b2fe6521a738d8f7c9c721866a8496e1fc8e",
+        "resource": "WEIGHTS_HT",
+        "resourceSha256": "836f445d06ecd2e59bb9f17b84b91c143396fd76ccda1c9dc7fe81d5edd548f4"
+      }
+    },
+    "adapter": {
+      "vendor": "apple",
+      "architecture": "metal-3",
+      "device": "",
+      "description": ""
+    },
+    "renderErrors": 0,
+    "contextLost": false,
+    "weightsLoads": 1,
+    "pipelineBuilds": 1,
+    "lastComparison": {
+      "mode": "dlss",
+      "revision": 3,
+      "width": 512,
+      "height": 512,
+      "meanAbsoluteRgbDifference": 10.181313832600912,
+      "maxAbsoluteRgbDifference": 117,
+      "changedPixels": 262136,
+      "outputRange": [
+        8,
+        248
+      ]
+    },
+    "networkMilliseconds": 459.30000001192093,
+    "totalMilliseconds": 1480.300000011921,
+    "scene": {
+      "model": "Female hand / deep3dstudio",
+      "triangles": 8082,
+      "vertices": 4390,
+      "sourceTextureSizes": [
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          2048
+        ]
+      ],
+      "uploadedTextureSizes": [
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          2048
+        ]
+      ],
+      "roughnessRange": [
+        0.22352941176470587,
+        0.8588235294117648
+      ],
+      "heightMeters": 0.25
+    },
+    "resolution": 512,
+    "antialiasSamples": 4,
+    "sss": true,
+    "auto": false,
+    "intensity": 1,
+    "secureContext": true,
+    "viewport": {
+      "width": 1280,
+      "height": 720,
+      "scrollWidth": 1265
+    },
+    "webgpu": true,
+    "networkDispatches": 453,
+    "weightsMiB": 144,
+    "activationMiB": 545
+  },
+  "dlss320": {
+    "profile": "phone",
+    "revision": 4,
+    "mode": "dlss",
+    "busy": false,
+    "engine": "ready",
+    "result": true,
+    "sceneReady": true,
+    "runs": 2,
+    "completed": 2,
+    "discarded": 0,
+    "lastError": null,
+    "weights": {
+      "blocks": 71,
+      "tensors": 153,
+      "source": {
+        "dll": "nvngx_dlssnr.dll",
+        "sha256": "e16bcf15e16e13f527491cdf7845b2fe6521a738d8f7c9c721866a8496e1fc8e",
+        "resource": "WEIGHTS_HT",
+        "resourceSha256": "836f445d06ecd2e59bb9f17b84b91c143396fd76ccda1c9dc7fe81d5edd548f4"
+      }
+    },
+    "adapter": {
+      "vendor": "apple",
+      "architecture": "metal-3",
+      "device": "",
+      "description": ""
+    },
+    "renderErrors": 0,
+    "contextLost": false,
+    "weightsLoads": 1,
+    "pipelineBuilds": 2,
+    "lastComparison": {
+      "mode": "dlss",
+      "revision": 4,
+      "width": 320,
+      "height": 320,
+      "meanAbsoluteRgbDifference": 9.37419921875,
+      "maxAbsoluteRgbDifference": 96,
+      "changedPixels": 102400,
+      "outputRange": [
+        13,
+        231
+      ]
+    },
+    "networkMilliseconds": 192.20000004768372,
+    "totalMilliseconds": 957.5,
+    "scene": {
+      "model": "Female hand / deep3dstudio",
+      "triangles": 8082,
+      "vertices": 4390,
+      "sourceTextureSizes": [
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          2048
+        ]
+      ],
+      "uploadedTextureSizes": [
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          2048
+        ]
+      ],
+      "roughnessRange": [
+        0.22352941176470587,
+        0.8588235294117648
+      ],
+      "heightMeters": 0.25
+    },
+    "resolution": 320,
+    "antialiasSamples": 4,
+    "sss": true,
+    "auto": false,
+    "intensity": 1,
+    "secureContext": true,
+    "viewport": {
+      "width": 1280,
+      "height": 720,
+      "scrollWidth": 1265
+    },
+    "webgpu": true,
+    "networkDispatches": 453,
+    "weightsMiB": 144,
+    "activationMiB": 191
+  },
+  "dlss768": {
+    "profile": "phone",
+    "revision": 5,
+    "mode": "dlss",
+    "busy": false,
+    "engine": "ready",
+    "result": true,
+    "sceneReady": true,
+    "runs": 3,
+    "completed": 3,
+    "discarded": 0,
+    "lastError": null,
+    "weights": {
+      "blocks": 71,
+      "tensors": 153,
+      "source": {
+        "dll": "nvngx_dlssnr.dll",
+        "sha256": "e16bcf15e16e13f527491cdf7845b2fe6521a738d8f7c9c721866a8496e1fc8e",
+        "resource": "WEIGHTS_HT",
+        "resourceSha256": "836f445d06ecd2e59bb9f17b84b91c143396fd76ccda1c9dc7fe81d5edd548f4"
+      }
+    },
+    "adapter": {
+      "vendor": "apple",
+      "architecture": "metal-3",
+      "device": "",
+      "description": ""
+    },
+    "renderErrors": 0,
+    "contextLost": false,
+    "weightsLoads": 1,
+    "pipelineBuilds": 3,
+    "lastComparison": {
+      "mode": "dlss",
+      "revision": 5,
+      "width": 768,
+      "height": 768,
+      "meanAbsoluteRgbDifference": 9.857276068793404,
+      "maxAbsoluteRgbDifference": 118,
+      "changedPixels": 589824,
+      "outputRange": [
+        7,
+        252
+      ]
+    },
+    "networkMilliseconds": 925,
+    "totalMilliseconds": 9430,
+    "scene": {
+      "model": "Female hand / deep3dstudio",
+      "triangles": 8082,
+      "vertices": 4390,
+      "sourceTextureSizes": [
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          2048
+        ]
+      ],
+      "uploadedTextureSizes": [
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          2048
+        ]
+      ],
+      "roughnessRange": [
+        0.22352941176470587,
+        0.8588235294117648
+      ],
+      "heightMeters": 0.25
+    },
+    "resolution": 768,
+    "antialiasSamples": 4,
+    "sss": true,
+    "auto": false,
+    "intensity": 1,
+    "secureContext": true,
+    "viewport": {
+      "width": 1280,
+      "height": 720,
+      "scrollWidth": 1265
+    },
+    "webgpu": true,
+    "networkDispatches": 453,
+    "weightsMiB": 144,
+    "activationMiB": 1180
+  },
+  "persisted320": {
+    "profile": "phone",
+    "revision": 3,
+    "mode": "dlss",
+    "busy": false,
+    "engine": "idle",
+    "result": false,
+    "sceneReady": true,
+    "runs": 0,
+    "completed": 0,
+    "discarded": 0,
+    "lastError": null,
+    "weights": null,
+    "adapter": null,
+    "renderErrors": 0,
+    "contextLost": false,
+    "weightsLoads": 0,
+    "pipelineBuilds": 0,
+    "scene": {
+      "model": "Female hand / deep3dstudio",
+      "triangles": 8082,
+      "vertices": 4390,
+      "sourceTextureSizes": [
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          2048
+        ]
+      ],
+      "uploadedTextureSizes": [
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          2048
+        ]
+      ],
+      "roughnessRange": [
+        0.22352941176470587,
+        0.8588235294117648
+      ],
+      "heightMeters": 0.25
+    },
+    "resolution": 320,
+    "antialiasSamples": 4,
+    "sss": true,
+    "auto": false,
+    "intensity": 1,
+    "secureContext": true,
+    "viewport": {
+      "width": 1280,
+      "height": 720,
+      "scrollWidth": 1265
+    },
+    "webgpu": true,
+    "weightsMiB": null,
+    "activationMiB": null
+  },
+  "final512": {
+    "profile": "phone",
+    "revision": 4,
+    "mode": "sss",
+    "busy": false,
+    "engine": "idle",
+    "result": true,
+    "sceneReady": true,
+    "runs": 1,
+    "completed": 1,
+    "discarded": 0,
+    "lastError": null,
+    "weights": null,
+    "adapter": null,
+    "renderErrors": 0,
+    "contextLost": false,
+    "weightsLoads": 0,
+    "pipelineBuilds": 0,
+    "lastComparison": {
+      "mode": "sss",
+      "revision": 4,
+      "width": 512,
+      "height": 512,
+      "meanAbsoluteRgbDifference": 0.1848322550455729,
+      "maxAbsoluteRgbDifference": 46,
+      "changedPixels": 44841,
+      "outputRange": [
+        19,
+        251
+      ]
+    },
+    "networkMilliseconds": null,
+    "totalMilliseconds": 42.19999998807907,
+    "scene": {
+      "model": "Female hand / deep3dstudio",
+      "triangles": 8082,
+      "vertices": 4390,
+      "sourceTextureSizes": [
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          2048
+        ]
+      ],
+      "uploadedTextureSizes": [
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          2048
+        ]
+      ],
+      "roughnessRange": [
+        0.22352941176470587,
+        0.8588235294117648
+      ],
+      "heightMeters": 0.25
+    },
+    "resolution": 512,
+    "antialiasSamples": 4,
+    "sss": true,
+    "auto": false,
+    "intensity": 1,
+    "secureContext": true,
+    "viewport": {
+      "width": 1280,
+      "height": 720,
+      "scrollWidth": 1265
+    },
+    "webgpu": true,
+    "weightsMiB": null,
+    "activationMiB": null
+  }
+}
