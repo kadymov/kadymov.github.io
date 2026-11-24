@@ -1,0 +1,649 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#11151a">
+  <meta name="description" content="Покер на настоящей сетке символов. JavaScript и HTML Canvas.">
+  <title>Midnight · Hold’em</title>
+  <link rel="icon" href="data:,">
+  <style>
+:root { color-scheme: dark; background: #11151a; }
+* { box-sizing: border-box; }
+html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; }
+body { overscroll-behavior: none; }
+#app { position: absolute; top: env(safe-area-inset-top); right: env(safe-area-inset-right); bottom: env(safe-area-inset-bottom); left: env(safe-area-inset-left); overflow: hidden; }
+canvas { display: block; width: 100%; height: 100%; touch-action: none; }
+#controls { position: absolute; inset: 0; pointer-events: none; }
+#controls button, #controls input { position: absolute; margin: 0; padding: 0; border: 0; opacity: 0; border-radius: 0; pointer-events: auto; cursor: pointer; touch-action: manipulation; }
+#controls input[type=range] { cursor: ew-resize; }
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+
+</style>
+  
+  
+  
+  
+  
+  
+</head>
+<body>
+  <main id="app">
+    <canvas id="table" role="img" aria-label="Покерный стол"></canvas>
+    <!-- Transparent native controls provide touch, focus and assistive technology.
+         Every visible glyph, including menus and input values, is painted by Terminal. -->
+    <div id="controls" aria-label="Управление игрой"></div>
+    <p id="status" class="sr-only" role="status" aria-live="polite"></p>
+  </main>
+  <noscript>Для игры включите JavaScript в браузере.</noscript>
+<script id="poker-worker-source" type="application/json">"'use strict';\n/* No-limit Hold’em. Pure JavaScript; no browser, UI or AI dependencies. */\n(function (P) {\n  'use strict';\n  const RANKS = '23456789TJQKA';\n  const HAND_NAMES = ['Старшая карта', 'Пара', 'Две пары', 'Тройка', 'Стрит', 'Флеш', 'Фулл-хаус', 'Каре', 'Стрит-флеш'];\n  const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));\n  const compare = (a, b) => { for (let i = 0; i \u003c Math.max(a.length, b.length); i++) { const d = (a[i] || 0) - (b[i] || 0); if (d) return d; } return 0; };\n  class Random {\n    constructor(seed = (Date.now() ^ Math.random() * 4294967296)) { this.state = seed >>> 0; }\n    next() { let t = this.state = (this.state + 0x6D2B79F5) >>> 0; t = Math.imul(t ^ t >>> 15, t | 1); t ^= t + Math.imul(t ^ t >>> 7, t | 61); return ((t ^ t >>> 14) >>> 0) / 4294967296; }\n    int(n) { return Math.floor(this.next() * n); }\n    sample(pool, n) { const copy = pool.slice(); for (let i = 0; i \u003c n; i++) { const j = i + this.int(copy.length - i); [copy[i], copy[j]] = [copy[j], copy[i]]; } return copy.slice(0, n); }\n    shuffle(pool) { for (let i = pool.length - 1; i > 0; i--) { const j = this.int(i + 1); [pool[i], pool[j]] = [pool[j], pool[i]]; } return pool; }\n  }\n  function evaluate(cards) {\n    const counts = new Map();\n    for (const c of cards) { const r = (c >> 2) + 2; counts.set(r, (counts.get(r) || 0) + 1); }\n    const ranks = [...counts.keys()].sort((a, b) => b - a);\n    function straight(values) { const s = new Set(values); if (s.has(14)) s.add(1); for (let high = 14; high >= 5; high--) { let ok = true; for (let r = high - 4; r \u003c= high; r++) if (!s.has(r)) ok = false; if (ok) return high; } return 0; }\n    let flush = null;\n    for (let suit = 0; suit \u003c 4; suit++) { const suited = cards.filter(c => c % 4 === suit).map(c => (c >> 2) + 2).sort((a, b) => b - a); if (suited.length >= 5) { flush = suited; const high = straight(suited); if (high) return [8, high]; break; } }\n    const quads = ranks.filter(r => counts.get(r) === 4), trips = ranks.filter(r => counts.get(r) >= 3), pairs = ranks.filter(r => counts.get(r) >= 2);\n    if (quads.length) return [7, quads[0], ranks.find(r => r !== quads[0])];\n    if (trips.length && pairs.length > 1) return [6, trips[0], pairs.find(r => r !== trips[0])];\n    if (flush) return [5, ...flush.slice(0, 5)];\n    const high = straight(ranks); if (high) return [4, high];\n    if (trips.length) return [3, trips[0], ...ranks.filter(r => r !== trips[0]).slice(0, 2)];\n    if (pairs.length >= 2) return [2, ...pairs.slice(0, 2), ranks.find(r => !pairs.slice(0, 2).includes(r))];\n    if (pairs.length) return [1, pairs[0], ...ranks.filter(r => r !== pairs[0]).slice(0, 3)];\n    return [0, ...ranks.slice(0, 5)];\n  }\n  function best_five(cards) {\n    let best = null, result = [];\n    for (let a = 0; a \u003c cards.length - 4; a++) for (let b = a + 1; b \u003c cards.length - 3; b++) for (let c = b + 1; c \u003c cards.length - 2; c++) for (let d = c + 1; d \u003c cards.length - 1; d++) for (let e = d + 1; e \u003c cards.length; e++) { const hand = [cards[a], cards[b], cards[c], cards[d], cards[e]], score = evaluate(hand); if (!best || compare(score, best) > 0) { best = score; result = hand; } }\n    const counts = new Map(); for (const c of result) counts.set(c >> 2, (counts.get(c >> 2) || 0) + 1);\n    return result.sort((a, b) => { if ([4, 8].includes(best[0])) return ((b >> 2) === 12 && best[1] === 5 ? -1 : b >> 2) - ((a >> 2) === 12 && best[1] === 5 ? -1 : a >> 2); return counts.get(b >> 2) - counts.get(a >> 2) || (b >> 2) - (a >> 2); });\n  }\n  function describe_hand(score) {\n    const plural = ['', '', 'двоек', 'троек', 'четвёрок', 'пятёрок', 'шестёрок', 'семёрок', 'восьмёрок', 'девяток', 'десяток', 'валетов', 'дам', 'королей', 'тузов'];\n    const names = ['', '', 'двойка', 'тройка', 'четвёрка', 'пятёрка', 'шестёрка', 'семёрка', 'восьмёрка', 'девятка', 'десятка', 'валет', 'дама', 'король', 'туз'];\n    const groups = ['', '', 'двойки', 'тройки', 'четвёрки', 'пятёрки', 'шестёрки', 'семёрки', 'восьмёрки', 'девятки', 'десятки', 'валеты', 'дамы', 'короли', 'тузы'];\n    const [category, high] = score, kickers = v => v.map(r => RANKS[r - 2]).join(' ');\n    if (!category) return 'Старшая карта: ' + names[high];\n    if ([1, 3, 7].includes(category)) return `${HAND_NAMES[category]} ${plural[high]} · ${category === 7 ? 'кикер' : 'кикеры'} ${kickers(score.slice(2))}`;\n    if (category === 2) return `Две пары: ${groups[high]} и ${groups[score[2]]} · кикер ${kickers(score.slice(3))}`;\n    if (category === 6) return `Фулл-хаус: ${groups[high]} и ${groups[score[2]]}`;\n    if (category === 8 && high === 14) return 'Роял-флеш';\n    return `${HAND_NAMES[category]} · старшая ${names[high]}`;\n  }\n  function player(name, style, stack = 2000) { return { name, style, stack, cards: [], committed: 0, total: 0, folded: false, in_hand: false, acted_at: null, last: '', hands: 0, voluntary: 0, raises: 0 }; }\n  const canAct = p => p.in_hand && !p.folded && p.stack > 0;\n  class Game {\n    static STREETS = ['ПРЕФЛОП', 'ФЛОП', 'ТЁРН', 'РИВЕР'];\n    constructor(seed, starting_stack = 2000, blind_levels = null, record_events = true) {\n      this.rng = new Random(seed); this.players = [['ВЫ', 'human'], ['СКАЛА', 'rock'], ['ЛИСА', 'fox'], ['ШТОРМ', 'storm'], ['АКУЛА', 'shark']].map(([n, s]) => player(n, s, starting_stack));\n      Object.assign(this, { button: -1, hand_no: 0, board: [], deck: [], street: 0, current_bet: 0, min_raise: 20, actor: null, pending: new Set(), done: true, log: [], results: [], pot_results: [], revealed: false, winners: new Set(), sb: 10, bb: 20, small: null, big: null, blind_levels: blind_levels || [20, 30, 50, 80, 120, 200, 300, 500, 800, 1200], record_events, simulation: false, public_events: [], _event_seq: 0 });\n    }\n    event(kind, data = {}) { if (this.record_events) { this.public_events.push({ seq: ++this._event_seq, kind, hand: this.hand_no, street: this.street, ...data }); if (this.public_events.length > 2048) this.public_events.shift(); } }\n    get pot() { return this.players.reduce((n, p) => n + p.total, 0); }\n    get alive() { return this.players.flatMap((p, i) => p.stack > 0 ? [i] : []); }\n    get contenders() { return this.players.flatMap((p, i) => p.in_hand && !p.folded ? [i] : []); }\n    get tournament_over() { return this.done && (!this.players[0].stack || this.alive.length \u003c 2); }\n    say(text) { if (this.record_events) { this.log.push(text); this.log = this.log.slice(-100); } }\n    next_seat(seat, seats) { for (let offset = 1; offset \u003c= this.players.length; offset++) { const candidate = (seat + offset) % this.players.length; if (seats.has ? seats.has(candidate) : seats.includes(candidate)) return candidate; } return null; }\n    _pay(seat, amount) { const p = this.players[seat]; amount = Math.min(p.stack, Math.max(0, amount)); p.stack -= amount; p.committed += amount; p.total += amount; return amount; }\n    start_hand() {\n      if (!this.done || this.tournament_over) return false;\n      this.hand_no++; this.bb = this.blind_levels[Math.min(Math.floor((this.hand_no - 1) / 10), this.blind_levels.length - 1)]; this.sb = Math.floor(this.bb / 2);\n      const seats = this.alive; this.button = this.next_seat(this.button, seats); this.small = seats.length === 2 ? this.button : this.next_seat(this.button, seats); this.big = this.next_seat(this.small, seats);\n      Object.assign(this, { board: [], deck: this.rng.shuffle(Array.from({ length: 52 }, (_, i) => i)), street: 0, done: false, results: [], pot_results: [], winners: new Set(), revealed: false, log: [] });\n      this.players.forEach((p, i) => { Object.assign(p, { in_hand: seats.includes(i), folded: false, committed: 0, total: 0, acted_at: null, last: '' }); p.cards = p.in_hand ? [this.deck.pop(), this.deck.pop()] : []; if (p.in_hand) p.hands++; });\n      this._pay(this.small, this.sb); this._pay(this.big, this.bb); this.players[this.small].last = 'малый блайнд'; this.players[this.big].last = 'большой блайнд';\n      this.current_bet = Math.max(...this.players.map(p => p.committed)); this.min_raise = this.bb; this.pending = new Set(this.players.flatMap((p, i) => canAct(p) ? [i] : []));\n      this.event('hand', { players: seats.map(seat => ({ seat, name: this.players[seat].name })), button: this.button, bb: this.bb }); this._progress(this.big); return true;\n    }\n    options(seat = this.actor) {\n      if (seat === null) return {};\n      const p = this.players[seat], call = Math.min(p.stack, Math.max(0, this.current_bet - p.committed)), max_to = p.committed + p.stack;\n      const reopened = p.acted_at === null || this.current_bet - p.acted_at >= this.min_raise;\n      const can_raise = reopened && this.players.some((q, i) => i !== seat && canAct(q)) && max_to > this.current_bet;\n      const full_min_to = Math.max(this.bb, this.current_bet + this.min_raise);\n      return { call, min_to: Math.min(full_min_to, max_to), max_to, can_raise, full_min_to };\n    }\n    act(action, amount = null) {\n      if (this.done || this.actor === null) throw Error('Сейчас нет хода');\n      const seat = this.actor, p = this.players[seat], opts = this.options(), old_bet = this.current_bet;\n      const old_total = p.total, old_stack = p.stack, pot_before = this.pot, facing = Math.max(0, old_bet - p.committed);\n      if (action === 'fold') { p.folded = true; p.last = 'пас'; }\n      else if (action === 'call') { const paid = this._pay(seat, opts.call); p.last = paid ? `колл ${paid}` : 'чек'; if (paid && !this.street) p.voluntary += Number(p.acted_at === null); }\n      else if (action === 'raise') {\n        if (!opts.can_raise) throw Error('Повышение сейчас недоступно');\n        if (!Number.isInteger(amount) || amount \u003c opts.min_to || amount > opts.max_to) throw Error(`Допустимо от ${opts.min_to} до ${opts.max_to}`);\n        this._pay(seat, amount - p.committed); this.current_bet = p.committed;\n        const increase = this.current_bet - old_bet; if (increase >= this.min_raise) this.min_raise = increase;\n        p.last = (old_bet ? 'рейз до ' : 'ставка ') + amount; p.raises++; if (!this.street) p.voluntary += Number(p.acted_at === null);\n        this.players.forEach((q, i) => { if (i !== seat && canAct(q) && q.committed \u003c this.current_bet) this.pending.add(i); });\n      } else throw Error('Неизвестное действие');\n      p.acted_at = this.current_bet; if (!p.stack && !p.folded) p.last += ' · ALL-IN'; this.say(p.name + ': ' + p.last);\n      this.event('action', { seat, name: p.name, action: action === 'raise' && !old_bet ? 'bet' : action === 'call' && !opts.call ? 'check' : action, paid: p.total - old_total, facing, facing_bet: facing > 0 && (this.street > 0 || old_bet > this.bb), can_raise: opts.can_raise, pot: pot_before, stack: old_stack, total: p.total, committed: p.committed, board: this.board.slice() });\n      this.pending.delete(seat); this._progress(seat);\n    }\n    _progress(after) {\n      while (!this.done) {\n        const contenders = this.contenders;\n        if (contenders.length === 1) { const winner = contenders[0], amount = this.pot; this.players[winner].stack += amount; this.results = [`${this.players[winner].name} забирает ${amount} — все сбросили`]; this.pot_results = [{ label: 'Банк', amount, payouts: { [winner]: amount }, rank: [], best_cards: {}, reason: 'fold' }]; this.winners = new Set([winner]); this._finish(); return; }\n        this.pending = new Set([...this.pending].filter(i => canAct(this.players[i])));\n        const able = contenders.filter(i => canAct(this.players[i]));\n        if (able.length === 1 && this.players[able[0]].committed >= this.current_bet) this.pending.clear();\n        if (this.pending.size) { this.actor = this.next_seat(after, this.pending); return; }\n        if (this.street === 3) { this._showdown(); return; }\n        this.street++; this.deck.pop(); for (let k = 0; k \u003c (this.street === 1 ? 3 : 1); k++) this.board.push(this.deck.pop());\n        this.event('street', { board: this.board.slice() }); this.current_bet = 0; this.min_raise = this.bb;\n        this.players.forEach(p => { p.committed = 0; p.acted_at = null; if (canAct(p)) p.last = ''; }); this.pending = new Set(able.length > 1 ? able : []); after = this.button;\n      }\n    }\n    _showdown() {\n      this.revealed = true; const scores = new Map(this.contenders.map(i => [i, evaluate([...this.players[i].cards, ...this.board])]));\n      this.event('showdown', { board: this.board.slice(), hands: this.contenders.map(i => ({ name: this.players[i].name, cards: this.players[i].cards.slice() })) });\n      const levels = [...new Set(this.players.map(p => p.total).filter(Boolean))].sort((a, b) => a - b), payouts = new Map(); let previous = 0;\n      this.results = []; this.pot_results = []; const winning_cards = {};\n      levels.forEach((level, number) => {\n        const contributors = this.players.flatMap((p, i) => p.total >= level ? [i] : []), amount = (level - previous) * contributors.length; previous = level;\n        const eligible = contributors.filter(i => scores.has(i)); if (!eligible.length) throw Error('У банка нет участника');\n        const best = eligible.map(i => scores.get(i)).sort(compare).at(-1);\n        const winners = eligible.filter(i => compare(scores.get(i), best) === 0).sort((a, b) => ((a - this.button - 1 + 5) % 5) - ((b - this.button - 1 + 5) % 5));\n        const share = Math.floor(amount / winners.length), odd = amount % winners.length, shares = {};\n        winners.forEach((i, n) => { shares[i] = share + Number(n \u003c odd); payouts.set(i, (payouts.get(i) || 0) + shares[i]); });\n        if (!this.simulation) {\n          const names = winners.map(i => this.players[i].name).join(', ');\n          if (contributors.length === 1) { this.results.push(`${names}: возврат ${amount}`); this.pot_results.push({ label: 'Возврат', amount, payouts: shares, rank: [], best_cards: {}, reason: 'return' }); }\n          else { const label = number ? `Боковой банк ${number}` : 'Банк'; this.results.push(`${label} ${amount} → ${names} · ${describe_hand(best)}`); const cards = {}; winners.forEach(i => { winning_cards[i] ||= best_five([...this.players[i].cards, ...this.board]); cards[i] = winning_cards[i]; }); this.pot_results.push({ label, amount, payouts: shares, rank: best, best_cards: cards, reason: 'showdown' }); }\n        }\n        if (contributors.length > 1) winners.forEach(i => this.winners.add(i));\n      });\n      payouts.forEach((amount, i) => { this.players[i].stack += amount; }); this._finish();\n    }\n    _finish() { this.done = true; this.actor = null; this.pending.clear(); this.event('end'); this.results.forEach(r => this.say(r)); }\n    serialize() { const data = { ...this, pending: [...this.pending], winners: [...this.winners], rng: this.rng.state }; return data; }\n    static restore(data) { data = structuredClone(data); const g = Object.assign(new Game(1), data); g.rng = new Random(data.rng); g.pending = new Set(data.pending); g.winners = new Set(data.winners); return g; }\n  }\n  Object.assign(P, { RANKS, HAND_NAMES, Random, clamp, compare, evaluate, best_five, describe_hand, player, canAct, Game });\n})(globalThis.Poker ||= {});\nif (typeof module !== 'undefined') module.exports = globalThis.Poker;\n\n;\n/* Opponent evidence and information-set planning, ported from the terminal game. */\n(function (P) {\n  'use strict';\n  const { Game, Random, clamp, evaluate, compare } = P;\n  const PRIORS = { vpip: .38, pfr: .17, aggression: .38, fold_to_bet: .40, fold_to_raise: .45, cbet: .55, fold_to_cbet: .43, weak_bet: .12, loose_showdown: .35 };\n  const STYLES = {\n    rock: { label: 'НИТ', description: 'Ждёт сильную руку', tightness: .16, aggression: .45, bluff: .025, curiosity: -.05 },\n    fox: { label: 'ТРИКСТЕР', description: 'Ловушки и блеф в позиции', tightness: .035, aggression: .65, bluff: .20, curiosity: .025 },\n    storm: { label: 'МАНЬЯК', description: 'Широкий диапазон, крупные ставки', tightness: -.075, aggression: .94, bluff: .27, curiosity: .09 },\n    shark: { label: 'РЕГУЛЯР', description: 'Считает шансы и подстраивается', tightness: .065, aggression: .73, bluff: .095, curiosity: 0 }\n  };\n  function preflop_quality(cards) { const [a, b] = cards.map(c => (c >> 2) + 2).sort((a, b) => b - a); if (a === b) return .45 + a / 26; return Math.min(.96, (a + b) / 36 + (cards[0] % 4 === cards[1] % 4 ? .09 : 0) + (a - b \u003c= 2 ? .07 : a - b >= 5 ? -.06 : 0)); }\n  const featureCache = new Map();\n  function features(hole, board) {\n    const key = hole.slice().sort((a, b) => a - b).join(',') + '/' + board.join(',');\n    if (featureCache.has(key)) return featureCache.get(key);\n    const finish = result => { if (featureCache.size >= 16384) featureCache.clear(); featureCache.set(key, result); return result; };\n    if (!board.length) { const pair = (hole[0] >> 2) === (hole[1] >> 2); return finish([Math.min(.86, .22 + preflop_quality(hole) * .62 + (pair ? .035 : 0)), 0, pair ? 1 : 0]); }\n    const known = [...hole, ...board], score = evaluate(known), category = score[0], boardRanks = board.map(c => (c >> 2) + 2), ownRanks = hole.map(c => (c >> 2) + 2), top = Math.max(...boardRanks);\n    let strength;\n    if (category === 0) strength = .22 + Math.max(...ownRanks) / 65;\n    else if (category === 1) { if (!ownRanks.includes(score[1])) strength = .27 + Math.max(...ownRanks) / 85; else { strength = score[1] >= top ? .70 : score[1] >= boardRanks.slice().sort((a, b) => a - b)[Math.floor(board.length / 2)] ? .53 : .40; strength += (score[2] - 8) * .008; } }\n    else if (category === 2) strength = new Set(boardRanks).size === boardRanks.length ? .80 : .65;\n    else if (category === 3) strength = ownRanks.includes(score[1]) ? .88 : .51 + Math.max(...ownRanks) / 100;\n    else strength = { 4: .91, 5: .95, 6: .985, 7: .997, 8: .999 }[category];\n    if (board.length === 5 && !compare(score, evaluate(board))) strength = category === 8 && score[1] === 14 ? .5 : .43;\n    const outs = new Set();\n    if (board.length \u003c 5 && category \u003c 4) {\n      for (let suit = 0; suit \u003c 4; suit++) if (known.filter(c => c % 4 === suit).length === 4 && hole.some(c => c % 4 === suit)) for (let c = suit; c \u003c 52; c += 4) if (!known.includes(c)) outs.add(c);\n      const ranks = new Set(known.map(c => (c >> 2) + 2)), own = new Set(ownRanks); if (ranks.has(14)) ranks.add(1); if (own.has(14)) own.add(1);\n      for (let high = 5; high \u003c= 14; high++) { const sequence = Array.from({ length: 5 }, (_, i) => high - 4 + i), missing = sequence.filter(r => !ranks.has(r)); if (missing.length === 1 && sequence.some(r => r !== missing[0] && own.has(r))) { const rank = missing[0] === 1 ? 14 : missing[0]; for (let c = (rank - 2) * 4; c \u003c (rank - 1) * 4; c++) if (!known.includes(c)) outs.add(c); } }\n    }\n    const chance = outs.size / Math.max(1, 52 - known.length);\n    return finish([clamp(strength, .05, .999), Math.min(.55, 1 - (1 - chance) ** (5 - board.length)), category]);\n  }\n  class MemoryBook {\n    constructor(data = null) { this.profiles = {}; this.context = null; this.source = null; this.seq = 0; if (data) this.load(data); }\n    profile(name) { return this.profiles[name] ||= { hands: 0, rates: Object.fromEntries(Object.keys(PRIORS).map(k => [k, [0, 0]])), sizes: [0, 0] }; }\n    model(name) { const p = this.profile(name), result = {}; for (const [k, prior] of Object.entries(PRIORS)) result[k] = (p.rates[k][0] + prior * 10) / (p.rates[k][1] + 10); result.size = (p.sizes[0] + .65 * 8) / (p.sizes[1] + 8); result.confidence = p.rates.vpip[1] / (p.rates.vpip[1] + 20); return result; }\n    add(profile, key, yes) { profile.rates[key][0] += Number(yes); profile.rates[key][1]++; }\n    observe(game) { if (this.source !== game) { this.source = game; this.seq = 0; this.context = null; } for (const event of game.public_events) if (event.seq > this.seq) { this.consume(event); this.seq = event.seq; } }\n    consume(e) {\n      if (e.kind === 'hand') { this.context = { names: e.players.map(p => p.name), vpip: new Set(), pfr: new Set(), history: {}, preflop_raiser: null, aggressor: null, aggression_kind: null, flop_bet: false, cbet_seen: false, ended: false }; for (const n of this.context.names) { const p = this.profile(n); p.hands++; Object.values(p.rates).forEach(r => { r[0] *= .992; r[1] *= .992; }); p.sizes = p.sizes.map(n => n * .992); } return; }\n      const c = this.context; if (!c) return;\n      if (e.kind === 'street') { c.aggressor = c.aggression_kind = null; }\n      else if (e.kind === 'action') {\n        const p = this.profile(e.name), aggressive = ['bet', 'raise'].includes(e.action); (c.history[e.name] ||= []).push(e);\n        if (!e.street) { if (e.paid) c.vpip.add(e.name); if (aggressive) { c.pfr.add(e.name); c.preflop_raiser = e.name; } }\n        else if (e.can_raise || e.action === 'check') this.add(p, 'aggression', aggressive);\n        if (e.facing_bet) { this.add(p, 'fold_to_bet', e.action === 'fold'); if (c.aggression_kind === 'raise') this.add(p, 'fold_to_raise', e.action === 'fold'); if (e.street === 1 && c.aggressor === c.preflop_raiser && c.cbet_seen) this.add(p, 'fold_to_cbet', e.action === 'fold'); }\n        if (e.street === 1 && e.name === c.preflop_raiser && !c.flop_bet && !e.facing_bet) { this.add(p, 'cbet', aggressive); c.cbet_seen = aggressive; }\n        if (aggressive) { p.sizes[0] += Math.min(3, Math.max(0, e.paid - e.facing) / Math.max(1, e.pot + e.facing)); p.sizes[1]++; c.aggressor = e.name; c.aggression_kind = e.action; if (e.street === 1) c.flop_bet = true; }\n      } else if (e.kind === 'showdown') {\n        for (const hand of e.hands) { const p = this.profile(hand.name); this.add(p, 'loose_showdown', preflop_quality(hand.cards) \u003c .65); for (const a of c.history[hand.name] || []) if (a.street && ['bet', 'raise'].includes(a.action)) { const [, draw, category] = features(hand.cards, a.board); this.add(p, 'weak_bet', category === 0 && draw \u003c .07); } }\n      } else if (e.kind === 'end' && !c.ended) { for (const n of c.names) { const p = this.profile(n); this.add(p, 'vpip', c.vpip.has(n)); this.add(p, 'pfr', c.pfr.has(n)); } c.ended = true; }\n    }\n    actions(name) { return this.context?.history[name] || []; }\n    export() { return { version: 1, profiles: JSON.parse(JSON.stringify(this.profiles)) }; }\n    load(data) {\n      if (data.version !== 1 || !data.profiles || typeof data.profiles !== 'object') throw Error('Неподдерживаемый формат памяти');\n      const profiles = {};\n      for (const [name, p] of Object.entries(data.profiles)) { if (name.length > 80 || !Number.isInteger(p.hands) || p.hands \u003c 0) throw Error('Некорректная память'); for (const k of Object.keys(PRIORS)) { const r = p.rates?.[k]; if (!Array.isArray(r) || r.length !== 2 || !r.every(Number.isFinite) || r[0] \u003c 0 || r[0] > r[1]) throw Error('Некорректные счётчики памяти'); } if (!Array.isArray(p.sizes) || p.sizes.length !== 2 || !p.sizes.every(n => Number.isFinite(n) && n >= 0)) throw Error('Некорректные размеры ставок'); profiles[name] = structuredClone(p); }\n      this.profiles = profiles;\n    }\n  }\n  function public_snapshot(game) {\n    const state = {}; for (const k of ['actor', 'button', 'small', 'big', 'street', 'current_bet', 'min_raise', 'bb', 'sb', 'hand_no']) state[k] = game[k];\n    state.board = game.board.slice(); state.pending = [...game.pending];\n    state.players = game.players.map((p, i) => ({ ...p, style: i === game.actor ? p.style : 'unknown', cards: i === game.actor ? p.cards.slice() : [] })); return state;\n  }\n  function range_weight(hole, actions, model) {\n    let weight = 1;\n    for (const a of actions) {\n      if (!a.street) { let threshold = a.action === 'raise' ? .92 - model.pfr * .65 : .80 - model.vpip * .45; threshold += (.35 - model.loose_showdown) * .15; weight *= .10 + .90 / (1 + Math.exp(clamp((threshold - preflop_quality(hole)) * 14, -30, 30))); }\n      else { const [s, draw] = features(hole, a.board); if (['raise', 'bet'].includes(a.action)) { const bluff = Math.min(.65, .06 + model.weak_bet * .65 + model.aggression * .12); weight *= bluff + (1 - bluff) * Math.min(1, s + draw * .7) ** (2 - model.aggression); } else if (a.action === 'call') weight *= .18 + .82 * Math.min(1, s + draw); else if (a.action === 'check') weight *= 1 - .30 * model.aggression * s; }\n    }\n    return clamp(weight, .015, 1);\n  }\n  function make_world(snapshot, models, histories, rng) {\n    const g = new Game(1, 2000, null, false); Object.assign(g, snapshot); g.simulation = true; g.done = false; g.board = snapshot.board.slice(); g.pending = new Set(snapshot.pending);\n    let pool = Array.from({ length: 52 }, (_, i) => i).filter(c => !g.board.includes(c) && !snapshot.players[g.actor].cards.includes(c));\n    g.players = snapshot.players.map((data, seat) => {\n      const p = { ...data, cards: data.cards.slice() };\n      if (seat !== g.actor && p.in_hand && !p.folded) {\n        const proposals = []; let hand, accepted = false;\n        for (let i = 0; i \u003c 16; i++) { hand = rng.sample(pool, 2); const weight = range_weight(hand, histories[p.name] || [], models[p.name]); proposals.push([hand, weight]); if (rng.next() \u003c weight) { accepted = true; break; } }\n        if (!accepted) { let pick = rng.next() * proposals.reduce((n, x) => n + x[1], 0); for (const [h, w] of proposals) { pick -= w; if (pick \u003c= 0) { hand = h; break; } } }\n        p.cards = hand; pool = pool.filter(c => !hand.includes(c));\n      } return p;\n    });\n    g.deck = rng.shuffle(pool); return g;\n  }\n  function own_model(style) { const vpip = clamp(.30 - style.tightness + style.curiosity, .12, .65); return { vpip, pfr: vpip * (.35 + style.aggression * .65), aggression: .20 + style.aggression * .70, fold_to_bet: .43 + style.tightness - style.curiosity, fold_to_raise: .48 + style.tightness - style.curiosity, cbet: .4 + style.aggression * .4, fold_to_cbet: .43 + style.tightness, weak_bet: .035 + style.bluff * .60, loose_showdown: vpip, size: .4 + style.aggression * .7, confidence: 1, trap: style.label === 'ТРИКСТЕР' ? .28 : .07 }; }\n  function future_action(g, root, models, style, rng, raises) {\n    const seat = g.actor, p = g.players[seat], m = seat === root ? own_model(style) : models[p.name], o = g.options(), call = o.call, opponents = g.contenders.length - 1;\n    const ceiling = p.total + call, pot = Math.max(g.bb, g.players.reduce((n, q) => n + Math.min(q.total, ceiling), 0) + call), odds = call / Math.max(1, pot);\n    let [strength, draw] = features(p.cards, g.board); strength **= 1 + .42 * Math.max(0, opponents - 1); let value;\n    if (!g.street) { const quality = preflop_quality(p.cards), required = .57 + .35 * Math.min(.8, odds) + .28 * (m.fold_to_raise - .4) - .20 * Math.max(0, m.vpip - .4); if (call && quality \u003c required && (g.current_bet > g.bb || quality \u003c .78 - .42 * m.vpip)) return ['fold', null]; value = quality > .86 - .38 * m.vpip; }\n    else { const foldRate = g.street === 1 && g._plan_aggressor === g._plan_preflop && g._plan_preflop ? m.fold_to_cbet : m.fold_to_bet; let required = odds + .07 + (foldRate - .4) * .45; if (g._plan_aggressor && g._plan_aggressor !== p.name) required -= Math.max(0, models[g._plan_aggressor].weak_bet - .12) * .15; if (call / Math.max(1, p.stack) > .4) required += .03; if (call && strength + draw * .60 \u003c required) return ['fold', null]; value = strength > Math.max(.53, 1 / (opponents + 1) + .20); }\n    if (o.can_raise && raises \u003c 2) {\n      const frequency = g.street === 1 && p.name === g._plan_preflop && !call ? m.cbet : m.aggression;\n      if ((value && rng.next() \u003c frequency * (1 - (m.trap ?? .10))) || (draw > .15 && rng.next() \u003c m.aggression * .30) || (!call && rng.next() \u003c m.weak_bet / Math.max(1, opponents ** 1.5))) {\n        let target = p.committed + call + Math.floor(pot * clamp(m.size, .3, 1.5)); if (!g.street) target = Math.max(target, Math.floor(g.bb * (2.3 + m.aggression))); target = clamp(target, o.min_to, o.max_to); if (target > o.max_to * .8 && strength > .78) target = o.max_to; return ['raise', target];\n      }\n    } return ['call', null];\n  }\n  function rollout(world, action, root, models, style, seed) {\n    const g = Object.assign(new Game(1, 2000, null, false), world, { players: world.players.map(p => ({ ...p })), board: world.board.slice(), deck: world.deck.slice(), pending: new Set(world.pending), results: [], pot_results: [], winners: new Set() });\n    const before = g.players[root].stack, rng = new Random(seed), raises = { [g.street]: Number(action[0] === 'raise') }; let maxStreet = g.street, steps = 0;\n    const apply = choice => { if (choice[0] === 'raise') { g._plan_aggressor = g.players[g.actor].name; if (!g.street) g._plan_preflop = g._plan_aggressor; } const old = g.street; g.act(...choice); if (g.street !== old) g._plan_aggressor = null; maxStreet = Math.max(maxStreet, g.street); };\n    apply(action);\n    while (!g.done && !g.players[root].folded) { const choice = steps \u003c 80 ? future_action(g, root, models, style, rng, raises[g.street] || 0) : ['call', null], street = g.street; apply(choice); if (choice[0] === 'raise') raises[street] = (raises[street] || 0) + 1; if (++steps > 120) throw Error('Планирование не завершилось'); }\n    return [g.players[root].stack - before, maxStreet, steps];\n  }\n  function candidate_actions(g, style) {\n    const o = g.options(), p = g.players[g.actor], actions = [['call', null]]; if (o.call) actions.unshift(['fold', null]);\n    if (o.can_raise) { const pot = g.pot + o.call, targets = [.33 + style.aggression * .15, .65 + style.aggression * .25, 1 + style.aggression * .30].map(fraction => { let t = p.committed + o.call + Math.round(pot * fraction); if (!g.street && g.current_bet \u003c= g.bb) t = Math.max(t, Math.round(g.bb * (2.2 + fraction))); return clamp(t, o.min_to, o.max_to); }); targets.push(o.max_to); [...new Set(targets)].sort((a, b) => a - b).forEach(t => actions.push(['raise', t])); } return actions;\n  }\n  function prepare(game, memory, samples = 48, seed) {\n    const snapshot = public_snapshot(game), models = {}, histories = {}, aggressive = [];\n    for (const p of game.players) { models[p.name] = memory.model(p.name); const trace = memory.actions(p.name); aggressive.push(...trace.filter(a => ['raise', 'bet'].includes(a.action))); const recent = {}; for (const a of trace) if (a.action !== 'check' || !recent[a.street]) recent[a.street] = a; histories[p.name] = Object.values(recent); }\n    for (const [field, street] of [['_plan_preflop', 0], ['_plan_aggressor', game.street]]) snapshot[field] = aggressive.filter(a => a.street === street).sort((a, b) => b.seq - a.seq)[0]?.name || null;\n    return { snapshot, models, histories, samples, seed: seed ?? Math.floor(Math.random() * 4294967296) };\n  }\n  function* planning(input) {\n    const { snapshot, models, histories } = input, samples = Math.max(1, input.samples), rng = new Random(input.seed), root = snapshot.actor, style = STYLES[snapshot.players[root].style];\n    const game = new Game(1, 2000, null, false); Object.assign(game, snapshot); game.pending = new Set(snapshot.pending);\n    const actions = candidate_actions(game, style), totals = actions.map(() => [0, 0]); let maxStreet = game.street, steps = 0;\n    for (let n = 0; n \u003c samples; n++) { const world = make_world(snapshot, models, histories, rng), seed = rng.int(4294967296); actions.forEach((action, i) => { const [profit, reached, count] = rollout(world, action, root, models, style, seed); totals[i][0] += profit; totals[i][1] += profit * profit; maxStreet = Math.max(maxStreet, reached); steps += count; }); yield n; }\n    const opponents = snapshot.players.filter((p, i) => i !== root && p.in_hand && !p.folded).map(p => models[p.name]), folds = opponents.reduce((n, m) => n + m.fold_to_raise, 0) / Math.max(1, opponents.length), threshold = .70 + style.tightness * .60 - style.curiosity * .50 - clamp((folds - .45) * .15, -.06, .06), quality = preflop_quality(snapshot.players[root].cards), rootCall = game.options().call;\n    const rows = actions.map((action, i) => { const [total, squared] = totals[i], mean = total / samples, variance = Math.max(0, squared / samples - mean * mean), risk = (.025 + Math.max(0, style.tightness) * .32 - Math.max(0, -style.tightness) * .12) * Math.sqrt(variance); let taste = action[0] === 'fold' ? 0 : game.bb * (style.curiosity - style.tightness); if (action[0] === 'raise') taste += (style.aggression - .5) * game.bb * .25; const entry = !game.street && action[0] !== 'fold' && (action[0] === 'raise' || rootCall) ? Math.max(0, threshold - quality) * game.bb * 30 : 0; return { action, ev: mean, utility: mean - risk + taste - entry, rank: mean - risk + taste - entry + (rng.next() * .16 - .08) * game.bb }; });\n    let selected = rows.slice().sort((a, b) => b.rank - a.rank)[0];\n    if (style.label === 'ТРИКСТЕР' && selected.action[0] === 'raise') { const passive = rows.find(r => r.action[0] === 'call'); if (passive && passive.utility >= selected.utility - Math.min(game.pot * .06, game.bb) && rng.next() \u003c .20) selected = passive; }\n    return { action: selected.action, report: { samples, candidates: rows, planned_through: maxStreet, rounds: maxStreet - game.street + 1, simulated_actions: steps } };\n  }\n  function plan(input) { const iterator = planning(input); let step; do { step = iterator.next(); } while (!step.done); return step.value; }\n  async function planAsync(input, cancelled = () => false) { const iterator = planning(input); let step; do { if (cancelled()) return null; step = iterator.next(); if (!step.done) await new Promise(r => setTimeout(r, 0)); } while (!step.done); return step.value; }\n  Object.assign(P, { PRIORS, STYLES, preflop_quality, features, MemoryBook, public_snapshot, range_weight, make_world, candidate_actions, prepare, plan, planAsync });\n})(globalThis.Poker ||= {});\nif (typeof module !== 'undefined') module.exports = globalThis.Poker;\n\n;\n\nonmessage = ({ data }) => {\n  try { postMessage({ id: data.id, ...Poker.plan(data.input) }); }\n  catch (error) { postMessage({ id: data.id, error: error.message }); }\n};\n"</script>
+<script>
+// engine.js
+/* No-limit Hold’em. Pure JavaScript; no browser, UI or AI dependencies. */
+(function (P) {
+  'use strict';
+  const RANKS = '23456789TJQKA';
+  const HAND_NAMES = ['Старшая карта', 'Пара', 'Две пары', 'Тройка', 'Стрит', 'Флеш', 'Фулл-хаус', 'Каре', 'Стрит-флеш'];
+  const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+  const compare = (a, b) => { for (let i = 0; i < Math.max(a.length, b.length); i++) { const d = (a[i] || 0) - (b[i] || 0); if (d) return d; } return 0; };
+  class Random {
+    constructor(seed = (Date.now() ^ Math.random() * 4294967296)) { this.state = seed >>> 0; }
+    next() { let t = this.state = (this.state + 0x6D2B79F5) >>> 0; t = Math.imul(t ^ t >>> 15, t | 1); t ^= t + Math.imul(t ^ t >>> 7, t | 61); return ((t ^ t >>> 14) >>> 0) / 4294967296; }
+    int(n) { return Math.floor(this.next() * n); }
+    sample(pool, n) { const copy = pool.slice(); for (let i = 0; i < n; i++) { const j = i + this.int(copy.length - i); [copy[i], copy[j]] = [copy[j], copy[i]]; } return copy.slice(0, n); }
+    shuffle(pool) { for (let i = pool.length - 1; i > 0; i--) { const j = this.int(i + 1); [pool[i], pool[j]] = [pool[j], pool[i]]; } return pool; }
+  }
+  function evaluate(cards) {
+    const counts = new Map();
+    for (const c of cards) { const r = (c >> 2) + 2; counts.set(r, (counts.get(r) || 0) + 1); }
+    const ranks = [...counts.keys()].sort((a, b) => b - a);
+    function straight(values) { const s = new Set(values); if (s.has(14)) s.add(1); for (let high = 14; high >= 5; high--) { let ok = true; for (let r = high - 4; r <= high; r++) if (!s.has(r)) ok = false; if (ok) return high; } return 0; }
+    let flush = null;
+    for (let suit = 0; suit < 4; suit++) { const suited = cards.filter(c => c % 4 === suit).map(c => (c >> 2) + 2).sort((a, b) => b - a); if (suited.length >= 5) { flush = suited; const high = straight(suited); if (high) return [8, high]; break; } }
+    const quads = ranks.filter(r => counts.get(r) === 4), trips = ranks.filter(r => counts.get(r) >= 3), pairs = ranks.filter(r => counts.get(r) >= 2);
+    if (quads.length) return [7, quads[0], ranks.find(r => r !== quads[0])];
+    if (trips.length && pairs.length > 1) return [6, trips[0], pairs.find(r => r !== trips[0])];
+    if (flush) return [5, ...flush.slice(0, 5)];
+    const high = straight(ranks); if (high) return [4, high];
+    if (trips.length) return [3, trips[0], ...ranks.filter(r => r !== trips[0]).slice(0, 2)];
+    if (pairs.length >= 2) return [2, ...pairs.slice(0, 2), ranks.find(r => !pairs.slice(0, 2).includes(r))];
+    if (pairs.length) return [1, pairs[0], ...ranks.filter(r => r !== pairs[0]).slice(0, 3)];
+    return [0, ...ranks.slice(0, 5)];
+  }
+  function best_five(cards) {
+    let best = null, result = [];
+    for (let a = 0; a < cards.length - 4; a++) for (let b = a + 1; b < cards.length - 3; b++) for (let c = b + 1; c < cards.length - 2; c++) for (let d = c + 1; d < cards.length - 1; d++) for (let e = d + 1; e < cards.length; e++) { const hand = [cards[a], cards[b], cards[c], cards[d], cards[e]], score = evaluate(hand); if (!best || compare(score, best) > 0) { best = score; result = hand; } }
+    const counts = new Map(); for (const c of result) counts.set(c >> 2, (counts.get(c >> 2) || 0) + 1);
+    return result.sort((a, b) => { if ([4, 8].includes(best[0])) return ((b >> 2) === 12 && best[1] === 5 ? -1 : b >> 2) - ((a >> 2) === 12 && best[1] === 5 ? -1 : a >> 2); return counts.get(b >> 2) - counts.get(a >> 2) || (b >> 2) - (a >> 2); });
+  }
+  function describe_hand(score) {
+    const plural = ['', '', 'двоек', 'троек', 'четвёрок', 'пятёрок', 'шестёрок', 'семёрок', 'восьмёрок', 'девяток', 'десяток', 'валетов', 'дам', 'королей', 'тузов'];
+    const names = ['', '', 'двойка', 'тройка', 'четвёрка', 'пятёрка', 'шестёрка', 'семёрка', 'восьмёрка', 'девятка', 'десятка', 'валет', 'дама', 'король', 'туз'];
+    const groups = ['', '', 'двойки', 'тройки', 'четвёрки', 'пятёрки', 'шестёрки', 'семёрки', 'восьмёрки', 'девятки', 'десятки', 'валеты', 'дамы', 'короли', 'тузы'];
+    const [category, high] = score, kickers = v => v.map(r => RANKS[r - 2]).join(' ');
+    if (!category) return 'Старшая карта: ' + names[high];
+    if ([1, 3, 7].includes(category)) return `${HAND_NAMES[category]} ${plural[high]} · ${category === 7 ? 'кикер' : 'кикеры'} ${kickers(score.slice(2))}`;
+    if (category === 2) return `Две пары: ${groups[high]} и ${groups[score[2]]} · кикер ${kickers(score.slice(3))}`;
+    if (category === 6) return `Фулл-хаус: ${groups[high]} и ${groups[score[2]]}`;
+    if (category === 8 && high === 14) return 'Роял-флеш';
+    return `${HAND_NAMES[category]} · старшая ${names[high]}`;
+  }
+  function player(name, style, stack = 2000) { return { name, style, stack, cards: [], committed: 0, total: 0, folded: false, in_hand: false, acted_at: null, last: '', hands: 0, voluntary: 0, raises: 0 }; }
+  const canAct = p => p.in_hand && !p.folded && p.stack > 0;
+  class Game {
+    static STREETS = ['ПРЕФЛОП', 'ФЛОП', 'ТЁРН', 'РИВЕР'];
+    constructor(seed, starting_stack = 2000, blind_levels = null, record_events = true) {
+      this.rng = new Random(seed); this.players = [['ВЫ', 'human'], ['СКАЛА', 'rock'], ['ЛИСА', 'fox'], ['ШТОРМ', 'storm'], ['АКУЛА', 'shark']].map(([n, s]) => player(n, s, starting_stack));
+      Object.assign(this, { button: -1, hand_no: 0, board: [], deck: [], street: 0, current_bet: 0, min_raise: 20, actor: null, pending: new Set(), done: true, log: [], results: [], pot_results: [], revealed: false, winners: new Set(), sb: 10, bb: 20, small: null, big: null, blind_levels: blind_levels || [20, 30, 50, 80, 120, 200, 300, 500, 800, 1200], record_events, simulation: false, public_events: [], _event_seq: 0 });
+    }
+    event(kind, data = {}) { if (this.record_events) { this.public_events.push({ seq: ++this._event_seq, kind, hand: this.hand_no, street: this.street, ...data }); if (this.public_events.length > 2048) this.public_events.shift(); } }
+    get pot() { return this.players.reduce((n, p) => n + p.total, 0); }
+    get alive() { return this.players.flatMap((p, i) => p.stack > 0 ? [i] : []); }
+    get contenders() { return this.players.flatMap((p, i) => p.in_hand && !p.folded ? [i] : []); }
+    get tournament_over() { return this.done && (!this.players[0].stack || this.alive.length < 2); }
+    say(text) { if (this.record_events) { this.log.push(text); this.log = this.log.slice(-100); } }
+    next_seat(seat, seats) { for (let offset = 1; offset <= this.players.length; offset++) { const candidate = (seat + offset) % this.players.length; if (seats.has ? seats.has(candidate) : seats.includes(candidate)) return candidate; } return null; }
+    _pay(seat, amount) { const p = this.players[seat]; amount = Math.min(p.stack, Math.max(0, amount)); p.stack -= amount; p.committed += amount; p.total += amount; return amount; }
+    start_hand() {
+      if (!this.done || this.tournament_over) return false;
+      this.hand_no++; this.bb = this.blind_levels[Math.min(Math.floor((this.hand_no - 1) / 10), this.blind_levels.length - 1)]; this.sb = Math.floor(this.bb / 2);
+      const seats = this.alive; this.button = this.next_seat(this.button, seats); this.small = seats.length === 2 ? this.button : this.next_seat(this.button, seats); this.big = this.next_seat(this.small, seats);
+      Object.assign(this, { board: [], deck: this.rng.shuffle(Array.from({ length: 52 }, (_, i) => i)), street: 0, done: false, results: [], pot_results: [], winners: new Set(), revealed: false, log: [] });
+      this.players.forEach((p, i) => { Object.assign(p, { in_hand: seats.includes(i), folded: false, committed: 0, total: 0, acted_at: null, last: '' }); p.cards = p.in_hand ? [this.deck.pop(), this.deck.pop()] : []; if (p.in_hand) p.hands++; });
+      this._pay(this.small, this.sb); this._pay(this.big, this.bb); this.players[this.small].last = 'малый блайнд'; this.players[this.big].last = 'большой блайнд';
+      this.current_bet = Math.max(...this.players.map(p => p.committed)); this.min_raise = this.bb; this.pending = new Set(this.players.flatMap((p, i) => canAct(p) ? [i] : []));
+      this.event('hand', { players: seats.map(seat => ({ seat, name: this.players[seat].name })), button: this.button, bb: this.bb }); this._progress(this.big); return true;
+    }
+    options(seat = this.actor) {
+      if (seat === null) return {};
+      const p = this.players[seat], call = Math.min(p.stack, Math.max(0, this.current_bet - p.committed)), max_to = p.committed + p.stack;
+      const reopened = p.acted_at === null || this.current_bet - p.acted_at >= this.min_raise;
+      const can_raise = reopened && this.players.some((q, i) => i !== seat && canAct(q)) && max_to > this.current_bet;
+      const full_min_to = Math.max(this.bb, this.current_bet + this.min_raise);
+      return { call, min_to: Math.min(full_min_to, max_to), max_to, can_raise, full_min_to };
+    }
+    act(action, amount = null) {
+      if (this.done || this.actor === null) throw Error('Сейчас нет хода');
+      const seat = this.actor, p = this.players[seat], opts = this.options(), old_bet = this.current_bet;
+      const old_total = p.total, old_stack = p.stack, pot_before = this.pot, facing = Math.max(0, old_bet - p.committed);
+      if (action === 'fold') { p.folded = true; p.last = 'пас'; }
+      else if (action === 'call') { const paid = this._pay(seat, opts.call); p.last = paid ? `колл ${paid}` : 'чек'; if (paid && !this.street) p.voluntary += Number(p.acted_at === null); }
+      else if (action === 'raise') {
+        if (!opts.can_raise) throw Error('Повышение сейчас недоступно');
+        if (!Number.isInteger(amount) || amount < opts.min_to || amount > opts.max_to) throw Error(`Допустимо от ${opts.min_to} до ${opts.max_to}`);
+        this._pay(seat, amount - p.committed); this.current_bet = p.committed;
+        const increase = this.current_bet - old_bet; if (increase >= this.min_raise) this.min_raise = increase;
+        p.last = (old_bet ? 'рейз до ' : 'ставка ') + amount; p.raises++; if (!this.street) p.voluntary += Number(p.acted_at === null);
+        this.players.forEach((q, i) => { if (i !== seat && canAct(q) && q.committed < this.current_bet) this.pending.add(i); });
+      } else throw Error('Неизвестное действие');
+      p.acted_at = this.current_bet; if (!p.stack && !p.folded) p.last += ' · ALL-IN'; this.say(p.name + ': ' + p.last);
+      this.event('action', { seat, name: p.name, action: action === 'raise' && !old_bet ? 'bet' : action === 'call' && !opts.call ? 'check' : action, paid: p.total - old_total, facing, facing_bet: facing > 0 && (this.street > 0 || old_bet > this.bb), can_raise: opts.can_raise, pot: pot_before, stack: old_stack, total: p.total, committed: p.committed, board: this.board.slice() });
+      this.pending.delete(seat); this._progress(seat);
+    }
+    _progress(after) {
+      while (!this.done) {
+        const contenders = this.contenders;
+        if (contenders.length === 1) { const winner = contenders[0], amount = this.pot; this.players[winner].stack += amount; this.results = [`${this.players[winner].name} забирает ${amount} — все сбросили`]; this.pot_results = [{ label: 'Банк', amount, payouts: { [winner]: amount }, rank: [], best_cards: {}, reason: 'fold' }]; this.winners = new Set([winner]); this._finish(); return; }
+        this.pending = new Set([...this.pending].filter(i => canAct(this.players[i])));
+        const able = contenders.filter(i => canAct(this.players[i]));
+        if (able.length === 1 && this.players[able[0]].committed >= this.current_bet) this.pending.clear();
+        if (this.pending.size) { this.actor = this.next_seat(after, this.pending); return; }
+        if (this.street === 3) { this._showdown(); return; }
+        this.street++; this.deck.pop(); for (let k = 0; k < (this.street === 1 ? 3 : 1); k++) this.board.push(this.deck.pop());
+        this.event('street', { board: this.board.slice() }); this.current_bet = 0; this.min_raise = this.bb;
+        this.players.forEach(p => { p.committed = 0; p.acted_at = null; if (canAct(p)) p.last = ''; }); this.pending = new Set(able.length > 1 ? able : []); after = this.button;
+      }
+    }
+    _showdown() {
+      this.revealed = true; const scores = new Map(this.contenders.map(i => [i, evaluate([...this.players[i].cards, ...this.board])]));
+      this.event('showdown', { board: this.board.slice(), hands: this.contenders.map(i => ({ name: this.players[i].name, cards: this.players[i].cards.slice() })) });
+      const levels = [...new Set(this.players.map(p => p.total).filter(Boolean))].sort((a, b) => a - b), payouts = new Map(); let previous = 0;
+      this.results = []; this.pot_results = []; const winning_cards = {};
+      levels.forEach((level, number) => {
+        const contributors = this.players.flatMap((p, i) => p.total >= level ? [i] : []), amount = (level - previous) * contributors.length; previous = level;
+        const eligible = contributors.filter(i => scores.has(i)); if (!eligible.length) throw Error('У банка нет участника');
+        const best = eligible.map(i => scores.get(i)).sort(compare).at(-1);
+        const winners = eligible.filter(i => compare(scores.get(i), best) === 0).sort((a, b) => ((a - this.button - 1 + 5) % 5) - ((b - this.button - 1 + 5) % 5));
+        const share = Math.floor(amount / winners.length), odd = amount % winners.length, shares = {};
+        winners.forEach((i, n) => { shares[i] = share + Number(n < odd); payouts.set(i, (payouts.get(i) || 0) + shares[i]); });
+        if (!this.simulation) {
+          const names = winners.map(i => this.players[i].name).join(', ');
+          if (contributors.length === 1) { this.results.push(`${names}: возврат ${amount}`); this.pot_results.push({ label: 'Возврат', amount, payouts: shares, rank: [], best_cards: {}, reason: 'return' }); }
+          else { const label = number ? `Боковой банк ${number}` : 'Банк'; this.results.push(`${label} ${amount} → ${names} · ${describe_hand(best)}`); const cards = {}; winners.forEach(i => { winning_cards[i] ||= best_five([...this.players[i].cards, ...this.board]); cards[i] = winning_cards[i]; }); this.pot_results.push({ label, amount, payouts: shares, rank: best, best_cards: cards, reason: 'showdown' }); }
+        }
+        if (contributors.length > 1) winners.forEach(i => this.winners.add(i));
+      });
+      payouts.forEach((amount, i) => { this.players[i].stack += amount; }); this._finish();
+    }
+    _finish() { this.done = true; this.actor = null; this.pending.clear(); this.event('end'); this.results.forEach(r => this.say(r)); }
+    serialize() { const data = { ...this, pending: [...this.pending], winners: [...this.winners], rng: this.rng.state }; return data; }
+    static restore(data) { data = structuredClone(data); const g = Object.assign(new Game(1), data); g.rng = new Random(data.rng); g.pending = new Set(data.pending); g.winners = new Set(data.winners); return g; }
+  }
+  Object.assign(P, { RANKS, HAND_NAMES, Random, clamp, compare, evaluate, best_five, describe_hand, player, canAct, Game });
+})(globalThis.Poker ||= {});
+if (typeof module !== 'undefined') module.exports = globalThis.Poker;
+
+;
+// ai.js
+/* Opponent evidence and information-set planning, ported from the terminal game. */
+(function (P) {
+  'use strict';
+  const { Game, Random, clamp, evaluate, compare } = P;
+  const PRIORS = { vpip: .38, pfr: .17, aggression: .38, fold_to_bet: .40, fold_to_raise: .45, cbet: .55, fold_to_cbet: .43, weak_bet: .12, loose_showdown: .35 };
+  const STYLES = {
+    rock: { label: 'НИТ', description: 'Ждёт сильную руку', tightness: .16, aggression: .45, bluff: .025, curiosity: -.05 },
+    fox: { label: 'ТРИКСТЕР', description: 'Ловушки и блеф в позиции', tightness: .035, aggression: .65, bluff: .20, curiosity: .025 },
+    storm: { label: 'МАНЬЯК', description: 'Широкий диапазон, крупные ставки', tightness: -.075, aggression: .94, bluff: .27, curiosity: .09 },
+    shark: { label: 'РЕГУЛЯР', description: 'Считает шансы и подстраивается', tightness: .065, aggression: .73, bluff: .095, curiosity: 0 }
+  };
+  function preflop_quality(cards) { const [a, b] = cards.map(c => (c >> 2) + 2).sort((a, b) => b - a); if (a === b) return .45 + a / 26; return Math.min(.96, (a + b) / 36 + (cards[0] % 4 === cards[1] % 4 ? .09 : 0) + (a - b <= 2 ? .07 : a - b >= 5 ? -.06 : 0)); }
+  const featureCache = new Map();
+  function features(hole, board) {
+    const key = hole.slice().sort((a, b) => a - b).join(',') + '/' + board.join(',');
+    if (featureCache.has(key)) return featureCache.get(key);
+    const finish = result => { if (featureCache.size >= 16384) featureCache.clear(); featureCache.set(key, result); return result; };
+    if (!board.length) { const pair = (hole[0] >> 2) === (hole[1] >> 2); return finish([Math.min(.86, .22 + preflop_quality(hole) * .62 + (pair ? .035 : 0)), 0, pair ? 1 : 0]); }
+    const known = [...hole, ...board], score = evaluate(known), category = score[0], boardRanks = board.map(c => (c >> 2) + 2), ownRanks = hole.map(c => (c >> 2) + 2), top = Math.max(...boardRanks);
+    let strength;
+    if (category === 0) strength = .22 + Math.max(...ownRanks) / 65;
+    else if (category === 1) { if (!ownRanks.includes(score[1])) strength = .27 + Math.max(...ownRanks) / 85; else { strength = score[1] >= top ? .70 : score[1] >= boardRanks.slice().sort((a, b) => a - b)[Math.floor(board.length / 2)] ? .53 : .40; strength += (score[2] - 8) * .008; } }
+    else if (category === 2) strength = new Set(boardRanks).size === boardRanks.length ? .80 : .65;
+    else if (category === 3) strength = ownRanks.includes(score[1]) ? .88 : .51 + Math.max(...ownRanks) / 100;
+    else strength = { 4: .91, 5: .95, 6: .985, 7: .997, 8: .999 }[category];
+    if (board.length === 5 && !compare(score, evaluate(board))) strength = category === 8 && score[1] === 14 ? .5 : .43;
+    const outs = new Set();
+    if (board.length < 5 && category < 4) {
+      for (let suit = 0; suit < 4; suit++) if (known.filter(c => c % 4 === suit).length === 4 && hole.some(c => c % 4 === suit)) for (let c = suit; c < 52; c += 4) if (!known.includes(c)) outs.add(c);
+      const ranks = new Set(known.map(c => (c >> 2) + 2)), own = new Set(ownRanks); if (ranks.has(14)) ranks.add(1); if (own.has(14)) own.add(1);
+      for (let high = 5; high <= 14; high++) { const sequence = Array.from({ length: 5 }, (_, i) => high - 4 + i), missing = sequence.filter(r => !ranks.has(r)); if (missing.length === 1 && sequence.some(r => r !== missing[0] && own.has(r))) { const rank = missing[0] === 1 ? 14 : missing[0]; for (let c = (rank - 2) * 4; c < (rank - 1) * 4; c++) if (!known.includes(c)) outs.add(c); } }
+    }
+    const chance = outs.size / Math.max(1, 52 - known.length);
+    return finish([clamp(strength, .05, .999), Math.min(.55, 1 - (1 - chance) ** (5 - board.length)), category]);
+  }
+  class MemoryBook {
+    constructor(data = null) { this.profiles = {}; this.context = null; this.source = null; this.seq = 0; if (data) this.load(data); }
+    profile(name) { return this.profiles[name] ||= { hands: 0, rates: Object.fromEntries(Object.keys(PRIORS).map(k => [k, [0, 0]])), sizes: [0, 0] }; }
+    model(name) { const p = this.profile(name), result = {}; for (const [k, prior] of Object.entries(PRIORS)) result[k] = (p.rates[k][0] + prior * 10) / (p.rates[k][1] + 10); result.size = (p.sizes[0] + .65 * 8) / (p.sizes[1] + 8); result.confidence = p.rates.vpip[1] / (p.rates.vpip[1] + 20); return result; }
+    add(profile, key, yes) { profile.rates[key][0] += Number(yes); profile.rates[key][1]++; }
+    observe(game) { if (this.source !== game) { this.source = game; this.seq = 0; this.context = null; } for (const event of game.public_events) if (event.seq > this.seq) { this.consume(event); this.seq = event.seq; } }
+    consume(e) {
+      if (e.kind === 'hand') { this.context = { names: e.players.map(p => p.name), vpip: new Set(), pfr: new Set(), history: {}, preflop_raiser: null, aggressor: null, aggression_kind: null, flop_bet: false, cbet_seen: false, ended: false }; for (const n of this.context.names) { const p = this.profile(n); p.hands++; Object.values(p.rates).forEach(r => { r[0] *= .992; r[1] *= .992; }); p.sizes = p.sizes.map(n => n * .992); } return; }
+      const c = this.context; if (!c) return;
+      if (e.kind === 'street') { c.aggressor = c.aggression_kind = null; }
+      else if (e.kind === 'action') {
+        const p = this.profile(e.name), aggressive = ['bet', 'raise'].includes(e.action); (c.history[e.name] ||= []).push(e);
+        if (!e.street) { if (e.paid) c.vpip.add(e.name); if (aggressive) { c.pfr.add(e.name); c.preflop_raiser = e.name; } }
+        else if (e.can_raise || e.action === 'check') this.add(p, 'aggression', aggressive);
+        if (e.facing_bet) { this.add(p, 'fold_to_bet', e.action === 'fold'); if (c.aggression_kind === 'raise') this.add(p, 'fold_to_raise', e.action === 'fold'); if (e.street === 1 && c.aggressor === c.preflop_raiser && c.cbet_seen) this.add(p, 'fold_to_cbet', e.action === 'fold'); }
+        if (e.street === 1 && e.name === c.preflop_raiser && !c.flop_bet && !e.facing_bet) { this.add(p, 'cbet', aggressive); c.cbet_seen = aggressive; }
+        if (aggressive) { p.sizes[0] += Math.min(3, Math.max(0, e.paid - e.facing) / Math.max(1, e.pot + e.facing)); p.sizes[1]++; c.aggressor = e.name; c.aggression_kind = e.action; if (e.street === 1) c.flop_bet = true; }
+      } else if (e.kind === 'showdown') {
+        for (const hand of e.hands) { const p = this.profile(hand.name); this.add(p, 'loose_showdown', preflop_quality(hand.cards) < .65); for (const a of c.history[hand.name] || []) if (a.street && ['bet', 'raise'].includes(a.action)) { const [, draw, category] = features(hand.cards, a.board); this.add(p, 'weak_bet', category === 0 && draw < .07); } }
+      } else if (e.kind === 'end' && !c.ended) { for (const n of c.names) { const p = this.profile(n); this.add(p, 'vpip', c.vpip.has(n)); this.add(p, 'pfr', c.pfr.has(n)); } c.ended = true; }
+    }
+    actions(name) { return this.context?.history[name] || []; }
+    export() { return { version: 1, profiles: JSON.parse(JSON.stringify(this.profiles)) }; }
+    load(data) {
+      if (data.version !== 1 || !data.profiles || typeof data.profiles !== 'object') throw Error('Неподдерживаемый формат памяти');
+      const profiles = {};
+      for (const [name, p] of Object.entries(data.profiles)) { if (name.length > 80 || !Number.isInteger(p.hands) || p.hands < 0) throw Error('Некорректная память'); for (const k of Object.keys(PRIORS)) { const r = p.rates?.[k]; if (!Array.isArray(r) || r.length !== 2 || !r.every(Number.isFinite) || r[0] < 0 || r[0] > r[1]) throw Error('Некорректные счётчики памяти'); } if (!Array.isArray(p.sizes) || p.sizes.length !== 2 || !p.sizes.every(n => Number.isFinite(n) && n >= 0)) throw Error('Некорректные размеры ставок'); profiles[name] = structuredClone(p); }
+      this.profiles = profiles;
+    }
+  }
+  function public_snapshot(game) {
+    const state = {}; for (const k of ['actor', 'button', 'small', 'big', 'street', 'current_bet', 'min_raise', 'bb', 'sb', 'hand_no']) state[k] = game[k];
+    state.board = game.board.slice(); state.pending = [...game.pending];
+    state.players = game.players.map((p, i) => ({ ...p, style: i === game.actor ? p.style : 'unknown', cards: i === game.actor ? p.cards.slice() : [] })); return state;
+  }
+  function range_weight(hole, actions, model) {
+    let weight = 1;
+    for (const a of actions) {
+      if (!a.street) { let threshold = a.action === 'raise' ? .92 - model.pfr * .65 : .80 - model.vpip * .45; threshold += (.35 - model.loose_showdown) * .15; weight *= .10 + .90 / (1 + Math.exp(clamp((threshold - preflop_quality(hole)) * 14, -30, 30))); }
+      else { const [s, draw] = features(hole, a.board); if (['raise', 'bet'].includes(a.action)) { const bluff = Math.min(.65, .06 + model.weak_bet * .65 + model.aggression * .12); weight *= bluff + (1 - bluff) * Math.min(1, s + draw * .7) ** (2 - model.aggression); } else if (a.action === 'call') weight *= .18 + .82 * Math.min(1, s + draw); else if (a.action === 'check') weight *= 1 - .30 * model.aggression * s; }
+    }
+    return clamp(weight, .015, 1);
+  }
+  function make_world(snapshot, models, histories, rng) {
+    const g = new Game(1, 2000, null, false); Object.assign(g, snapshot); g.simulation = true; g.done = false; g.board = snapshot.board.slice(); g.pending = new Set(snapshot.pending);
+    let pool = Array.from({ length: 52 }, (_, i) => i).filter(c => !g.board.includes(c) && !snapshot.players[g.actor].cards.includes(c));
+    g.players = snapshot.players.map((data, seat) => {
+      const p = { ...data, cards: data.cards.slice() };
+      if (seat !== g.actor && p.in_hand && !p.folded) {
+        const proposals = []; let hand, accepted = false;
+        for (let i = 0; i < 16; i++) { hand = rng.sample(pool, 2); const weight = range_weight(hand, histories[p.name] || [], models[p.name]); proposals.push([hand, weight]); if (rng.next() < weight) { accepted = true; break; } }
+        if (!accepted) { let pick = rng.next() * proposals.reduce((n, x) => n + x[1], 0); for (const [h, w] of proposals) { pick -= w; if (pick <= 0) { hand = h; break; } } }
+        p.cards = hand; pool = pool.filter(c => !hand.includes(c));
+      } return p;
+    });
+    g.deck = rng.shuffle(pool); return g;
+  }
+  function own_model(style) { const vpip = clamp(.30 - style.tightness + style.curiosity, .12, .65); return { vpip, pfr: vpip * (.35 + style.aggression * .65), aggression: .20 + style.aggression * .70, fold_to_bet: .43 + style.tightness - style.curiosity, fold_to_raise: .48 + style.tightness - style.curiosity, cbet: .4 + style.aggression * .4, fold_to_cbet: .43 + style.tightness, weak_bet: .035 + style.bluff * .60, loose_showdown: vpip, size: .4 + style.aggression * .7, confidence: 1, trap: style.label === 'ТРИКСТЕР' ? .28 : .07 }; }
+  function future_action(g, root, models, style, rng, raises) {
+    const seat = g.actor, p = g.players[seat], m = seat === root ? own_model(style) : models[p.name], o = g.options(), call = o.call, opponents = g.contenders.length - 1;
+    const ceiling = p.total + call, pot = Math.max(g.bb, g.players.reduce((n, q) => n + Math.min(q.total, ceiling), 0) + call), odds = call / Math.max(1, pot);
+    let [strength, draw] = features(p.cards, g.board); strength **= 1 + .42 * Math.max(0, opponents - 1); let value;
+    if (!g.street) { const quality = preflop_quality(p.cards), required = .57 + .35 * Math.min(.8, odds) + .28 * (m.fold_to_raise - .4) - .20 * Math.max(0, m.vpip - .4); if (call && quality < required && (g.current_bet > g.bb || quality < .78 - .42 * m.vpip)) return ['fold', null]; value = quality > .86 - .38 * m.vpip; }
+    else { const foldRate = g.street === 1 && g._plan_aggressor === g._plan_preflop && g._plan_preflop ? m.fold_to_cbet : m.fold_to_bet; let required = odds + .07 + (foldRate - .4) * .45; if (g._plan_aggressor && g._plan_aggressor !== p.name) required -= Math.max(0, models[g._plan_aggressor].weak_bet - .12) * .15; if (call / Math.max(1, p.stack) > .4) required += .03; if (call && strength + draw * .60 < required) return ['fold', null]; value = strength > Math.max(.53, 1 / (opponents + 1) + .20); }
+    if (o.can_raise && raises < 2) {
+      const frequency = g.street === 1 && p.name === g._plan_preflop && !call ? m.cbet : m.aggression;
+      if ((value && rng.next() < frequency * (1 - (m.trap ?? .10))) || (draw > .15 && rng.next() < m.aggression * .30) || (!call && rng.next() < m.weak_bet / Math.max(1, opponents ** 1.5))) {
+        let target = p.committed + call + Math.floor(pot * clamp(m.size, .3, 1.5)); if (!g.street) target = Math.max(target, Math.floor(g.bb * (2.3 + m.aggression))); target = clamp(target, o.min_to, o.max_to); if (target > o.max_to * .8 && strength > .78) target = o.max_to; return ['raise', target];
+      }
+    } return ['call', null];
+  }
+  function rollout(world, action, root, models, style, seed) {
+    const g = Object.assign(new Game(1, 2000, null, false), world, { players: world.players.map(p => ({ ...p })), board: world.board.slice(), deck: world.deck.slice(), pending: new Set(world.pending), results: [], pot_results: [], winners: new Set() });
+    const before = g.players[root].stack, rng = new Random(seed), raises = { [g.street]: Number(action[0] === 'raise') }; let maxStreet = g.street, steps = 0;
+    const apply = choice => { if (choice[0] === 'raise') { g._plan_aggressor = g.players[g.actor].name; if (!g.street) g._plan_preflop = g._plan_aggressor; } const old = g.street; g.act(...choice); if (g.street !== old) g._plan_aggressor = null; maxStreet = Math.max(maxStreet, g.street); };
+    apply(action);
+    while (!g.done && !g.players[root].folded) { const choice = steps < 80 ? future_action(g, root, models, style, rng, raises[g.street] || 0) : ['call', null], street = g.street; apply(choice); if (choice[0] === 'raise') raises[street] = (raises[street] || 0) + 1; if (++steps > 120) throw Error('Планирование не завершилось'); }
+    return [g.players[root].stack - before, maxStreet, steps];
+  }
+  function candidate_actions(g, style) {
+    const o = g.options(), p = g.players[g.actor], actions = [['call', null]]; if (o.call) actions.unshift(['fold', null]);
+    if (o.can_raise) { const pot = g.pot + o.call, targets = [.33 + style.aggression * .15, .65 + style.aggression * .25, 1 + style.aggression * .30].map(fraction => { let t = p.committed + o.call + Math.round(pot * fraction); if (!g.street && g.current_bet <= g.bb) t = Math.max(t, Math.round(g.bb * (2.2 + fraction))); return clamp(t, o.min_to, o.max_to); }); targets.push(o.max_to); [...new Set(targets)].sort((a, b) => a - b).forEach(t => actions.push(['raise', t])); } return actions;
+  }
+  function prepare(game, memory, samples = 48, seed) {
+    const snapshot = public_snapshot(game), models = {}, histories = {}, aggressive = [];
+    for (const p of game.players) { models[p.name] = memory.model(p.name); const trace = memory.actions(p.name); aggressive.push(...trace.filter(a => ['raise', 'bet'].includes(a.action))); const recent = {}; for (const a of trace) if (a.action !== 'check' || !recent[a.street]) recent[a.street] = a; histories[p.name] = Object.values(recent); }
+    for (const [field, street] of [['_plan_preflop', 0], ['_plan_aggressor', game.street]]) snapshot[field] = aggressive.filter(a => a.street === street).sort((a, b) => b.seq - a.seq)[0]?.name || null;
+    return { snapshot, models, histories, samples, seed: seed ?? Math.floor(Math.random() * 4294967296) };
+  }
+  function* planning(input) {
+    const { snapshot, models, histories } = input, samples = Math.max(1, input.samples), rng = new Random(input.seed), root = snapshot.actor, style = STYLES[snapshot.players[root].style];
+    const game = new Game(1, 2000, null, false); Object.assign(game, snapshot); game.pending = new Set(snapshot.pending);
+    const actions = candidate_actions(game, style), totals = actions.map(() => [0, 0]); let maxStreet = game.street, steps = 0;
+    for (let n = 0; n < samples; n++) { const world = make_world(snapshot, models, histories, rng), seed = rng.int(4294967296); actions.forEach((action, i) => { const [profit, reached, count] = rollout(world, action, root, models, style, seed); totals[i][0] += profit; totals[i][1] += profit * profit; maxStreet = Math.max(maxStreet, reached); steps += count; }); yield n; }
+    const opponents = snapshot.players.filter((p, i) => i !== root && p.in_hand && !p.folded).map(p => models[p.name]), folds = opponents.reduce((n, m) => n + m.fold_to_raise, 0) / Math.max(1, opponents.length), threshold = .70 + style.tightness * .60 - style.curiosity * .50 - clamp((folds - .45) * .15, -.06, .06), quality = preflop_quality(snapshot.players[root].cards), rootCall = game.options().call;
+    const rows = actions.map((action, i) => { const [total, squared] = totals[i], mean = total / samples, variance = Math.max(0, squared / samples - mean * mean), risk = (.025 + Math.max(0, style.tightness) * .32 - Math.max(0, -style.tightness) * .12) * Math.sqrt(variance); let taste = action[0] === 'fold' ? 0 : game.bb * (style.curiosity - style.tightness); if (action[0] === 'raise') taste += (style.aggression - .5) * game.bb * .25; const entry = !game.street && action[0] !== 'fold' && (action[0] === 'raise' || rootCall) ? Math.max(0, threshold - quality) * game.bb * 30 : 0; return { action, ev: mean, utility: mean - risk + taste - entry, rank: mean - risk + taste - entry + (rng.next() * .16 - .08) * game.bb }; });
+    let selected = rows.slice().sort((a, b) => b.rank - a.rank)[0];
+    if (style.label === 'ТРИКСТЕР' && selected.action[0] === 'raise') { const passive = rows.find(r => r.action[0] === 'call'); if (passive && passive.utility >= selected.utility - Math.min(game.pot * .06, game.bb) && rng.next() < .20) selected = passive; }
+    return { action: selected.action, report: { samples, candidates: rows, planned_through: maxStreet, rounds: maxStreet - game.street + 1, simulated_actions: steps } };
+  }
+  function plan(input) { const iterator = planning(input); let step; do { step = iterator.next(); } while (!step.done); return step.value; }
+  async function planAsync(input, cancelled = () => false) { const iterator = planning(input); let step; do { if (cancelled()) return null; step = iterator.next(); if (!step.done) await new Promise(r => setTimeout(r, 0)); } while (!step.done); return step.value; }
+  Object.assign(P, { PRIORS, STYLES, preflop_quality, features, MemoryBook, public_snapshot, range_weight, make_world, candidate_actions, prepare, plan, planAsync });
+})(globalThis.Poker ||= {});
+if (typeof module !== 'undefined') module.exports = globalThis.Poker;
+
+;
+// terminal.js
+/* Every visible mark occupies exactly one cell. No proportional text or UI layers. */
+(function (P) {
+  'use strict';
+  const CELL = Object.freeze({ width: 10, height: 20, fontSize: 16, font: '16px Menlo, Consolas, "DejaVu Sans Mono", monospace' });
+  const COLORS = Object.freeze({ bg: '#11151a', text: '#dce2e8', muted: '#89949f', dim: '#39434d', red: '#e3787e', blue: '#69aff5', orange: '#efa65d' });
+  class Terminal {
+    constructor(cols, rows) { this.cols = cols; this.rows = rows; this.cells = Array.from({ length: rows }, () => Array.from({ length: cols }, () => ({ char: ' ', color: COLORS.text }))); }
+    put(col, row, value, color = COLORS.text, limit = Infinity) {
+      if (!Number.isInteger(col) || !Number.isInteger(row)) throw Error('Terminal coordinates must be integer cells');
+      let count = 0;
+      for (const char of String(value)) { if (count >= limit) break; const x = col + count++; if (row >= 0 && row < this.rows && x >= 0 && x < this.cols) this.cells[row][x] = { char, color }; }
+    }
+    center(col, row, width, value, color = COLORS.text) { const chars = Array.from(String(value)).slice(0, width); this.put(col + Math.floor((width - chars.length) / 2), row, chars.join(''), color); }
+    wrap(col, row, width, value, color = COLORS.text, maxRows = Infinity) { const lines = P.wrapCells(value, width); lines.slice(0, maxRows).forEach((line, i) => this.put(col, row + i, line, color)); return Math.min(lines.length, maxRows); }
+    card(col, row, card, { compact = true, hidden = false, ghost = false, folded = false } = {}) {
+      const rows = compact ? ['╭──╮', '│  │', '╰──╯'] : ['╭────╮', '│    │', '│    │', '│    │', '╰────╯'];
+      const edge = ghost || folded ? COLORS.dim : COLORS.muted;
+      rows.forEach((line, i) => this.put(col, row + i, line, edge));
+      if (hidden) { (compact ? ['╱╲'] : ['╱╲╱╲', '╲╱╲╱', '╱╲╱╲']).forEach((line, i) => this.put(col + 1, row + 1 + i, line, COLORS.dim)); }
+      else if (card !== undefined && card !== null) { const color = folded ? COLORS.dim : [1, 2].includes(card % 4) ? COLORS.red : COLORS.text; this.put(col + 1, row + 1, P.RANKS[card >> 2], color); this.put(col + (compact ? 2 : 3), row + (compact ? 1 : 2), '♣♦♥♠'[card % 4], color); if (!compact) this.put(col + 4, row + 3, P.RANKS[card >> 2], color); }
+    }
+    lines() { return this.cells.map(row => row.map(c => c.char).join('')); }
+    paint(ctx, originX, originY, width, height) {
+      ctx.fillStyle = COLORS.bg; ctx.fillRect(0, 0, width, height);
+      ctx.font = CELL.font; ctx.textAlign = 'left'; ctx.textBaseline = 'alphabetic';
+      this.cells.forEach((row, y) => row.forEach((cell, x) => { if (cell.char === ' ') return; const px = originX + x * CELL.width, py = originY + y * CELL.height; ctx.save(); ctx.beginPath(); ctx.rect(px, py, CELL.width, CELL.height); ctx.clip(); ctx.fillStyle = cell.color; ctx.fillText(cell.char, px, py + 15); ctx.restore(); }));
+    }
+  }
+  function wrapCells(value, width) {
+    if (width < 1) return [];
+    const lines = [];
+    for (const paragraph of String(value).split('\n')) { let line = ''; for (let word of paragraph.split(/\s+/).filter(Boolean)) { if (line && Array.from(line + ' ' + word).length > width) { lines.push(line); line = ''; } while (Array.from(word).length > width) { const chars = Array.from(word); if (line) { lines.push(line); line = ''; } lines.push(chars.slice(0, width).join('')); word = chars.slice(width).join(''); } if (word) line += (line ? ' ' : '') + word; } lines.push(line); }
+    return lines;
+  }
+  function viewportGrid(width, height) { const cols = Math.max(1, Math.floor(width / CELL.width)), rows = Math.max(1, Math.floor(height / CELL.height)); return { cols, rows, originX: Math.floor((width - cols * CELL.width) / 2), originY: Math.floor((height - rows * CELL.height) / 2) }; }
+  Object.assign(P, { CELL, COLORS, Terminal, wrapCells, viewportGrid });
+})(globalThis.Poker ||= {});
+if (typeof module !== 'undefined') module.exports = globalThis.Poker;
+
+;
+// layout.js
+/* Layout is expressed exclusively in integer columns and rows. */
+(function (P) {
+  'use strict';
+  function layout(cols, rows) {
+    const compact = cols < 70 || rows < 34, cardWidth = compact ? 4 : 6, cardRows = compact ? 3 : 5;
+    const actionsRow = rows - 2, statusRow = rows >= 32 ? rows - 4 : null;
+    const slot = (seat, col, row, width) => ({ seat, col, row, width, compact, cardWidth, cardRows });
+    if (cols < 60) {
+      const extra = Math.max(0, rows - 28), half = Math.floor(cols / 2);
+      return { compact, actionsRow, statusRow, seats: [slot(1, 0, 2, half), slot(2, half, 2, cols - half), slot(3, 0, 8 + Math.floor(extra * .22), half), slot(4, half, 8 + Math.floor(extra * .22), cols - half)], board: { col: 0, row: 15 + Math.floor(extra * .43), width: cols, compact, cardWidth, cardRows }, human: slot(0, 0, 20 + Math.floor(extra * .66), cols) };
+    }
+    if (rows < 26) {
+      const side = Math.floor(cols * .25), middle = cols - side * 2, bottom = Math.floor((rows - 2) / 2) + 1;
+      return { compact, actionsRow, statusRow: null, seats: [slot(1, 0, 2, side), slot(2, cols - side, 2, side), slot(3, 0, bottom, side), slot(4, cols - side, bottom, side)], board: { col: side, row: 3, width: middle, compact, cardWidth, cardRows }, human: slot(0, side, bottom, middle) };
+    }
+    const quarter = Math.floor(cols / 4), humanRow = rows - cardRows - 7;
+    return { compact, actionsRow, statusRow, seats: [1, 2, 3, 4].map((seat, i) => slot(seat, quarter * i, 3, i === 3 ? cols - quarter * i : quarter)), board: { col: 0, row: Math.floor((3 + cardRows + 3 + humanRow - cardRows - 2) / 2), width: cols, compact, cardWidth, cardRows }, human: slot(0, 0, humanRow, cols) };
+  }
+  P.layout = layout;
+})(globalThis.Poker ||= {});
+if (typeof module !== 'undefined') module.exports = globalThis.Poker;
+
+;
+// worker-client.js
+/* Source mode loads a file; a single-file build creates the worker from embedded text. */
+(function (P) {
+  'use strict';
+  function createAIWorker({ document = globalThis.document, protocol = globalThis.location?.protocol, Worker = globalThis.Worker, Blob = globalThis.Blob, URL = globalThis.URL } = {}) {
+    if (typeof Worker !== 'function') return null;
+    const embedded = document?.getElementById('poker-worker-source');
+    if (!embedded && protocol === 'file:') return null;
+    let objectURL = null, worker = null;
+    function releaseURL() { if (objectURL !== null) { URL.revokeObjectURL(objectURL); objectURL = null; } }
+    try {
+      const url = embedded ? (objectURL = URL.createObjectURL(new Blob([JSON.parse(embedded.textContent)], { type: 'text/javascript' }))) : 'ai-worker.js';
+      worker = new Worker(url);
+      return { worker, releaseURL, dispose() { try { worker.terminate(); } finally { releaseURL(); } } };
+    } catch (error) { releaseURL(); throw error; }
+  }
+  P.createAIWorker = createAIWorker;
+})(globalThis.Poker ||= {});
+if (typeof module !== 'undefined') module.exports = globalThis.Poker;
+
+;
+// app.js
+/* A terminal emulator on Canvas. All presentation uses one character buffer. */
+(() => {
+  'use strict';
+  const P = Poker, $ = id => document.getElementById(id), canvas = $('table'), ctx = canvas.getContext('2d'), controls = $('controls'), C = P.COLORS;
+  const SESSION = 'midnight.web.session.v1', MEMORY = 'midnight.web.memory.v1', SETTINGS = 'midnight.web.settings.v1';
+  const fmt = n => n.toLocaleString('ru-RU'), cardText = c => P.RANKS[c >> 2] + '♣♦♥♠'[c % 4];
+  let game, memory, settings = { fast: false }, thinking = false, token = 0, timer = null, worker = null, workerHandle = null, request = null, saveError = '';
+  let view = 'table', returnView = 'table', scroll = 0, raiseText = '', raiseError = '', aiError = '', selected = 'call', frame, buttons = [], width = 0, height = 0, grid = P.viewportGrid(0, 0);
+  function restore() {
+    let profiles;
+    try {
+      const raw = localStorage.getItem(MEMORY); profiles = raw ? JSON.parse(raw) : null;
+      settings = { ...settings, ...JSON.parse(localStorage.getItem(SETTINGS) || '{}') };
+      const session = JSON.parse(localStorage.getItem(SESSION) || 'null');
+      if (session?.version === 1) {
+        validateSession(session.game); game = P.Game.restore(session.game); memory = new P.MemoryBook(); memory.observe(game);
+        if (profiles) memory.load(profiles);
+      }
+    } catch { saveError = 'Сохранение недоступно'; }
+    if (!game) { game = new P.Game(); memory = new P.MemoryBook(); if (profiles) { try { memory.load(profiles); } catch { saveError = 'Память не прочитана'; } } game.start_hand(); memory.observe(game); }
+  }
+  function validateSession(d) {
+    if (!d || !Array.isArray(d.players) || d.players.length !== 5 || !Array.isArray(d.board) || !Array.isArray(d.deck) || !Array.isArray(d.pending) || !Array.isArray(d.public_events) || !Array.isArray(d.pot_results) || !Number.isInteger(d.rng) || !Number.isInteger(d.street) || d.street < 0 || d.street > 3) throw Error('Повреждённая партия');
+    if (d.actor !== null && (!Number.isInteger(d.actor) || d.actor < 0 || d.actor > 4)) throw Error('Повреждённый ход');
+    for (const p of d.players) if (![p.stack, p.total, p.committed].every(n => Number.isInteger(n) && n >= 0) || !Array.isArray(p.cards) || typeof p.name !== 'string') throw Error('Повреждённый игрок');
+    const cards = [...d.deck, ...d.board, ...d.players.flatMap(p => p.cards)]; if (cards.some(c => !Number.isInteger(c) || c < 0 || c > 51) || new Set(cards).size !== cards.length) throw Error('Повреждённые карты');
+  }
+  function save() {
+    memory.observe(game);
+    try { localStorage.setItem(SESSION, JSON.stringify({ version: 1, game: game.serialize() })); localStorage.setItem(MEMORY, JSON.stringify(memory.export())); localStorage.setItem(SETTINGS, JSON.stringify(settings)); }
+    catch { saveError = 'Без сохранения'; }
+
+  }
+  function stopWorker() { workerHandle?.dispose(); workerHandle = null; worker = null; }
+  function cancelAI() { token++; clearTimeout(timer); timer = null; stopWorker(); request = null; thinking = false; }
+  function schedule() {
+    if (!tableFits() || view !== 'table' || document.hidden || game.done || game.actor === 0 || thinking || timer) return;
+    const id = token; timer = setTimeout(() => { timer = null; compute(id); }, settings.fast ? 30 : 480);
+  }
+  async function compute(id) {
+    if (id !== token || !tableFits() || view !== 'table' || document.hidden || game.done || game.actor === 0) return;
+    thinking = true; const seat = game.actor; memory.observe(game); const input = P.prepare(game, memory, 48);
+    const apply = result => { if (id !== token || game.actor !== seat || game.done ||  view !== 'table') return; thinking = false; act(...result.action); };
+    if (typeof Worker !== 'undefined') {
+      try {
+        if (!worker) { workerHandle = P.createAIWorker(); worker = workerHandle?.worker; }
+        if (worker) {
+          request = { id, apply };
+          worker.onmessage = ({ data }) => { if (data.id !== id || id !== token) return; workerHandle?.releaseURL(); if (data.error) { failAI(data.error); return; } request = null; apply(data); };
+          worker.onerror = () => { if (id !== token) return; stopWorker(); fallback(); };
+          worker.postMessage({ id, input }); return;
+        }
+      } catch { stopWorker(); }
+    }
+    fallback();
+    async function fallback() { try { const result = await P.planAsync(input, () => id !== token); if (result) apply(result); } catch (e) { failAI(e.message); } }
+  }
+  function tableFits() { return grid.cols >= 28 && grid.rows >= (grid.cols < 60 ? 28 : 18); }
+  function resize() {
+    const r = canvas.getBoundingClientRect(), scale = Math.min(3, devicePixelRatio || 1);
+    width = r.width; height = r.height; grid = P.viewportGrid(width, height);
+    canvas.width = Math.round(width * scale); canvas.height = Math.round(height * scale); ctx.setTransform(scale, 0, 0, scale, 0, 0);
+    Object.assign(canvas.dataset, { columns: grid.cols, rows: grid.rows, cellWidth: P.CELL.width, cellHeight: P.CELL.height, font: P.CELL.font });
+    render(); schedule();
+  }
+  function fit(value, size) { const chars = Array.from(String(value)); return chars.length <= size ? value : chars.slice(0, Math.max(0, size - 1)).join('') + '…'; }
+  function center(row, value, color = C.text) { frame.center(0, row, grid.cols, value, color); }
+  function addButton(key, label, col, row, columns, fn, nav = true) {
+    const active = selected === key, value = (active ? '› ' : '') + label;
+    frame.center(col, row, columns, fit(value, columns));
+    buttons.push({ key, label, col, row, columns, fn, nav, type: 'button' });
+  }
+  function paintOnly() { render(false); }
+  function syncControls() {
+    const focused = document.activeElement?.dataset?.key;
+    controls.replaceChildren(); controls.setAttribute('role', view === 'table' ? 'group' : 'dialog'); controls.setAttribute('aria-label', view === 'table' ? 'Управление покером' : titles[view]);
+    for (const b of buttons) {
+      const e = document.createElement(b.type === 'button' ? 'button' : 'input'); e.dataset.key = b.key; e.setAttribute('aria-label', b.label);
+      const x = grid.originX + b.col * P.CELL.width, y = grid.originY + b.row * P.CELL.height;
+      Object.assign(e.style, { left: `${x}px`, top: `${Math.max(0, y - 10)}px`, width: `${b.columns * P.CELL.width}px`, height: '44px' });
+      if (b.type === 'button') { e.textContent = b.label; e.onclick = b.fn; }
+      else if (b.type === 'number') {
+        e.type = 'text'; e.inputMode = 'numeric'; e.autocomplete = 'off'; e.value = raiseText;
+        e.oninput = () => { raiseText = e.value; validateRaise(); paintOnly(); };
+        e.onkeydown = event => { if (event.key === 'Enter') { event.preventDefault(); submitRaise(); } };
+      } else {
+        const o = game.options(); e.type = 'range'; e.min = o.min_to; e.max = o.max_to; e.step = '1'; e.value = validRaise() ? raiseText : o.min_to;
+        e.oninput = () => { raiseText = e.value; raiseError = ''; const input = controls.querySelector('[data-key=amount]'); if (input) input.value = raiseText; paintOnly(); };
+      }
+      e.onfocus = () => { selected = b.key; paintOnly(); };
+      controls.append(e);
+      if (focused === b.key) e.focus({ preventScroll: true });
+    }
+  }
+  function payout(seat) { const wins = game.pot_results.filter(r => r.reason !== 'return' && Object.hasOwn(r.payouts, seat)), refund = game.pot_results.filter(r => r.reason === 'return').reduce((n, r) => n + (r.payouts[seat] || 0), 0); return { wins, refund, received: wins.reduce((n, r) => n + r.payouts[seat], 0) }; }
+  function handLabel(r) {
+    if (r.reason === 'fold') return 'Все сбросили';
+    const [cat, high, other] = r.rank, rank = n => P.RANKS[n - 2];
+    if (cat === 8 && high === 14) return 'Роял-флеш';
+    if (cat === 0) return 'Старшая ' + rank(high);
+    if (cat === 2) return `Две пары ${rank(high)}/${rank(other)}`;
+    if (cat === 6) return `Фулл-хаус ${rank(high)}/${rank(other)}`;
+    return `${P.HAND_NAMES[cat]} ${rank(high)}`;
+  }
+  function seat(slot) {
+    const p = game.players[slot.seat], active = !game.done && game.actor === slot.seat, result = payout(slot.seat);
+    const title = `${p.name} ${p.stack || p.in_hand ? fmt(p.stack) : 'выбыл'}`, start = slot.col + Math.floor((slot.width - Array.from(fit(title, slot.width - 2)).length) / 2);
+    frame.put(start, slot.row, fit(title, slot.width - 2)); if (active) frame.put(Math.max(slot.col, start - 2), slot.row, '●', C.blue);
+    const cardCol = slot.col + Math.floor((slot.width - slot.cardWidth * 2 - 1) / 2);
+    const show = slot.seat === 0 || game.revealed && !p.folded;
+    if (p.cards.length) p.cards.forEach((c, i) => frame.card(cardCol + i * (slot.cardWidth + 1), slot.row + 1, c, { compact: slot.compact, hidden: !show, folded: p.folded }));
+    else frame.center(slot.col, slot.row + 2, slot.width, '—', C.dim);
+    const row = slot.row + slot.cardRows + 1;
+    if (game.done && result.received) { frame.center(slot.col, row, slot.width, fit(`Получено ${fmt(result.received)}`, slot.width), C.orange); const reason = [...new Set(result.wins.map(handLabel))].join('/'); frame.center(slot.col, row + 1, slot.width, fit(reason, slot.width), C.orange); }
+    else if (game.done && result.refund) frame.center(slot.col, row, slot.width, fit(`Возврат ${fmt(result.refund)}`, slot.width), C.muted);
+    else if (p.in_hand) { const raised = /^(ставка|рейз)/.test(p.last); const value = p.folded ? 'пас' : raised ? `ставка ${fmt(p.committed)}` : p.last || (active ? 'ходит' : ''); frame.center(slot.col, row, slot.width, fit(value, slot.width), raised ? C.red : C.muted); }
+  }
+  function table() {
+    addButton('info', 'i комбинации', 0, 0, 15, () => open('guide'), false);
+    addButton('pause', 'Esc меню', grid.cols - 10, 0, 10, () => open('pause'), false);
+    if (!tableFits()) { center(Math.floor(grid.rows / 2) - 1, 'Нужно больше строк'); center(Math.floor(grid.rows / 2) + 1, 'Поверните или увеличьте окно', C.muted); return; }
+    const l = P.layout(grid.cols, grid.rows); l.seats.forEach(seat);
+    const b = l.board, label = game.done ? `Роздано ${fmt(game.pot)}` : `${P.Game.STREETS[game.street]} · банк ${fmt(game.pot)}`;
+    frame.center(b.col, b.row, b.width, label);
+    const total = 5 * b.cardWidth + 4, col = b.col + Math.floor((b.width - total) / 2);
+    for (let i = 0; i < 5; i++) frame.card(col + i * (b.cardWidth + 1), b.row + 1, game.board[i], { compact: b.compact, ghost: i >= game.board.length });
+    seat(l.human);
+    let actions, status;
+    if (game.done) { status = game.tournament_over ? game.players[0].stack ? 'Вы выиграли турнир' : 'Вы выбыли из турнира' : 'Раздача завершена'; actions = [['payouts', 'Выплаты', () => open('results')], ['next', game.tournament_over ? 'Новый турнир' : 'Дальше', nextHand]]; }
+    else if (game.actor === 0) { const o = game.options(); status = o.call ? `Ваш ход · колл ${fmt(o.call)}` : 'Ваш ход · можно сделать чек'; actions = [['fold', 'Пас', () => act('fold')], ['call', o.call ? `Колл ${fmt(o.call)}` : 'Чек', () => act('call')]]; if (o.can_raise) actions.push(['raise', 'Рейз', showRaise]); }
+    else { status = `${game.players[game.actor].name} думает…`; actions = []; center(l.actionsRow, status, C.muted); }
+    if (l.statusRow !== null) center(l.statusRow, fit(status, grid.cols), C.muted);
+    const step = Math.floor(grid.cols / Math.max(1, actions.length)); actions.forEach(([key, label, fn], i) => addButton(key, label, i * step, l.actionsRow, i === actions.length - 1 ? grid.cols - i * step : step, fn));
+  }
+  const titles = { table: 'Покерный стол', guide: 'Комбинации', pause: 'Пауза', raise: 'Рейз до', allin: 'Поставить все фишки?', results: 'Выплаты', restart: 'Начать заново?', error: 'Ошибка расчёта' };
+  function page() {
+    center(1, titles[view]);
+    const col = Math.max(1, Math.floor((grid.cols - 54) / 2)), columns = grid.cols - col * 2;
+    if (view === 'guide') {
+      const examples = [['Роял-флеш', 'As Ks Qs Js Ts'], ['Стрит-флеш', '9h 8h 7h 6h 5h'], ['Каре', 'As Ah Ad Ac Ks'], ['Фулл-хаус', 'Ks Kh Kd 7c 7s'], ['Флеш', 'Ad Jd 8d 5d 2d'], ['Стрит', '9s 8h 7d 6c 5s'], ['Тройка', 'Qs Qh Qd 8c 3s'], ['Две пары', 'Js Jh 4d 4c As'], ['Пара', 'Ts Th Ad 8c 3s'], ['Старшая карта', 'As Jh 8d 5c 2s']];
+      const lines = [];
+      examples.forEach(([name, hand]) => { const cards = hand.split(' ').map(c => P.RANKS.indexOf(c[0]) * 4 + 'cdhs'.indexOf(c[1])); lines.push({ name, cards }); });
+      const body = [];
+      for (const line of lines) body.push({ ...line });
+      body.push({ text: '' }, ...P.wrapCells('От сильной к слабой. Лучшая пятёрка из семи. Масти равны. При ничьей сравниваются кикеры.', columns).map(text => ({ text })));
+      scroll = P.clamp(scroll, 0, Math.max(0, body.length - (grid.rows - 7)));
+      body.slice(scroll, scroll + grid.rows - 7).forEach((line, i) => { const row = 4 + i; if (line.text !== undefined) frame.put(col, row, line.text, C.muted); else { frame.put(col, row, line.name); const start = col + columns - 14; line.cards.forEach((c, n) => frame.put(start + n * 3, row, cardText(c), [1, 2].includes(c % 4) ? C.red : C.text)); } });
+      footer();
+    } else if (view === 'pause') {
+      addButton('resume', 'Продолжить', col, 4, columns, close);
+      addButton('guide', 'Комбинации', col, 7, columns, () => open('guide'));
+      addButton('restart', 'Новый турнир', col, 10, columns, () => open('restart'));
+      addButton('fast', `${settings.fast ? '[×]' : '[ ]'} Быстрые ходы ботов`, col, 13, columns, () => { settings.fast = !settings.fast; save(); render(); });
+      const content = [];
+      for (const p of game.players.slice(1)) content.push(...P.wrapCells(`${p.name} · ${P.STYLES[p.style].description}.`, columns));
+      content.push('', ...P.wrapCells(saveError || 'Партия и память сохраняются в браузере.', columns));
+      const room = Math.max(0, grid.rows - 21); scroll = P.clamp(scroll, 0, Math.max(0, content.length - room)); content.slice(scroll, scroll + room).forEach((line, i) => frame.put(col, 17 + i, line, C.muted)); footer();
+    } else if (view === 'raise') {
+      const o = game.options(), dense = grid.rows < 22, amountRow = dense ? 3 : 5, trackRow = dense ? 5 : 8, presetRow = dense ? 7 : 11;
+      const left = col, centerCol = col + Math.floor(columns / 2) - 6;
+      addButton('minus', '−', left, amountRow, 4, () => setRaise(Number(raiseText) - game.bb));
+      frame.center(centerCol, amountRow, 12, fit(raiseText + (selected === 'amount' ? '_' : ''), 12));
+      buttons.push({ key: 'amount', label: 'Общая ставка за круг', type: 'number', col: centerCol, row: amountRow, columns: 12, nav: true });
+      addButton('plus', '+', col + columns - 4, amountRow, 4, () => setRaise(Number(raiseText) + game.bb));
+      const cells = columns - 2, pos = Math.round((cells - 1) * (P.clamp(Number(raiseText) || o.min_to, o.min_to, o.max_to) - o.min_to) / Math.max(1, o.max_to - o.min_to));
+      frame.put(col + 1, trackRow, '─'.repeat(pos) + '◆' + '─'.repeat(cells - 1 - pos), C.muted);
+      buttons.push({ key: 'range', label: 'Размер рейза', type: 'range', col, row: trackRow, columns, nav: false });
+      const targets = [['Мин.', o.min_to], ['½ банка', game.players[0].committed + o.call + Math.round((game.pot + o.call) * .5)], ['Банк', game.players[0].committed + o.call + game.pot + o.call], ['Олл-ин', o.max_to]], step = Math.floor(columns / 4);
+      targets.forEach(([label, n], i) => addButton('preset' + i, label, col + i * step, presetRow, i === 3 ? columns - i * step : step, () => setRaise(n)));
+      frame.wrap(col, presetRow + 2, columns, raiseError || `Со стека: ${fmt((Number(raiseText) || 0) - game.players[0].committed)}. Ставка за круг: ${raiseText}.`, raiseError ? C.red : C.muted, Math.max(1, grid.rows - presetRow - 5));
+      pair('Отмена', close, 'Поставить', submitRaise);
+    } else if (view === 'allin') {
+      frame.wrap(col, 5, columns, `В банк отправится ${fmt(Number(raiseText) - game.players[0].committed)}.`, C.muted);
+      pair('Отмена', close, 'Поставить', () => { const n = Number(raiseText); close(); act('raise', n); });
+    } else if (view === 'restart') {
+      frame.wrap(col, 5, columns, 'Текущий турнир завершится. Память соперников сохранится.', C.muted);
+      pair('Отмена', () => open('pause'), 'Начать', () => { game = new P.Game(); game.start_hand(); close(); update(); });
+    } else if (view === 'results') {
+      const lines = [];
+      game.pot_results.forEach(r => { lines.push({ text: `${r.label} · ${fmt(r.amount)}`, color: C.text }); for (const [seat, amount] of Object.entries(r.payouts)) { const why = r.reason === 'return' ? 'возврат' : r.reason === 'fold' ? 'все сбросили' : P.describe_hand(r.rank); P.wrapCells(`${game.players[seat].name} получает ${fmt(amount)} · ${why}`, columns).forEach(text => lines.push({ text, color: r.reason === 'return' ? C.muted : C.orange })); } lines.push({ text: '' }); });
+      P.wrapCells('Получено включает ваши вложенные фишки. Возврат показан отдельно.', columns).forEach(text => lines.push({ text, color: C.muted }));
+      const room = grid.rows - 7; scroll = P.clamp(scroll, 0, Math.max(0, lines.length - room)); lines.slice(scroll, scroll + room).forEach((line, i) => frame.put(col, i + 4, line.text, line.color)); footer();
+    } else if (view === 'error') { frame.wrap(col, 5, columns, aiError, C.red); addButton('retry', 'Повторить', col, grid.rows - 2, columns, close); }
+  }
+  function pair(left, leftFn, right, rightFn) { const half = Math.floor(grid.cols / 2); addButton('cancel', left, 0, grid.rows - 2, half, leftFn); addButton('confirm', right, half, grid.rows - 2, grid.cols - half, rightFn); }
+  function footer() { addButton('up', '↑', 0, grid.rows - 2, 4, () => { scroll = Math.max(0, scroll - 3); render(); }); addButton('back', 'К столу', 4, grid.rows - 2, grid.cols - 8, close); addButton('down', '↓', grid.cols - 4, grid.rows - 2, 4, () => { scroll += 3; render(); }); }
+  function render(sync = true) {
+    if (!game || !width) return;
+    frame = new P.Terminal(grid.cols, grid.rows); buttons = [];
+    if (view === 'table') table(); else if (grid.rows >= 14 && grid.cols >= 28) page(); else { center(Math.floor(grid.rows / 2), 'Увеличьте окно', C.muted); if (view !== 'table') addButton('back', 'Назад', 0, Math.max(0, grid.rows - 2), grid.cols, close); }
+    frame.paint(ctx, grid.originX, grid.originY, width, height);
+    if (sync) syncControls();
+  }
+  function open(mode) { cancelAI(); if (mode === 'guide') returnView = view; view = mode; scroll = 0; selected = mode === 'pause' ? 'resume' : ['raise', 'allin'].includes(mode) ? 'confirm' : mode === 'restart' ? 'cancel' : 'back'; render(); }
+  function close() { const next = view === 'guide' ? returnView : 'table'; view = next === 'guide' ? 'table' : next; scroll = 0; selected = view === 'pause' ? 'resume' : game.done ? 'next' : 'call'; render(); schedule(); }
+  function validRaise() { const o = game.options(), n = Number(raiseText); return /^\d+$/.test(raiseText) && Number.isInteger(n) && n >= o.min_to && n <= o.max_to; }
+  function validateRaise() { const o = game.options(); raiseError = validRaise() ? '' : `Допустимо ${fmt(o.min_to)}…${fmt(o.max_to)}`; }
+  function setRaise(n) { const o = game.options(); raiseText = String(Math.round(P.clamp(Number.isFinite(n) ? n : o.min_to, o.min_to, o.max_to))); raiseError = ''; render(); }
+  function showRaise() { if (game.done || game.actor !== 0 || !game.options().can_raise) return; raiseText = String(game.options().min_to); raiseError = ''; open('raise'); }
+  function submitRaise() { validateRaise(); if (raiseError) { render(); return; } if (Number(raiseText) === game.options().max_to) open('allin'); else { const n = Number(raiseText); close(); act('raise', n); } }
+  function failAI(message) { aiError = message; open('error'); }
+  function act(action, amount) { if (view !== 'table' || game.done) return; try { game.act(action, amount); } catch (e) { aiError = e.message; open('error'); return; } update(); }
+  function nextHand() { if (game.tournament_over) game = new P.Game(); game.start_hand(); update(); }
+  function accessibleText() {
+    const players = game.players.map((p, i) => `${p.name}: ${p.stack} фишек, ${!p.in_hand ? 'выбыл' : p.folded ? 'пас' : p.last || 'в игре'}${i === 0 || game.revealed && !p.folded ? ', карты ' + p.cards.map(cardText).join(' ') : ''}`).join('. ');
+    return `Банк ${game.pot}. ${P.Game.STREETS[game.street]}. Стол: ${game.board.map(cardText).join(' ') || 'ещё не открыт'}. ${players}. ${game.done ? game.results.join('. ') : ''}`;
+  }
+  function update() { save(); selected = game.done ? 'next' : 'call'; canvas.setAttribute('aria-label', accessibleText()); $('status').textContent = game.done ? game.results.join('. ') : game.actor === 0 ? 'Ваш ход' : game.players[game.actor].name + ' думает'; render(); schedule(); }
+  document.addEventListener('keydown', e => {
+    if (e.ctrlKey || e.metaKey || e.altKey || e.repeat) return;
+    const editing = document.activeElement?.tagName === 'INPUT';
+    if (e.key === 'Escape') { e.preventDefault(); view === 'table' ? open('pause') : close(); return; }
+    if (editing) return;
+    if (/^[iIшШ]$/.test(e.key)) { e.preventDefault(); view === 'guide' ? close() : open('guide'); return; }
+    if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(e.key)) {
+      e.preventDefault(); const list = buttons.filter(b => b.nav), current = list.findIndex(b => b.key === selected); if (!list.length) return;
+      const index = (Math.max(0, current) + (['ArrowRight', 'ArrowDown'].includes(e.key) ? 1 : -1) + list.length) % list.length; selected = list[index].key;
+      controls.querySelector(`[data-key="${selected}"]`)?.focus({ preventScroll: true }); paintOnly();
+    } else if ((e.key === 'Enter' || e.key === ' ') && document.activeElement?.tagName !== 'BUTTON') { e.preventDefault(); const b = buttons.find(b => b.key === selected && b.type === 'button'); b?.fn(); }
+  });
+  canvas.addEventListener('wheel', e => { if (view === 'table' || view === 'raise') return; e.preventDefault(); scroll = Math.max(0, scroll + Math.sign(e.deltaY) * 3); render(); }, { passive: false });
+  let touchY = null;
+  canvas.addEventListener('pointerdown', e => { touchY = e.clientY; });
+  canvas.addEventListener('pointerup', e => { if (touchY !== null && view !== 'table' && view !== 'raise' && Math.abs(e.clientY - touchY) > P.CELL.height) { scroll = Math.max(0, scroll + Math.round((touchY - e.clientY) / P.CELL.height)); render(); } touchY = null; });
+  document.addEventListener('visibilitychange', () => { if (document.hidden) { cancelAI(); save(); } else schedule(); });
+  window.addEventListener('pagehide', save);
+  restore(); new ResizeObserver(resize).observe(canvas); update();
+})();
+
+;
+</script>
+</body>
+</html>
