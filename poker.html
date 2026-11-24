@@ -20,12 +20,12 @@ canvas { display: block; width: 100%; height: 100%; touch-action: none; }
 .sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
 
 </style>
-  
-  
-  
-  
-  
-  
+
+
+
+
+
+
 </head>
 <body>
   <main id="app">
@@ -530,6 +530,10 @@ if (typeof module !== 'undefined') module.exports = globalThis.Poker;
     if (game.done && result.received) { frame.center(slot.col, row, slot.width, fit(`Получено ${fmt(result.received)}`, slot.width), C.orange); const reason = [...new Set(result.wins.map(handLabel))].join('/'); frame.center(slot.col, row + 1, slot.width, fit(reason, slot.width), C.orange); }
     else if (game.done && result.refund) frame.center(slot.col, row, slot.width, fit(`Возврат ${fmt(result.refund)}`, slot.width), C.muted);
     else if (p.in_hand) { const raised = /^(ставка|рейз)/.test(p.last); const value = p.folded ? 'пас' : raised ? `ставка ${fmt(p.committed)}` : p.last || (active ? 'ходит' : ''); frame.center(slot.col, row, slot.width, fit(value, slot.width), raised ? C.red : C.muted); }
+    if (slot.seat === 0 && p.in_hand && !p.folded && p.cards.length === 2 && game.board.length >= 3 && !(game.done && result.received)) {
+      const combination = P.describe_hand(P.evaluate([...p.cards, ...game.board]));
+      frame.center(slot.col, row + 1, slot.width, fit(combination, slot.width));
+    }
   }
   function table() {
     addButton('info', 'i комбинации', 0, 0, 15, () => open('guide'), false);
@@ -619,7 +623,8 @@ if (typeof module !== 'undefined') module.exports = globalThis.Poker;
   function nextHand() { if (game.tournament_over) game = new P.Game(); game.start_hand(); update(); }
   function accessibleText() {
     const players = game.players.map((p, i) => `${p.name}: ${p.stack} фишек, ${!p.in_hand ? 'выбыл' : p.folded ? 'пас' : p.last || 'в игре'}${i === 0 || game.revealed && !p.folded ? ', карты ' + p.cards.map(cardText).join(' ') : ''}`).join('. ');
-    return `Банк ${game.pot}. ${P.Game.STREETS[game.street]}. Стол: ${game.board.map(cardText).join(' ') || 'ещё не открыт'}. ${players}. ${game.done ? game.results.join('. ') : ''}`;
+    const human = game.players[0], combination = human.in_hand && !human.folded && human.cards.length === 2 && game.board.length >= 3 ? 'Ваша комбинация: ' + P.describe_hand(P.evaluate([...human.cards, ...game.board])) + '. ' : '';
+    return `Банк ${game.pot}. ${P.Game.STREETS[game.street]}. Стол: ${game.board.map(cardText).join(' ') || 'ещё не открыт'}. ${players}. ${combination}${game.done ? game.results.join('. ') : ''}`;
   }
   function update() { save(); selected = game.done ? 'next' : 'call'; canvas.setAttribute('aria-label', accessibleText()); $('status').textContent = game.done ? game.results.join('. ') : game.actor === 0 ? 'Ваш ход' : game.players[game.actor].name + ' думает'; render(); schedule(); }
   document.addEventListener('keydown', e => {
